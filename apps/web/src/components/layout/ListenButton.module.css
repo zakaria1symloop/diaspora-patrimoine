@@ -1,0 +1,71 @@
+/* TRV-127 — the « Écouter cette page » pill and its player (Figma EP-01 « lecture à voix haute en cours »). */
+.listen,
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding: 0 var(--sp-16);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-instant) var(--ease-out);
+}
+.listen {
+  border: 1px solid var(--bo-ligne-bleue);
+  background: rgb(255 255 255 / 0.9);
+  color: var(--bo-texte-roi);
+}
+.listen:hover {
+  background: var(--bo-fond-ciel-pale);
+}
+.listen:active,
+.control:active {
+  transform: scale(0.98);
+}
+.listen:focus-visible,
+.control:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.player {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-16);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  animation: enter var(--motion-base) var(--ease-out);
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  color: var(--bo-texte-blanc);
+}
+.control {
+  border: 1px solid var(--bo-fond-blanc);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-roi);
+}
+.stop {
+  background: transparent;
+  color: var(--bo-texte-blanc);
+}
+.stop:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

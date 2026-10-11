@@ -1,0 +1,91 @@
+// AUT-051 § 5.7 « Rendez-vous », AUT-071 `R_EMAIL_BOUNCED` — the rules delivered with package 3.8 (see rule-seeds.ts
+// for the form). The titles are the spec's, their French markers replaced by the dynamic fields of AUT-036.
+import type { RuleSeed } from './rule-seeds.js';
+
+const eq = (field: string, value: string | number | boolean) => ({ field, op: 'eq' as const, value });
+
+export const AGENDA_RULE_SEEDS: RuleSeed[] = [
+  {
+    code: 'R_APPOINTMENT_CONFIRM',
+    name: 'Rendez-vous demandé à confirmer',
+    description: 'Notifier DOSSIER_AGENT (à défaut ADMINS). Tâche « Confirmer le rendez-vous demandé par {client} », échéance 1 jour ouvré, clé appt-confirm:{appointmentId}.',
+    trigger: 'appointment.requested',
+    conditions: null,
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [
+      { type: 'CREATE_TASK', title: 'Confirmer le rendez-vous demandé par {{client.fullName}}', dueInBusinessDays: 1, dedupeKey: 'appt-confirm:{{appointment.id}}' },
+      { type: 'NOTIFY_STAFF', recipients: 'DOSSIER_AGENT', fallback: 'ADMINS' },
+    ],
+    sortOrder: 600,
+  },
+  {
+    code: 'R_APPOINTMENT_REMINDER',
+    name: 'Rappel de rendez-vous la veille',
+    description: 'E-mail C_APPOINTMENT_REMINDER au client (jamais pour un rendez-vous dont il n’a pas été informé), reminderSentAt renseigné. Notifier APPOINTMENT_AGENT : « Rendez-vous demain à {heure} avec {client}. »',
+    trigger: 'appointment.upcoming',
+    conditions: { all: [eq('appointment.status', 'CONFIRMED')] },
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [
+      { type: 'SEND_EMAIL', template: 'C_APPOINTMENT_REMINDER', to: 'CLIENT', respectQuietHours: false, skipWhenOnHold: false, markField: 'reminderSentAt' },
+      { type: 'NOTIFY_STAFF', recipients: 'APPOINTMENT_AGENT', title: 'Rendez-vous demain à {{appointment.timeLabel}} avec {{client.fullName}}.' },
+    ],
+    sortOrder: 610,
+  },
+  {
+    code: 'R_APPOINTMENT_OUTCOME',
+    name: 'Issue d’un rendez-vous à renseigner',
+    description: 'Tâche « Renseigner l’issue du rendez-vous avec {client} », APPOINTMENT_AGENT, clé appt-outcome:{appointmentId}.',
+    trigger: 'appointment.outcome_missing',
+    conditions: { all: [eq('appointment.status', 'CONFIRMED')] },
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [{ type: 'CREATE_TASK', title: 'Renseigner l’issue du rendez-vous avec {{client.fullName}}', assignee: 'APPOINTMENT_AGENT', dedupeKey: 'appt-outcome:{{appointment.id}}' }],
+    sortOrder: 620,
+  },
+  {
+    code: 'R_APPOINTMENT_NO_SHOW',
+    name: 'Client absent au rendez-vous',
+    description: 'Tâche « Recontacter {client}, absent au rendez-vous », CALL, APPOINTMENT_AGENT, clé appt-noshow:{appointmentId}.',
+    trigger: 'appointment.no_show',
+    conditions: null,
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [{ type: 'CREATE_TASK', title: 'Recontacter {{client.fullName}}, absent au rendez-vous', taskType: 'CALL', assignee: 'APPOINTMENT_AGENT', dedupeKey: 'appt-noshow:{{appointment.id}}' }],
+    sortOrder: 630,
+  },
+  {
+    code: 'R_VISIT_HOST_CANCELLED',
+    name: 'Prévenir le promoteur d’une visite annulée',
+    description: 'Tâche « Prévenir {promoteur} : la visite du {date} est annulée », FOLLOW_UP, APPOINTMENT_AGENT, échéance : l’heure prévue de la visite, clé visit-host:{appointmentId} (ACP-023).',
+    trigger: 'appointment.cancelled',
+    conditions: { all: [eq('event.data.hadHost', true)] },
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [{ type: 'CREATE_TASK', title: 'Prévenir {{promoter.name}} : la visite du {{appointment.dateLabel}} est annulée', taskType: 'FOLLOW_UP', assignee: 'APPOINTMENT_AGENT', dueAtField: 'appointment.startsAt', dedupeKey: 'visit-host:{{appointment.id}}' }],
+    sortOrder: 640,
+  },
+  {
+    code: 'R_VISIT_HOST_RESCHEDULED',
+    name: 'Prévenir le promoteur d’une visite déplacée',
+    description: 'Tâche « Prévenir {promoteur} : la visite est déplacée au {date} à {heure} », FOLLOW_UP, HIGH, APPOINTMENT_AGENT, échéance immédiate, clé visit-host-moved:{appointmentId} (ACP-023).',
+    trigger: 'appointment.rescheduled',
+    conditions: { all: [eq('event.data.hadHost', true)] },
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [{ type: 'CREATE_TASK', title: 'Prévenir {{promoter.name}} : la visite est déplacée au {{appointment.dateLabel}} à {{appointment.timeLabel}}', taskType: 'FOLLOW_UP', priority: 'HIGH', assignee: 'APPOINTMENT_AGENT', dueInBusinessDays: 0, dedupeKey: 'visit-host-moved:{{appointment.id}}' }],
+    sortOrder: 650,
+  },
+  {
+    code: 'R_EMAIL_BOUNCED',
+    name: 'Adresse e-mail en erreur',
+    description: 'Tâche « Corriger l’adresse e-mail de {client} », description « Téléphone : … » s’il en a un, CLIENT_AGENT, clé email-fix:{clientId}.',
+    trigger: 'client.email_bounced',
+    conditions: { all: [{ field: 'client.status', op: 'neq', value: 'ARCHIVED' }] },
+    delayValue: 0,
+    delayUnit: 'MINUTES',
+    actions: [{ type: 'CREATE_TASK', title: 'Corriger l’adresse e-mail de {{client.fullName}}', description: '{{#if client.phone}}Téléphone : {{client.phone}}{{/if}}', assignee: 'CLIENT_AGENT', dedupeKey: 'email-fix:{{client.id}}' }],
+    sortOrder: 700,
+  },
+];

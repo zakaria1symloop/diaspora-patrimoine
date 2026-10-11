@@ -1,0 +1,64 @@
+/* ACC-100 — the phone scroller; nothing changes on a computer (the grid of the section applies). */
+.dots {
+  display: none;
+}
+@media (max-width: 767px) {
+  .wrap .snap {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--grid-gutter);
+    gap: var(--sp-16);
+    margin-inline: calc(-1 * var(--grid-gutter));
+    padding: var(--sp-4) var(--grid-gutter) var(--sp-16);
+    scrollbar-width: none;
+    position: relative;
+  }
+  .wrap .snap::-webkit-scrollbar {
+    display: none;
+  }
+  .wrap .snap > li {
+    flex: 0 0 82%;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  .wrap .wide > li {
+    flex-basis: 88%;
+  }
+  .dots {
+    display: flex;
+    justify-content: center;
+  }
+  .dot {
+    position: relative;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .dot::before {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--bo-ligne-bleue);
+    transform: translate(-50%, -50%);
+    transition:
+      transform var(--motion-base) var(--ease-out),
+      background-color var(--motion-base) var(--ease-out);
+  }
+  .dot[aria-current='true']::before {
+    transform: translate(-50%, -50%) scaleX(2.5);
+    background: var(--bo-texte-roi);
+  }
+  .dot:focus-visible {
+    outline: 3px solid var(--bo-accent-bleu);
+    outline-offset: -6px;
+    border-radius: var(--radius-pill);
+  }
+}

@@ -1,0 +1,339 @@
+/* SFA-020 heart, CAT-092 « Comparer » box and tray, TRV-081 short messages (DSN-050 Toast: white surface, shadow.xl,
+   status icon, at the bottom). The heart and the box sit above the card's link layer (z-index) and never follow it. */
+
+/* ---------- heart on a card ---------- */
+.heart {
+  position: absolute;
+  inset-block-start: var(--sp-12);
+  inset-inline-end: var(--sp-12);
+  z-index: 2;
+  width: var(--target-min);
+  height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.92);
+  box-shadow: var(--shadow-s);
+  color: var(--bo-texte-roi);
+  cursor: pointer;
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+.heart svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.heart:hover {
+  transform: scale(1.08);
+}
+.heartOn {
+  color: var(--bo-accent-corail);
+}
+.heartOn svg {
+  fill: currentColor;
+  animation: beat var(--motion-base) var(--ease-spring);
+}
+.heart:focus-visible,
+.compare:focus-within,
+.pageTool:focus-visible,
+.pageTool:focus-within {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+@keyframes beat {
+  40% {
+    transform: scale(1.25);
+  }
+}
+
+/* ---------- « Comparer » on a card ---------- */
+.compare {
+  position: absolute;
+  inset-block-end: 1.25rem;
+  inset-inline-start: var(--sp-8);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: 2rem;
+  padding: var(--sp-4) var(--sp-10) var(--sp-4) var(--sp-6);
+  border-radius: var(--radius-pill);
+  background: rgb(0 27 64 / 0.62);
+  color: var(--bo-texte-blanc);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.compareOn {
+  background: var(--bo-fond-bleu-roi);
+}
+.compareInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.compareBox {
+  width: 1.125rem;
+  height: 1.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
+}
+.compareOn .compareBox,
+.pageToolOn .compareBox {
+  background: var(--bo-accent-or);
+  border-color: var(--bo-accent-or);
+  color: var(--bo-texte-encre);
+}
+
+/* ---------- tools of the property page header ---------- */
+.pageTool {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding: 0 var(--sp-12);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-roi);
+  font: inherit;
+  font-size: var(--fs-body-m);
+  font-weight: 600;
+  cursor: pointer;
+}
+.pageToolOn {
+  border-color: var(--bo-accent-or);
+  background: var(--bo-fond-or-clair);
+}
+.pageToolOn svg {
+  color: var(--bo-accent-corail);
+}
+
+/* ---------- comparison tray ---------- */
+.tray {
+  position: fixed;
+  inset-block-end: var(--sp-16);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+  width: min(60rem, calc(100vw - 2rem));
+  padding: var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-xl);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-xl);
+  border-block-start: 3px solid var(--bo-accent-or);
+  animation: trayUp var(--motion-base) var(--ease-out);
+}
+@keyframes trayUp {
+  from {
+    transform: translate(-50%, 24px);
+    opacity: 0;
+  }
+}
+.traySlots {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-10);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.trayItem,
+.trayFree {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: 3.25rem;
+  padding: var(--sp-4) var(--sp-6);
+  border-radius: var(--radius-m);
+  font-size: var(--fs-body-s);
+}
+.trayItem {
+  background: var(--bo-fond-ciel-pale);
+}
+.trayFree {
+  justify-content: center;
+  border: 1.5px dashed var(--bo-ligne-bleue);
+  color: var(--bo-texte-doux);
+}
+.trayThumb {
+  flex: none;
+  width: 3.5rem;
+  height: 2.625rem;
+  border-radius: var(--radius-s);
+  object-fit: cover;
+  background: var(--bo-degrade-doux);
+}
+.trayTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--bo-texte-encre);
+}
+.trayRemove {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bo-texte-roi);
+  cursor: pointer;
+}
+.trayActions {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.trayHint {
+  max-width: 12rem;
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+  text-align: center;
+}
+.trayClear {
+  border: 0;
+  background: transparent;
+  color: var(--bo-texte-roi);
+  font: inherit;
+  font-size: var(--fs-body-s);
+  text-decoration: underline;
+  cursor: pointer;
+  min-height: 2rem;
+}
+.trayPill {
+  display: none;
+}
+:global(html[data-consent-open]) .tray,
+:global(html[data-consent-open]) .trayPill {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .tray {
+    display: none;
+  }
+  .trayPill {
+    position: fixed;
+    inset-inline-end: var(--sp-16);
+    inset-block-end: calc(var(--sp-16) + env(safe-area-inset-bottom));
+    z-index: 70;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-8);
+    min-height: var(--target-min);
+    padding: 0 var(--sp-16);
+    border-radius: var(--radius-pill);
+    background: var(--bo-fond-bleu-roi);
+    color: var(--bo-texte-blanc);
+    font-weight: 600;
+    font-size: var(--fs-body-m);
+    text-decoration: none;
+    box-shadow: var(--shadow-xl);
+  }
+  /* Above the action bar of a property or programme page (FIC-053). */
+  :global(body:has([data-action-bar])) .trayPill {
+    inset-block-end: calc(5.25rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------- short messages ---------- */
+.toastZone {
+  position: fixed;
+  inset-block-end: var(--sp-24);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 96;
+  width: min(36rem, calc(100vw - 2rem));
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  :global(body:has([data-compare-tray])) .toastZone {
+    inset-block-end: 6.5rem;
+  }
+}
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  padding: var(--sp-12) var(--sp-12) var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-xl);
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-body-m);
+  animation: trayUpPlain var(--motion-base) var(--ease-out);
+}
+@keyframes trayUpPlain {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+}
+.toastError {
+  border-inline-start: 4px solid var(--bo-fond-erreur);
+}
+.toastIcon {
+  flex: none;
+}
+.toastText {
+  flex: 1;
+}
+.toastAction {
+  flex: none;
+  border: 0;
+  background: transparent;
+  color: var(--bo-texte-roi);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.toastClose {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bo-texte-doux);
+  cursor: pointer;
+}
+@media (max-width: 1023px) {
+  :global(body:has([data-action-bar])) .toastZone {
+    inset-block-end: calc(9rem + env(safe-area-inset-bottom));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tray,
+  .toast,
+  .heartOn svg {
+    animation: none;
+  }
+}

@@ -1,0 +1,112 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 32rem) minmax(0, 30rem);
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-48);
+  padding: var(--sp-48) var(--grid-gutter);
+  background: var(--bo-section-ivoire-ciel);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-24);
+}
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-title-section);
+  line-height: var(--lh-title-section);
+  color: var(--bo-texte-roi);
+}
+.contact {
+  font-size: var(--fs-subtitle-m);
+  line-height: var(--lh-subtitle-m);
+  color: var(--bo-texte-encre);
+}
+.contact a {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.reserved {
+  background: none;
+  border: 0;
+  padding: var(--sp-8) 0;
+  min-height: var(--target-min);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-body-s);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.form {
+  width: 100%;
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+  padding: var(--sp-24);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-l);
+}
+.formTitle {
+  font-size: var(--fs-heading-card);
+  line-height: var(--lh-heading-card);
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+  margin-block-end: var(--sp-8);
+}
+.label {
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+}
+.input {
+  height: var(--field-h);
+  padding-inline: var(--sp-16);
+  border: var(--stroke-field) solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  font-size: var(--fs-body-l);
+  margin-block-end: var(--sp-8);
+}
+.input:focus {
+  border-color: var(--bo-texte-roi);
+}
+.input[aria-invalid='true'] {
+  border-color: var(--bo-accent-corail);
+}
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  margin-block: -0.25rem var(--sp-8);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-erreur);
+  animation: drop var(--motion-base) var(--ease-out);
+}
+.scene {
+  justify-self: center;
+}
+@keyframes drop {
+  from {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+}
+@media (max-width: 1023px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: var(--sp-24);
+  }
+  .scene {
+    order: -1;
+    max-height: 12.5rem;
+  }
+}

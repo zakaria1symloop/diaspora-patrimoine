@@ -1,0 +1,183 @@
+/* TRV-109 — suggestions under a search field: fade and 4 px slide, motion.fast */
+.wrap {
+  position: relative;
+  width: 100%;
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  height: var(--ui-field-h, var(--field-h));
+  padding-inline: var(--sp-12) var(--sp-8);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control, var(--radius-m));
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-discret);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+.S .field {
+  height: 2.25rem;
+}
+.field:focus-within {
+  border-color: var(--bo-accent-bleu);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bo-accent-bleu) 30%, transparent);
+}
+.icon {
+  flex: none;
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--bo-texte-encre);
+  font-size: var(--ui-font-size, var(--fs-body-l));
+}
+.field input::placeholder {
+  color: var(--bo-texte-discret);
+}
+.clear {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bo-texte-discret);
+}
+.clear:hover {
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-encre);
+}
+.hint {
+  flex: none;
+  min-width: 1.5rem;
+  padding: 0 var(--sp-6);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-discret);
+  font-family: var(--font-ui);
+  font-size: var(--fs-caption);
+  line-height: 1.25rem;
+  text-align: center;
+}
+.spinner {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--bo-accent-bleu);
+  border-inline-end-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.panel {
+  position: absolute;
+  z-index: 70;
+  inset-inline: 0;
+  inset-block-start: calc(100% + var(--sp-6));
+  max-height: min(32rem, calc(100dvh - 6rem));
+  overflow-y: auto;
+  padding: var(--sp-6);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-surface, var(--radius-m));
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--ui-window-shadow, var(--shadow-xl));
+  animation: drop var(--motion-fast) var(--ease-out);
+}
+.panel[hidden] {
+  display: none;
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.group + .group {
+  margin-block-start: var(--sp-4);
+  padding-block-start: var(--sp-4);
+  border-block-start: 1px solid #edf0f6;
+}
+.groupLabel {
+  padding: var(--sp-6) var(--sp-10) var(--sp-4);
+  color: var(--bo-texte-discret);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  min-height: 2.75rem;
+  padding: var(--sp-6) var(--sp-10);
+  border-radius: calc(var(--ui-radius-control, 8px) - 2px);
+  color: var(--bo-texte-encre);
+  cursor: pointer;
+}
+@media (pointer: coarse) {
+  .option {
+    min-height: 3rem;
+  }
+}
+.active {
+  background: var(--bo-fond-ciel-pale);
+}
+.optionIcon {
+  flex: none;
+  color: var(--bo-texte-roi);
+}
+.optionText {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+.primary,
+.secondary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.primary {
+  font-weight: 500;
+}
+.primary strong,
+.secondary strong {
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+}
+.secondary {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small, var(--fs-body-s));
+  line-height: var(--lh-admin-small, var(--lh-body-s));
+}
+.trailing {
+  flex: none;
+}
+.more {
+  justify-content: space-between;
+  min-height: 2.25rem;
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-admin-small, var(--fs-body-s));
+  font-weight: 600;
+}
+.none {
+  padding: var(--sp-16) var(--sp-12);
+  color: var(--bo-texte-doux);
+}

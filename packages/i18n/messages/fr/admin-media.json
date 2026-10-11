@@ -1,0 +1,232 @@
+{
+  "title": "Médias",
+  "intro": "Toutes les photos, plans, vues et vidéos du catalogue, avec ce qui demande votre attention.",
+  "search": "Rechercher un programme, un bien, une référence",
+  "view": {
+    "all": "Tous",
+    "failed": "En échec",
+    "pending": "En cours de traitement",
+    "small": "Images petites",
+    "no-room": "Sans pièce"
+  },
+  "column": {
+    "media": "Média",
+    "owner": "Fiche",
+    "kind": "Nature",
+    "room": "Pièce",
+    "size": "Poids",
+    "dimensions": "Dimensions",
+    "state": "État",
+    "createdAt": "Déposé le"
+  },
+  "filter": {
+    "kind": "Nature",
+    "ownerType": "Rattaché à",
+    "PROGRAM": "Un programme",
+    "PROPERTY": "Un bien"
+  },
+  "empty": {
+    "title": "Aucun média pour ces critères.",
+    "text": "Les médias se déposent depuis l’onglet Médias d’un programme ou d’un bien."
+  },
+  "manager": {
+    "title": "Médias",
+    "drop": "Déposez vos fichiers ici",
+    "dropHint": "ou",
+    "choose": "Choisir des fichiers",
+    "kindForUpload": "Nature des fichiers déposés",
+    "limits": "Photo, image 3D : JPG, PNG, WebP, HEIC, 20 Mo · Plan : PDF, JPG, PNG, 25 Mo · Brochure : PDF, 25 Mo · Vue 360° : JPG 2:1, 4 096 × 2 048 px au moins, 50 Mo",
+    "limitsLogo": "PNG, SVG ou WebP, 2 Mo au plus",
+    "addVideo": "Ajouter une vidéo",
+    "videoUrl": "Adresse de la vidéo",
+    "videoHint": "Une adresse YouTube ou Vimeo. Seule sa forme est vérifiée.",
+    "videoSubmit": "Ajouter la vidéo",
+    "usesProgram": "Ce bien utilise les photos de son programme.",
+    "readOnly": "Vous consultez les médias : vous n’avez pas le droit de les modifier.",
+    "count": "{n, plural, =0 {Aucun média} one {# média} other {# médias}}",
+    "images": "Images",
+    "documents": "Plans et brochures",
+    "panos": "Vues 360°",
+    "videos": "Vidéos",
+    "dragHint": "Glissez une vignette pour changer l’ordre : la première après la couverture ouvre la galerie.",
+    "select": "Sélectionner {nom}",
+    "selected": "{n, plural, one {# média sélectionné} other {# médias sélectionnés}}",
+    "cover": "Couverture",
+    "makeCover": "Choisir comme couverture",
+    "illustration": "Image d’illustration",
+    "markIllustration": "Marquer « Image d’illustration »",
+    "unmarkIllustration": "Retirer « Image d’illustration »",
+    "changeKind": "Changer la nature",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "retry": "Réessayer",
+    "open": "Ouvrir",
+    "moveUp": "Avancer",
+    "moveDown": "Reculer",
+    "small": "Image petite : elle sera floue en grand.",
+    "noRoom": "Pièce à choisir",
+    "state": {
+      "uploading": "Envoi… {p} %",
+      "PENDING": "Traitement en cours",
+      "READY": "Prêt",
+      "FAILED": "Échec"
+    },
+    "uploadFailed": "{nom} : {raison}",
+    "toast": {
+      "uploaded": "{n, plural, one {Fichier déposé.} other {# fichiers déposés.}}",
+      "saved": "Média enregistré.",
+      "deleted": "Média supprimé.",
+      "video": "Vidéo ajoutée.",
+      "cover": "Nouvelle couverture choisie.",
+      "order": "Ordre enregistré.",
+      "retried": "Traitement relancé.",
+      "bulk": "{n, plural, one {# média modifié.} other {# médias modifiés.}}",
+      "bulkRefused": "{n, plural, one {# média n’a pas pu l’être} other {# médias n’ont pas pu l’être}} : {raison}"
+    },
+    "empty": {
+      "title": "Pas encore de média.",
+      "text": "Trois photos suffisent pour publier ; six, ou trois photos et une description rédigée, donnent tous les points de complétude.",
+      "textProgram": "Les photos du programme servent aussi à ses typologies qui n’ont pas les leurs.",
+      "textUpdate": "Ajoutez quelques photos du chantier."
+    },
+    "dialog": {
+      "editTitle": "Média {nom}",
+      "kind": "Nature",
+      "room": "Pièce",
+      "roomRequired": "Obligatoire pour une vue 360°.",
+      "caption": "Légende",
+      "alt": "Texte de remplacement",
+      "altHint": "Proposé automatiquement : « {texte} ». Laissez vide pour le garder.",
+      "takenAt": "Date de prise de vue",
+      "illustration": "Image d’illustration",
+      "illustrationHint": "Une image qui ne montre pas ce bien précisément (vue d’artiste, photo d’un bien semblable) : le site le signale.",
+      "submit": "Enregistrer",
+      "deleteTitle": "Supprimer {nom} ?",
+      "deleteText": "Le média quitte la fiche et le site. S’il était la couverture, le suivant dans l’ordre la remplace.",
+      "deleteMany": "Supprimer {n, plural, one {# média} other {# médias}} ?",
+      "deleteManyText": "Ils quittent leurs fiches et le site. Un média dont dépend la publication d’un bien n’est pas supprimé.",
+      "kindTitle": "Changer la nature de {n, plural, one {# média} other {# médias}}",
+      "kindSubmit": "Changer la nature"
+    }
+  },
+  "slot": {
+    "replace": "Remplacer",
+    "remove": "Retirer",
+    "choose": "Choisir une image",
+    "uploading": "Envoi… {p} %",
+    "processing": "Traitement en cours",
+    "removeTitle": "Retirer {nom} ?",
+    "removeText": "L’image quitte la fiche et le site.",
+    "toast": "Image enregistrée."
+  },
+  "photos": {
+    "add": "Ajouter des photos",
+    "uploading": "Envoi de {n, plural, one {# photo} other {# photos}}…"
+  },
+  "import": {
+    "title": "Import de lots",
+    "intro": "La grille du promoteur, en CSV ou XLSX : les lots nouveaux sont créés, les autres mis à jour. Un import n’efface jamais une donnée.",
+    "program": "Programme",
+    "programPlaceholder": "Choisir le programme",
+    "file": "Fichier",
+    "fileHint": "CSV (séparateur ; ou ,) ou XLSX, 5 Mo et 2 000 lignes au plus.",
+    "choose": "Choisir le fichier",
+    "templates": "Télécharger le modèle",
+    "templateXlsx": "Modèle XLSX",
+    "templateCsv": "Modèle CSV",
+    "steps": {
+      "file": "Fichier",
+      "mapping": "Correspondance",
+      "check": "Contrôle à blanc",
+      "done": "Résultat"
+    },
+    "mapping": {
+      "title": "Correspondance des colonnes",
+      "intro": "Chaque colonne du fichier alimente un champ. Vérifiez la proposition, corrigez-la si besoin.",
+      "header": "Colonne du fichier",
+      "field": "Champ",
+      "ignore": "Ignorer",
+      "submit": "Lancer le contrôle à blanc",
+      "required": "Les colonnes lot, surface et prix sont obligatoires, avec bien ou type et pièces."
+    },
+    "field": {
+      "lot": "Lot (référence)",
+      "bien": "Bien (référence DP-…)",
+      "type": "Type",
+      "pieces": "Pièces",
+      "surface": "Surface",
+      "prix": "Prix",
+      "batiment": "Bâtiment",
+      "etage": "Étage",
+      "porte": "Porte",
+      "orientation": "Orientation",
+      "terrasse": "Terrasse",
+      "terrain": "Terrain",
+      "parking": "Parking",
+      "options": "Options",
+      "statut": "Statut"
+    },
+    "check": {
+      "title": "Contrôle à blanc : rien n’a encore été écrit",
+      "summary": "{c} lots à créer · {u} à mettre à jour · {k} typologies à créer · {s} lignes signalées · {e} lignes en erreur",
+      "absent": "{a, plural, =0 {Tous les lots du programme figurent dans le fichier.} one {# lot ne figure pas dans le fichier : il n’est pas touché.} other {# lots ne figurent pas dans le fichier : ils ne sont pas touchés.}}",
+      "issues": "Erreurs et signalements",
+      "download": "Télécharger le détail (CSV)",
+      "noIssue": "Aucune erreur ni signalement.",
+      "line": "Ligne",
+      "column": "Colonne",
+      "level": "Niveau",
+      "message": "Message",
+      "ERROR": "Erreur",
+      "FLAG": "Signalement",
+      "confirm": "Confirmer l’import",
+      "confirmHint": "L’import rejoue tous les contrôles sur l’état du moment : son rapport fait foi.",
+      "back": "Changer la correspondance",
+      "nothing": "Aucune ligne à appliquer."
+    },
+    "done": {
+      "title": "Import terminé",
+      "running": "Import en cours…",
+      "failed": "L’import n’a pas pu aboutir.",
+      "summary": "{c} lots créés · {u} mis à jour · {k} typologies créées · {s} lignes signalées · {e} lignes en erreur",
+      "openProgram": "Voir les lots du programme",
+      "again": "Importer un autre fichier"
+    },
+    "issue": {
+      "REQUIRED": "Cellule obligatoire vide.",
+      "INVALID_VALUE": "Valeur illisible ou hors bornes : « {valeur} ».",
+      "DUPLICATE_LOT": "Ce lot figure déjà plus haut dans le fichier.",
+      "AMBIGUOUS_TYPOLOGY": "Plusieurs typologies correspondent : indiquez la colonne bien.",
+      "TYPOLOGY_MISMATCH": "Typologie différente dans le fichier : le lot reste dans {bien}.",
+      "LOT_ELSEWHERE": "Ce lot se trouve dans {bien} : un import ne déplace pas un lot.",
+      "STATUS_UNCHANGED": "Statut inchangé : {raison}.",
+      "RESERVATION_PRICE": "Prix public changé ; le prix convenu de sa réservation ne change pas.",
+      "HELD_BY_DOSSIER": "Le dossier {reference} tient ce lot : son conseiller vérifie.",
+      "unknownBien": "le bien {bien} n’est pas dans ce programme",
+      "reasonHeld": "un dossier tient ce lot",
+      "reasonSold": "un lot vendu ne revient pas en vente par un import",
+      "reasonNotAllowed": "ce changement ne se fait pas à la main",
+      "reasonPending": "la référence de ce lot est provisoire"
+    },
+    "history": {
+      "title": "Derniers imports",
+      "empty": "Aucun import pour l’instant.",
+      "dryRun": "Contrôle à blanc",
+      "executed": "Exécuté"
+    },
+    "figure": {
+      "toCreate": "lots à créer",
+      "toUpdate": "à mettre à jour",
+      "created": "lots créés",
+      "updated": "mis à jour",
+      "typologies": "typologies à créer",
+      "flagged": "lignes signalées",
+      "errors": "lignes en erreur"
+    },
+    "conflictTask": "Le fichier de {promoteur} donne le lot {lot} comme {statut}, alors que le dossier {reference} le tient : à vérifier.",
+    "toast": {
+      "checked": "Contrôle à blanc terminé.",
+      "confirmed": "Import lancé : vous serez prévenu à la fin."
+    }
+  }
+}

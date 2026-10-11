@@ -1,0 +1,76 @@
+/* CTL-145 — the progress of the works: a gauge, then the points, latest first */
+.works {
+  display: grid;
+  gap: var(--sp-16);
+}
+.progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--bo-ligne-douce);
+}
+.progressFill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--bo-fond-bleu-roi), var(--bo-accent-vert));
+  transition: width var(--motion-slow) var(--ease-out);
+}
+.timeline {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.point {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--sp-16);
+  padding-block: var(--sp-12);
+}
+.point + .point {
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.percent {
+  display: grid;
+  place-items: center;
+  height: 2.5rem;
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-admin-h3);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.pointBody {
+  display: grid;
+  gap: var(--sp-8);
+  min-width: 0;
+}
+.pointHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+}
+.pointHead > :last-child {
+  margin-inline-start: auto;
+}
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+}
+.photos img {
+  width: 7.5rem;
+  height: 5rem;
+  border-radius: 6px;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+}

@@ -1,0 +1,101 @@
+/* BO-045 — record template: full width of the work zone */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.notice {
+  margin-block-end: var(--sp-16);
+}
+.tabs {
+  display: flex;
+  gap: var(--sp-4);
+  margin-block-end: var(--sp-16);
+  border-block-end: 1px solid var(--bo-ligne-bleue);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  height: 2.75rem;
+  padding: 0 var(--sp-12);
+  color: var(--bo-texte-doux);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.tab::after {
+  content: '';
+  position: absolute;
+  inset-inline: var(--sp-8);
+  inset-block-end: -1px;
+  height: 2px;
+  background: var(--bo-fond-bleu-roi);
+  transform: scaleX(0);
+  transition: transform var(--motion-base) var(--ease-out);
+}
+.tab:hover {
+  color: var(--bo-texte-roi);
+}
+.tabActive {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.tabActive::after {
+  transform: scaleX(1);
+}
+.tabCount {
+  padding: 1px var(--sp-6);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  font-size: var(--fs-admin-caption);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.body {
+  display: grid;
+  gap: var(--sp-16);
+  align-items: start;
+}
+.withAside {
+  grid-template-columns: minmax(0, 1fr) 22rem;
+}
+.main {
+  display: grid;
+  gap: var(--sp-16);
+  min-width: 0;
+}
+.aside {
+  display: grid;
+  gap: var(--sp-16);
+  min-width: 0;
+}
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-16);
+  align-items: start;
+}
+.columns3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 1279px) {
+  .columns3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .withAside {
+    grid-template-columns: minmax(0, 1fr) 18rem;
+  }
+}
+@media (max-width: 1023px) {
+  .withAside,
+  .columns,
+  .columns3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

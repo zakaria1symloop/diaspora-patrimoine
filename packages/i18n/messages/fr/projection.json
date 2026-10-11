@@ -1,0 +1,10 @@
+{
+  "page": {
+    "title": "Recevez votre projection",
+    "contentsTitle": "Votre projection contient"
+  },
+  "complete": {
+    "expired": "Le délai pour compléter votre demande est passé. Elle est bien enregistrée : votre conseiller vous contactera.",
+    "failed": "Votre complément n’a pas pu être enregistré. Votre demande, elle, est bien enregistrée. Réessayez dans un instant."
+  }
+}

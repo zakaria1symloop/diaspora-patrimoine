@@ -1,0 +1,284 @@
+/* EC-41 — « Mes favoris »: the favourite's own card and the comparison bar of the page (D-098). Tokens only. */
+.page {
+  display: grid;
+  gap: var(--sp-16);
+}
+.page > :global(div[data-list-toolbar]) {
+  margin-block-end: 0;
+}
+.limit {
+  color: var(--bo-texte-erreur);
+}
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr));
+  gap: var(--sp-20);
+}
+.grid > li {
+  container-type: inline-size;
+  min-width: 0;
+}
+/* A card with room lies down: the photo on the left, the facts beside it. */
+@container (min-width: 30rem) {
+  .card:not(.gone) {
+    flex-direction: row;
+  }
+  .card > .photo {
+    flex: 0 0 38%;
+    aspect-ratio: auto;
+  }
+}
+:global([data-simple]) .grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  transition:
+    box-shadow var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out);
+}
+.card:hover,
+.card:focus-within {
+  border-color: var(--bo-accent-bleu);
+  box-shadow: var(--shadow-m);
+}
+.compared {
+  border-color: var(--bo-fond-bleu-roi);
+  box-shadow: 0 0 0 2px var(--bo-fond-bleu-roi);
+}
+.gone {
+  border-style: dashed;
+  background: var(--bo-fond-gris);
+}
+.photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+.photo picture {
+  position: absolute;
+  inset: 0;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-slow) var(--ease-out);
+}
+a.photo:hover .img,
+.card:has(.title a:hover) .img {
+  transform: scale(1.03);
+}
+.veiled .img {
+  filter: grayscale(0.8);
+  opacity: 0.6;
+}
+.badge {
+  position: absolute;
+  inset-inline-start: var(--sp-12);
+  bottom: var(--sp-12);
+  padding: var(--sp-4) var(--sp-12);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  font: 700 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+}
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-10);
+  min-width: 0;
+  padding: var(--sp-16) var(--sp-20) var(--sp-12);
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-12);
+}
+.program {
+  font: 700 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bo-texte-or);
+}
+.added {
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.title {
+  margin: 0;
+  font: 700 var(--fs-heading-card) / var(--lh-heading-card) var(--font-ui);
+  color: var(--bo-texte-nuit);
+  overflow-wrap: anywhere;
+}
+.title a {
+  color: inherit;
+  text-decoration: none;
+}
+.title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.place {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin: calc(var(--sp-6) * -1) 0 0;
+  color: var(--bo-texte-doux);
+}
+.place svg {
+  color: var(--bo-texte-or);
+}
+.facts {
+  margin: calc(var(--sp-6) * -1) 0 0;
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.change {
+  display: grid;
+  gap: var(--sp-6);
+  justify-items: start;
+  margin: 0;
+  padding: var(--sp-10) var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-creme);
+  border: 1px solid var(--bo-ligne-or);
+}
+.changeText {
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--bo-texte-encre);
+}
+.changeDate {
+  color: var(--bo-texte-doux);
+  white-space: nowrap;
+}
+.hint {
+  margin: 0;
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--bo-texte-doux);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin-block-start: auto;
+  padding-block-start: var(--sp-8);
+}
+.actions > * {
+  flex: 1 1 auto;
+}
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--sp-4);
+  margin-inline: calc(var(--sp-10) * -1);
+  padding-block-start: var(--sp-4);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.remove {
+  margin-inline-start: auto;
+}
+/* « Comparer » — a real checkbox with its label; the box says whether the property is in the comparison. */
+.compare {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding-inline: var(--sp-10);
+  border-radius: var(--radius-pill);
+  color: var(--bo-texte-roi);
+  font: 600 var(--fs-body-l) / 1 var(--font-ui);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.compare:hover {
+  background: var(--bo-fond-ciel-pale);
+}
+.compare:has(input:focus-visible) {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.compareBox {
+  display: grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: var(--radius-s);
+  border: var(--stroke-field) solid var(--bo-texte-roi);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-blanc);
+  transition: background-color var(--motion-instant) var(--ease-out);
+}
+.compareOn .compareBox {
+  background: var(--bo-fond-bleu-roi);
+}
+
+/* The comparison bar of the page: stays in view at the bottom while a property is chosen. */
+.compareBar {
+  position: sticky;
+  bottom: var(--sp-16);
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: var(--sp-8) var(--sp-12) var(--sp-8) var(--sp-16);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  box-shadow: var(--shadow-xl);
+  animation: barUp var(--motion-base) var(--ease-out);
+}
+@keyframes barUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@media (max-width: 1023px) {
+  /* above the tabs and « Écrire à mon conseiller » (one fixed thing at a time at the very bottom, D-095) */
+  .compareBar {
+    bottom: calc(4.25rem + 4.25rem + env(safe-area-inset-bottom));
+  }
+}
+.compareIcon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.compareText {
+  display: grid;
+  margin: 0;
+  color: var(--bo-texte-encre);
+}
+.compareText span {
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}

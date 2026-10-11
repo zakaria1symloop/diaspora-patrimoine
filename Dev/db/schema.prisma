@@ -1,0 +1,1462 @@
+// ═════════════════════════════════════════════════════════════════════════════
+// SUPERSEDED — 2026-10-01
+// This draft is kept for history only. Do NOT build from it.
+// The reference data model is in  Specs/01-domaine/  (files 01 to 05) ; the real
+// Prisma schema is to be written from those files (decisions D-002, D-052).
+// Main differences : Program → Property → Lot (D-010), single funnel Lead → Dossier
+// (D-011), Reservation, DossierParty, multi-country referential, UUID v7.
+// ═════════════════════════════════════════════════════════════════════════════
+//
+// ─────────────────────────────────────────────────────────────────────────────
+// DIASPORA PATRIMOINE — Phase 1 data model (v0.1, 2026-08-18)
+// PostgreSQL · Prisma schema — usable as-is or as the spec for another ORM.
+//
+// Design principles
+//  1. The DOSSIER is the spine. Documents, bank submissions, communications,
+//     tasks, surveys and stage history all hang off it; stage changes are
+//     domain events (see WorkflowRule) that fan out to email/task/notification.
+//  2. Promoter and Bank are first-class ORGANIZATIONS from day one. Users get
+//     access through Membership(organization, role). Opening the Promoter /
+//     Bank portals later = granting memberships, not remodelling.
+//  3. Everything the admin can configure is data, not code: document
+//     checklists, email templates, workflow rules, bank products (barèmes),
+//     pipeline SLAs, FAQ, testimonials.
+//  4. Money in DZD as Decimal(14,2); rates in basis points; the € display is a
+//     view computed from ExchangeRate — never stored on the property.
+//  5. Personal data is minimised, consent is recorded, erasure is soft
+//     (deletedAt / gdprErasedAt) then purged by a job. Files live in S3-
+//     compatible storage (encrypted); the DB only stores keys + metadata.
+// ─────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// ENUMS
+// ═════════════════════════════════════════════════════════════════════════════
+
+enum OrganizationType {
+  DIASPORA_PATRIMOINE // the operator (single row)
+  PROMOTER
+  BANK
+}
+
+/// Roles are interpreted per organization type:
+/// DP: OWNER (direction) · ADMIN (back-office complet) · AGENT (conseiller) · VIEWER (lecture)
+/// PROMOTER (phase 2): ADMIN (gère catalogue) · AGENT (commercial) · VIEWER
+/// BANK (phase 3): ADMIN · AGENT (analyste) · VIEWER
+enum MembershipRole {
+  OWNER
+  ADMIN
+  AGENT
+  VIEWER
+}
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum Locale {
+  fr
+  ar
+  en
+}
+
+enum Currency {
+  DZD
+  EUR
+  USD
+  CAD
+  GBP
+  CHF
+}
+
+/// "situation (résident / non-résident / expatrié)" — offre technique §4.11
+enum ResidencyStatus {
+  NON_RESIDENT      // lives abroad, foreign income (core diaspora case)
+  EXPATRIATE        // Algerian resident temporarily abroad
+  RESIDENT_ALGERIA  // lives in Algeria
+  OTHER
+}
+
+enum ClientStatus {
+  LEAD        // created from an interest, not yet qualified
+  QUALIFIED   // qualified by an agent
+  ACTIVE      // has an open dossier
+  INACTIVE
+  ARCHIVED
+}
+
+enum InterestSource {
+  PUBLIC_FORM
+  ADMIN
+  IMPORT
+  PARTNER
+  PHONE
+  WHATSAPP
+}
+
+enum InterestStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED // became a dossier
+  LOST
+}
+
+enum ProposalStatus {
+  PROPOSED
+  VIEWED
+  INTERESTED
+  VISIT_PLANNED
+  VISITED
+  DECLINED
+  RESERVED
+}
+
+enum PropertyType {
+  APARTMENT
+  VILLA
+  DUPLEX
+  STUDIO
+  LAND
+  COMMERCIAL
+}
+
+enum PropertyStatus {
+  DRAFT
+  AVAILABLE
+  RESERVED
+  SOLD
+  WITHDRAWN
+}
+
+enum DeliveryStatus {
+  ON_PLAN            // sur plan (VEFA)
+  UNDER_CONSTRUCTION
+  DELIVERED
+}
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MediaKind {
+  PHOTO
+  RENDER_3D  // architect's 3D image for off-plan units — displayed with "non contractuelle" tag
+  PLAN
+  BROCHURE
+  VIDEO
+  PANO_360   // equirectangular photo, one per room (guide promoteur)
+  LOGO
+  DOCUMENT
+}
+
+enum ConstructionStage {
+  FONDATIONS
+  GROS_OEUVRE
+  SECOND_OEUVRE
+  FINITIONS
+  LIVRAISON
+}
+
+enum PoiCategory {
+  TRANSPORT
+  EDUCATION
+  COMMERCE
+  SANTE
+  LOISIRS
+  AUTRE
+}
+
+enum PartnerStatus {
+  PROSPECT
+  ACTIVE
+  SUSPENDED
+  ENDED
+}
+
+enum RateType {
+  FIXED
+  VARIABLE
+  MURABAHA_MARGIN // Islamic-finance products: "rate" is a margin, no interest
+}
+
+enum TargetSegment {
+  DIASPORA
+  RESIDENT
+  ALL
+}
+
+/// Pipeline stages — one enum shared by Dossier, StageHistory, WorkflowRule,
+/// SurveyTrigger and the UI "Stage Tag" (6 client-facing steps map onto these).
+enum DossierStage {
+  INTEREST
+  QUALIFICATION
+  MATCHING       // mise en relation / biens proposés / visites
+  DOCUMENTS      // constitution & vérification du dossier
+  BANK_REVIEW    // soumis / en étude
+  APPROVED       // crédit accordé
+  ACQUISITION    // signature / acte
+}
+
+enum DossierStatus {
+  OPEN
+  ON_HOLD
+  WON
+  LOST
+}
+
+enum ChecklistScope {
+  CLIENT_FILE // dossier client (pièces d'identité, revenus…)
+  BANK_FILE   // dossier de financement pour une banque donnée
+}
+
+enum DocumentStatus {
+  PENDING    // demandé, pas reçu
+  RECEIVED   // téléversé, à vérifier
+  VALIDATED
+  REJECTED   // motif obligatoire, relance
+  EXPIRED    // ex. justificatif de plus de 3 mois
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  INFO_REQUESTED // complément demandé
+  APPROVED
+  REJECTED
+  WITHDRAWN
+}
+
+enum SimulationType {
+  ELIGIBILITY
+  CREDIT
+}
+
+enum Channel {
+  EMAIL
+  SMS
+  WHATSAPP
+  IN_APP   // messagerie client ↔ administrateur
+  CALL     // logged phone call
+  NOTE     // internal note on the timeline
+}
+
+enum Direction {
+  OUTBOUND
+  INBOUND
+}
+
+enum DeliveryState {
+  QUEUED
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  FAILED
+}
+
+enum TriggerKind {
+  MANUAL
+  WORKFLOW
+  REMINDER
+}
+
+enum TaskType {
+  CALL
+  FOLLOW_UP
+  DOC_REVIEW
+  BANK_FOLLOW_UP
+  VISIT
+  MEETING
+  OTHER
+}
+
+enum TaskStatus {
+  OPEN
+  DONE
+  CANCELLED
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum SurveyTrigger {
+  PROPOSAL_SENT
+  DOSSIER_COMPLETE
+  BANK_DECISION
+  ACQUISITION
+  MANUAL
+}
+
+enum FeedbackStatus {
+  NEW
+  REVIEWED
+  ACTIONED
+  DISMISSED
+}
+
+enum AlertFrequency {
+  INSTANT
+  DAILY
+  WEEKLY
+}
+
+enum WorkflowTrigger {
+  INTEREST_CREATED
+  STAGE_ENTERED
+  DOCUMENT_RECEIVED
+  DOCUMENT_OVERDUE
+  DOSSIER_COMPLETE
+  SUBMISSION_STATUS_CHANGED
+  DOSSIER_INACTIVE
+}
+
+enum ConsentType {
+  PRIVACY_POLICY
+  TERMS_OF_USE
+  MARKETING_EMAIL
+  DATA_TRANSFER_DZ // transfert transfrontalier vers l'Algérie (loi 18-07)
+}
+
+enum ExchangeRateKind {
+  OFFICIAL
+  INDICATIVE
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// IDENTITY & ACCESS
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// One login = one User. Clients, DP staff, promoter and bank users are all
+/// Users; what they can do comes from Membership (staff/partners) or from the
+/// linked Client profile (buyers).
+model User {
+  id             String     @id @default(uuid())
+  email          String     @unique
+  emailVerifiedAt DateTime?
+  passwordHash   String?    // null if auth is delegated (magic link / OAuth)
+  firstName      String
+  lastName       String
+  phone          String?    // E.164
+  locale         Locale     @default(fr)
+  timezone       String     @default("Europe/Paris")
+  status         UserStatus @default(ACTIVE)
+  lastLoginAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  deletedAt      DateTime?
+
+  memberships    Membership[]
+  client         Client?         // set when this user is a buyer
+  consents       Consent[]
+  notifications  Notification[]
+
+  // back-relations (who did what)
+  assignedClients        Client[]             @relation("ClientAssignedAgent")
+  assignedDossiers       Dossier[]            @relation("DossierAssignedAgent")
+  createdDossiers        Dossier[]            @relation("DossierCreatedBy")
+  handledInterests       Interest[]           @relation("InterestHandledBy")
+  proposals              PropertyProposal[]   @relation("ProposalProposedBy")
+  validatedDocuments     DossierDocument[]    @relation("DocumentValidatedBy")
+  uploadedVersions       DocumentVersion[]    @relation("VersionUploadedBy")
+  submissions            BankSubmission[]     @relation("SubmissionSubmittedBy")
+  submissionEvents       BankSubmissionEvent[] @relation("SubmissionEventBy")
+  stageChanges           DossierStageHistory[] @relation("StageChangedBy")
+  sentCommunications     Communication[]      @relation("CommunicationSentBy")
+  tasksAssigned          Task[]               @relation("TaskAssignee")
+  tasksCreated           Task[]               @relation("TaskCreatedBy")
+  auditLogs              AuditLog[]           @relation("AuditActor")
+  templatesUpdated       EmailTemplate[]      @relation("TemplateUpdatedBy")
+  propertiesCreated      Property[]           @relation("PropertyCreatedBy")
+
+  @@index([status])
+  @@map("users")
+}
+
+/// DP itself, each promoter and each bank. Portals = memberships on these.
+model Organization {
+  id        String           @id @default(uuid())
+  type      OrganizationType
+  name      String
+  slug      String           @unique
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  memberships Membership[]
+  promoter    Promoter?
+  bank        Bank?
+
+  @@index([type])
+  @@map("organizations")
+}
+
+model Membership {
+  id             String         @id @default(uuid())
+  userId         String
+  organizationId String
+  role           MembershipRole
+  invitedAt      DateTime       @default(now())
+  acceptedAt     DateTime?
+  revokedAt      DateTime?
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId, role])
+  @@map("memberships")
+}
+
+/// GDPR consent registry — one row per acceptance, never updated in place.
+model Consent {
+  id         String      @id @default(uuid())
+  userId     String?
+  clientId   String?
+  type       ConsentType
+  version    String      // e.g. "privacy-2026-09"
+  granted    Boolean
+  ipHash     String?
+  userAgent  String?
+  createdAt  DateTime    @default(now())
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  client Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId, type])
+  @@map("consents")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// REFERENCE DATA (geo, money)
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// 58 wilayas — seeded. nameAr ready for the Arabic phase.
+model Wilaya {
+  code      String  @id // "16"
+  nameFr    String
+  nameAr    String?
+  slug      String  @unique
+  latitude  Decimal? @db.Decimal(9, 6)
+  longitude Decimal? @db.Decimal(9, 6)
+
+  communes    Commune[]
+  programs    Program[]
+  properties  Property[]
+  travelTimes WilayaTravelTime[]
+
+  @@map("wilayas")
+}
+
+model Commune {
+  id         String  @id @default(uuid())
+  wilayaCode String
+  nameFr     String
+  nameAr     String?
+  slug       String
+  latitude   Decimal? @db.Decimal(9, 6)
+  longitude  Decimal? @db.Decimal(9, 6)
+
+  wilaya     Wilaya     @relation(fields: [wilayaCode], references: [code])
+  programs   Program[]
+  properties Property[]
+
+  @@unique([wilayaCode, slug])
+  @@map("communes")
+}
+
+/// Powers the "2 h 40 de Paris" line on cards. Seeded/maintained by admin.
+model WilayaTravelTime {
+  id          String @id @default(uuid())
+  wilayaCode  String
+  originCity  String // "Paris", "Marseille", "Lyon", "Montréal"…
+  airportCode String // "ALG", "ORN", "CZL"…
+  minutes     Int    // typical direct-flight time
+  note        String?
+
+  wilaya Wilaya @relation(fields: [wilayaCode], references: [code], onDelete: Cascade)
+
+  @@unique([wilayaCode, originCity])
+  @@map("wilaya_travel_times")
+}
+
+/// DZD ↔ EUR/USD/… for the "≈ 118 000 €" display. Keep both official and
+/// indicative; the UI states which one it shows.
+model ExchangeRate {
+  id        String           @id @default(uuid())
+  base      Currency         @default(DZD)
+  quote     Currency
+  kind      ExchangeRateKind
+  rate      Decimal          @db.Decimal(14, 6) // 1 quote = rate base (e.g. 1 EUR = 145.30 DZD)
+  source    String?
+  asOf      DateTime
+  createdAt DateTime         @default(now())
+
+  @@index([quote, kind, asOf])
+  @@map("exchange_rates")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// PARTNERS — Promoters & Banks
+// ═════════════════════════════════════════════════════════════════════════════
+
+model Promoter {
+  id              String        @id @default(uuid())
+  organizationId  String        @unique
+  legalName       String
+  brandName       String?
+  slug            String        @unique
+  rcNumber        String?       // registre de commerce
+  nif             String?
+  agrementNumber  String?       // agrément promoteur
+  addressLine     String?
+  wilayaCode      String?
+  website         String?
+  description     String?
+  logoMediaId     String?
+  status          PartnerStatus @default(PROSPECT)
+  conventionSignedAt DateTime?
+  internalNotes   String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+
+  organization Organization       @relation(fields: [organizationId], references: [id])
+  contacts     PromoterContact[]
+  programs     Program[]
+  properties   Property[]
+  media        Media[]
+  dossiers     Dossier[]
+
+  @@index([status])
+  @@map("promoters")
+}
+
+model PromoterContact {
+  id         String  @id @default(uuid())
+  promoterId String
+  fullName   String
+  role       String?
+  email      String?
+  phone      String?
+  isPrimary  Boolean @default(false)
+
+  promoter Promoter @relation(fields: [promoterId], references: [id], onDelete: Cascade)
+
+  @@map("promoter_contacts")
+}
+
+model Bank {
+  id             String        @id @default(uuid())
+  organizationId String        @unique
+  name           String
+  shortName      String?
+  slug           String        @unique
+  country        String        @default("DZ")
+  logoMediaId    String?
+  status         PartnerStatus @default(PROSPECT)
+  conventionSignedAt DateTime?
+  description    String?
+  internalNotes  String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  organization  Organization      @relation(fields: [organizationId], references: [id])
+  contacts      BankContact[]
+  products      BankProduct[]
+  submissions   BankSubmission[]
+  eligibilities PropertyBankEligibility[]
+  checklists    DocumentRequirementTemplate[]
+
+  @@map("banks")
+}
+
+model BankContact {
+  id        String  @id @default(uuid())
+  bankId    String
+  fullName  String
+  role      String?
+  email     String?
+  phone     String?
+  agency    String?
+  isPrimary Boolean @default(false)
+
+  bank Bank @relation(fields: [bankId], references: [id], onDelete: Cascade)
+
+  @@map("bank_contacts")
+}
+
+/// The "barèmes paramétrables" behind both simulators. One row per product
+/// (e.g. "Crédit Immobilier Diaspora", "Ijara/Murabaha Habitat").
+model BankProduct {
+  id                 String        @id @default(uuid())
+  bankId             String
+  name               String
+  segment            TargetSegment @default(DIASPORA)
+  currency           Currency      @default(DZD)
+  rateType           RateType      @default(FIXED)
+  nominalRateBps     Int           // 550 = 5.50 % (or margin for MURABAHA)
+  minAmount          Decimal       @db.Decimal(14, 2)
+  maxAmount          Decimal       @db.Decimal(14, 2)
+  minDurationMonths  Int
+  maxDurationMonths  Int
+  maxDebtRatioPct    Decimal       @db.Decimal(5, 2) // e.g. 33.00
+  minDownPaymentPct  Decimal       @db.Decimal(5, 2) // e.g. 20.00
+  maxAgeAtEnd        Int?          // e.g. 70
+  eligibleResidency  ResidencyStatus[]
+  acceptsForeignIncome Boolean     @default(true)
+  feesJson           Json?         // frais de dossier, assurance…
+  requiredChecklistId String?      // BANK_FILE template
+  isActive           Boolean       @default(true)
+  validFrom          DateTime?
+  validTo            DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  bank              Bank                          @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  requiredChecklist DocumentRequirementTemplate?  @relation(fields: [requiredChecklistId], references: [id])
+  submissions       BankSubmission[]
+  simulations       Simulation[]
+
+  @@index([bankId, isActive])
+  @@map("bank_products")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// CATALOG — Programs, Properties, Media
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// A residential programme (ensemble immobilier) of a promoter.
+model Program {
+  id             String            @id @default(uuid())
+  promoterId     String
+  name           String
+  slug           String            @unique
+  description    String?
+  wilayaCode     String
+  communeId      String?
+  addressLine    String?
+  latitude       Decimal?          @db.Decimal(9, 6)
+  longitude      Decimal?          @db.Decimal(9, 6)
+  deliveryStatus DeliveryStatus    @default(ON_PLAN)
+  deliveryDate   DateTime?         // expected (month precision) — filter "Livraison 2027"
+  totalUnits     Int?
+  amenities      Json?             // ["ascenseur","parking","gardiennage"]
+  publication    PublicationStatus @default(DRAFT)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  deletedAt      DateTime?
+
+  promoter   Promoter        @relation(fields: [promoterId], references: [id])
+  wilaya     Wilaya          @relation(fields: [wilayaCode], references: [code])
+  commune    Commune?        @relation(fields: [communeId], references: [id])
+  properties Property[]
+  media      Media[]
+  interests  Interest[]
+  updates    ProgramUpdate[]
+
+  @@index([promoterId])
+  @@index([wilayaCode, publication])
+  @@map("programs")
+}
+
+/// A sellable unit (lot) — the "bien". Standalone properties (villa, land)
+/// have promoterId but no programId. Filters in the catalogue map 1:1 to
+/// the indexed columns below.
+model Property {
+  id                String            @id @default(uuid())
+  reference         String            @unique // "DP-ALG-0142" (public)
+  slug              String            @unique
+  promoterId        String
+  programId         String?
+  title             String
+  description       String?
+  type              PropertyType
+  rooms             Int?              // F3 = 3 (filter "Pièces")
+  bedrooms          Int?
+  bathrooms         Int?
+  surfaceM2         Decimal           @db.Decimal(8, 2)  // filter "Surface"
+  terraceM2         Decimal?          @db.Decimal(8, 2)
+  landM2            Decimal?          @db.Decimal(10, 2)
+  floor             Int?
+  totalFloors       Int?
+  orientation       String?
+  priceDzd          Decimal           @db.Decimal(14, 2) // filter "Budget"
+  priceNegotiable   Boolean           @default(false)
+  status            PropertyStatus    @default(DRAFT)    // Disponible/Réservé/Vendu tag
+  statusChangedAt   DateTime?
+  deliveryStatus    DeliveryStatus?   // overrides program when set
+  deliveryDate      DateTime?         // overrides program when set
+  wilayaCode        String            // denormalised from program for filtering
+  communeId         String?
+  addressLine       String?
+  latitude          Decimal?          @db.Decimal(9, 6)
+  longitude         Decimal?          @db.Decimal(9, 6)
+  features          Json?             // {"parking":true,"elevator":true,"garden":false}
+  financingEligible Boolean           @default(false) // cache of PropertyBankEligibility (filter "Éligible financement")
+  has360Tour        Boolean           @default(false) // cache of Media(kind=PANO_360) (filter/chip "Visite 360°")
+  completenessScore Int               @default(0)     // cache 0-100, recomputed on Property/Media change (spec "Fiche bien")
+  titleAuto         Boolean           @default(false) // title was generated from structured fields
+  descriptionAuto   Boolean           @default(false) // description was generated from structured fields
+  publication       PublicationStatus @default(DRAFT) // PUBLISHED only if 8 required fields + ≥1 media + score ≥ 60 (app rule)
+  publishedAt       DateTime?         // "Nouveau" = publishedAt > now()-7d
+  seoTitle          String?
+  seoDescription    String?
+  viewCount         Int               @default(0)
+  createdById       String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+
+  promoter      Promoter                  @relation(fields: [promoterId], references: [id])
+  program       Program?                  @relation(fields: [programId], references: [id])
+  wilaya        Wilaya                    @relation(fields: [wilayaCode], references: [code])
+  commune       Commune?                  @relation(fields: [communeId], references: [id])
+  createdBy     User?                     @relation("PropertyCreatedBy", fields: [createdById], references: [id])
+  media         Media[]
+  eligibilities PropertyBankEligibility[]
+  pois          PropertyPoi[]
+  interests     Interest[]
+  proposals     PropertyProposal[]
+  favorites     Favorite[]
+  dossiers      Dossier[]
+
+  // Catalogue filters — keep these in sync with the UI facets
+  @@index([publication, status])
+  @@index([type])
+  @@index([wilayaCode, communeId])
+  @@index([priceDzd])
+  @@index([surfaceM2])
+  @@index([rooms])
+  @@index([deliveryDate])
+  @@index([promoterId])
+  @@index([financingEligible])
+  @@index([publishedAt])
+  @@map("properties")
+}
+
+/// "À proximité" list on the fiche (max 5 shown). Optional; hidden when empty.
+model PropertyPoi {
+  id         String      @id @default(uuid())
+  propertyId String
+  label      String      // "Université USTHB"
+  category   PoiCategory @default(AUTRE)
+  minutes    Int
+  mode       String      @default("CAR") // WALK | CAR | TRANSIT
+  sortOrder  Int         @default(0)
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, sortOrder])
+  @@map("property_pois")
+}
+
+/// Monthly construction update from the promoter — feeds the "avancement du
+/// chantier" rail on every property of the programme. Rail hidden if none.
+model ProgramUpdate {
+  id          String            @id @default(uuid())
+  programId   String
+  stage       ConstructionStage
+  percent     Int               // 0-100 overall progress
+  note        String?
+  publishedAt DateTime          @default(now())
+
+  program Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@index([programId, publishedAt])
+  @@map("program_updates")
+}
+
+/// Which partner banks accept to finance this property (per bank). The
+/// property.financingEligible flag is a cache of "at least one ACCEPTED".
+model PropertyBankEligibility {
+  id         String   @id @default(uuid())
+  propertyId String
+  bankId     String
+  accepted   Boolean  @default(true)
+  note       String?
+  checkedAt  DateTime @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  bank     Bank     @relation(fields: [bankId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, bankId])
+  @@map("property_bank_eligibilities")
+}
+
+/// Photos, plans, brochures, videos and 360° panos. Exactly one owner FK set
+/// (enforced by a CHECK constraint in the migration). Files in S3; only keys.
+model Media {
+  id         String    @id @default(uuid())
+  kind       MediaKind
+  storageKey String    // s3://bucket/... (private, signed URLs)
+  publicUrl  String?   // CDN url for public catalogue media
+  fileName   String?
+  mimeType   String?
+  sizeBytes  Int?
+  width      Int?
+  height     Int?
+  alt        String?
+  roomLabel  String?   // for PANO_360: "salon", "cuisine", "chambre1"
+  sortOrder  Int       @default(0)
+  isCover    Boolean   @default(false)
+  propertyId String?
+  programId  String?
+  promoterId String?
+  createdAt  DateTime  @default(now())
+
+  property Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  program  Program?  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  promoter Promoter? @relation(fields: [promoterId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId, kind, sortOrder])
+  @@index([programId, kind, sortOrder])
+  @@map("media")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// CLIENTS, LEADS, MATCHING
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// The buyer profile (CRM). May exist WITHOUT a user account (created from a
+/// public interest form or by an agent); userId is attached when they sign up.
+model Client {
+  id                 String          @id @default(uuid())
+  userId             String?         @unique
+  firstName          String
+  lastName           String
+  email              String          @unique
+  phone              String?         // E.164
+  whatsappOptIn      Boolean         @default(false)
+  countryOfResidence String?         // ISO-3166 alpha-2 ("FR")
+  cityOfResidence    String?
+  residencyStatus    ResidencyStatus?
+  preferredLanguage  Locale          @default(fr)
+  birthDate          DateTime?
+  profession         String?
+  employmentType     String?         // CDI, CDD, indépendant, retraité…
+  monthlyIncome      Decimal?        @db.Decimal(12, 2)
+  incomeCurrency     Currency?
+  downPayment        Decimal?        @db.Decimal(14, 2)
+  downPaymentCurrency Currency?
+  budgetMinDzd       Decimal?        @db.Decimal(14, 2)
+  budgetMaxDzd       Decimal?        @db.Decimal(14, 2)
+  preferredWilayas   String[]        // wilaya codes
+  preferredTypes     PropertyType[]
+  minRooms           Int?
+  purchaseTimeframe  String?         // "< 6 mois", "6-12 mois", "> 12 mois"
+  source             InterestSource? // first-touch source
+  utm                Json?
+  status             ClientStatus    @default(LEAD)
+  score              Int?            // pre-qualification score from simulator/agent
+  assignedAgentId    String?
+  internalNotes      String?
+  marketingOptInAt   DateTime?
+  gdprErasedAt       DateTime?       // personal fields blanked by the erasure job
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  deletedAt          DateTime?
+
+  user           User?               @relation(fields: [userId], references: [id])
+  assignedAgent  User?               @relation("ClientAssignedAgent", fields: [assignedAgentId], references: [id])
+  interests      Interest[]
+  proposals      PropertyProposal[]
+  favorites      Favorite[]
+  dossiers       Dossier[]
+  simulations    Simulation[]
+  communications Communication[]
+  tasks          Task[]
+  feedbacks      Feedback[]
+  searchAlerts   SearchAlert[]
+  consents       Consent[]
+
+  @@index([status, assignedAgentId])
+  @@index([phone])
+  @@map("clients")
+}
+
+/// Expression d'intérêt (lead) — from a property page, with or without account.
+model Interest {
+  id          String         @id @default(uuid())
+  clientId    String
+  propertyId  String?
+  programId   String?
+  message     String?
+  source      InterestSource @default(PUBLIC_FORM)
+  status      InterestStatus @default(NEW)
+  utm         Json?
+  handledById String?
+  handledAt   DateTime?
+  lostReason  String?
+  dossierId   String?        // set on CONVERTED
+  createdAt   DateTime       @default(now())
+
+  client    Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  property  Property? @relation(fields: [propertyId], references: [id])
+  program   Program?  @relation(fields: [programId], references: [id])
+  handledBy User?     @relation("InterestHandledBy", fields: [handledById], references: [id])
+  dossier   Dossier?  @relation(fields: [dossierId], references: [id])
+
+  @@index([status, createdAt])
+  @@index([clientId])
+  @@map("interests")
+}
+
+/// "Rapprochement client / bien": properties an agent proposes to a client,
+/// visits and feedback. Shown as "Biens proposés" in the client space.
+model PropertyProposal {
+  id             String         @id @default(uuid())
+  clientId       String
+  propertyId     String
+  dossierId      String?
+  proposedById   String
+  status         ProposalStatus @default(PROPOSED)
+  visitAt        DateTime?
+  clientFeedback String?
+  internalNotes  String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  property   Property @relation(fields: [propertyId], references: [id])
+  dossier    Dossier? @relation(fields: [dossierId], references: [id])
+  proposedBy User     @relation("ProposalProposedBy", fields: [proposedById], references: [id])
+
+  @@unique([clientId, propertyId])
+  @@index([dossierId])
+  @@map("property_proposals")
+}
+
+model Favorite {
+  clientId   String
+  propertyId String
+  createdAt  DateTime @default(now())
+
+  client   Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@id([clientId, propertyId])
+  @@map("favorites")
+}
+
+/// Saved search / "Créer une alerte" — works without an account (email only).
+model SearchAlert {
+  id               String         @id @default(uuid())
+  clientId         String?
+  email            String
+  criteria         Json           // {"type":["APARTMENT"],"rooms":[3],"wilaya":"16","communes":[...],"priceMax":20000000,"delivery":[2027],"financingEligible":true}
+  frequency        AlertFrequency @default(DAILY)
+  isActive         Boolean        @default(true)
+  unsubscribeToken String         @unique
+  lastSentAt       DateTime?
+  createdAt        DateTime       @default(now())
+
+  client Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  @@index([isActive, frequency])
+  @@map("search_alerts")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// DOSSIER — the spine
+// ═════════════════════════════════════════════════════════════════════════════
+
+model Dossier {
+  id                  String        @id @default(uuid())
+  reference           String        @unique // "DOS-2026-0042"
+  clientId            String
+  propertyId          String?       // may be chosen after MATCHING
+  promoterId          String?       // denormalised from property
+  stage               DossierStage  @default(INTEREST)
+  status              DossierStatus @default(OPEN)
+  priority            Priority      @default(NORMAL)
+  assignedAgentId     String?
+  createdById         String?
+  clientChecklistId   String?       // DocumentRequirementTemplate (CLIENT_FILE)
+  financingRequested  Boolean       @default(true)
+  loanAmountRequested Decimal?      @db.Decimal(14, 2)
+  downPaymentDzd      Decimal?      @db.Decimal(14, 2)
+  durationMonths      Int?
+  // completeness cache (recomputed on document changes)
+  requiredDocsCount   Int           @default(0)
+  validatedDocsCount  Int           @default(0)
+  stageEnteredAt      DateTime      @default(now())
+  slaDueAt            DateTime?     // per-stage SLA from Setting
+  lastActivityAt      DateTime      @default(now())
+  wonAt               DateTime?
+  lostAt              DateTime?
+  lostReason          String?
+  internalNotes       String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  deletedAt           DateTime?
+
+  client        Client               @relation(fields: [clientId], references: [id])
+  property      Property?            @relation(fields: [propertyId], references: [id])
+  promoter      Promoter?            @relation(fields: [promoterId], references: [id])
+  assignedAgent User?                @relation("DossierAssignedAgent", fields: [assignedAgentId], references: [id])
+  createdBy     User?                @relation("DossierCreatedBy", fields: [createdById], references: [id])
+  clientChecklist DocumentRequirementTemplate? @relation(fields: [clientChecklistId], references: [id])
+
+  stageHistory   DossierStageHistory[]
+  documents      DossierDocument[]
+  submissions    BankSubmission[]
+  proposals      PropertyProposal[]
+  interests      Interest[]
+  communications Communication[]
+  tasks          Task[]
+  simulations    Simulation[]
+  feedbacks      Feedback[]
+  notifications  Notification[]
+
+  @@index([stage, status])
+  @@index([assignedAgentId, status])
+  @@index([clientId])
+  @@index([lastActivityAt])
+  @@map("dossiers")
+}
+
+/// Every stage transition (feeds "délais moyens par étape" and the audit).
+model DossierStageHistory {
+  id          String        @id @default(uuid())
+  dossierId   String
+  fromStage   DossierStage?
+  toStage     DossierStage
+  changedById String?       // null = system/workflow
+  note        String?
+  changedAt   DateTime      @default(now())
+
+  dossier   Dossier @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  changedBy User?   @relation("StageChangedBy", fields: [changedById], references: [id])
+
+  @@index([dossierId, changedAt])
+  @@map("dossier_stage_history")
+}
+
+/// Configurable checklist ("liste de pièces paramétrable") — one per dossier
+/// type, optionally per bank and per residency status.
+model DocumentRequirementTemplate {
+  id              String           @id @default(uuid())
+  name            String
+  scope           ChecklistScope
+  bankId          String?          // BANK_FILE templates belong to a bank
+  residencyFilter ResidencyStatus[] // empty = applies to all
+  isDefault       Boolean          @default(false)
+  isActive        Boolean          @default(true)
+  version         Int              @default(1)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  bank     Bank?                     @relation(fields: [bankId], references: [id])
+  items    DocumentRequirementItem[]
+  dossiers Dossier[]
+  products BankProduct[]
+
+  @@map("document_requirement_templates")
+}
+
+model DocumentRequirementItem {
+  id              String   @id @default(uuid())
+  templateId      String
+  code            String   // "ID_PASSPORT", "PAYSLIP_3M", "TAX_NOTICE"…
+  label           String
+  description     String?  // shown to the client (what exactly, how recent)
+  category        String?  // "Identité", "Revenus", "Résidence", "Bien"…
+  isRequired      Boolean  @default(true)
+  appliesWhen     Json?    // {"employmentType":["CDI","CDD"]} — conditional docs
+  maxFiles        Int      @default(1)
+  acceptedFormats String[] @default(["pdf","jpg","png"])
+  validityDays    Int?     // e.g. 90 for payslips → EXPIRED after
+  sortOrder       Int      @default(0)
+
+  template  DocumentRequirementTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  documents DossierDocument[]
+
+  @@unique([templateId, code])
+  @@map("document_requirement_items")
+}
+
+/// A requested/received piece in a dossier (pièce justificative) with its
+/// validation cycle. Files are versions (re-uploads keep history).
+model DossierDocument {
+  id                String         @id @default(uuid())
+  dossierId         String
+  requirementItemId String?        // null = ad-hoc document
+  label             String
+  status            DocumentStatus @default(PENDING)
+  rejectionReason   String?
+  dueAt             DateTime?
+  reminderCount     Int            @default(0)
+  lastRemindedAt    DateTime?
+  validatedById     String?
+  validatedAt       DateTime?
+  expiresAt         DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  dossier         Dossier                  @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  requirementItem DocumentRequirementItem? @relation(fields: [requirementItemId], references: [id])
+  validatedBy     User?                    @relation("DocumentValidatedBy", fields: [validatedById], references: [id])
+  versions        DocumentVersion[]
+
+  @@index([dossierId, status])
+  @@index([status, dueAt])
+  @@map("dossier_documents")
+}
+
+model DocumentVersion {
+  id               String   @id @default(uuid())
+  documentId       String
+  version          Int
+  storageKey       String   // S3 key, server-side encrypted, private
+  fileName         String
+  mimeType         String
+  sizeBytes        Int
+  checksumSha256   String?
+  virusScanStatus  String?  // PENDING / CLEAN / INFECTED
+  uploadedById     String?  // client user or agent
+  uploadedAt       DateTime @default(now())
+
+  document   DossierDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  uploadedBy User?           @relation("VersionUploadedBy", fields: [uploadedById], references: [id])
+
+  @@unique([documentId, version])
+  @@map("document_versions")
+}
+
+/// One submission of a dossier to one bank (a dossier may go to several).
+/// This is what the Bank portal (phase 3) will read and update.
+model BankSubmission {
+  id                    String           @id @default(uuid())
+  dossierId             String
+  bankId                String
+  bankProductId         String?
+  status                SubmissionStatus @default(DRAFT)
+  submittedById         String?
+  submittedAt           DateTime?
+  bankReference         String?
+  requestedAmount       Decimal?         @db.Decimal(14, 2)
+  requestedDurationMonths Int?
+  decisionAt            DateTime?
+  approvedAmount        Decimal?         @db.Decimal(14, 2)
+  approvedRateBps       Int?
+  approvedDurationMonths Int?
+  monthlyPayment        Decimal?         @db.Decimal(12, 2)
+  conditions            Json?            // conditions d'octroi, échéancier
+  decisionNotes         String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  dossier     Dossier      @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  bank        Bank         @relation(fields: [bankId], references: [id])
+  bankProduct BankProduct? @relation(fields: [bankProductId], references: [id])
+  submittedBy User?        @relation("SubmissionSubmittedBy", fields: [submittedById], references: [id])
+  events      BankSubmissionEvent[]
+
+  @@index([bankId, status])
+  @@index([dossierId])
+  @@map("bank_submissions")
+}
+
+/// Exchanges with the bank about a submission (complément demandé, relance…).
+model BankSubmissionEvent {
+  id           String           @id @default(uuid())
+  submissionId String
+  status       SubmissionStatus? // status after this event, if changed
+  note         String?
+  byId         String?
+  createdAt    DateTime         @default(now())
+
+  submission BankSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  by         User?          @relation("SubmissionEventBy", fields: [byId], references: [id])
+
+  @@index([submissionId, createdAt])
+  @@map("bank_submission_events")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// SIMULATORS
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// Every run of the eligibility or credit simulator (anonymous or attached).
+/// Feeds the CRM score and can be attached to a dossier.
+model Simulation {
+  id            String         @id @default(uuid())
+  type          SimulationType
+  clientId      String?
+  dossierId     String?
+  bankProductId String?
+  anonymousId   String?        // cookie/session id before login
+  inputs        Json           // {income, incomeCurrency, downPayment, durationMonths, residency, amount, rateBps}
+  outputs       Json           // {capacityDzd, monthlyPayment, totalCost, eligible, schedule?}
+  exchangeRateId String?
+  createdAt     DateTime       @default(now())
+
+  client      Client?      @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  dossier     Dossier?     @relation(fields: [dossierId], references: [id], onDelete: SetNull)
+  bankProduct BankProduct? @relation(fields: [bankProductId], references: [id])
+
+  @@index([clientId, createdAt])
+  @@map("simulations")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// COMMUNICATION — templates, timeline, notifications, workflow
+// ═════════════════════════════════════════════════════════════════════════════
+
+model EmailTemplate {
+  id          String   @id @default(uuid())
+  code        String   @unique // "INTEREST_ACK", "DOC_REQUEST", "DOC_REMINDER", "PROPOSAL", "STAGE_UPDATE", "BANK_SUBMITTED", "BANK_DECISION"…
+  name        String
+  locale      Locale   @default(fr)
+  subject     String
+  bodyHtml    String
+  bodyText    String?
+  variables   String[] // ["client.firstName","dossier.reference","documents.missing"]
+  category    String?
+  isActive    Boolean  @default(true)
+  version     Int      @default(1)
+  updatedById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  updatedBy      User?           @relation("TemplateUpdatedBy", fields: [updatedById], references: [id])
+  communications Communication[]
+  workflowRules  WorkflowRule[]
+
+  @@map("email_templates")
+}
+
+/// The per-dossier / per-client timeline: every email, in-app message, call,
+/// note. Outbound emails carry provider status via webhooks.
+model Communication {
+  id                String        @id @default(uuid())
+  channel           Channel
+  direction         Direction     @default(OUTBOUND)
+  clientId          String?
+  dossierId         String?
+  templateId        String?
+  subject           String?
+  body              String        // rendered content (or note text)
+  toAddress         String?
+  fromAddress       String?
+  providerMessageId String?
+  deliveryState     DeliveryState @default(QUEUED)
+  triggeredBy       TriggerKind   @default(MANUAL)
+  sentById          String?       // null = system
+  sentAt            DateTime?
+  deliveredAt       DateTime?
+  openedAt          DateTime?
+  readAt            DateTime?     // IN_APP read receipt
+  metadata          Json?
+  createdAt         DateTime      @default(now())
+
+  client   Client?        @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  dossier  Dossier?       @relation(fields: [dossierId], references: [id], onDelete: SetNull)
+  template EmailTemplate? @relation(fields: [templateId], references: [id])
+  sentBy   User?          @relation("CommunicationSentBy", fields: [sentById], references: [id])
+
+  @@index([dossierId, createdAt])
+  @@index([clientId, createdAt])
+  @@index([providerMessageId])
+  @@map("communications")
+}
+
+/// In-app notifications (bell) for staff and clients.
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  type      String    // "NEW_INTEREST", "DOSSIER_COMPLETE", "BANK_DECISION", "DOC_REQUESTED", "MESSAGE"…
+  title     String
+  body      String?
+  link      String?
+  dossierId String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dossier Dossier? @relation(fields: [dossierId], references: [id], onDelete: SetNull)
+
+  @@index([userId, readAt, createdAt])
+  @@map("notifications")
+}
+
+/// "Déclencheurs automatiques": when <trigger> (+conditions), do <actions>
+/// after <delay>. Executed by the queue worker (BullMQ).
+model WorkflowRule {
+  id           String          @id @default(uuid())
+  name         String
+  trigger      WorkflowTrigger
+  stage        DossierStage?   // for STAGE_ENTERED
+  conditions   Json?           // {"documentStatus":"PENDING","daysOverdue":3}
+  delayMinutes Int             @default(0)
+  actions      Json            // [{"type":"SEND_EMAIL","templateCode":"DOC_REMINDER"},{"type":"CREATE_TASK","taskType":"FOLLOW_UP","assignTo":"DOSSIER_AGENT"},{"type":"NOTIFY","audience":"AGENT"}]
+  templateId   String?
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  template EmailTemplate? @relation(fields: [templateId], references: [id])
+
+  @@index([trigger, isActive])
+  @@map("workflow_rules")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// TASKS
+// ═════════════════════════════════════════════════════════════════════════════
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  type        TaskType   @default(FOLLOW_UP)
+  status      TaskStatus @default(OPEN)
+  priority    Priority   @default(NORMAL)
+  dossierId   String?
+  clientId    String?
+  assigneeId  String?
+  createdById String?
+  dueAt       DateTime?
+  completedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  dossier   Dossier? @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  assignee  User?    @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  createdBy User?    @relation("TaskCreatedBy", fields: [createdById], references: [id])
+
+  @@index([assigneeId, status, dueAt])
+  @@index([dossierId])
+  @@map("tasks")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// FEEDBACK & SATISFACTION
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// Survey definitions triggered at key steps (offre §4.10).
+model Survey {
+  id        String        @id @default(uuid())
+  code      String        @unique
+  name      String
+  trigger   SurveyTrigger
+  questions Json          // [{"id":"nps","type":"scale","min":0,"max":10,"label":"…"},{"id":"comment","type":"text"}]
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  feedbacks Feedback[]
+
+  @@map("surveys")
+}
+
+/// A survey response OR spontaneous feedback (surveyId null).
+model Feedback {
+  id        String         @id @default(uuid())
+  surveyId  String?
+  clientId  String?
+  dossierId String?
+  stage     DossierStage?
+  score     Int?           // NPS 0-10 or CSAT 1-5 (per survey)
+  answers   Json?
+  comment   String?
+  category  String?        // "parcours", "communication", "bien", "banque"…
+  status    FeedbackStatus @default(NEW)
+  createdAt DateTime       @default(now())
+
+  survey  Survey?  @relation(fields: [surveyId], references: [id])
+  client  Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  dossier Dossier? @relation(fields: [dossierId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@map("feedbacks")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// PUBLIC CONTENT (small CMS)
+// ═════════════════════════════════════════════════════════════════════════════
+
+model FaqItem {
+  id        String  @id @default(uuid())
+  locale    Locale  @default(fr)
+  category  String?
+  question  String
+  answer    String
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+
+  @@map("faq_items")
+}
+
+model Testimonial {
+  id              String    @id @default(uuid())
+  displayName     String    // "Nadia B."
+  city            String?   // "Lyon"
+  quote           String
+  propertySummary String?   // "F3, Alger"
+  consentAt       DateTime? // written consent to publish
+  published       Boolean   @default(false)
+  sortOrder       Int       @default(0)
+  createdAt       DateTime  @default(now())
+
+  @@map("testimonials")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// PLATFORM — audit & settings
+// ═════════════════════════════════════════════════════════════════════════════
+
+/// Sensitive actions: dossier/document access & changes, validations, sends,
+/// exports, permission changes. Append-only.
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  actorType  String   // "USER" | "SYSTEM" | "WEBHOOK"
+  action     String   // "DOCUMENT_VIEWED", "DOSSIER_STAGE_CHANGED", "EXPORT_CLIENTS"…
+  entityType String
+  entityId   String?
+  before     Json?
+  after      Json?
+  ipHash     String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id])
+
+  @@index([entityType, entityId, createdAt])
+  @@index([actorId, createdAt])
+  @@map("audit_logs")
+}
+
+/// Key/value configuration editable by admins: stage SLAs, reminder delays,
+/// legal texts, feature flags, exchange-rate policy…
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}

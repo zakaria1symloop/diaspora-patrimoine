@@ -1,0 +1,60 @@
+{
+  "page": {
+    "seoTitle": "Mes préférences d’e-mail",
+    "eyebrow": "Vos e-mails",
+    "title": "Vos préférences d’e-mail",
+    "intro": "Choisissez ce que vous recevez à l’adresse {email}. Chaque choix s’enregistre aussitôt.",
+    "essential": "Indispensables",
+    "essentialItems": "Compte et sécurité, accusés de réception, pièces de votre dossier, rendez-vous, inscription à un Café, décisions des banques.",
+    "essentialText": "Ces messages concernent votre compte et votre dossier ; ils ne peuvent pas être désactivés.",
+    "alwaysOn": "Toujours envoyés",
+    "email": "E-mail",
+    "on": "Activé",
+    "off": "Désactivé",
+    "saved": "Préférence enregistrée.",
+    "essentialOnly": "Ne garder que l’indispensable",
+    "essentialOnlyDone": "C’est noté : vous ne recevrez plus que les e-mails indispensables.",
+    "unsubscribing": "Désinscription en cours…",
+    "unsubscribed": "C’est fait. Vous ne recevrez plus ces e-mails.",
+    "unsubscribedGroup": "Groupe concerné : {groupe}.",
+    "manageOthers": "Gérer mes autres préférences",
+    "contact": "Pour ne plus rien recevoir, ou changer d’adresse : écrivez-nous",
+    "goneTitle": "Ce lien a expiré ou a déjà été utilisé.",
+    "goneText": "Indiquez votre adresse : si nous la connaissons, nous vous envoyons un nouveau lien pour choisir vos e-mails.",
+    "newLink": "Recevoir un nouveau lien",
+    "newLinkEmail": "Votre adresse e-mail",
+    "newLinkSent": "C’est envoyé. Si cette adresse est connue, un nouveau lien vous attend dans votre boîte.",
+    "error": "Votre choix n’a pas pu être enregistré. Réessayez dans un instant.",
+    "retry": "Réessayer"
+  },
+  "groups": {
+    "REMINDERS": {
+      "label": "Rappels",
+      "text": "Relances de pièces, pièces bientôt expirées, propositions en attente."
+    },
+    "MESSAGES": {
+      "label": "Messages de mon conseiller",
+      "text": "Un e-mail quand un message vous attend."
+    },
+    "PROJECT_NEWS": {
+      "label": "Nouveautés de mon projet",
+      "text": "Biens proposés, avancement du chantier."
+    },
+    "CAFE": {
+      "label": "Le Café",
+      "text": "Rappels avant un Café, suites d’un Café."
+    },
+    "ALERTS": {
+      "label": "Alertes et favoris",
+      "text": "Biens correspondant à une alerte, changements sur un favori."
+    },
+    "SURVEYS": {
+      "label": "Enquêtes de satisfaction",
+      "text": "Invitations à donner votre avis."
+    },
+    "NEWS": {
+      "label": "Actualités de Diaspora Patrimoine",
+      "text": "Envois groupés, nouveautés."
+    }
+  }
+}

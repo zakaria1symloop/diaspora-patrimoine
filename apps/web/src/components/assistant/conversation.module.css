@@ -1,0 +1,201 @@
+/* EP-22, mode AI — the conversation: the thread of the guided mode (assistant.module.css), a composer at the bottom
+   with the criteria pills (IA-011), the examples and « Dicter » (TRV-127). Text sizes in rem (TRV-123). */
+.bar {
+  flex-wrap: wrap;
+}
+.barActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--sp-8);
+}
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+.answerText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.notice {
+  font-size: var(--fs-caption);
+  color: var(--bo-texte-discret);
+}
+.sources {
+  align-self: flex-start;
+  max-width: min(36rem, 88%);
+  list-style: none;
+  font-size: var(--fs-body-m, 1rem);
+}
+.sources ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin: var(--sp-4) 0 0;
+  padding-inline-start: var(--sp-20);
+}
+.sources a {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+.sourcesLabel {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--bo-texte-doux);
+}
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+  padding: var(--sp-16) var(--sp-24) var(--sp-24);
+  border-block-start: 1px solid var(--bo-ligne-bleue);
+  background: var(--bo-fond-blanc);
+}
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.pillsLabel {
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+}
+.pillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: 2.75rem;
+  padding: 0 var(--sp-12);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-encre);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--motion-fast, 120ms) var(--ease-out);
+}
+.pill:hover:not(:disabled) {
+  background: var(--bo-fond-ciel);
+}
+.pill:focus-visible {
+  outline: 3px solid var(--bo-focus, var(--bo-texte-roi));
+  outline-offset: 2px;
+}
+.pill:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.examples {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+.examplesLabel {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--bo-texte-doux);
+}
+.exampleList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+.inputLabel {
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+}
+.inputRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--sp-12);
+}
+.input {
+  flex: 1 1 18rem;
+  min-height: 3.5rem;
+  max-height: 12rem;
+  padding: var(--sp-12) var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-encre);
+  font: inherit;
+  font-size: var(--fs-body-xl);
+  line-height: 1.5;
+  resize: vertical;
+}
+.input:focus-visible {
+  outline: 3px solid var(--bo-focus, var(--bo-texte-roi));
+  outline-offset: 1px;
+}
+.inputActions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.dictate {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: 2.75rem;
+  padding: 0 var(--sp-12);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-roi);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dictate[aria-pressed='true'] {
+  background: var(--bo-fond-ciel);
+}
+.privacy {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--bo-texte-discret);
+}
+.switchBack {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 64rem;
+  margin: 0 auto var(--sp-12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill {
+    transition: none;
+  }
+}
+@media (max-width: 639px) {
+  .composer {
+    padding: var(--sp-12) var(--sp-16) var(--sp-16);
+  }
+  .inputActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

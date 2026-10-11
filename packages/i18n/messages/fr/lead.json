@@ -1,0 +1,140 @@
+{
+  "fields": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "phoneHint": "Avec l’indicatif de votre pays.",
+    "whatsapp": "Je suis joignable sur WhatsApp à ce numéro",
+    "country": "Pays de résidence",
+    "countryPlaceholder": "Choisissez votre pays",
+    "message": "Votre message",
+    "messageHint": "Dites-nous ce qui compte pour vous : le moment où vous joindre, vos questions.",
+    "consent": "J’accepte que Diaspora Patrimoine me contacte au sujet de ma demande et traite mes données à cette fin.",
+    "privacy": "Politique de confidentialité",
+    "marketing": "Je souhaite recevoir les actualités et les nouveaux programmes par e-mail.",
+    "createAccount": "Créer mon espace client en même temps",
+    "createAccountHint": "Pour suivre votre demande, retrouver vos simulations et, plus tard, déposer vos pièces.",
+    "euHosting": "Vos données sont hébergées dans l’Union européenne."
+  },
+  "when": {
+    "day": "Quel jour ?",
+    "dayAsap": "Dès que possible",
+    "slot": "À quel moment ?",
+    "slotAny": "Peu importe",
+    "slotsLocal": "Créneaux dans votre heure locale",
+    "noSlot": "Nous vous appelons pendant nos heures d’ouverture : {horaires}.",
+    "slotOptions": {
+      "MORNING": "Le matin, 9 h – 12 h",
+      "NOON": "Le midi, 12 h – 14 h",
+      "AFTERNOON": "L’après-midi, 14 h – 18 h",
+      "EVENING": "Le soir, 18 h – 20 h"
+    }
+  },
+  "done": {
+    "title": "Merci {prenom}, votre demande est enregistrée.",
+    "titleAnonymous": "Merci, votre demande est enregistrée.",
+    "reference": "Référence : {reference}",
+    "next": "Et maintenant ?",
+    "step1": "Vous recevez un e-mail de confirmation à {email}.",
+    "step1Hint": "Pas d’e-mail dans les minutes qui viennent ? Regardez vos indésirables.",
+    "step1HintContact": "Pas d’e-mail dans les minutes qui viennent ? Regardez vos indésirables, ou écrivez-nous à {contact}.",
+    "step2Call": "Un conseiller vous appelle {quand}.",
+    "step2CallFrom": "Un conseiller vous appelle {quand}, depuis le {telephone}.",
+    "step2Whatsapp": "Un conseiller vous écrit sur WhatsApp {quand}.",
+    "step2Email": "Un conseiller vous répond par e-mail {quand}.",
+    "step2Projection": "Votre projection arrive {quand}.",
+    "step2Message": "Nous vous répondons {quand}.",
+    "step3": "Vous faites le point ensemble sur votre projet et son financement.",
+    "account": "Pour suivre votre demande, ouvrez l’e-mail que nous venons de vous envoyer : il contient le lien vers votre espace.",
+    "reserved": "Tous les lots de ce bien sont réservés pour le moment. Votre conseiller vous dit s’il s’en libère un, et vous propose des biens équivalents.",
+    "unavailable": "Ce bien n’est plus disponible. Votre conseiller vous propose des biens équivalents.",
+    "continue": "Continuer ma visite",
+    "simulate": "Simuler mon financement"
+  },
+  "errors": {
+    "longLimit": "Vous avez envoyé plusieurs demandes aujourd’hui : nous les avons bien reçues. Pour une autre question, écrivez-nous.",
+    "longLimitContact": "Vous avez envoyé plusieurs demandes aujourd’hui : nous les avons bien reçues. Pour une autre question, écrivez-nous à {contact}."
+  },
+  "projection": {
+    "region": "Où souhaitez-vous acheter ?",
+    "regionAny": "Je ne sais pas encore",
+    "downPayment": "Votre apport",
+    "monthly": "Mensualité confortable",
+    "perMonth": "/ mois",
+    "email": "Votre e-mail",
+    "doneTitle": "C’est noté. Votre projection arrive {quand} à {email}.",
+    "doneMore": "Pour une projection plus juste, dites-nous comment vous joindre (facultatif).",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "complete": "Compléter ma demande",
+    "finish": "Terminer",
+    "completed": "Merci, votre demande est complétée."
+  },
+  "interest": {
+    "title": "Exprimer mon intérêt",
+    "intro": "Un conseiller vous rappelle pour faire le point sur votre projet. Sans engagement, avec ou sans compte.",
+    "which": "Quel bien vous intéresse ?",
+    "whichUnsure": "Je ne sais pas encore",
+    "lot": "Lot {reference}",
+    "more": "Ajouter des précisions (facultatif)",
+    "channel": "Comment vous joindre ?",
+    "channels": {
+      "CALL": "Appel",
+      "WHATSAPP": "WhatsApp",
+      "EMAIL": "E-mail"
+    },
+    "residency": "Votre situation",
+    "timeframe": "Horizon d’achat",
+    "budget": "Budget envisagé",
+    "budgetTotalOnly": "Budget envisagé (au total)",
+    "budgetTotal": "au total",
+    "budgetMonthly": "par mois",
+    "financing": "Financement souhaité",
+    "visio": "Je souhaite une visite en visio",
+    "submit": "Envoyer ma demande",
+    "under": "Un conseiller vous appelle {quand} · Sans engagement",
+    "underWhatsapp": "Vous pouvez aussi nous écrire sur WhatsApp.",
+    "close": "Fermer",
+    "summary": "{ville} · {prix} · Réf. {reference}"
+  },
+  "contact": {
+    "subject": "Objet",
+    "subjects": {
+      "PROPERTY": "Un bien ou un programme",
+      "FINANCING": "Le financement",
+      "DOSSIER": "Mon dossier",
+      "CAFE": "Le Café",
+      "CALLBACK": "Être rappelé",
+      "OTHER": "Une question générale"
+    },
+    "submit": "Envoyer mon message"
+  },
+  "callbackForm": {
+    "title": "Être rappelé",
+    "intro": "Un conseiller vous rappelle, au moment qui vous convient.",
+    "subject": "À quel sujet ?",
+    "subjects": {
+      "PROPERTY": "Un bien ou un programme",
+      "FINANCING": "Le financement",
+      "CAFE": "Le Café",
+      "OTHER": "Autre"
+    },
+    "submit": "Être rappelé",
+    "phoneNow": "Vous préférez appeler ? {telephone}",
+    "close": "Fermer"
+  },
+  "callback": {
+    "workdaysRange": "du {first} au {last}",
+    "withinDays": "sous {days} jours ouvrés",
+    "withinHours": "sous {hours} h ouvrées",
+    "withinHoursEmail": "sous {hours} h ouvrées ({days, plural, one {un jour ouvré} =2 {deux jours ouvrés} other {# jours ouvrés}}, {workdays})",
+    "preferably": "{when}, de préférence {slot} ({zone})",
+    "slot": {
+      "MORNING": "le matin",
+      "NOON": "le midi",
+      "AFTERNOON": "l’après-midi",
+      "EVENING": "le soir"
+    }
+  }
+}

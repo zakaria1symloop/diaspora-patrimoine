@@ -1,0 +1,90 @@
+{
+  "title": "Mes préférences",
+  "intro": "Votre profil et la sécurité de votre compte.",
+  "tab": {
+    "profile": "Profil",
+    "security": "Sécurité",
+    "signature": "Signature",
+    "absence": "Absence"
+  },
+  "profile": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "emailHint": "Votre adresse de connexion. Pour la changer, adressez-vous à un administrateur.",
+    "jobTitle": "Fonction",
+    "jobTitleHelpLabel": "À quoi sert la fonction ?",
+    "jobTitleHelp": "Elle est montrée aux clients sous votre nom, par exemple « Conseillère en financement ».",
+    "phone": "Téléphone",
+    "phoneHint": "Au format international : +33 6 12 34 56 78.",
+    "timezone": "Fuseau horaire",
+    "timezoneHint": "Les dates et les heures du back-office s’affichent dans ce fuseau."
+  },
+  "password": {
+    "title": "Mot de passe",
+    "intro": "Choisissez un mot de passe que vous n’utilisez nulle part ailleurs.",
+    "changedAt": "Dernière modification : {date}.",
+    "current": "Mot de passe actuel",
+    "wrong": "Mot de passe incorrect.",
+    "effect": "Vos autres appareils seront déconnectés.",
+    "submit": "Changer de mot de passe",
+    "changed": "Mot de passe modifié."
+  },
+  "twoFactor": {
+    "title": "Double authentification",
+    "on": "Active",
+    "off": "Non configurée",
+    "codesLeft": "{n, plural, =0 {Plus aucun code de secours} one {# code de secours restant} other {# codes de secours restants}}",
+    "required": "Elle est obligatoire pour toute l’équipe : elle ne se désactive pas.",
+    "intro": "Un code de votre application est demandé à chaque connexion.",
+    "reconfigure": "Reconfigurer (nouveau téléphone)",
+    "reconfigureIntro": "Saisissez votre mot de passe et un code de votre application actuelle. Elle reste valable jusqu’à la confirmation de la nouvelle.",
+    "currentCode": "Code de l’application actuelle",
+    "currentCodeHint": "Les 6 chiffres affichés par votre application.",
+    "reconfigured": "Double authentification reconfigurée.",
+    "newCodes": "Nouveaux codes de secours",
+    "newCodesIntro": "Saisissez votre mot de passe. Les anciens codes ne serviront plus.",
+    "generate": "Générer dix nouveaux codes",
+    "codesReady": "Vos nouveaux codes de secours. Ils ne seront plus affichés : conservez-les en lieu sûr.",
+    "codesKept": "J’ai conservé mes codes"
+  },
+  "devices": {
+    "title": "Appareils connectés",
+    "current": "Cet appareil",
+    "unknown": "Appareil inconnu",
+    "lastUsed": "Dernière activité : {quand}",
+    "since": "connecté le {date}",
+    "revoke": "Déconnecter",
+    "revokeOthers": "Déconnecter les autres appareils",
+    "revoked": "Appareil déconnecté.",
+    "revokedAll": "Les autres appareils sont déconnectés."
+  },
+  "signature": {
+    "title": "Signature",
+    "intro": "Ce texte s’ajoute sous votre nom dans les e-mails que vous écrivez aux clients et aux partenaires.",
+    "label": "Texte de la signature",
+    "hint": "Ligne directe, horaires, langues parlées… 500 caractères, retours à la ligne gardés.",
+    "saved": "Signature enregistrée.",
+    "preview": "Ce que le client lira",
+    "sampleGreeting": "Bonjour Karima,",
+    "sampleText": "Je reviens vers vous au sujet de votre projet…",
+    "noJobTitle": "Ajoutez votre fonction dans l’onglet Profil : elle suit votre nom."
+  },
+  "absence": {
+    "title": "Absence",
+    "until": "Absent jusqu’au (dernier jour inclus)",
+    "untilHint": "Votre retour est automatique le lendemain, à l’ouverture des bureaux.",
+    "declare": "Me déclarer absent",
+    "change": "Changer la date",
+    "saved": "Absence enregistrée jusqu’au {date}.",
+    "back": "Bon retour : vous recevez de nouveau les demandes.",
+    "backButton": "Je suis de retour",
+    "currentTitle": "Vous êtes absent jusqu’au {date}",
+    "currentText": "Vos demandes et vos tâches restent les vôtres ; les administrateurs reçoivent aussi vos notifications.",
+    "whatTitle": "Pendant votre absence",
+    "what1": "Aucune nouvelle demande ne vous est confiée par répartition, et une demande ne vous revient d’office que si votre retour précède son échéance.",
+    "what2": "Vos demandes, dossiers et tâches en cours restent les vôtres.",
+    "what3": "Vos notifications sont doublées vers les administrateurs : rien ne se perd.",
+    "what4": "Les administrateurs voient votre absence sur la liste de l’équipe et peuvent réaffecter votre travail."
+  }
+}

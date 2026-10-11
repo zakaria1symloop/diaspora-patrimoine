@@ -1,0 +1,55 @@
+{
+  "skipToContent": "Aller au contenu",
+  "header": {
+    "home": "Diaspora Patrimoine, accueil",
+    "properties": "Les biens",
+    "promoters": "Promoteurs",
+    "financing": "Financements",
+    "cafe": "Le Café",
+    "concept": "Notre concept",
+    "partners": "Nos partenaires",
+    "login": "Se connecter",
+    "mySpace": "Mon espace",
+    "menu": "Menu",
+    "closeMenu": "Fermer le menu",
+    "mainNav": "Navigation principale",
+    "faq": "Questions fréquentes",
+    "contact": "Contact",
+    "unread": "{n, plural, one {# notification non lue} other {# notifications non lues}}",
+    "spaceMenu": {
+      "dashboard": "Tableau de bord",
+      "messages": "Messages",
+      "dossier": "Mon dossier",
+      "profile": "Mon profil",
+      "logout": "Se déconnecter"
+    }
+  },
+  "footer": {
+    "nav": "Plan du site",
+    "properties": "Les biens",
+    "simulators": "Simulateurs",
+    "faq": "Questions fréquentes",
+    "contact": "Contact",
+    "cafeCta": "Je m’inscris au prochain café",
+    "callback": "Un conseiller vous rappelle",
+    "whatsapp": "WhatsApp",
+    "social": "Réseaux",
+    "copyright": "© {annee} {societe}",
+    "legalNav": "Informations légales",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité",
+    "terms": "Conditions générales",
+    "cookies": "Cookies",
+    "manageCookies": "Gérer mes cookies",
+    "partnerSpace": "Espace partenaire",
+    "becomePartner": "Devenir partenaire",
+    "socialNames": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    }
+  },
+  "breadcrumb": "Fil d’Ariane"
+}

@@ -1,0 +1,73 @@
+/* TRV-122 — switch and band of « Affichage simplifié » (Figma EP-01 « affichage simplifié »). */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: var(--target-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+  cursor: pointer;
+}
+.dark {
+  color: var(--bo-texte-blanc);
+}
+.track {
+  position: relative;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--bo-ligne-bleue);
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.thumb {
+  position: absolute;
+  inset: 0.1875rem auto auto 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-s);
+  transition: transform var(--motion-base) var(--ease-spring);
+}
+.switch[aria-checked='true'] .track {
+  background: var(--bo-accent-or);
+}
+.switch[aria-checked='true'] .thumb {
+  transform: translateX(1.25rem);
+}
+.switch:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 3px;
+  border-radius: var(--radius-s);
+}
+.band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-6) var(--sp-12);
+  padding: var(--sp-6) var(--grid-gutter);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+}
+.back {
+  min-height: var(--target-min);
+  border: 0;
+  background: none;
+  padding: 0 var(--sp-4);
+  font: inherit;
+  color: var(--bo-texte-roi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.back:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+}

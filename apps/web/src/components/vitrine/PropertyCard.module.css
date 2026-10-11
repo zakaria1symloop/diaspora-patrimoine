@@ -1,0 +1,252 @@
+/* CAT-040, DSN-041, DSN-050 PropertyCard — 3px white rim, standing band, 168px photo window, white panel that
+   covers the bottom of the photo by 14px, coloured bottom band with the monthly payment. */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: var(--stroke-card) solid var(--bo-fond-blanc);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-l);
+  overflow: hidden;
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 44px rgb(1 41 91 / 0.18);
+}
+.card:focus-within {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.comfort {
+  background: var(--bo-fond-vert-algerie);
+}
+.standing {
+  background: var(--bo-fond-bleu-nuit);
+}
+.premium {
+  background: var(--bo-fond-bleu-roi);
+}
+.band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-10);
+  min-height: 2.75rem;
+  padding-inline: var(--sp-16);
+  color: var(--bo-texte-blanc);
+  font-size: var(--fs-overline-l);
+  line-height: var(--lh-overline-l);
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border-radius: calc(var(--radius-l) - 3px) calc(var(--radius-l) - 3px) 0 0;
+}
+.flag {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--bo-fond-blanc);
+  background: linear-gradient(90deg, var(--bo-drapeau-dz-vert) 0 50%, var(--bo-drapeau-dz-blanc) 50% 100%);
+  position: relative;
+}
+.flag::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--bo-drapeau-dz-rouge);
+  border-inline-end-color: transparent;
+}
+.photo {
+  position: relative;
+  height: 10.5rem; /* 168px */
+  background: var(--bo-fond-ciel-pale);
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.noPhoto {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-8);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-body-s);
+  background: var(--bo-degrade-doux);
+}
+.tag,
+.veil {
+  position: absolute;
+  inset-block-start: var(--sp-16);
+  inset-inline-start: var(--sp-16);
+  padding: var(--sp-6) var(--sp-12);
+  border-radius: var(--radius-pill);
+  background: var(--bo-degrade-or);
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  box-shadow: var(--shadow-s);
+}
+.veiled .photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(0 27 64 / 0.45);
+}
+.veil {
+  z-index: 1;
+  inset: 0;
+  margin: auto;
+  width: max-content;
+  height: max-content;
+  background: var(--bo-fond-blanc);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.illustration {
+  position: absolute;
+  inset-block-end: 1.25rem;
+  inset-inline-end: var(--sp-8);
+  padding: 2px var(--sp-8);
+  border-radius: var(--radius-s);
+  background: rgb(0 27 64 / 0.6);
+  color: var(--bo-texte-blanc);
+  font-size: var(--fs-caption);
+}
+.panel {
+  position: relative;
+  margin-block-start: -0.875rem; /* covers the photo by 14px */
+  padding: var(--sp-16) var(--sp-24) var(--sp-16);
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+  background: var(--bo-fond-blanc);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-8);
+  text-align: center;
+  flex: 1;
+}
+.standingLabel {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--bo-texte-or);
+}
+.title {
+  font-size: var(--fs-heading-item);
+  line-height: var(--lh-heading-item);
+  font-weight: 600;
+  color: var(--bo-texte-encre);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+.link::after {
+  /* the whole card is the link (CAT-040) */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.link:focus-visible {
+  outline: none;
+}
+.card:has(.link:focus-visible) {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.facts {
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-doux);
+}
+.values {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-16);
+  width: 100%;
+  margin: var(--sp-4) 0 0;
+  text-align: start;
+}
+.value {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+}
+.valueIcon {
+  flex: none;
+}
+.value dt {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--bo-texte-doux);
+}
+.value dd {
+  margin: 0;
+  font-size: var(--fs-price-card);
+  line-height: var(--lh-price-card);
+  font-weight: 700;
+  color: var(--bo-texte-encre);
+  font-variant-numeric: tabular-nums;
+}
+.value dd.small {
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: 600;
+}
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-12) var(--sp-16) var(--sp-16);
+  color: var(--bo-texte-blanc);
+  border-radius: var(--radius-l) var(--radius-l) calc(var(--radius-l) - 3px) calc(var(--radius-l) - 3px);
+}
+.bottomLabel {
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+}
+.bottomValue {
+  font-size: var(--fs-price-hero);
+  line-height: var(--lh-price-hero);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.unit {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: var(--fs-price-unit);
+}
+.veiled .bottom {
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}

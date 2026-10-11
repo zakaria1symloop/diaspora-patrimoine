@@ -1,0 +1,213 @@
+{
+  "common": {
+    "home": "Accueil",
+    "callTitle": "Parlons de votre projet",
+    "callText": "Un conseiller vous rappelle, au moment qui vous convient.",
+    "callButton": "Être rappelé",
+    "readMore": "En savoir plus",
+    "readLess": "Réduire",
+    "faqTitle": "Questions fréquentes",
+    "allQuestions": "Toutes les questions",
+    "newTab": "(nouvel onglet)",
+    "seoSuffix": "{titre} – {site}"
+  },
+  "concept": {
+    "title": "Notre concept",
+    "answersTitle": "Deux freins, deux réponses",
+    "problem": "Le frein",
+    "answer": "Notre réponse",
+    "stepsTitle": "Comment ça marche",
+    "step": "Étape {n}",
+    "servicesTitle": "Nos services",
+    "supportTitle": "Accompagnement administratif et consulaire",
+    "figuresTitle": "Chiffres clés",
+    "testimonialsTitle": "Témoignages",
+    "testimonialFrom": "{nom}, {ville}"
+  },
+  "financing": {
+    "title": "Financements",
+    "waysTitle": "Deux façons de financer",
+    "expertise": "Un conseiller financier à vos côtés, du premier chiffre à l’accord de la banque.",
+    "journeyTitle": "Le parcours de financement",
+    "documentsToggle": "Voir les pièces généralement demandées",
+    "documentsNote": "La liste exacte dépend de votre situation et de la banque. Elle vous est donnée dans votre espace.",
+    "banksTitle": "Banques partenaires",
+    "projection": "Recevoir ma projection",
+    "simulate": "Simuler mon projet",
+    "calc": {
+      "title": "Combien pourriez-vous acheter ?",
+      "downPayment": "Votre apport",
+      "monthly": "Mensualité confortable",
+      "perMonth": "/ mois",
+      "budgetLabel": "Budget estimé",
+      "detail": "dont {financement} de financement sur {duree}",
+      "years": "{n, plural, one {# an} other {# ans}}",
+      "announce": "Budget estimé : {montant}, dont {financement} de financement sur {duree}.",
+      "note": "Exemple indicatif, hors frais d’acquisition.",
+      "refine": "Affiner avec le simulateur",
+      "seeProperties": "Voir les biens dans ce budget",
+      "credit": "Calculer mes mensualités",
+      "documents": "Quelles pièces la banque demandera ?",
+      "unavailable": "Le simulateur est momentanément indisponible. Un conseiller peut faire le calcul avec vous.",
+      "callback": "Être rappelé",
+      "fieldHint": "De {min} à {max}"
+    }
+  },
+  "promoters": {
+    "title": "Promoteurs sélectionnés",
+    "selectionTitle": "Comment nous sélectionnons",
+    "programs": "{n, plural, =0 {Aucun programme en ligne} one {# programme} other {# programmes}}",
+    "empty": "Nos premiers promoteurs partenaires seront bientôt présentés.",
+    "see": "Voir le promoteur",
+    "selectedSince": "Promoteur sélectionné depuis {annee}",
+    "since": "Depuis {annee}",
+    "delivered": "{n, plural, one {# logement livré} other {# logements livrés}}",
+    "inCatalogue": "{n, plural, one {# programme au catalogue} other {# programmes au catalogue}}",
+    "presentation": "Présentation",
+    "references": "Références",
+    "currentTitle": "Programmes en cours",
+    "soldTitle": "Programmes réalisés",
+    "priceFrom": "À partir de {prix}",
+    "seoTitle": "{nom} – promoteur sélectionné – {site}",
+    "state": {
+      "ON_SALE": "En vente",
+      "ALL_RESERVED": "Tout est réservé",
+      "UPCOMING": "À venir",
+      "SOLD": "Vendu"
+    }
+  },
+  "partners": {
+    "title": "Nos partenaires",
+    "promoters": "Promoteurs",
+    "banks": "Banques",
+    "others": "Autres partenaires",
+    "empty": "Nos premiers partenaires seront bientôt présentés.",
+    "partnerTitle": "Vous êtes promoteur ou banque ?",
+    "partnerButton": "Créer mon espace partenaire",
+    "partnerLogin": "Déjà partenaire ? Se connecter",
+    "otherTitle": "Notaire, assureur, institution ?",
+    "otherButton": "Devenir partenaire",
+    "website": "Voir son site",
+    "category": {
+      "NOTARY": "Notaires",
+      "INSURER": "Assureurs",
+      "INSTITUTION": "Institutions",
+      "MEDIA": "Médias",
+      "OTHER": "Autres"
+    }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "searchLabel": "Rechercher une question",
+    "clear": "Effacer la recherche",
+    "all": "Toutes",
+    "categories": "Thèmes des questions",
+    "count": "{n, plural, =0 {Aucune question} one {# question} other {# questions}}",
+    "noResult": "Aucune question ne correspond à « {saisie} ».",
+    "empty": "Les premières questions fréquentes seront bientôt publiées.",
+    "notFoundTitle": "Vous n’avez pas trouvé votre réponse ?",
+    "notFoundButton": "Nous écrire"
+  },
+  "contact": {
+    "title": "Contact",
+    "coordinates": "Nos coordonnées",
+    "phone": "Téléphone",
+    "whatsapp": "WhatsApp",
+    "whatsappAction": "Écrire sur WhatsApp",
+    "email": "E-mail",
+    "address": "Adresse",
+    "hours": "Horaires",
+    "social": "Réseaux sociaux",
+    "cafeTitle": "Rencontrons-nous au prochain Café"
+  },
+  "legal": {
+    "version": "Version du {date}",
+    "publisher": "Éditeur du site",
+    "legalName": "Raison sociale",
+    "registration": "Immatriculation",
+    "address": "Adresse",
+    "contact": "Contact",
+    "cookiesTitle": "Cookies et stockages utilisés",
+    "cookiesIntro": "Ce qui est déposé sans votre accord, parce que le service que vous demandez en dépend. Aucun cookie publicitaire, aucun traceur de réseau social.",
+    "cookieName": "Nom",
+    "cookieRole": "Rôle",
+    "cookieDuration": "Durée",
+    "manageCookies": "Gérer mes cookies",
+    "rightsTitle": "Exercer vos droits",
+    "rightsText": "Consulter, corriger ou supprimer vos données : c’est possible à tout moment.",
+    "rightsSpace": "Depuis mon espace",
+    "rightsContact": "Nous écrire",
+    "cookies": {
+      "session": {
+        "name": "Cookie de session",
+        "role": "Connexion à l’espace client.",
+        "duration": "12 heures ; 30 jours avec « Se souvenir de moi », 90 jours au plus"
+      },
+      "consent": {
+        "name": "dp_consent",
+        "role": "Mémoriser votre choix sur les cookies.",
+        "duration": "6 mois"
+      },
+      "anon": {
+        "name": "dp_anon",
+        "role": "Retrouver vos simulations avant d’avoir un compte. Déposé seulement quand vous lancez une simulation.",
+        "duration": "30 jours"
+      },
+      "device": {
+        "name": "dp_device",
+        "role": "Reconnaître un appareil déjà utilisé par un compte, pour ne prévenir que d’une connexion depuis un nouvel appareil. Identifiant aléatoire, sans aucune caractéristique de l’appareil.",
+        "duration": "13 mois"
+      },
+      "csrf": {
+        "name": "Jeton anti-falsification",
+        "role": "Protéger les envois de formulaires d’un compte connecté.",
+        "duration": "La session"
+      },
+      "gate": {
+        "name": "dp_gate",
+        "role": "Garder l’accès réservé avant l’ouverture du site.",
+        "duration": "30 jours"
+      },
+      "share": {
+        "name": "dp_share",
+        "role": "Garder ouvert, après le bon code, un dossier reçu par lien de partage.",
+        "duration": "30 minutes"
+      },
+      "signup": {
+        "name": "dp_signup",
+        "role": "Reconnaître le navigateur qui vient de créer un espace, pour que le lien de vérification y connecte sans redemander le mot de passe.",
+        "duration": "24 heures"
+      },
+      "step": {
+        "name": "Jeton d’étape",
+        "role": "Tenir une connexion en cours entre deux étapes.",
+        "duration": "10 minutes"
+      },
+      "sessionStorage": {
+        "name": "Stockage de session du navigateur",
+        "role": "Saisies de formulaire en cours, long texte en cours, origine de la visite.",
+        "duration": "La session"
+      },
+      "localStorage": {
+        "name": "Stockage local du navigateur",
+        "role": "Réglages de confort que vous avez demandés, sans donnée personnelle : taille du texte, recherches récentes, visite guidée, étapes déjà vues.",
+        "duration": "Jusqu’à ce que vous les effaciez"
+      },
+      "compare": {
+        "name": "dp_compare",
+        "role": "Les trois biens au plus mis de côté pour le comparateur : des références de biens, rien d’autre.",
+        "duration": "Jusqu’à ce que vous retiriez les biens ou effaciez votre navigateur"
+      },
+      "favorites": {
+        "name": "dp_favorites",
+        "role": "Les favoris d’un visiteur sans compte, vingt biens au plus : des références de biens.",
+        "duration": "Jusqu’à ce que vous retiriez vos favoris ou effaciez votre navigateur"
+      },
+      "simpleMode": {
+        "name": "dp_simple_mode",
+        "role": "Retenir l’« Affichage simplifié » choisi dans le réglage « Aa ».",
+        "duration": "Jusqu’à ce que vous le désactiviez ou effaciez votre navigateur"
+      }
+    }
+  }
+}

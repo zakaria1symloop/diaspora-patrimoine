@@ -1,0 +1,10 @@
+{
+  "emailReason": {
+    "account": "Vous recevez cet e-mail à la suite d’une démarche liée à cette adresse sur {societe}.",
+    "client": "Vous recevez cet e-mail dans le cadre de vos échanges avec {societe}.",
+    "staff": "Vous recevez cet e-mail parce que vous faites partie de l’équipe {societe}.",
+    "partner": "Vous recevez cet e-mail en tant que partenaire de {societe}.",
+    "partnerApplicant": "Vous recevez cet e-mail au sujet de votre candidature de partenaire."
+  },
+  "ai": "Réponse générée automatiquement."
+}

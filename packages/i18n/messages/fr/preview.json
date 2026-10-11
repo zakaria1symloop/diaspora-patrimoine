@@ -1,0 +1,15 @@
+{
+  "band": "Vous consultez l’espace de {nom} en lecture seule",
+  "until": "jusqu’à {heure}",
+  "quit": "Quitter l’aperçu",
+  "page": {
+    "title": "Aperçu de l’espace client",
+    "eyebrow": "Voir comme le client",
+    "opening": "Ouverture de l’aperçu en lecture seule…",
+    "expired": "Ce lien d’aperçu a expiré ou a déjà servi",
+    "expiredText": "Un lien d’aperçu ne vaut qu’une minute, et une seule fois. Revenez à la fiche du client dans le back-office et cliquez de nouveau sur « Voir comme le client ».",
+    "ended": "Aperçu terminé",
+    "endedText": "La consultation est close et tracée. Vous pouvez fermer cet onglet.",
+    "close": "Fermer cet onglet"
+  }
+}

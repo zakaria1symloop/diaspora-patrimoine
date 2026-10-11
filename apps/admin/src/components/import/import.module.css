@@ -1,0 +1,167 @@
+/* EA-45 — the path of an import: four steps, the file, the mapping, the figures of the dry run */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-10) var(--sp-12);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-doux);
+  font-weight: 500;
+  transition: border-color var(--motion-base) var(--ease-out), background-color var(--motion-base) var(--ease-out);
+}
+.steps li[data-state='current'] {
+  border-color: var(--bo-fond-bleu-roi);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.steps li[data-state='done'] {
+  color: var(--bo-texte-succes);
+}
+.stepDot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--bo-fond-gris);
+  font-size: var(--fs-admin-small);
+  font-weight: 700;
+  --icon-accent: currentColor;
+}
+.steps li[data-state='current'] .stepDot {
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+}
+.steps li[data-state='done'] .stepDot {
+  background: var(--bo-fond-vert-pale);
+}
+.fileStep {
+  display: grid;
+  gap: var(--sp-16);
+}
+.drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-16);
+  padding: var(--sp-20);
+  border: 1.5px dashed var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-surface);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  --icon-accent: currentColor;
+}
+.drop > div {
+  flex: 1;
+  min-width: 16rem;
+  color: var(--bo-texte-encre);
+}
+.drop[data-disabled] {
+  opacity: 0.6;
+}
+.error {
+  color: var(--bo-texte-erreur);
+  font-size: var(--fs-admin-small);
+}
+.templates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-16);
+}
+.templateLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-decoration: none;
+  --icon-accent: currentColor;
+}
+.templateLink:hover {
+  text-decoration: underline;
+}
+.figures {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-12);
+}
+.figure {
+  display: grid;
+  gap: 2px;
+  padding: var(--sp-12) var(--sp-16);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+  animation: rise var(--motion-base) var(--ease-out) both;
+}
+.figure strong {
+  font-size: var(--fs-admin-kpi);
+  line-height: var(--lh-admin-kpi);
+  font-variant-numeric: tabular-nums;
+}
+.figure span {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+}
+.figure[data-tone='error'] {
+  border-color: var(--bo-fond-erreur);
+  background: var(--bo-fond-erreur-pale);
+}
+.figure[data-tone='error'] strong {
+  color: var(--bo-texte-erreur);
+}
+.figure[data-tone='warn'] {
+  border-color: var(--bo-ligne-or);
+  background: var(--bo-fond-or-clair);
+}
+.history {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.history li {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1.2fr) minmax(12rem, 1.5fr) auto minmax(16rem, 2fr);
+  align-items: center;
+  gap: var(--sp-12);
+  padding: var(--sp-10) 0;
+  border-block-end: 1px solid var(--bo-ligne-douce);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 1279px) {
+  .figures {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .figure,
+  .steps li {
+    animation: none;
+    transition: none;
+  }
+}

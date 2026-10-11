@@ -1,0 +1,429 @@
+{
+  "watch": {
+    "stockDone": "Plus aucun programme de ce promoteur n’est à vérifier."
+  },
+  "title": "Promoteurs",
+  "intro": "Les promoteurs sélectionnés, ceux avec qui la relation se discute, leurs conventions et leurs documents.",
+  "create": "Nouveau promoteur",
+  "search": "Rechercher un nom, un numéro de registre",
+  "column": {
+    "name": "Nom",
+    "status": "Statut",
+    "region": "Région",
+    "programs": "Programmes",
+    "published": "Biens publiés",
+    "dossiers": "Dossiers en cours",
+    "convention": "Fin de convention",
+    "public": "Public"
+  },
+  "view": {
+    "selected": "Sélectionnés",
+    "prospects": "En discussion",
+    "suspended-ended": "Suspendus et terminés",
+    "all": "Tous"
+  },
+  "filter": {
+    "convention": "Convention",
+    "expiring": "Expire dans 30 jours",
+    "expired": "Expirée",
+    "none": "Sans date de fin",
+    "public": "Page publique",
+    "publicYes": "Visible sur le site",
+    "publicNo": "Non visible"
+  },
+  "convention": {
+    "EXPIRED": "Convention expirée",
+    "EXPIRING": "Expire bientôt",
+    "OK": "En cours",
+    "NONE": "Sans date de fin"
+  },
+  "publicYes": "Visible",
+  "publicNo": "Non visible",
+  "empty": {
+    "title": "Aucun promoteur dans cette vue.",
+    "text": "Ajoutez un promoteur : sa raison sociale et son pays suffisent. Il naît « En discussion » ; on le sélectionne quand ses contrôles et sa convention sont faits."
+  },
+  "createDialog": {
+    "title": "Nouveau promoteur",
+    "intro": "Il naît « En discussion », avec sa page de fiche ; le reste se complète ensuite.",
+    "legalName": "Raison sociale",
+    "brandName": "Nom commercial",
+    "country": "Pays",
+    "submit": "Créer le promoteur"
+  },
+  "detail": {
+    "tab": {
+      "identity": "Identité",
+      "contacts": "Contacts",
+      "vetting": "Sélection",
+      "convention": "Convention",
+      "documents": "Documents",
+      "public": "Page publique",
+      "programs": "Programmes",
+      "relation": "Relation",
+      "history": "Historique"
+    },
+    "meta": {
+      "conventionFrom": "Convention signée le {date}",
+      "conventionTo": "jusqu’au {date}",
+      "noConvention": "Convention non signée",
+      "since": "depuis le {date}",
+      "reason": "Raison : {raison}"
+    },
+    "aside": {
+      "title": "En bref",
+      "manager": "Interlocuteur chez nous",
+      "programs": "Programmes",
+      "properties": "Biens",
+      "dossiers": "Dossiers en cours",
+      "region": "Région",
+      "noManager": "Personne pour l’instant"
+    },
+    "suspension": {
+      "banner": "{n, plural, one {# fiche a été dépubliée} other {# fiches ont été dépubliées}} par la suspension du {date}.",
+      "republish": "Les republier"
+    }
+  },
+  "action": {
+    "select": "Sélectionner",
+    "suspend": "Suspendre",
+    "end": "Terminer la relation",
+    "resume": "Reprendre la relation",
+    "reactivate": "Réactiver",
+    "delete": "Supprimer",
+    "deleteBlocked": "Ce promoteur a des programmes, des biens ou des dossiers : terminez plutôt la relation.",
+    "newProgram": "Nouveau programme",
+    "openPublic": "Voir la page"
+  },
+  "dialog": {
+    "select": {
+      "title": "Sélectionner {nom}",
+      "text": "Ses biens deviendront publiables. Il faut pour cela la date de sélection et la date de signature de la convention.",
+      "missing": "Il manque :",
+      "submit": "Sélectionner"
+    },
+    "suspend": {
+      "title": "Suspendre {nom}",
+      "submit": "Suspendre"
+    },
+    "end": {
+      "title": "Terminer la relation avec {nom}",
+      "submit": "Terminer la relation"
+    },
+    "effects": "{p, plural, =0 {Aucun programme} one {# programme} other {# programmes}} et {b, plural, =0 {aucun bien} one {# bien} other {# biens}} seront dépubliés.",
+    "dossiers": "{n, plural, =0 {Aucun dossier en cours n’est concerné.} one {# dossier en cours est concerné ; son conseiller sera prévenu.} other {# dossiers en cours sont concernés ; leurs conseillers seront prévenus.}}",
+    "keep": "Les dossiers en cours continuent : un bien hors ligne n’est pas un bien indisponible. La page publique n’est plus servie tant que le promoteur n’est pas de nouveau sélectionné.",
+    "reason": "Raison",
+    "reasonHint": "Gardée sur la fiche, avec la date.",
+    "resume": {
+      "title": "Reprendre la relation avec {nom}",
+      "text": "Il revient « En discussion ». Pour publier de nouveau ses biens, il faudra le sélectionner.",
+      "submit": "Reprendre la relation"
+    },
+    "reactivate": {
+      "title": "Réactiver {nom}",
+      "text": "Rien n’est republié automatiquement : sa fiche proposera ensuite de republier les fiches dépubliées par la suspension.",
+      "submit": "Réactiver"
+    },
+    "republish": {
+      "title": "Republier les fiches de {nom}",
+      "text": "Celles qui remplissent toujours les conditions de publication sont republiées en une fois ; les autres sont listées avec ce qui leur manque.",
+      "submit": "Les republier",
+      "done": "{n, plural, =0 {Aucune fiche republiée.} one {# fiche republiée.} other {# fiches republiées.}}",
+      "blocked": "Restées hors ligne :"
+    },
+    "delete": {
+      "title": "Supprimer {nom} ?",
+      "text": "La fiche du promoteur est supprimée. Son historique reste dans le journal.",
+      "submit": "Supprimer"
+    }
+  },
+  "toast": {
+    "created": "Promoteur créé.",
+    "selected": "Promoteur sélectionné.",
+    "suspended": "Promoteur suspendu.",
+    "ended": "Relation terminée.",
+    "resumed": "Relation reprise.",
+    "reactivated": "Promoteur réactivé.",
+    "deleted": "Promoteur supprimé.",
+    "saved": "Modifications enregistrées."
+  },
+  "section": {
+    "company": "Société",
+    "address": "Coordonnées",
+    "presentation": "Présentation sur le site",
+    "images": "Logo et couverture",
+    "visibility": "Visibilité"
+  },
+  "field": {
+    "legalName": "Raison sociale",
+    "brandName": "Nom commercial",
+    "registrationNumber": "Registre de commerce",
+    "taxId": "Identifiant fiscal",
+    "licenseNumber": "Agrément",
+    "country": "Pays",
+    "region": "Région",
+    "city": "Commune",
+    "addressLine": "Adresse",
+    "website": "Site web",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "descriptionPublic": "Présentation",
+    "referencesPublic": "Références",
+    "foundedYear": "Année de création",
+    "deliveredUnits": "Logements livrés",
+    "isPublic": "Visible sur le site",
+    "isPublicHint": "La page n’est servie que pour un promoteur sélectionné.",
+    "logo": "Logo",
+    "cover": "Image de couverture",
+    "coverHint": "JPG, PNG, WebP ou HEIC, 20 Mo au plus ; en large, en haut de sa page.",
+    "none": "Aucune"
+  },
+  "contacts": {
+    "title": "Interlocuteurs",
+    "add": "Ajouter un interlocuteur",
+    "primary": "Contact principal",
+    "makePrimary": "En faire le contact principal",
+    "account": "A un compte partenaire",
+    "fullName": "Nom",
+    "role": "Fonction",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "notes": "Note",
+    "edit": "Modifier",
+    "delete": "Retirer",
+    "deleteTitle": "Retirer {nom} des interlocuteurs ?",
+    "deleteText": "S’il était le contact principal, le suivant le devient.",
+    "empty": {
+      "title": "Aucun interlocuteur.",
+      "text": "Ajoutez la personne à qui l’équipe parle chez ce promoteur : c’est elle que l’on appelle pour une option, une visite ou les disponibilités."
+    },
+    "toast": "Interlocuteurs enregistrés.",
+    "dialogTitle": "Interlocuteur"
+  },
+  "vetting": {
+    "title": "Contrôles avant sélection",
+    "intro": "Cochez chaque contrôle fait, avec une note si besoin. Les lignes proposées se modifient.",
+    "done": "{n} sur {t} contrôles faits",
+    "date": "Date de sélection",
+    "addLine": "Ajouter un contrôle",
+    "line": "Contrôle",
+    "note": "Note",
+    "remove": "Retirer la ligne"
+  },
+  "conventionTab": {
+    "title": "Convention",
+    "signedAt": "Signée le",
+    "expiresAt": "Fin",
+    "terms": "Conditions de commission (texte interne)",
+    "termsHint": "Jamais montré hors de cet onglet.",
+    "expired": "Convention expirée : rien n’est suspendu automatiquement ; renouvelez-la avec le promoteur."
+  },
+  "documents": {
+    "title": "Documents du promoteur",
+    "add": "Ajouter un document",
+    "label": "Libellé",
+    "category": "Catégorie",
+    "issuedAt": "Émis le",
+    "expiresAt": "Expire le",
+    "file": "Fichier",
+    "fileHint": "PDF, JPG ou PNG, 25 Mo au plus.",
+    "choose": "Choisir le fichier",
+    "open": "Ouvrir",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer le document « {label} » ?",
+    "deleteText": "Le document va à la corbeille.",
+    "scanning": "Contrôle de sécurité en cours",
+    "expiry": {
+      "EXPIRED": "Expiré",
+      "EXPIRING": "Expire bientôt",
+      "OK": "Valide",
+      "NONE": "Sans date"
+    },
+    "uploading": "Envoi… {p} %",
+    "empty": {
+      "title": "Aucun document.",
+      "text": "Registre de commerce, agrément, convention signée : rangés ici, ils s’ouvrent par un lien de cinq minutes, et chaque ouverture est tracée. Une alerte prévient 30 jours avant une expiration."
+    },
+    "toast": {
+      "added": "Document ajouté.",
+      "saved": "Document enregistré.",
+      "deleted": "Document supprimé."
+    }
+  },
+  "programs": {
+    "title": "Programmes et biens",
+    "standalone": "Biens isolés",
+    "empty": {
+      "title": "Aucun programme pour ce promoteur.",
+      "text": "Créez son premier programme : il reprendra ce promoteur."
+    }
+  },
+  "relation": {
+    "period": "Période",
+    "last30": "30 derniers jours",
+    "last90": "90 derniers jours",
+    "last365": "12 derniers mois",
+    "figures": {
+      "proposed": "Biens proposés à des clients",
+      "interests": "Intérêts reçus",
+      "visits": "Visites tenues",
+      "optionsNow": "Options en cours",
+      "reservations": "Réservations confirmées",
+      "sales": "Ventes",
+      "externalSales": "dont ventes hors plateforme",
+      "closed": "Dossiers clôturés"
+    },
+    "closedBy": "Dossiers clôturés par motif",
+    "noClosed": "Aucun dossier clôturé sur la période.",
+    "openTitle": "Dossiers en cours sur ses biens",
+    "holdsTitle": "Options et réservations",
+    "noOpen": "Aucun dossier en cours sur ses biens.",
+    "noHolds": "Aucune option ni réservation en cours.",
+    "column": {
+      "reference": "Dossier",
+      "client": "Client",
+      "property": "Bien",
+      "lot": "Lot",
+      "stage": "Étape",
+      "agent": "Conseiller",
+      "kind": "Nature",
+      "due": "Échéance"
+    },
+    "OPTION": "Option",
+    "RESERVED": "Réservation"
+  },
+  "expect": {
+    "title": "Ce que nous attendons de lui",
+    "empty": "Rien n’attend ce promoteur.",
+    "since": "attend depuis {n, plural, =0 {aujourd’hui} one {# jour} other {# jours}}",
+    "due": "échéance le {date}",
+    "answer": "Saisir la réponse",
+    "convention": "Convention",
+    "kind": {
+      "OPTION_ANSWER": "Une option à confirmer",
+      "RESERVATION_CONFIRM": "Une réservation à signer",
+      "DOCUMENT_PROVIDE": "Un contrat ou une pièce à fournir",
+      "DEPOSIT_OUTCOME": "Un acompte à rembourser ou conserver",
+      "VISIT_HOST": "Une visite sans personne pour accueillir",
+      "STOCK_UPDATE": "Des disponibilités à vérifier",
+      "DELIVERY_UPDATE": "Une livraison dépassée",
+      "PARTNER_DOCUMENT": "Un document qui expire"
+    }
+  },
+  "partners": {
+    "title": "Autres partenaires",
+    "intro": "Notaires, assureurs, institutions, médias : ceux que montre la page publique « Nos partenaires ».",
+    "create": "Nouveau partenaire",
+    "search": "Rechercher un nom",
+    "view": {
+      "visible": "Visibles sur le site",
+      "hidden": "Masqués",
+      "all": "Tous"
+    },
+    "column": {
+      "name": "Nom",
+      "category": "Catégorie",
+      "website": "Site web",
+      "public": "Sur le site",
+      "order": "Ordre"
+    },
+    "field": {
+      "name": "Nom",
+      "category": "Catégorie",
+      "description": "Présentation",
+      "url": "Site web",
+      "urlHint": "Une adresse complète, commençant par https://",
+      "isPublic": "Visible sur le site",
+      "logo": "Logo"
+    },
+    "panelNew": "Nouveau partenaire",
+    "panelEdit": "Modifier le partenaire",
+    "save": "Enregistrer",
+    "logoAfter": "Le logo s’ajoute une fois le partenaire enregistré.",
+    "show": "Afficher sur le site",
+    "hide": "Masquer du site",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer {nom} ?",
+    "deleteText": "Le partenaire quitte la liste et la page publique ; il va à la corbeille.",
+    "empty": {
+      "title": "Aucun partenaire pour l’instant.",
+      "text": "Ajoutez un notaire, un assureur ou une institution : la page « Nos partenaires » les présente aux visiteurs, par catégorie."
+    },
+    "toast": {
+      "created": "Partenaire ajouté.",
+      "saved": "Partenaire enregistré.",
+      "deleted": "Partenaire supprimé.",
+      "moved": "Ordre enregistré."
+    }
+  },
+  "application": {
+    "title": "Candidature partenaire",
+    "kind": {
+      "PROMOTER": "Promoteur",
+      "BANK": "Banque"
+    },
+    "email": "Adresse",
+    "emailVerified": "confirmée",
+    "emailNotVerified": "non confirmée",
+    "company": "Société",
+    "person": "Personne",
+    "registration": "Immatriculation ou agrément",
+    "founded": "Création",
+    "website": "Site web",
+    "sections": "Dossier",
+    "section": {
+      "activity": "Votre activité",
+      "documents": "Justificatifs",
+      "image": "Votre image"
+    },
+    "done": "Complété",
+    "todo": "À compléter",
+    "answers": "Réponses",
+    "answer": {
+      "ongoingPrograms": "Programmes en cours",
+      "regions": "Régions",
+      "financingTypes": "Financements proposés",
+      "clientCountries": "Pays des clients",
+      "agency": "Agence ou direction",
+      "presentation": "Présentation",
+      "message": "Message à l’équipe"
+    },
+    "files": "Justificatifs",
+    "file": {
+      "REGISTRATION": "Immatriculation ou agrément",
+      "PRESENTATION": "Présentation de la société",
+      "LOGO": "Logo"
+    },
+    "open": "Ouvrir",
+    "approve": "Accepter",
+    "approveCreate": "Accepter et créer la fiche",
+    "attachTo": "Rattacher à {nom}",
+    "attachHint": "Une fiche existante porte ce nom ou ce numéro : la personne peut y être rattachée comme contact secondaire.",
+    "requestInfo": "Demander un complément",
+    "decline": "Refuser",
+    "result": "Fiche créée ou rattachée : {nom}",
+    "openRecord": "Ouvrir la fiche",
+    "dialog": {
+      "approveTitle": "Accepter la candidature de {nom}",
+      "approveText": "La fiche {type} est créée « En discussion », avec son organisation ; la personne en devient le contact principal, avec son compte. Vous devenez son interlocuteur. Un e-mail de bienvenue lui est envoyé.",
+      "attachText": "La personne devient un contact secondaire de {nom}, avec son compte. Vous devenez l’interlocuteur du partenaire. Un e-mail de bienvenue lui est envoyé.",
+      "infoTitle": "Demander un complément à {nom}",
+      "infoMessage": "Message pour la personne",
+      "infoHint": "Il lui est envoyé tel quel, et s’affiche dans son espace partenaire.",
+      "declineTitle": "Refuser la candidature de {nom}",
+      "declineReason": "Motif (interne)",
+      "declineMessage": "Une phrase pour la personne",
+      "declineHint": "Facultative : ajoutée à l’e-mail de réponse.",
+      "send": "Envoyer"
+    },
+    "toast": {
+      "approved": "Candidature acceptée.",
+      "info": "Complément demandé.",
+      "declined": "Candidature refusée."
+    }
+  }
+}

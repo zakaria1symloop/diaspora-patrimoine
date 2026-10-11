@@ -1,0 +1,564 @@
+/* EA-30 « Tâches » and the tab « Tâches » of a dossier — the « Outil » register: white surface bordered `ligne/bleue`,
+   the words carry the meaning and the colour only helps, motion with the tokens of DSN-071 (none when reduced). */
+
+.muted {
+  color: var(--bo-texte-discret);
+}
+
+/* ─── Window (TAC-003) ─────────────────────────────────────────────────────── */
+.attached {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin: 0;
+  padding: var(--sp-6) var(--sp-10);
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-admin-small);
+  font-weight: 500;
+  --icon-accent: currentColor;
+}
+.reminderRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-12);
+}
+
+/* ─── Small pieces ─────────────────────────────────────────────────────────── */
+.due {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  --icon-accent: currentColor;
+}
+.dueLate {
+  color: var(--bo-texte-erreur);
+  font-weight: 600;
+}
+.attachments {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-8);
+  min-width: 0;
+}
+.attach,
+.attachLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  max-width: 16rem;
+  overflow: hidden;
+  font-size: var(--fs-admin-small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--bo-texte-doux);
+  --icon-accent: currentColor;
+}
+.attachLink {
+  color: var(--bo-texte-roi);
+  text-decoration: none;
+  font-weight: 500;
+}
+.attachLink:hover {
+  text-decoration: underline;
+}
+
+/* ─── Board ────────────────────────────────────────────────────────────────── */
+.board {
+  display: grid;
+  gap: var(--sp-16);
+}
+.boardEmbedded {
+  gap: 0;
+}
+.surface {
+  display: grid;
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  overflow: clip;
+}
+.views {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-4);
+  padding: 0 var(--sp-16);
+  border-bottom: 1px solid var(--bo-ligne-bleue);
+  overflow-x: auto;
+}
+.view {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  height: 3rem;
+  padding: 0 var(--sp-12);
+  border: 0;
+  background: none;
+  color: var(--bo-texte-doux);
+  font: inherit;
+  font-size: var(--fs-admin-small);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--ease-out);
+}
+.view::after {
+  content: '';
+  position: absolute;
+  inset: auto var(--sp-8) -1px;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--bo-accent-bleu);
+  transform: scaleX(0);
+  transition: transform var(--motion-base) var(--ease-out);
+}
+.view:hover {
+  color: var(--bo-texte-encre);
+}
+.viewOn {
+  color: var(--bo-texte-roi);
+}
+.viewOn::after {
+  transform: scaleX(1);
+}
+.viewCount {
+  min-width: 1.5rem;
+  padding: 0 var(--sp-6);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-caption);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.viewOn .viewCount {
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.viewAction {
+  display: inline-flex;
+  gap: var(--sp-8);
+  margin-inline-start: auto;
+  align-self: center;
+}
+.filters {
+  padding: var(--sp-12) var(--sp-16);
+  border-bottom: 1px solid var(--bo-ligne-bleue);
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  height: 2.25rem;
+  min-width: 16rem;
+  padding-inline: var(--sp-10);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-discret);
+}
+.search:focus-within {
+  border-color: var(--bo-accent-bleu);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bo-accent-bleu) 30%, transparent);
+}
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--bo-texte-encre);
+}
+.bulkBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-16);
+  background: var(--bo-fond-ciel-pale);
+  border-bottom: 1px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-admin-small);
+  animation: drop var(--motion-base) var(--ease-out);
+}
+.bulkBar strong {
+  margin-inline-end: var(--sp-8);
+}
+.listArea {
+  display: grid;
+  align-content: start;
+  min-height: 12rem;
+}
+.skeletons {
+  display: grid;
+  gap: var(--sp-8);
+  padding: var(--sp-16);
+}
+.listArea > [role='alert'],
+.listArea > [role='status'] {
+  margin: var(--sp-16);
+}
+
+.group + .group {
+  border-top: 1px solid var(--bo-ligne-bleue);
+}
+.groupTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: var(--sp-12) var(--sp-16) var(--sp-4);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.groupLate {
+  color: var(--bo-texte-erreur);
+}
+.groupCount {
+  color: var(--bo-texte-discret);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.rows {
+  margin: 0;
+  padding: 0 0 var(--sp-8);
+  list-style: none;
+}
+.row {
+  display: grid;
+  grid-template-columns: 1.25rem 2rem minmax(0, 1fr) 6.5rem 9rem 2.5rem;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: 3.5rem;
+  padding: var(--sp-4) var(--sp-16);
+  border-inline-start: 3px solid transparent;
+  transition: background var(--motion-fast) var(--ease-out);
+  animation: rise var(--motion-base) var(--ease-out) both;
+}
+.row:hover {
+  background: color-mix(in srgb, var(--bo-fond-ciel-pale) 55%, transparent);
+}
+.rowOn {
+  background: var(--bo-fond-ciel-pale);
+  border-inline-start-color: var(--bo-accent-bleu);
+}
+.rowClosed .rowTitleText {
+  color: var(--bo-texte-doux);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--bo-texte-doux) 50%, transparent);
+}
+.select {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  accent-color: var(--bo-accent-bleu);
+}
+.done {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 2px solid var(--bo-ligne-bleue);
+  border-radius: 50%;
+  background: var(--bo-fond-blanc);
+  color: transparent;
+  cursor: pointer;
+  --icon-accent: currentColor;
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    background var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-spring);
+}
+button.done:hover:not(:disabled),
+button.done:focus-visible {
+  border-color: var(--bo-accent-vert);
+  color: var(--bo-accent-vert);
+}
+button.done:active:not(:disabled) {
+  transform: scale(0.88);
+}
+button.done:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+span.done {
+  cursor: default;
+  color: var(--bo-texte-discret);
+  border-color: var(--bo-fond-gris);
+  background: var(--bo-fond-gris);
+}
+.doneOn {
+  color: var(--bo-texte-blanc) !important;
+  border-color: var(--bo-accent-vert) !important;
+  background: var(--bo-accent-vert) !important;
+}
+.rowMain {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--sp-6) 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.rowMain:focus-visible {
+  outline: 2px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+  border-radius: var(--radius-s);
+}
+.rowTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-width: 0;
+  color: var(--bo-texte-encre);
+  font-weight: 600;
+  --icon-accent: var(--bo-accent-bleu);
+}
+.rowTitleText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rowMeta {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--sp-4) var(--sp-12);
+  min-width: 0;
+  padding-inline-start: calc(16px + var(--sp-8));
+  font-size: var(--fs-admin-small);
+}
+.auto {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--sp-6);
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-or-clair);
+  color: var(--bo-texte-or);
+  font-size: var(--fs-admin-caption);
+  font-weight: 600;
+}
+.rowAttach {
+  min-width: 0;
+  overflow: hidden;
+}
+.rowAttach .attachments {
+  flex-wrap: nowrap;
+}
+.rowAttach .muted {
+  display: none;
+}
+.rowPriority {
+  justify-self: start;
+}
+.rowWho {
+  overflow: hidden;
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.team {
+  color: var(--bo-texte-discret);
+  font-style: italic;
+}
+.rowMenu {
+  justify-self: end;
+}
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-12);
+  padding: var(--sp-12);
+  border-top: 1px solid var(--bo-ligne-bleue);
+}
+
+/* ─── The detail on the right (TAC-005) ────────────────────────────────────── */
+.panel {
+  position: fixed;
+  z-index: 40;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(30rem, 100vw);
+  background: var(--bo-fond-blanc);
+  border-inline-start: 1px solid var(--bo-ligne-bleue);
+  box-shadow: var(--shadow-xl);
+  animation: slideIn var(--motion-base) var(--ease-out);
+}
+.panel[hidden] {
+  display: none;
+}
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-12);
+  padding: var(--sp-16) var(--sp-24) var(--sp-12);
+  border-bottom: 1px solid var(--bo-ligne-bleue);
+}
+.panelKicker {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.panelBody {
+  display: grid;
+  align-content: start;
+  gap: var(--sp-16);
+  padding: var(--sp-20) var(--sp-24);
+  overflow: auto;
+}
+.panelTitle {
+  margin: 0;
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-admin-h2);
+  line-height: var(--lh-admin-h2);
+  font-weight: 600;
+}
+.panelTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+}
+.facts {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: var(--sp-10) var(--sp-12);
+  margin: 0;
+  font-size: var(--fs-admin-small);
+}
+.facts dt {
+  color: var(--bo-texte-doux);
+}
+.facts dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--bo-texte-encre);
+}
+.description {
+  margin: 0;
+  padding: var(--sp-12);
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-ivoire);
+  color: var(--bo-texte-encre);
+  white-space: pre-wrap;
+}
+.closedBox {
+  display: grid;
+  gap: var(--sp-4);
+  padding: var(--sp-12);
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-vert-pale);
+  color: var(--bo-texte-succes);
+  font-size: var(--fs-admin-small);
+}
+.closedBox p {
+  margin: 0;
+  color: var(--bo-texte-encre);
+}
+.completeBox {
+  display: grid;
+  gap: var(--sp-12);
+  padding-top: var(--sp-12);
+  border-top: 1px solid var(--bo-ligne-bleue);
+}
+.panelActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .bulkBar,
+  .panel {
+    animation: none;
+  }
+  .view::after,
+  .done {
+    transition: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .row {
+    grid-template-columns: 2rem minmax(0, 1fr) 2.5rem;
+  }
+  .select,
+  .rowPriority,
+  .rowWho {
+    display: none;
+  }
+  .search {
+    min-width: 0;
+  }
+}
+
+/* ─── The tab of a dossier (TAC-031) ───────────────────────────────────────── */
+.dossierTab {
+  display: grid;
+  gap: var(--sp-16);
+}
+.apptRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-12);
+  padding: var(--sp-4) var(--sp-16);
+  border-inline-start: 3px solid transparent;
+}
+.apptRow:hover {
+  background: color-mix(in srgb, var(--bo-fond-ciel-pale) 55%, transparent);
+}
+.apptRow .rowMeta {
+  padding-inline-start: 0;
+}
+
+.due svg,
+.attach svg,
+.attachLink svg,
+.rowTitle svg {
+  flex-shrink: 0;
+}
+.rowMeta > :not(.rowAttach) {
+  flex-shrink: 0;
+}

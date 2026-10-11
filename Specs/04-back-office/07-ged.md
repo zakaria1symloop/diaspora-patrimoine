@@ -1,0 +1,134 @@
+# Back-office — gestion des pièces
+
+Écrans **EA-60** (pièces à vérifier), **EA-61** et **EA-62** (modèles de listes), **EA-63** (visionneuse de vérification), **EA-64** (recherche de pièces). Contrat : offre technique, § 4.6 — listes de pièces paramétrables, téléversement sécurisé, cycle de validation par pièce, indicateur de complétude, versions et horodatage, organisation, recherche, archivage.
+
+Modèle : `ChecklistTemplate`, `ChecklistItem`, `DossierDocument`, `DocumentVersion`, `DocumentFile` (`01-domaine/04`, § 3). Cycle de vie d'une pièce : CYC-140 à CYC-149. Côté client : `03-espace-client/04`. Fichiers : `06-technique/05`.
+
+---
+
+## 1. Principes
+
+**GED-001** `[P1]` Une pièce appartient toujours à **un dossier**. Ses fichiers sont dans un stockage privé et chiffré ; ils ne sont servis que par des liens signés de courte durée (MED-030).
+
+**GED-002** `[P1]` Deux droits distincts : voir **la liste** des pièces et leur statut (`document.read`) ; ouvrir **un fichier** (`document.file.read`). Chaque ouverture ou téléchargement d'un fichier par un membre de l'équipe est écrit dans le journal d'audit (qui, quelle pièce, quel dossier, quand). Ceux du client aussi, depuis « Mes pièces » : la question « qui a vu mon dossier ? » a ainsi une réponse complète (SEC-082, D-097).
+
+**GED-003** `[P1]` Rien n'est écrasé : chaque dépôt est une **version** (`DocumentVersion`), horodatée, avec son auteur, son canal et son **issue** (en contrôle, en vérification, validée, rejetée, remplacée, écartée, supprimée). Chaque validation, rejet, dispense garde son auteur, sa date et sa raison. La « version en cours » d'une pièce est celle que le dernier dépôt réussi a installée : un dépôt infecté n'efface pas le précédent, et le renouvellement d'une pièce validée attend sa vérification à côté d'elle (MOD-352, CYC-141).
+
+## 2. Modèles de listes (EA-61, EA-62)
+
+**GED-010** `[P1]` **Liste des modèles** (`checklist.manage`). Colonnes : Nom · Portée (Dossier client · Dossier de financement) · Banque · Pays · Filtres · Pièces · Par défaut · Actif · Version · Modifié le.
+
+**GED-011** `[P1]` **Un modèle.** En tête : nom · portée · banque (obligatoire pour « Dossier de financement ») · pays du bien · situations de résidence concernées · type de financement concerné · « Par défaut » · « Actif » · note. Puis le tableau de ses **lignes**, ordonnable par glisser-déposer :
+
+| Champ d'une ligne | Règles |
+|---|---|
+| Code | Proposé d'après le libellé, en capitales. Unique parmi les lignes en vigueur du modèle (MOD-342). Ne change plus après le premier enregistrement. Le bouton « Reprendre une pièce existante » propose les codes déjà utilisés ailleurs : un même code désigne la **même pièce** d'un modèle à l'autre (MOD-360). |
+| Libellé | Ce que lit le client. Un second libellé, facultatif, sert quand le dossier est sans financement (« Justificatif des fonds » au lieu de « Justificatif de l'apport », PAR-050). |
+| Aide | Ce qu'il faut exactement (600 caractères). |
+| Catégorie | `DocumentCategory`. |
+| Obligatoire | Oui par défaut. |
+| Par emprunteur | Si oui : les rôles concernés (emprunteur principal, co-emprunteur, garant). |
+| S'applique quand | Des conditions, toutes requises : situation professionnelle parmi… · situation de résidence parmi… · type de financement · avec financement · avec co-emprunteur. |
+| Fournie par | Le client (défaut) · Diaspora Patrimoine · le promoteur · la banque. |
+| Fichiers | Nombre maximum · formats acceptés. |
+| Validité | En jours, à partir de la date du document. |
+| Exemple | Une image d'exemple montrée au client. |
+
+**GED-012** `[P1]` Enregistrer une modification des **lignes** augmente la version du modèle ; l'en-tête (nom, filtres, note, actif, par défaut) et l'ordre des lignes se modifient sans changer de version (MOD-342). Les dossiers déjà constitués **ne changent pas** (MOD-341) ; l'écran rappelle : « {n} dossiers en cours utilisent une version antérieure. ». Sur un dossier, « Appliquer la nouvelle version » montre puis applique les différences (MOD-342) : pièces nouvelles, pièces à dispenser, pièces mises à jour ; rien n'est retiré sans confirmation.
+
+**GED-013** `[P1]` **Modèle par défaut.** Un seul par portée (et par banque) : marquer un modèle « Par défaut » retire la marque à l'ancien modèle par défaut de la même portée (et de la même banque), après confirmation. Un modèle par défaut s'applique à défaut de tout autre, même si ses filtres ne correspondent pas (MOD-340). Il doit toujours rester un modèle « Dossier client » par défaut et actif : le désactiver ou le supprimer est refusé (`DEFAULT_TEMPLATE_REQUIRED`). **Supprimer** un modèle (`checklist.manage`) est une suppression logique ; un modèle utilisé par un produit bancaire ne se supprime pas (`IN_USE`) : il se désactive. Les dossiers qui suivent un modèle supprimé gardent leurs pièces et leur version (MOD-342).
+
+**GED-014** `[P1]` **Aperçu pour un profil.** Sous le tableau : on choisit une situation de résidence et une situation professionnelle pour l'emprunteur principal ; « avec co-emprunteur » et « avec garant », chacun avec ses deux situations ; avec ou sans financement ; le type de financement — et l'écran montre la liste de pièces qui en résulte (`POST /admin/checklist-templates/{id}/preview`, `checklist.manage`, qui n'écrit rien). Cela permet de vérifier un modèle avant de l'employer.
+
+## 3. La liste d'un dossier
+
+**GED-020** `[P1]` **Création de la liste**, au passage à l'étape `DOCUMENTS` (CYC-022).
+1. Le modèle est choisi (MOD-340) ; son identifiant et sa version sont notés sur le dossier.
+2. Pour chaque ligne : ses conditions sont évaluées. Une ligne « par emprunteur » donne une pièce pour chaque personne du dossier dont le rôle est concerné et qui remplit les conditions.
+3. Chaque pièce naît `PENDING`, avec une échéance à `documents.defaultDueDays` jours. Une ligne dont le code existe déjà dans le dossier — un contrat de réservation déposé avant la liste (GED-037) — ne crée rien : elle adopte la pièce existante, qui prend `source = CHECKLIST`, le `checklistItemId` et « obligatoire » de la ligne, et garde son statut et ses versions.
+4. **Un seul** événement `document.requested` part : le client reçoit un e-mail qui liste toutes ses pièces.
+
+Si une information nécessaire à une condition **manque** (situation professionnelle inconnue) : les pièces qui en dépendent ne sont pas créées, et l'onglet Pièces affiche « Situation professionnelle de {personne} inconnue : des pièces pourraient manquer. » avec le lien pour la renseigner. Tant qu'elle manque, le dossier **n'est pas complet**, même à 100 % (CAL-055, CYC-147) : on ne déclare pas complet un dossier dont on ne sait pas s'il lui faut des bulletins de salaire. Le client est invité à la donner (ECL-021, DOS-001) ; dès qu'elle l'est, la liste est réévaluée (GED-031). Si la liste ne contient aucune pièce obligatoire, le conseiller en est averti avant de valider.
+
+**GED-030** `[P1]` **Emprunteurs.** Ajouter un co-emprunteur ou un garant crée ses pièces « par emprunteur ». Le retirer : MOD-321.
+
+**GED-031** `[P1]` **Réévaluation.** Elle évalue les lignes de la version du modèle notée sur le dossier (`checklistTemplateId`, `checklistTemplateVersion`, MOD-342), jamais celles d'une version plus récente. La liste est réévaluée quand change : la situation professionnelle ou de résidence d'une personne du dossier ; le fait d'acheter avec ou sans financement ; le type de financement ; la présence d'un co-emprunteur ; ou à la demande (« Réévaluer la liste »).
+- pièce devenue applicable : **créée**, et demandée au client ;
+- pièce devenue inapplicable : **dispensée** (`WAIVED`, raison « N'est plus exigée », `waiveKind = NOT_APPLICABLE`), qu'elle ait un fichier ou non. Elle ne compte plus dans la complétude et n'est plus relancée ; son fichier reste consultable. Si elle redevient applicable, sa dispense est levée selon CYC-146 — seulement une dispense `NOT_APPLICABLE` : celle que le conseiller a décidée (CYC-146), celle d'un emprunteur retiré (MOD-321) ou d'une soumission terminée (CYC-170) n'est pas levée par la réévaluation.
+
+Déclenchée depuis le back-office (`document.request`), la réévaluation montre le résultat avant de l'appliquer. Déclenchée par le client (profil modifié, PRO-004 ; emprunteur ajouté, DOS-030), elle ne s'applique seule que sur un dossier `OPEN` ou `ON_HOLD` qui a une liste, à l'étape `DOCUMENTS`, et le conseiller en est notifié (`NS_CHECKLIST_CHANGED` : « La liste de pièces de {client} a changé : {n} ajoutées, {m} qui ne sont plus exigées. ») ; à `BANK_REVIEW` et au-delà, rien n'est appliqué seul : le conseiller reçoit `NS_CHECKLIST_CHANGED` avec « La liste de pièces de {client} pourrait changer : réévaluez-la si nécessaire. ». Jamais sur un dossier terminé. **Modèle** : la réévaluation garde le modèle noté sur le dossier, même si un autre correspondrait mieux (MOD-340) ; l'onglet Pièces affiche alors « Un autre modèle correspond désormais à ce dossier : {nom}. » avec « Changer de modèle » (`document.request`), qui applique MOD-342 entre les deux modèles. Les pièces de la liste d'une banque liées à une soumission encore en préparation sont réévaluées avec elle (MOD-361). Quand le dossier passe « sans financement », toutes les pièces venues d'une banque — liste, compléments — sont dispensées (`waiveKind = SUBMISSION_ENDED`), validées ou non : plus rien ne les réclame ni ne les fait expirer (CYC-041).
+
+**GED-035** `[P1]` **Ajouter une pièce à la main** (`AD_HOC`, permission `document.request`) : libellé · catégorie · personne concernée · obligatoire ou non · fournie par · échéance · aide · nombre de fichiers. Le client est prévenu (`C_DOC_REQUEST`), sauf si « Ne pas prévenir le client » est coché : `document.requested` est alors émis avec `notifyClient` faux — ni notification ni e-mail ; de même en GED-080 — et la pièce entre dans le calendrier des relances comme les autres (AUT-042). Une pièce ajoutée à la main sans fichier se supprime (`DELETE`, `document.request`) ; les autres se dispensent (CYC-148) : leur suppression est refusée (`DOCUMENT_HAS_FILES`). Le libellé, l'aide, « obligatoire » et l'échéance d'une pièce se modifient (`PATCH`, `document.request`) ; un libellé modifié n'est plus recalculé (`labelEdited`).
+
+**GED-036** `[P1]` **Onglet Pièces d'un dossier.** En tête : la complétude (« 8 pièces satisfaites sur 12 · 66 % » — la partie entière, CAL-055), l'état de l'accord de transmission (GED-070), les boutons « Ajouter une pièce », « Réévaluer la liste », « Relancer maintenant », « Suspendre les relances » (`document.request`). Puis les pièces, groupées comme chez le client (DOS-002), avec en plus : le nombre de versions, le nombre de relances et la date de la dernière, « relances suspendues », et la date d'expiration. Filtre par statut.
+
+**GED-037** `[P1]` **Pièces créées par un geste du dossier.** Certains fichiers ne sont pas « déposés dans une pièce » : ils arrivent par une action — confirmer une réservation, enregistrer un accord de banque, noter un accord donné par téléphone. Chacun devient une pièce du dossier, toujours de la même façon :
+
+| Geste | Pièce | Fournie par | Vue du client |
+|---|---|---|---|
+| Contrat de réservation déposé (PIP-050) | La pièce « Contrat de réservation signé » de la liste (`PRP_RESERVATION_CONTRACT`), dont le fichier devient une nouvelle version ; si la liste ne l'a pas encore (réservation avant l'étape des pièces) : une pièce ajoutée de même libellé et de **même code**, catégorie Bien — la liste, à sa création, l'adopte au lieu d'en créer une seconde (GED-020) | Diaspora Patrimoine | Oui, sous « Fournies par nos soins » |
+| Justificatif d'acompte (PIP-050) | Pièce « Justificatif d'acompte », catégorie Bien | Diaspora Patrimoine | Oui |
+| Justificatif de remboursement d'un acompte (CYC-108) | Pièce « Remboursement de l'acompte », catégorie Bien, **interne** | Diaspora Patrimoine | Non : il lit l'issue dans « Mon bien » |
+| Document d'offre d'une banque (BNK-130) | Pièce « Offre de {banque} », catégorie Financement, liée à sa soumission (`submissionId`) ; créée à la saisie de l'accord, elle n'est montrée au client qu'à sa **publication** (CYC-165) | La banque | Oui, une fois l'accord publié (« Voir l'offre »). Jamais proposée dans le paquet d'une **autre** banque (BNK-103) |
+| Preuve d'un accord recueilli par l'équipe (GED-070) | Pièce « Accord de transmission : preuve », catégorie Autres, **interne** | Diaspora Patrimoine | Non |
+| Document ajouté après l'acquisition (PIP-090) | Pièce au libellé saisi (« Acte signé », « Procès-verbal de remise des clés »), catégorie Bien | Diaspora Patrimoine | Oui |
+
+Règles communes : ces pièces sont de source `AD_HOC` (sauf le contrat, quand la liste le prévoit) ; **facultatives** — elles ne changent pas la complétude — ; une fois le contrôle de sécurité passé, elles naissent **validées**, puisqu'un membre de l'équipe les dépose en connaissance de cause (auteur et date gardés ; CYC-140) ; elles ne déclenchent ni e-mail « pièces à fournir » ni relance ; redéposer le même document par le même geste crée une **nouvelle version** de la même pièce, pas une seconde pièce — « la même pièce » est celle que désigne la réservation (`Reservation.contractDocumentId`, `Reservation.depositProofDocumentId`, `Reservation.depositRefundProofDocumentId`) ou, pour l'offre d'une banque, la pièce de la même soumission (`submissionId`) ; la preuve d'un accord (une pièce par ligne `Consent`, jamais de nouvelle version) et un document ajouté après l'acquisition sont toujours une nouvelle pièce ; seul le contrat a un code (`PRP_RESERVATION_CONTRACT`) ; une pièce interne (`isInternal`) n'entre dans aucun paquet et n'apparaît jamais côté client.
+
+## 4. Vérifier
+
+**GED-040** `[P1]` **Pièces à vérifier** (EA-60) : les pièces à l'état `RECEIVED` et les renouvellements en attente (`renewalVersion`, CYC-141), des dossiers `OPEN` ou `ON_HOLD`, regroupés **par dossier** (`GET /admin/documents/review-queue`, `document.read`) — Dossier · Client · Pièces à vérifier · Dépôt le plus ancien · Conseiller. Vues : « Mes dossiers » · « Tous ». Ordre : le dépôt le plus ancien d'abord. Ouvrir une ligne lance la visionneuse sur la première pièce du dossier.
+
+**GED-041** `[P1]` **Visionneuse** (EA-63), en deux volets.
+
+**À gauche, le document** : image ou PDF affiché dans la page ; zoom, rotation, pages ; un onglet par fichier quand la pièce en a plusieurs ; « Télécharger ». Le document s'affiche par une adresse `inline`, « Télécharger » demande une adresse `attachment` (MED-031).
+
+**À droite, la pièce** : son libellé, son aide (ce qui est attendu), la personne concernée, le déposant, la date et le canal du dépôt, ses versions précédentes avec leur issue (GED-080). Pour un PDF réuni à partir de photos : « {n} photos réunies » (MED-032). Puis les actions :
+
+| Action | Permission | Champs | Effet |
+|---|---|---|---|
+| **Valider** | `document.validate` | Date du document (facultative ; proposée quand la pièce a une durée de validité) | CYC-142. Refus si le document est trop ancien. |
+| **Rejeter** | `document.validate` | Motif (`RejectionReason`) · précision — obligatoire pour « Autre », avec le rappel : « Ce texte est montré au client. » | CYC-143. |
+| Dispenser | `document.waive` | Raison | CYC-146. |
+| Annuler la validation | `document.validate` | Raison | CYC-144. |
+| Déposer pour le client | `document.upload` | Fichiers | GED-055. |
+| Écrire au client | `message.send` | — | Ouvre la messagerie avec « Au sujet de votre pièce {libellé} : ». Avant la livraison de la messagerie : absent ; le motif du rejet, montré au client, en tient lieu. |
+
+Après une action, la visionneuse passe à la **pièce suivante** à vérifier du même dossier ; « {i} / {n} » situe l'avancement ; à la fin : « Toutes les pièces de ce dossier sont vérifiées. » et « Dossier suivant ». Raccourcis : `V` valider · `R` rejeter · `→` pièce suivante.
+
+**GED-042** `[P1]` Un fichier dont le contrôle de sécurité n'est pas terminé ne s'ouvre pas (« Vérification de sécurité en cours »). Un fichier refusé n'est jamais consultable (MOD-350). Tant qu'un nouveau dépôt de la pièce est en contrôle, la visionneuse affiche « Un nouveau dépôt est en contrôle de sécurité. » et propose d'attendre avant de valider (CYC-140).
+
+**GED-043** `[P1]` **Validation groupée.** Dans l'onglet Pièces, on peut cocher plusieurs pièces `RECEIVED` **sans durée de validité** et les valider d'un coup, après confirmation (une seule requête `validate`, qui reçoit la liste des pièces). Les pièces à durée de validité se valident une à une, pour saisir leur date.
+
+**GED-050** `[P1]` **Classer des fichiers reçus par message** (`document.upload`). Sur un message qui porte des pièces jointes : « Classer dans une pièce » → on coche **un ou plusieurs** fichiers — de ce message et, au besoin, d'autres messages du même fil (« Ajouter des fichiers d'un autre message ») : les trois photos d'un passeport se classent ensemble, même envoyées en deux fois → choix d'une pièce du dossier (à fournir, reçue, à refaire ou expirée). Les fichiers cochés sont **copiés** dans **une** nouvelle version de cette pièce (canal `CONVERSATION`), dans l'ordre choisi, les images réunies en un PDF comme pour tout dépôt (MED-032) ; la pièce passe `RECEIVED`, et le fil le signale (MSG-013). Le message garde ses pièces jointes. Le classement émet `document.received` avec `by = CLIENT` : c'est le client qui a fourni la pièce ; le compteur de relances de la pièce repart à zéro (CYC-140), la tâche `doc-call` se ferme (AUT-035), la tâche de vérification naît (`R_DOC_REVIEW`), et `NS_DOC_RECEIVED` ne va pas à l'auteur du classement (NOT-018). Depuis le fil général, « Classer dans une pièce » fait d'abord choisir le dossier, parmi les dossiers ouverts ou en pause du client.
+
+Une pièce jointe est un fichier personnel comme un autre : l'ouvrir demande `document.file.read`, chaque ouverture par l'équipe est tracée (GED-002), et elle suit la même durée de conservation que les pièces du dossier (SEC-110).
+
+**GED-055** `[P1]` **Déposer pour le client** (`document.upload`) : mêmes contrôles que côté client (DOS-011). Le dépôt porte le nom du membre de l'équipe. Le client voit la pièce « Reçue », avec « Déposée par votre conseiller ». Sur une pièce déjà **validée**, ce dépôt est un renouvellement (CYC-141) : la pièce reste validée tant que le nouveau document ne l'est pas.
+
+## 5. Relances et échéances
+
+**GED-060** `[P1]` Les relances automatiques suivent AUT-042. Le conseiller (`document.request`) peut :
+- **suspendre les relances** d'une pièce, ou de tout le dossier (`pause-reminders`), et les **reprendre** (`resume-reminders`) : la reprise remet `reminderBaseAt` à la date du jour et `reminderCount` à 0 pour les pièces concernées — une pièce suspendue un mois n'est pas relancée dès le lendemain ;
+- **relancer maintenant** (`remind`) : `document.reminder_due` est émis avec `manual` vrai, pour toutes les pièces attendues du dossier (AUT-042, point 1) ; `R_DOC_REMINDER` envoie `C_DOC_REMINDER` sans attendre la fin des heures calmes (AUT-006) et hors plafond (AUT-008) — c'est un geste du conseiller —, mais sous les conditions d'arrêt (AUT-007). Les compteurs avancent comme au point 4 de AUT-042 (pièces dues seulement), et cette relance compte comme la dernière du dossier pour l'écart minimal. Si la dernière relance date de moins de `documents.reminderMinGapDays` jours, une confirmation est demandée. Sans pièce attendue, le bouton est inactif, avec l'infobulle « Aucune pièce attendue du client. » ;
+- voir l'**historique des relances** (`DocumentReminder`, `GET /admin/dossiers/{id}/document-reminders`, `document.read`) : date, automatique ou manuelle (et par qui), pièces citées, pièces comptées, e-mail parti ou raison de son absence.
+
+**GED-065** `[P1]` **Échéance** d'une pièce : modifiable une à une, ou pour plusieurs pièces cochées (`document.request`). Une échéance passée s'affiche en rouge, des deux côtés. Elle n'a pas d'autre effet : une pièce en retard reste déposable.
+
+## 6. Accord de transmission
+
+**GED-070** `[P1]` Aucun dossier ne part chez une banque sans le consentement `DATA_SHARING_PARTNERS` du client (CYC-161). Son état s'affiche dans l'onglet Pièces et dans la préparation d'une soumission : « Accord donné le {date} » · « Accord non donné » · « Accord retiré le {date} ».
+
+Le client le donne dans son espace (DOS-040). S'il le donne **autrement** (par téléphone, par e-mail, sur papier), le conseiller l'enregistre (`consent.record`) : « Enregistrer l'accord du client » — moyen (téléphone, e-mail, papier), date **et heure** auxquelles il a été donné (jamais futures ; heure proposée : maintenant si la date est aujourd'hui, 12 h sinon, dans le fuseau du calendrier de travail), et une **preuve** : le fichier de l'e-mail ou du document signé, qui devient une pièce interne du dossier (GED-037) — gardée aussi longtemps que l'accord qu'elle prouve, et non comme les autres pièces (SEC-110) —, ou, pour un accord oral, un compte rendu. Avec un fichier, l'enregistrement se fait en deux temps : (1) la fenêtre crée la pièce interne de preuve (`proof`, `consent.record`) et y dépose le fichier (API-080) ; (2) une fois le contrôle de sécurité passé — la fenêtre l'attend : « Vérification de sécurité de la preuve… » —, « Enregistrer » (`record`) écrit la ligne `Consent` ; la route refuse une preuve dont le contrôle n'a pas abouti. Si le fichier est écarté (CYC-140), rien n'est écrit et la fenêtre affiche « La preuve a été refusée par le contrôle de sécurité : l'accord n'est pas enregistré. » . Abandonner la fenêtre ne supprime rien : la pièce de preuve reste, interne, sans accord ; la prochaine action `proof` sur ce dossier, pour la même personne et le même type, la reprend (nouvelle version) au lieu d'en créer une autre. La ligne `Consent` porte la source `staff:{moyen}`, le texte (`wording` : celui de DOS-040 pour `DATA_SHARING_PARTNERS` ; « {Prénom Nom} accepte la transmission de ses documents aux partenaires sollicités pour le dossier {référence}. » pour `PARTY_AUTHORIZATION`), la date et l'heure données (`givenAt`), l'auteur (`recordedById`) et la preuve (`proofDocumentId` ou `proofNote`). Si une ligne plus récente existe déjà pour cette personne et ce type, l'enregistrement est refusé (`CONSENT_SUPERSEDED`). Pour `DATA_SHARING_PARTNERS`, le client reçoit aussitôt `C_CONSENT_RECORDED`, qui rappelle ce à quoi il a consenti et comment retirer son accord ; s'il n'a pas d'adresse e-mail, le conseiller le lui confirme de vive voix et le note. Le même geste enregistre l'accord d'un co-emprunteur ou d'un garant recueilli par l'équipe (`PARTY_AUTHORIZATION`, DOS-032) ; celui-là n'envoie aucun e-mail.
+
+**GED-071** `[P1]` Si l'accord est retiré (PRO-051) : bandeau sur le dossier, tâche pour le conseiller (`R_CONSENT_WITHDRAWN`), liens de partage révoqués, et **toute sortie de pièces** bloquée — générer un paquet, le télécharger, créer ou renvoyer un lien, « Tout télécharger », téléchargement par la banque (CYC-161) — avec le message « Le client n'a pas donné (ou a retiré) son accord de transmission. ». Les soumissions déjà envoyées ne sont pas retirées d'office : le conseiller décide avec le client. Un retrait exprimé hors de la plateforme — par téléphone, par e-mail, sur papier — est enregistré par le conseiller (`consent.record`, « Enregistrer le retrait de l'accord », `record`) : moyen, date et heure, compte rendu (obligatoire). Une ligne `Consent` de retrait est écrite (source `staff:{moyen}`, `recordedById`, `proofNote`), avec les mêmes effets qu'un retrait fait par le client (PRO-051), et le client en est informé par `C_CONSENT_WITHDRAWN_RECORDED`.
+
+## 7. Versions, téléchargement, recherche
+
+**GED-080** `[P1]` **Versions d'une pièce** : pour chaque version — numéro, date, déposant, canal, fichiers (nom, taille, pages), issue (`VersionOutcome` : en contrôle de sécurité, en vérification, validée, rejetée avec son motif, remplacée, écartée parce que ses fichiers ont été refusés, supprimée), et, si elle est partie chez une banque, « Transmise à {banque} le {date} ». L'équipe ouvre toute version (`document.file.read`). **Supprimer une version** (`document.delete`, raison obligatoire, CYC-149) — pour un document déposé par erreur ou qui concerne une autre personne : ses fichiers sont effacés du stockage, sa ligne reste avec la mention « Supprimée le {date} par {auteur} : {raison} ». Si la version supprimée était la version en cours, la pièce revient à `PENDING` et le client est invité à la redéposer, sauf si « Ne pas prévenir le client » est coché. Trois cas à part (CYC-149) : une pièce née d'un geste du dossier — l'offre d'une banque — est retirée avec sa version en cours ; un renouvellement en attente se supprime sans toucher à la pièce ; et si un renouvellement attend quand la version en cours est supprimée, il prend sa place : la pièce passe « Reçue ». Une version partie dans le paquet d'une soumission en cours ne se supprime pas : « Cette version a été transmise à {banque}. Retirez d'abord la soumission, ou générez un paquet sans elle. ».
+
+**GED-085** `[P1]` **Tout télécharger** (`document.file.read`, confirmation renforcée BO-005) : une archive ZIP des versions en cours des pièces d'un dossier, nommées et classées comme dans un paquet de soumission (BNK-110), sans les pièces internes. Une archive est faite pour sortir de la plateforme : elle est refusée tant que l'accord de transmission du client manque (GED-071) — les pièces restent consultables une à une. L'archive est un travail long (API-085) : la route répond `202`, et une notification prévient quand elle est prête ; elle est tracée et supprimée après 24 heures.
+
+**GED-090** `[P1]` **Recherche de pièces** (EA-64, menu Pièces) : une liste de toutes les pièces, tous dossiers confondus — Dossier · Client · Pièce · Catégorie · Personne · Statut · Déposée le · Expire le · Conseiller. Filtres : statut, catégorie, étape du dossier, conseiller, fournie par, demandée par une banque, « expire dans les {n} jours », « échéance dépassée ». Recherche par client, référence de dossier, libellé. Vue d'origine « Expirent bientôt » (30 jours). Route : `GET /admin/documents` (`document.read`).
+
+**GED-091** `[P1]` **Archivage.** Quand un dossier est abouti ou clôturé, ses pièces passent en **lecture seule** : toute écriture autre que celles de PIP-090 est refusée (`DOSSIER_CLOSED`). Elles restent consultables par l'équipe jusqu'à leur effacement, selon la politique de conservation (SEC-110) : les versions anciennes d'abord, puis l'ensemble. Quand les fichiers d'une pièce sont effacés, la pièce revient à `PENDING` : un dossier rouvert ensuite ne s'affiche pas « complet » sans fichier (CYC-149). Après une acquisition, l'équipe peut encore ajouter un document (GED-037).

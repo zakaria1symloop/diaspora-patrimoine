@@ -1,0 +1,67 @@
+{
+  "toggle": {
+    "label": "Comparer",
+    "aria": "Comparer {titre}"
+  },
+  "tray": {
+    "label": "Biens à comparer",
+    "compare": "Comparer ({n})",
+    "clear": "Tout retirer",
+    "remove": "Retirer {titre} de la comparaison",
+    "hint": "Ajoutez un deuxième bien pour comparer.",
+    "free": "Emplacement libre",
+    "full": "Vous comparez déjà trois biens : retirez-en un pour ajouter celui-ci."
+  },
+  "page": {
+    "seoTitle": "Comparer des biens",
+    "breadcrumb": "Comparer",
+    "eyebrow": "Côte à côte",
+    "title": "Comparer les biens",
+    "back": "Revenir aux résultats",
+    "diffOnly": "Afficher seulement les différences",
+    "missing": "Un bien de cette comparaison n’est plus proposé.",
+    "remove": "Retirer",
+    "removeAria": "Retirer {titre} de la comparaison",
+    "interest": "Exprimer mon intérêt",
+    "save": "Sauvegarder",
+    "saved": "Sauvegardé",
+    "add": "Ajouter un bien",
+    "addHint": "Choisissez un autre bien dans le catalogue : cochez « Comparer » sur sa carte.",
+    "emptyTitle": "Choisissez deux ou trois biens à comparer",
+    "emptyText": "Cochez « Comparer » sur les biens qui vous intéressent : ils se placent ici, côte à côte, ligne par ligne.",
+    "one": "Ajoutez un deuxième bien pour voir les différences.",
+    "browse": "Voir les biens",
+    "loading": "Chargement de la comparaison…",
+    "error": "La comparaison n’a pas pu être chargée.",
+    "retry": "Réessayer",
+    "criterion": "Critère",
+    "yes": "Oui",
+    "no": "Non",
+    "rows": {
+      "city": "Ville",
+      "price": "Prix",
+      "monthly": "Mensualité indicative*",
+      "surface": "Surface",
+      "rooms": "Pièces",
+      "bathrooms": "Salles de bain",
+      "floors": "Étages",
+      "delivery": "Livraison",
+      "standing": "Standing",
+      "program": "Programme",
+      "promoter": "Promoteur",
+      "lots": "Lots disponibles",
+      "features": "Caractéristiques",
+      "nearby": "À proximité",
+      "flights": "Temps de vol",
+      "tour360": "Visite 360°",
+      "availability": "Disponibilité"
+    },
+    "lotsValue": "{n, plural, =0 {Aucun} one {# lot} other {# lots}}",
+    "availability": {
+      "AVAILABLE": "Disponible",
+      "RESERVED": "Réservé",
+      "SOLD": "Vendu",
+      "WITHDRAWN": "Retiré de la vente"
+    }
+  }
+}

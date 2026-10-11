@@ -1,0 +1,266 @@
+/* NAV-010 … NAV-016 — sticky header of one height; once the page has scrolled it gets its background and shadow
+   (class `compact`), nothing changes size. Transparent over the home hero. */
+.header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 50;
+  background: var(--bo-fond-blanc);
+  transition:
+    background-color var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
+}
+.transparent:not(.compact) {
+  background: transparent;
+}
+.compact {
+  box-shadow: 0 1px 0 var(--bo-ligne-douce), 0 8px 24px rgb(1 41 91 / 0.06);
+}
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-24);
+  min-height: var(--header-h);
+}
+
+.nav {
+  display: flex;
+  align-items: stretch;
+}
+.navList {
+  display: flex;
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navItem {
+  display: flex;
+}
+.navItem + .navItem {
+  border-inline-start: 1px solid var(--bo-ligne-douce);
+}
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-6);
+  min-height: var(--target-min);
+  padding: var(--sp-6) clamp(0.5rem, 1.1vw, 1.25rem);
+  color: var(--bo-texte-roi);
+  text-decoration: none;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 500;
+  white-space: nowrap;
+  position: relative;
+}
+.navLink::after {
+  content: '';
+  position: absolute;
+  inset-inline: 25%;
+  inset-block-end: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+.navLink:hover::after,
+.navLink[aria-current='page']::after {
+  transform: scaleX(1);
+}
+.navLink[aria-current='page'] {
+  font-weight: 600;
+}
+.cafe {
+  color: var(--bo-texte-or);
+  --icon-accent: var(--bo-accent-or);
+  font-size: var(--fs-cafemark-s);
+  line-height: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+}
+.menuButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--target-min);
+  height: var(--target-min);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bo-texte-roi);
+}
+
+.badge {
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding-inline: var(--sp-4);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-erreur);
+  color: var(--bo-texte-blanc);
+  font-size: var(--fs-caption);
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* 1024 to 1279 px: the six entries, the brand and the button share a tight line */
+@media (max-width: 1279px) {
+  .inner {
+    gap: var(--sp-12);
+  }
+  .navLink {
+    padding-inline: 0.5rem;
+  }
+}
+@media (max-width: 1023px) {
+  .nav,
+  .login {
+    display: none;
+  }
+  .menuButton {
+    display: inline-flex;
+  }
+}
+
+@media print {
+  .header {
+    display: none;
+  }
+}
+
+/* NAV-014 — full-screen phone menu */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: var(--bo-fond-ivoire);
+  overflow-y: auto;
+  animation: sheetIn var(--motion-base) var(--ease-out);
+}
+.sheetTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-h);
+}
+.sheetList {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-8) 0 var(--sp-24);
+  display: flex;
+  flex-direction: column;
+}
+.sheetLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding-block: var(--sp-12);
+  border-block-end: 1px solid var(--bo-ligne-douce);
+  color: var(--bo-texte-roi);
+  text-decoration: none;
+  font-size: var(--fs-subtitle-m);
+  line-height: var(--lh-subtitle-m);
+  font-weight: 600;
+}
+.sheetLink[aria-current='page'] {
+  color: var(--bo-texte-nuit);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.sheetCafe {
+  color: var(--bo-texte-or);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.sheetFooter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-24);
+  padding-block-end: var(--sp-48);
+}
+@keyframes sheetIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* NAV-013 — « Mon espace » menu. */
+.account {
+  position: relative;
+}
+.accountMenu {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 100%;
+  z-index: 30;
+  min-width: 15rem;
+  margin: 0;
+  padding: var(--sp-8);
+  list-style: none;
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-l);
+  animation: accountIn var(--motion-base) var(--ease-out);
+}
+.accountItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--sp-8) var(--sp-12);
+  border: 0;
+  border-radius: var(--radius-m);
+  background: none;
+  color: var(--bo-texte-roi);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+.accountItem:hover,
+.accountItem:focus-visible {
+  background: var(--bo-fond-ciel-pale);
+}
+@keyframes accountIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .accountMenu {
+    animation: none;
+  }
+}
+/* Figma « Menu du téléphone ouvert » (543:35457) — each entry with its icon */
+.sheetLink {
+  gap: var(--sp-16);
+}
+.sheetIcon {
+  flex: none;
+  color: var(--bo-texte-roi);
+}
+.sheetCafe .sheetIcon {
+  color: var(--bo-accent-or);
+  --icon-gold: var(--bo-accent-or);
+}
+.sheetLabel {
+  flex: 1;
+}

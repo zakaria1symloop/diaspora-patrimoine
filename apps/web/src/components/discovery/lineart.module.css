@@ -1,0 +1,93 @@
+/* DSN-076 — trace once (motion.celebrate), then one move, then still; never looped; reduced motion: finished. */
+.scene {
+  width: 100%;
+  max-width: 26rem;
+  height: auto;
+  overflow: visible;
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw var(--motion-celebrate) var(--ease-in-out) forwards;
+}
+.fill {
+  opacity: 0;
+  animation: fade var(--motion-slow) var(--ease-out) forwards 600ms;
+}
+.drop,
+.rise,
+.ring,
+.fly {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+.drop {
+  animation: drop 900ms var(--ease-spring) both 1300ms;
+}
+.rise {
+  animation: rise 900ms var(--ease-out) both 1300ms;
+}
+.ring {
+  animation: ring 1100ms var(--ease-in-out) both 1300ms;
+}
+.fly {
+  animation: fly 1200ms var(--ease-out) both 1700ms;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes ring {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: rotate(12deg);
+  }
+  45% {
+    transform: rotate(-10deg);
+  }
+  70% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+@keyframes fly {
+  from {
+    opacity: 0;
+    transform: translate(-60px, 40px) scale(0.6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draw,
+  .fill,
+  .drop,
+  .rise,
+  .ring,
+  .fly {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}

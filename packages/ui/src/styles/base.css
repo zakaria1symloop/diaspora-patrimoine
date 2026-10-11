@@ -1,0 +1,198 @@
+/* Base styles shared by the site and the client space. Logical properties only (TRV-003). */
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* TRV-123 — text size: Normale 100 %, Grande 115 %, Très grande 130 % of 16px */
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-block-start: calc(var(--header-h-compact) + var(--sp-16));
+}
+html[data-text-size='large'] {
+  font-size: 115%;
+}
+html[data-text-size='xlarge'] {
+  font-size: 130%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--bo-texte-encre);
+  background: var(--bo-fond-ivoire);
+  -webkit-font-smoothing: antialiased;
+  font-kerning: normal;
+  font-variant-numeric: lining-nums;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* DSN-050 — focus: 3px accent/bleu ring, 2px offset, always visible with the keyboard */
+:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* NAV-016 — « Aller au contenu », visible with the keyboard only */
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--sp-16);
+  inset-block-start: -10rem;
+  z-index: 1000;
+  padding: var(--sp-12) var(--sp-20);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  inset-block-start: var(--sp-16);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--grid-content) + 2 * var(--grid-gutter));
+  margin-inline: auto;
+  padding-inline: var(--grid-gutter);
+}
+
+/* DSN-074 — reduced motion: no movement, short fades only */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--motion-fast) !important;
+    transition-property: opacity, color, background-color, border-color !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print (NAV-062): header and footer hidden by their own components */
+@media print {
+  body {
+    background: #fff;
+  }
+}
+
+/* CAT-030, D-098 — the catalogue filters are a panel docked on the right on a computer: the content gives it its
+   place, so that nothing of the results hides behind it. */
+:root {
+  --filters-panel-w: 24rem;
+}
+@media (min-width: 1024px) {
+  /* the header keeps its whole width (the panel sits under it); the content and the footer move aside */
+  main,
+  footer {
+    transition: margin-inline-end var(--motion-base) var(--ease-out);
+  }
+  html[data-filters-docked] main,
+  html[data-filters-docked] footer {
+    margin-inline-end: var(--filters-panel-w);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  main,
+  footer {
+    transition: none;
+  }
+}
+
+/* TRV-127 — the sentence being read aloud (« Écouter cette page »), highlighted where the browser knows ::highlight */
+::highlight(dp-listen) {
+  background-color: var(--bo-fond-or-clair);
+  color: var(--bo-texte-roi);
+}
+
+/* TRV-122 — « Affichage simplifié » on the public site (attribute set before paint, key dp_simple_mode): the text goes
+   at least to « Grande ». */
+html[data-simple]:not([data-text-size='xlarge']) {
+  font-size: 115%;
+}
+
+/* DSN-072 (D-100) — cards of a showcase list coming in when the list enters the screen (RevealOnScroll, apps/web) */
+[data-reveal='wait'] > * {
+  opacity: 0;
+  transform: translateY(12px);
+}
+[data-reveal='in'] > * {
+  animation: dp-reveal var(--motion-base) var(--ease-out) both;
+}
+[data-reveal='in'] > :nth-child(2) { animation-delay: 40ms; }
+[data-reveal='in'] > :nth-child(3) { animation-delay: 80ms; }
+[data-reveal='in'] > :nth-child(4) { animation-delay: 120ms; }
+[data-reveal='in'] > :nth-child(5) { animation-delay: 160ms; }
+[data-reveal='in'] > :nth-child(n + 6) { animation-delay: 200ms; }
+@keyframes dp-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

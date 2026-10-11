@@ -1,0 +1,479 @@
+{
+  "title": "Programmes",
+  "intro": "Les résidences de vos promoteurs : leurs biens, leurs lots, leur publication.",
+  "create": "Nouveau programme",
+  "search": "Rechercher un programme, un promoteur, une région",
+  "column": {
+    "name": "Nom",
+    "promoter": "Promoteur",
+    "region": "Région",
+    "standing": "Standing",
+    "delivery": "Livraison",
+    "properties": "Biens",
+    "lots": "Lots disponibles / total",
+    "priceFrom": "Prix à partir de",
+    "publication": "Publication",
+    "updatedAt": "Modifié le"
+  },
+  "view": {
+    "published": "Publiés",
+    "drafts": "Brouillons",
+    "archived": "Archivés",
+    "all": "Tous"
+  },
+  "filter": {
+    "attention": "À surveiller",
+    "toCheck": "Disponibilités à vérifier",
+    "late": "Livraison dépassée",
+    "deliveryStatus": "État du chantier"
+  },
+  "empty": {
+    "title": "Aucun programme pour l’instant.",
+    "text": "Créez le premier programme d’un promoteur : son nom, son lieu, son standing et sa livraison suffisent pour commencer."
+  },
+  "row": {
+    "toCheck": "À vérifier",
+    "late": "Dépassée",
+    "noLot": "Aucun lot"
+  },
+  "common": {
+    "delivery": {
+      "MONTH": "{mois} {annee}",
+      "QUARTER": "T{q} {annee}",
+      "YEAR": "{annee}",
+      "delivered": "Livré",
+      "late": "Livraison dépassée"
+    },
+    "stock": "{a} / {t}",
+    "stockLabel": "{a} disponibles sur {t}",
+    "noPrice": "Prix à définir",
+    "equivalent": "≈ {montant}",
+    "openPublic": "Voir sur le site",
+    "moreActions": "Autres actions",
+    "saved": "Modifications enregistrées.",
+    "edit": "Modifier",
+    "editSection": "Modifier la section {section}",
+    "required": "obligatoire",
+    "missing": {
+      "title": "Ce qui manque pour publier",
+      "REQUIRED_FIELDS": "Les champs obligatoires",
+      "DESCRIPTION_LENGTH": "Une description d’au moins 100 caractères",
+      "PROMOTER_ACTIVE": "Un promoteur sélectionné",
+      "READY_MEDIA": "Au moins une photo, une image 3D ou un plan prêts",
+      "COUNTRY_ACTIVE": "Un pays ouvert au catalogue",
+      "LOT_WITH_PRICE": "Au moins un lot avec un prix",
+      "COMPLETENESS_SCORE": "Un score de complétude d’au moins {n}",
+      "PROGRAM_PUBLISHED": "Son programme publié",
+      "VETTED_AT": "La date de sélection",
+      "CONVENTION_SIGNED": "La date de signature de la convention"
+    },
+    "missingHint": "Complétez la fiche, puis publiez.",
+    "readyToPublish": "Prêt à être publié",
+    "noBank": "Aucune banque active : l’onglet Financement apparaîtra avec la première banque.",
+    "dossierLink": "Dossier {reference}"
+  },
+  "detail": {
+    "tab": {
+      "info": "Informations",
+      "properties": "Biens",
+      "lots": "Lots",
+      "media": "Médias",
+      "financing": "Financement",
+      "works": "Chantier",
+      "nearby": "À proximité",
+      "dossiers": "Dossiers",
+      "history": "Historique"
+    },
+    "aside": {
+      "title": "En bref",
+      "promoter": "Promoteur",
+      "stock": "Lots disponibles",
+      "held": "Sous option ou réservés",
+      "sold": "Vendus",
+      "priceFrom": "Prix à partir de",
+      "delivery": "Livraison",
+      "publishedAt": "Publié le",
+      "createdAt": "Créé le",
+      "publicStock": "Les compteurs du site ne comptent que les biens publiés."
+    },
+    "publishCard": {
+      "title": "Publication",
+      "published": "En ligne depuis le {date}",
+      "draft": "Brouillon : invisible sur le site",
+      "archived": "Archivé : invisible sur le site"
+    }
+  },
+  "action": {
+    "publish": "Publier",
+    "republish": "Republier",
+    "unpublish": "Dépublier",
+    "archive": "Archiver",
+    "unarchive": "Désarchiver",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "deleteBlocked": "Supprimez ou archivez d’abord ses {n} biens.",
+    "addProperty": "Ajouter une typologie",
+    "importLots": "Importer une grille"
+  },
+  "dialog": {
+    "publish": {
+      "title": "Publier {nom}",
+      "text": "Le programme paraîtra sur le site, avec ceux de ses biens qui sont publiés.",
+      "withProperties": "Republier aussi {n, plural, one {le bien parti} other {les # biens partis}} avec lui (chacun s’il remplit toujours les conditions)",
+      "submit": "Publier"
+    },
+    "notPublishable": {
+      "title": "{nom} ne peut pas encore être publié",
+      "text": "Il manque :"
+    },
+    "unpublish": {
+      "title": "Dépublier {nom} ?",
+      "text": "Le programme quitte le site{n, plural, =0 {.} one {, avec son bien en ligne.} other {, avec ses # biens en ligne.}} Tout reste dans le back-office, en brouillon.",
+      "submit": "Dépublier"
+    },
+    "archive": {
+      "title": "Archiver {nom} ?",
+      "text": "{n, plural, =0 {Le programme n’a pas de bien à archiver.} one {Son bien sera archivé avec lui.} other {Ses # biens seront archivés avec lui.}}",
+      "dossiers": "{n, plural, one {Un dossier ouvert en dépend : son client lira « Ce bien n’est plus disponible ».} other {# dossiers ouverts en dépendent : leurs clients liront « Ce bien n’est plus disponible ».}}",
+      "submit": "Archiver"
+    },
+    "unarchive": {
+      "title": "Désarchiver {nom} ?",
+      "text": "Le programme revient en brouillon, pour être retravaillé puis republié.",
+      "withProperties": "Désarchiver aussi {n, plural, one {le bien archivé} other {les # biens archivés}} avec lui (en brouillon)",
+      "submit": "Désarchiver"
+    },
+    "duplicate": {
+      "title": "Dupliquer {nom} ?",
+      "text": "La copie naît en brouillon, sous le nom « {nom} (copie) ». Ni ses biens, ni ses médias, ni sa mise en avant ne sont copiés.",
+      "submit": "Dupliquer"
+    },
+    "delete": {
+      "title": "Supprimer {nom} ?",
+      "text": "Le programme quitte le catalogue et sa fiche est supprimée. Son historique reste dans le journal.",
+      "submit": "Supprimer"
+    }
+  },
+  "toast": {
+    "created": "Programme créé.",
+    "published": "Programme publié.",
+    "unpublished": "Programme dépublié.",
+    "archived": "Programme archivé.",
+    "unarchived": "Programme désarchivé.",
+    "duplicated": "Copie créée : vous êtes sur sa fiche.",
+    "deleted": "Programme supprimé."
+  },
+  "section": {
+    "identity": "Identité",
+    "location": "Localisation",
+    "delivery": "Livraison",
+    "description": "Description",
+    "amenities": "Équipements",
+    "guarantees": "Garanties",
+    "highlight": "Mise en avant",
+    "seo": "Référencement"
+  },
+  "field": {
+    "name": "Nom du programme",
+    "promoter": "Promoteur",
+    "promoterHint": "Seuls les promoteurs dont la relation n’est pas terminée sont proposés.",
+    "tagline": "Accroche",
+    "standing": "Standing",
+    "totalUnits": "Nombre total de logements",
+    "country": "Pays",
+    "region": "Région",
+    "city": "Commune",
+    "cityHint": "Facultative : elle précise le lieu sur la fiche, sans être exigée pour publier.",
+    "addressLine": "Adresse (interne)",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "position": "Position",
+    "positionHint": "Cliquez sur la carte pour placer le repère.",
+    "noPosition": "Aucune position",
+    "openMap": "Voir sur une carte",
+    "privateNotice": "L’adresse et la position exactes ne sont jamais publiées.",
+    "deliveryStatus": "Statut",
+    "deliveryDate": "Date",
+    "deliveryPrecision": "Précision",
+    "description": "Description",
+    "descriptionHint": "100 caractères au moins pour publier ; 300 font gagner des points aux biens.",
+    "amenities": "Équipements",
+    "guarantees": "Garanties (texte public)",
+    "highlightLabel": "Étiquette",
+    "highlightUntil": "Jusqu’au",
+    "seoTitle": "Titre",
+    "seoDescription": "Description",
+    "seoPreview": "Aperçu du résultat de recherche",
+    "slug": "Adresse de la page",
+    "none": "Aucun"
+  },
+  "inheritNotice": "Ce changement s’applique {n, plural, one {au bien du programme} other {aux # biens du programme}}.",
+  "createPage": {
+    "title": "Nouveau programme",
+    "intro": "L’essentiel pour commencer : le reste se complète sur sa fiche.",
+    "submit": "Créer le programme",
+    "noPromoter": "Aucun promoteur n’est encore enregistré : créez d’abord la fiche du promoteur."
+  },
+  "properties": {
+    "title": "Typologies du programme",
+    "empty": {
+      "title": "Ce programme n’a pas encore de typologie.",
+      "text": "Ajoutez sa première typologie (type, pièces, surface), puis ses lots : elle hérite du lieu, du standing et de la livraison du programme."
+    },
+    "column": {
+      "property": "Typologie",
+      "surface": "Surface",
+      "price": "Prix",
+      "lots": "Lots",
+      "publication": "Publication",
+      "completeness": "Complétude"
+    }
+  },
+  "lots": {
+    "title": "Lots",
+    "filterTypology": "Typologie",
+    "allTypologies": "Toutes les typologies",
+    "add": "Ajouter un lot",
+    "addFor": "Ajouter un lot à",
+    "empty": {
+      "title": "Aucun lot pour l’instant.",
+      "text": "Un lot, c’est un logement précis : sa référence chez le promoteur, sa surface, son prix. Ajoutez-les un par un ou importez la grille du promoteur.",
+      "noTypology": "Ajoutez d’abord une typologie : chaque lot appartient à l’une d’elles."
+    },
+    "column": {
+      "reference": "Lot",
+      "typology": "Typologie",
+      "building": "Bâtiment",
+      "floor": "Étage",
+      "door": "Porte",
+      "orientation": "Orientation",
+      "surface": "Surface",
+      "terrace": "Terrasse",
+      "land": "Terrain",
+      "price": "Prix",
+      "pricePerM2": "Prix au m²",
+      "status": "Statut",
+      "parking": "Parking inclus",
+      "extras": "Options",
+      "plan": "Plan",
+      "deliveredAt": "Livré le"
+    },
+    "groundFloor": "RDC",
+    "referencePending": "Référence à saisir",
+    "external": "hors plateforme",
+    "heldBy": "Dossier {reference}",
+    "until": "jusqu’au {date}",
+    "perM2": "{montant}/m²",
+    "summary": "{n, plural, one {# lot} other {# lots}} · {a} disponibles · {h} sous option ou réservés · {s} vendus",
+    "selected": "{n, plural, one {# lot sélectionné} other {# lots sélectionnés}}",
+    "rowActions": "Actions du lot {reference}",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "history": "Historique des prix",
+    "status": "Changer le statut",
+    "correctSale": "Annuler cette vente",
+    "bulkPrice": "Modifier le prix",
+    "markDelivered": "Marquer livrés",
+    "statusLocked": "Ce lot est {statut} par un dossier : son statut se change depuis sa réservation.",
+    "statusLockedSale": "Ce lot est vendu par un dossier : la vente ne se corrige pas ici.",
+    "toast": {
+      "created": "Lot ajouté.",
+      "saved": "Lot enregistré.",
+      "duplicated": "Copie créée, retirée de la vente tant que sa référence n’est pas saisie.",
+      "deleted": "Lot supprimé.",
+      "withdrawn": "Ce lot a déjà servi à un dossier : il est retiré de la vente au lieu d’être supprimé.",
+      "status": "Statut du lot modifié.",
+      "prices": "{n, plural, one {Prix modifié.} other {# prix modifiés.}}",
+      "delivered": "{n, plural, one {Lot marqué livré.} other {# lots marqués livrés.}}"
+    },
+    "dialog": {
+      "add": {
+        "title": "Ajouter un lot",
+        "typology": "Typologie",
+        "submit": "Ajouter le lot"
+      },
+      "delete": {
+        "title": "Supprimer le lot {reference} ?",
+        "text": "S’il a déjà servi à un dossier ou à une réservation, il est retiré de la vente au lieu d’être supprimé, pour que l’historique le garde."
+      },
+      "duplicate": {
+        "title": "Dupliquer le lot {reference} ?",
+        "text": "La copie naît retirée de la vente, avec une référence provisoire à remplacer avant de la remettre en vente."
+      },
+      "status": {
+        "title": "Statut du lot {reference}",
+        "to": "Nouveau statut",
+        "AVAILABLE": "Remettre en vente",
+        "RESERVED": "Réservé hors plateforme",
+        "SOLD": "Vendu hors plateforme",
+        "WITHDRAWN": "Retiré de la vente",
+        "note": "Note",
+        "noteHint": "Obligatoire : qui l’a dit, et quand.",
+        "impact": "{c, plural, one {# dossier envisage ce bien} other {# dossiers envisagent ce bien}} ; {t, plural, =0 {aucun ne vise ce lot} one {# vise ce lot} other {# visent ce lot}}. Leurs conseillers seront prévenus.",
+        "pendingReference": "Saisissez d’abord la référence de ce lot.",
+        "submit": "Changer le statut"
+      },
+      "correct": {
+        "title": "Annuler la vente du lot {reference} ?",
+        "text": "La vente hors plateforme saisie par erreur est annulée : le lot revient en vente.",
+        "reason": "Raison",
+        "submit": "Annuler cette vente"
+      },
+      "history": {
+        "title": "Historique des prix du lot {reference}",
+        "created": "Prix initial",
+        "empty": "Aucun changement de prix.",
+        "system": "Système"
+      },
+      "bulk": {
+        "title": "Modifier le prix de {n, plural, one {# lot} other {# lots}}",
+        "percent": "Augmenter ou baisser de",
+        "percentHint": "De −90 à +500 %, deux décimales au plus ; le nouveau prix est arrondi à l’unité.",
+        "set": "Fixer à",
+        "preview": "Voir le récapitulatif",
+        "summary": "Récapitulatif",
+        "before": "Prix actuel",
+        "after": "Nouveau prix",
+        "reserved": "Réservation en cours : son prix convenu ne change pas.",
+        "submit": "Appliquer les nouveaux prix",
+        "back": "Revenir au choix"
+      },
+      "delivered": {
+        "title": "Marquer {n, plural, one {# lot livré} other {# lots livrés}}",
+        "date": "Date de livraison réelle",
+        "hint": "Jamais une date future.",
+        "submit": "Marquer livrés"
+      },
+      "propagate": {
+        "title": "Reporter la date de livraison sur les lots ?",
+        "text": "{nom} est livré : voulez-vous marquer ses {n} lots livrés à une même date ?",
+        "submit": "Reporter sur les lots",
+        "skip": "Plus tard"
+      }
+    }
+  },
+  "stock": {
+    "verified": "Disponibilités vérifiées le {date} avec {nom}",
+    "verifiedNoOne": "Disponibilités vérifiées le {date}",
+    "due": "À vérifier avec le promoteur",
+    "dueSince": "Vérification attendue depuis le {date}",
+    "never": "Disponibilités jamais vérifiées depuis la publication",
+    "notConcerned": "Rien à vérifier : aucun lot disponible en ligne.",
+    "button": "Disponibilités vérifiées",
+    "dialog": {
+      "title": "Disponibilités vérifiées",
+      "intro": "À faire après avoir corrigé les lots qui ont changé : vous dites que tout le tableau est juste aujourd’hui.",
+      "who": "Qui l’a confirmé chez le promoteur",
+      "whoNone": "Personne en particulier",
+      "whoOther": "Une autre personne",
+      "name": "Nom",
+      "note": "Note",
+      "noteHint": "Elle devient une note interne, préfixée « Disponibilités vérifiées : ».",
+      "submit": "Confirmer"
+    },
+    "toast": "Disponibilités notées comme vérifiées."
+  },
+  "nearby": {
+    "title": "À proximité",
+    "intro": "Jusqu’à huit lieux autour du programme ; le site en montre cinq, dans cet ordre.",
+    "add": "Ajouter un lieu",
+    "label": "Lieu",
+    "category": "Catégorie",
+    "minutes": "Durée (min)",
+    "mode": "Mode",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "remove": "Retirer",
+    "max": "Huit lieux au plus.",
+    "shownOnSite": "Affiché sur le site",
+    "empty": {
+      "title": "Aucun lieu à proximité.",
+      "text": "École, transports, commerces : trois lieux suffisent à rassurer un acheteur qui ne connaît pas le quartier."
+    },
+    "toast": "Lieux à proximité enregistrés.",
+    "minutesLabel": "{n} min {mode}",
+    "disabled": "Les points d’intérêt sont désactivés dans les paramètres."
+  },
+  "works": {
+    "title": "Avancement du chantier",
+    "add": "Ajouter un point d’avancement",
+    "stage": "Étape",
+    "percent": "Avancement (%)",
+    "percentHint": "Jamais inférieur au point précédent ({n} %).",
+    "note": "Note",
+    "date": "Date",
+    "silent": "Ne pas prévenir les clients",
+    "silentHint": "Sinon, les clients dont le dossier porte sur ce programme reçoivent une notification et un e-mail.",
+    "photos": "Photos",
+    "photosHint": "Ajoutez les photos après l’enregistrement du point.",
+    "addPhotos": "Ajouter des photos",
+    "edit": "Corriger",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce point d’avancement ?",
+    "deleteText": "Il quitte le site. Les clients déjà prévenus ne le sont pas à nouveau.",
+    "submit": "Publier le point",
+    "save": "Enregistrer",
+    "by": "par {nom}",
+    "empty": {
+      "title": "Aucun point d’avancement.",
+      "text": "Un point par étape du chantier, avec quelques photos : c’est ce que les clients regardent le plus après leur réservation."
+    },
+    "toast": {
+      "created": "Point d’avancement publié.",
+      "saved": "Point d’avancement corrigé.",
+      "deleted": "Point d’avancement supprimé."
+    },
+    "disabled": "L’avancement du chantier est désactivé dans les paramètres."
+  },
+  "dossiers": {
+    "dossiersTitle": "Dossiers",
+    "leadsTitle": "Demandes reçues",
+    "column": {
+      "reference": "Référence",
+      "client": "Client",
+      "property": "Bien",
+      "lot": "Lot",
+      "stage": "Étape",
+      "candidate": "Bien candidat",
+      "agent": "Conseiller",
+      "updatedAt": "Activité",
+      "kind": "Nature",
+      "status": "État",
+      "createdAt": "Reçue le"
+    },
+    "retained": "Retenu",
+    "counters": {
+      "views": "Vues",
+      "interests": "Intérêts",
+      "proposals": "Propositions",
+      "visits": "Visites tenues"
+    },
+    "empty": {
+      "dossiers": "Aucun dossier ne porte sur ce programme pour l’instant.",
+      "leads": "Aucune demande reçue."
+    }
+  },
+  "financing": {
+    "title": "Éligibilité au financement",
+    "intro": "Pour chaque banque active : accepte-t-elle de financer ce programme ? La ligne posée sur un bien l’emporte sur celle de son programme.",
+    "column": {
+      "bank": "Banque",
+      "state": "État",
+      "note": "Note",
+      "checkedAt": "Vérifié le"
+    },
+    "state": {
+      "accepted": "Accepte de financer",
+      "refused": "Refuse",
+      "unknown": "Non renseigné"
+    },
+    "inherited": "Hérité du programme : {etat}",
+    "eligible": "Étiquette publique : « Éligible au financement »",
+    "notEligible": "Pas d’étiquette « Éligible au financement » sur le site",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "toast": "Éligibilité enregistrée."
+  }
+}

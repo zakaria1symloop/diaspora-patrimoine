@@ -1,0 +1,311 @@
+/* EC-11 — dossier header, « Suivi » and the list of dossiers (D-098: the whole width). Tokens only. */
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+.header {
+  display: grid;
+  gap: var(--sp-20);
+  margin-block-end: var(--sp-24);
+}
+.header > header {
+  margin-block-end: 0;
+}
+.header > .banner,
+.header > div:empty {
+  margin: 0;
+}
+.titleRow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+}
+.titleRow > span {
+  font-family: var(--font-ui);
+}
+.headCard {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  max-width: 28rem;
+  padding: var(--sp-8) var(--sp-12) var(--sp-8) var(--sp-8);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-encre);
+  text-decoration: none;
+}
+.headNone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding-inline: var(--sp-16);
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--bo-ligne-bleue);
+  color: var(--bo-texte-doux);
+  font-weight: 600;
+}
+.thumb {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+  flex: none;
+}
+.thumb picture {
+  display: contents;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.headProperty {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.headPropertyTitle {
+  font: 700 var(--fs-body-xl) / var(--lh-body-xl) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.headPropertyPlace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.headPropertyPlace svg {
+  color: var(--bo-texte-or);
+}
+.frieze {
+  padding-block: var(--sp-24);
+}
+
+/* ─── « Suivi »: main zone and side zone ──────────────────────────────────── */
+.layout {
+  display: grid;
+  gap: var(--sp-20);
+}
+.main,
+.side {
+  display: grid;
+  gap: var(--sp-20);
+  align-content: start;
+  min-width: 0;
+}
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.7fr) minmax(19rem, 1fr);
+    align-items: start;
+  }
+}
+@media (min-width: 1640px) {
+  /* wide: what comes next beside the history, the side column stays */
+  .layout {
+    grid-template-columns: minmax(0, 2.5fr) minmax(20rem, 0.85fr);
+  }
+  .main {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    align-items: start;
+  }
+  .main > :only-child {
+    grid-column: 1 / -1;
+  }
+}
+:global([data-simple]) .layout,
+:global([data-simple]) .main {
+  grid-template-columns: minmax(0, 1fr);
+}
+.now > :first-child {
+  margin-block-start: 0;
+}
+.factsTitle {
+  margin-block-end: var(--sp-16);
+}
+
+/* ─── Timeline ────────────────────────────────────────────────────────────── */
+.timelineFilter {
+  margin-block-end: var(--sp-20);
+}
+.timeline {
+  list-style: none;
+  margin: 0 0 var(--sp-16);
+  padding: 0;
+  position: relative;
+  transition: opacity var(--motion-fast) var(--ease-out);
+}
+.timeline[data-loading] {
+  opacity: 0.6;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(1.25rem - 1px);
+  top: 1.25rem;
+  bottom: 1.25rem;
+  width: 2px;
+  background: var(--bo-ligne-bleue);
+}
+.event {
+  position: relative;
+  display: flex;
+  gap: var(--sp-16);
+  padding-block-end: var(--sp-20);
+}
+.event:last-child {
+  padding-block-end: 0;
+}
+.eventIcon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bo-fond-blanc);
+  border: 1.5px solid var(--bo-ligne-or);
+  color: var(--bo-texte-or);
+}
+.event:first-child .eventIcon {
+  background: var(--bo-fond-bleu-roi);
+  border-color: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  --icon-accent: var(--bo-texte-ciel);
+}
+.eventBody {
+  display: grid;
+  gap: 2px;
+  padding-block-start: var(--sp-6);
+  min-width: 0;
+}
+.eventDate {
+  font-size: var(--fs-body-m);
+  font-weight: 600;
+  color: var(--bo-texte-doux);
+}
+.eventText {
+  margin: 0;
+  max-width: 70ch;
+  font-size: var(--fs-body-xl);
+  line-height: var(--lh-body-xl);
+  color: var(--bo-texte-encre);
+}
+.event:first-child .eventText {
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.failed {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  color: var(--bo-texte-erreur);
+}
+
+/* ─── List of dossiers (ECL-033): one card = one link ─────────────────────── */
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr));
+  gap: var(--sp-16);
+}
+.card {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-16);
+  height: 100%;
+  padding: var(--sp-12);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-encre);
+}
+.cardPhoto {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-height: 8rem;
+  overflow: hidden;
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+.cardPhoto picture {
+  display: contents;
+}
+.cardPhoto img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cardBody {
+  display: grid;
+  gap: var(--sp-6);
+  min-width: 0;
+}
+.cardTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.cardRef {
+  font: 700 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bo-texte-or);
+}
+.cardTitle {
+  font: 700 var(--fs-heading-card) / var(--lh-heading-card) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.cardPlace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-body-m);
+}
+.cardPlace svg {
+  color: var(--bo-texte-or);
+}
+.cardStep {
+  display: grid;
+  gap: var(--sp-6);
+  font-weight: 600;
+}
+.cardFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-12);
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.cardCurrent {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+@media (max-width: 559px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .cardPhoto {
+    grid-column: 1 / -1;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}

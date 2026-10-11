@@ -1,0 +1,62 @@
+/* TRV-123 — three levels, applied at once, kept in local storage (dp_text_size). */
+.group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+}
+.legend {
+  float: inline-start;
+  margin-inline-end: var(--sp-8);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 600;
+}
+.options {
+  display: inline-flex;
+  gap: var(--sp-6);
+}
+.option {
+  position: relative;
+}
+.option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: var(--target-min);
+  padding-inline: var(--sp-12);
+  border-radius: var(--radius-pill);
+  border: var(--stroke-field) solid currentColor;
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  transition: background-color var(--motion-fast);
+  opacity: 0.85;
+}
+.aa {
+  font-weight: 700;
+}
+.option input:checked + .chip {
+  background: var(--bo-fond-bleu-roi);
+  border-color: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  opacity: 1;
+}
+.onDark .option input:checked + .chip {
+  background: var(--bo-fond-champagne);
+  border-color: var(--bo-fond-champagne);
+  color: var(--bo-texte-encre);
+}
+.option input:focus-visible + .chip {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}

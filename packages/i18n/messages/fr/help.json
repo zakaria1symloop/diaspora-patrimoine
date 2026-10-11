@@ -1,0 +1,15 @@
+{
+  "downPayment": "La somme que vous payez vous-même, sans l’emprunter. Plus elle est élevée, plus la mensualité baisse.",
+  "monthlyIndicative": "Une estimation de ce que vous rembourseriez chaque mois. Le montant réel dépend de la banque et de votre dossier.",
+  "islamicFinancing": "Un financement sans intérêt : la banque achète le bien et vous le revend avec une marge connue d’avance, payée chaque mois.",
+  "option": "Le bien est mis de côté pour vous quelques jours, le temps de confirmer. Personne d’autre ne peut le prendre pendant ce temps.",
+  "reservation": "Vous confirmez votre choix auprès du promoteur, en général avec un acompte. Le bien est retiré de la vente.",
+  "document": "Un document que la banque ou le promoteur demande : pièce d’identité, bulletins de salaire, avis d’imposition… Vous pouvez la photographier avec votre téléphone.",
+  "businessDays": "Jours ouvrés : {jours}, hors jours fériés français.",
+  "completeness": "La part des pièces demandées qui sont validées par votre conseiller.",
+  "borrowingCapacity": "La somme qu’une banque pourrait vous prêter d’après vos revenus et vos charges. C’est une estimation.",
+  "vefa": "Vous achetez un logement avant ou pendant sa construction ; vous payez par étapes, au fil du chantier.",
+  "projection": "Un chiffrage de ce que vous pouvez acheter et rembourser chaque mois, préparé par un conseiller d’après votre apport et votre budget.",
+  "rooms": "T3 : trois pièces principales — un séjour et deux chambres. La cuisine et la salle de bain ne sont pas comptées.",
+  "indicativeScale": "Des conditions moyennes (taux, durée) utilisées pour l’estimation tant qu’aucune banque n’a étudié votre dossier."
+}

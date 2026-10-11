@@ -1,0 +1,62 @@
+{
+  "waiting": {
+    "title": "Notre plateforme ouvre bientôt.",
+    "reserved": "Accès réservé",
+    "passwordLabel": "Mot de passe",
+    "submit": "Entrer",
+    "tooMany": "Trop de tentatives. Réessayez dans {n} minutes.",
+    "back": "Retour",
+    "contactLabel": "Pour nous écrire :"
+  },
+  "error": {
+    "notFound": {
+      "title": "Cette page n’existe pas ou n’existe plus.",
+      "text": "Cherchez un bien, ou repartez d’une de ces pages :",
+      "home": "Accueil",
+      "properties": "Voir les biens",
+      "cafe": "Le Café",
+      "searchLabel": "Rechercher un bien",
+      "searchPlaceholder": "Une ville, un programme, une référence"
+    },
+    "forbidden": {
+      "title": "Vous n’avez pas accès à cette page.",
+      "mySpace": "Aller à mon espace"
+    },
+    "server": {
+      "title": "Un problème est survenu de notre côté.",
+      "retry": "Réessayer",
+      "code": "Code à communiquer au support : {identifiant}",
+      "contactPhone": "Appelez-nous au {telephone}",
+      "contactEmail": "Écrivez-nous à {email}"
+    },
+    "maintenance": {
+      "title": "Nous revenons dans quelques minutes.",
+      "until": "Retour prévu vers {heure}."
+    },
+    "unavailable": {
+      "title": "Cette page n’est pas disponible pour le moment.",
+      "home": "Retour à l’accueil"
+    },
+    "propertyGone": {
+      "title": "Ce bien n’est plus proposé."
+    },
+    "programGone": {
+      "title": "Ce programme n’est plus proposé.",
+      "all": "Voir tous les programmes"
+    }
+  },
+  "cookies": {
+    "text": "Nous utilisons des cookies pour mesurer l’audience du site et l’améliorer. Vous pouvez accepter, refuser, ou choisir.",
+    "refuseAll": "Tout refuser",
+    "customize": "Personnaliser",
+    "acceptAll": "Tout accepter",
+    "title": "Vos choix sur les cookies",
+    "necessary": "Nécessaires",
+    "necessaryText": "Toujours actifs : ils font fonctionner le site.",
+    "necessaryLink": "Voir la liste",
+    "analytics": "Mesure d’audience",
+    "analyticsText": "Compter les visites et comprendre ce qui est utile, sans vous identifier.",
+    "save": "Enregistrer mes choix"
+  },
+  "staging": "RECETTE"
+}

@@ -1,0 +1,198 @@
+.tabs {
+  display: flex;
+  gap: var(--sp-4);
+  margin-block-end: var(--sp-16);
+  border-block-end: 1px solid var(--bo-ligne-bleue);
+}
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 2.75rem;
+  padding: 0 var(--sp-12);
+  color: var(--bo-texte-doux);
+  font-weight: 500;
+  text-decoration: none;
+}
+.tab::after {
+  content: '';
+  position: absolute;
+  inset-inline: var(--sp-8);
+  inset-block-end: -1px;
+  height: 2px;
+  background: var(--bo-fond-bleu-roi);
+  transform: scaleX(0);
+  transition: transform var(--motion-base) var(--ease-out);
+}
+.tab:hover {
+  color: var(--bo-texte-roi);
+}
+.tabActive {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.tabActive::after {
+  transform: scaleX(1);
+}
+.form {
+  max-width: 44rem;
+}
+.security {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-16);
+  align-items: start;
+}
+.security > :last-child {
+  grid-column: 1 / -1;
+}
+.block {
+  display: grid;
+  gap: var(--sp-12);
+}
+.stateLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-10);
+}
+.loading {
+  padding: var(--sp-24);
+  color: var(--bo-texte-doux);
+}
+.devices {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.device {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: 3.5rem;
+  padding: var(--sp-10) var(--sp-16);
+}
+.device + .device {
+  border-block-start: 1px solid #edf0f6;
+}
+.deviceIcon {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.deviceText {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.deviceName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+  font-weight: 600;
+}
+@media (max-width: 1023px) {
+  .security {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ─── Signature and Absence (package 3.2) ─── */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--sp-24);
+  align-items: start;
+}
+.mail,
+.explain {
+  display: grid;
+  gap: var(--sp-12);
+  padding: var(--sp-20);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-card, 12px);
+  background: linear-gradient(180deg, var(--bo-fond-ciel-pale), var(--bo-fond-blanc) 60%);
+  animation: prefRise var(--motion-base) var(--ease-out) both;
+}
+@keyframes prefRise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.mailHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin: 0;
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+  font-weight: 600;
+  --icon-accent: currentColor;
+}
+.mailBody {
+  display: grid;
+  gap: var(--sp-10);
+  padding: var(--sp-20);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+  box-shadow: 0 1px 3px rgb(16 32 72 / 0.08);
+}
+.mailBody p {
+  margin: 0;
+}
+.mailFiller {
+  color: var(--bo-texte-doux);
+}
+.mailSignature {
+  display: grid;
+  padding-top: var(--sp-10);
+  border-top: 1px dashed var(--bo-ligne-bleue);
+  white-space: pre-wrap;
+}
+.mailName {
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+}
+.mailHint,
+.explainList {
+  margin: 0;
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+}
+.explainList {
+  display: grid;
+  gap: var(--sp-8);
+  padding-inline-start: var(--sp-20);
+  font-size: var(--fs-admin-body);
+  color: var(--bo-texte-encre);
+}
+.explainTitle {
+  margin: 0;
+  font-weight: 700;
+}
+.explain .scene {
+  width: 9rem;
+  height: auto;
+  justify-self: center;
+}
+@media (max-width: 960px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mail,
+  .explain {
+    animation: none;
+  }
+}

@@ -1,0 +1,120 @@
+/* DSN-076 — strokes trace once (motion.celebrate), then elements move one after the other (120 ms apart, 12 px at
+   most), 2 400 ms in all, then still. Never looped. Reduced motion: shown finished. */
+.scene {
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+  overflow: visible;
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw var(--motion-celebrate) var(--ease-in-out) forwards;
+}
+.fill {
+  opacity: 0;
+  animation: fade var(--motion-slow) var(--ease-out) forwards 600ms;
+}
+.d1 {
+  animation-delay: 1200ms;
+}
+.d2 {
+  animation-delay: 1320ms;
+}
+.d3 {
+  animation-delay: 1440ms;
+}
+.dash {
+  opacity: 0;
+  animation: fade var(--motion-slow) var(--ease-out) forwards 1100ms;
+}
+.rise,
+.drop,
+.fly,
+.ring {
+  transform-box: fill-box;
+}
+.rise {
+  animation: rise 900ms var(--ease-out) both 1500ms;
+}
+.late {
+  animation-delay: 1900ms;
+}
+.drop {
+  animation: drop 900ms var(--ease-out) both 1600ms;
+}
+.fly {
+  animation: fly 1200ms var(--ease-in-out) both 1300ms;
+}
+.ring {
+  transform-origin: 50% 100%;
+  animation: ring 700ms var(--ease-in-out) both 1300ms;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes drop {
+  from {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fly {
+  from {
+    transform: translate(-12px, 6px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+@keyframes ring {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20%,
+  60% {
+    transform: rotate(-6deg);
+  }
+  40%,
+  80% {
+    transform: rotate(6deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draw,
+  .fill,
+  .dash,
+  .rise,
+  .drop,
+  .fly,
+  .ring {
+    animation: none !important;
+    opacity: 1;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}

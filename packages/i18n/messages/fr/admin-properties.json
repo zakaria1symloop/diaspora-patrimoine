@@ -1,0 +1,252 @@
+{
+  "title": "Biens",
+  "intro": "Chaque bien qui se vend : sa fiche, ses lots, sa complétude et sa publication.",
+  "create": "Nouveau bien",
+  "search": "Rechercher une référence, un titre, un lieu",
+  "column": {
+    "reference": "Référence",
+    "title": "Titre",
+    "program": "Programme",
+    "promoter": "Promoteur",
+    "region": "Région",
+    "type": "Type",
+    "rooms": "Pièces",
+    "surface": "Surface",
+    "priceFrom": "Prix à partir de",
+    "lots": "Lots disponibles / total",
+    "availability": "Disponibilité",
+    "publication": "Publication",
+    "completeness": "Complétude",
+    "views": "Vues",
+    "interests": "Intérêts",
+    "updatedAt": "Modifié le"
+  },
+  "view": {
+    "published": "Publiés",
+    "drafts": "Brouillons",
+    "to-complete": "À compléter",
+    "no-real-photo": "Sans photo réelle",
+    "reserved-sold": "Réservés et vendus",
+    "archived": "Archivés",
+    "all": "Tous"
+  },
+  "filter": {
+    "kind": "Nature",
+    "standalone": "Bien isolé",
+    "typology": "Typologie d’un programme",
+    "deliveryStatus": "État du chantier"
+  },
+  "standalone": "Bien isolé",
+  "pinned": "Épinglé n° {n}",
+  "empty": {
+    "title": "Aucun bien pour l’instant.",
+    "text": "Ajoutez une typologie à un programme, ou un bien isolé : huit champs, un prix et quelques photos suffisent pour publier."
+  },
+  "completeness": {
+    "title": "Complétude",
+    "score": "Score de complétude : {n} sur 100",
+    "DRAFT": "Brouillon · {n, plural, =0 {score insuffisant} one {# obligatoire manquant} other {# obligatoires manquants}}",
+    "PUBLISHABLE": "Publiable · à améliorer",
+    "COMPLETE": "Fiche complète",
+    "thresholds": "Publiable dès {min} · complète à {complete}",
+    "next": "Ce qui rapporte le plus",
+    "mandatory": "obligatoire",
+    "publish": "Publier",
+    "published": "En ligne",
+    "action": {
+      "FIELD_TITLE": "Donner un titre",
+      "FIELD_TYPE": "Choisir le type",
+      "FIELD_ROOMS": "Indiquer le nombre de pièces",
+      "FIELD_SURFACE": "Indiquer la surface",
+      "FIELD_PRICE": "Ajouter un lot avec son prix",
+      "FIELD_REGION": "Choisir la région",
+      "FIELD_DEVELOPER": "Choisir le promoteur",
+      "FIELD_DELIVERY": "Indiquer la livraison",
+      "ADD_PHOTOS": "Ajouter {n, plural, one {# photo} other {# photos}} (+{gain})",
+      "ADD_PLAN": "Ajouter le plan (+{gain})",
+      "ADD_TOUR_360": "Ajouter la visite 360° (+{gain})",
+      "COMPLETE_DESCRIPTION": "Rédiger la description, 300 caractères au moins (+{gain})",
+      "ADD_FEATURES": "Cocher au moins cinq caractéristiques (+{gain})",
+      "ADD_COORDINATES": "Placer le bien sur la carte (+{gain})",
+      "ADD_POIS": "Ajouter trois lieux à proximité (+{gain})"
+    },
+    "missingField": {
+      "TITLE": "Titre",
+      "TYPE": "Type",
+      "ROOMS": "Pièces",
+      "SURFACE": "Surface",
+      "PRICE": "Prix",
+      "REGION": "Région",
+      "DEVELOPER": "Promoteur",
+      "DELIVERY": "Livraison"
+    }
+  },
+  "detail": {
+    "tab": {
+      "info": "Informations",
+      "lots": "Lots",
+      "media": "Médias",
+      "financing": "Financement",
+      "nearby": "À proximité",
+      "dossiers": "Demandes et dossiers",
+      "history": "Historique"
+    },
+    "aside": {
+      "title": "En bref",
+      "stock": "Lots disponibles",
+      "priceFrom": "Prix à partir de",
+      "views": "Vues",
+      "interests": "Intérêts",
+      "program": "Programme",
+      "promoter": "Promoteur",
+      "reference": "Référence",
+      "publishedAt": "Publié le",
+      "offlineSince": "Hors ligne depuis le {date}"
+    },
+    "usesProgramPhotos": "Ce bien utilise les photos de son programme."
+  },
+  "action": {
+    "publish": "Publier",
+    "unpublish": "Dépublier",
+    "archive": "Archiver",
+    "unarchive": "Désarchiver",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "deleteBlocked": "Ce bien a reçu une demande, figure dans un dossier ou porte une réservation : archivez-le plutôt.",
+    "openProgram": "Ouvrir le programme",
+    "pin": "Épingler sur l’accueil"
+  },
+  "dialog": {
+    "publish": {
+      "title": "Publier {nom}",
+      "text": "Le bien paraîtra sur le site et dans les résultats de recherche ; les alertes des visiteurs qui le cherchent partent.",
+      "submit": "Publier"
+    },
+    "notPublishable": {
+      "title": "{nom} ne peut pas encore être publié",
+      "text": "Il manque :"
+    },
+    "unpublish": {
+      "title": "Dépublier {nom} ?",
+      "text": "Le bien quitte le site : sa page n’est plus servie. Il reste dans le back-office, en brouillon.",
+      "submit": "Dépublier"
+    },
+    "archive": {
+      "title": "Archiver {nom} ?",
+      "text": "{n, plural, =0 {Aucun dossier ouvert n’envisage ce bien.} one {Un dossier ouvert envisage ce bien} other {# dossiers ouverts envisagent ce bien}}{m, plural, =0 {.} one { ; un l’a retenu.} other { ; # l’ont retenu.}}",
+      "clients": "Leurs clients liront « Ce bien n’est plus disponible ».",
+      "pin": "Son épingle sur l’accueil est retirée.",
+      "submit": "Archiver"
+    },
+    "unarchive": {
+      "title": "Désarchiver {nom} ?",
+      "text": "Le bien revient en brouillon, pour être retravaillé puis republié.",
+      "submit": "Désarchiver"
+    },
+    "duplicate": {
+      "title": "Dupliquer {nom} ?",
+      "text": "La copie naît en brouillon, avec une nouvelle référence et son titre automatique. Ni les médias, ni la mise en avant, ni l’éligibilité ne sont copiés.",
+      "withLots": "Copier aussi ses lots (sans leur statut ; chacun garde une référence provisoire à remplacer)",
+      "submit": "Dupliquer"
+    },
+    "delete": {
+      "title": "Supprimer {nom} ?",
+      "text": "Le bien et ses lots quittent le catalogue. Son historique reste dans le journal.",
+      "submit": "Supprimer"
+    },
+    "pin": {
+      "title": "Épingler {nom} sur l’accueil",
+      "rank": "Rang",
+      "rankHint": "Trois biens au plus. Un rang déjà pris libère le bien qui l’occupait.",
+      "unpin": "Retirer l’épingle",
+      "submit": "Épingler"
+    }
+  },
+  "toast": {
+    "created": "Bien créé.",
+    "published": "Bien publié.",
+    "unpublished": "Bien dépublié.",
+    "archived": "Bien archivé.",
+    "unarchived": "Bien désarchivé.",
+    "duplicated": "Copie créée : vous êtes sur sa fiche.",
+    "deleted": "Bien supprimé.",
+    "pinned": "Mise en avant enregistrée."
+  },
+  "section": {
+    "identity": "Identité",
+    "surfaces": "Surfaces",
+    "features": "Caractéristiques",
+    "delivery": "Livraison",
+    "location": "Localisation",
+    "lot": "Prix et lot",
+    "highlight": "Mise en avant",
+    "seo": "Référencement"
+  },
+  "field": {
+    "type": "Type",
+    "rooms": "Pièces",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de bain",
+    "title": "Titre",
+    "titleAuto": "Titre automatique",
+    "titleBackToAuto": "Revenir au titre automatique",
+    "description": "Description",
+    "descriptionAuto": "Description automatique",
+    "descriptionBackToAuto": "Revenir à la description automatique",
+    "autoHint": "Rédigée à partir de la fiche ; elle suit ses changements tant que vous ne la remplacez pas.",
+    "surface": "Surface de référence (m²)",
+    "terrace": "Terrasse ou balcon (m²)",
+    "land": "Terrain (m²)",
+    "followProgram": "Reprendre la livraison du programme",
+    "programDelivery": "Livraison du programme : {livraison}",
+    "price": "Prix",
+    "floor": "Étage",
+    "orientation": "Orientation",
+    "parking": "Parking inclus",
+    "extras": "Options",
+    "lotStatus": "Statut du lot",
+    "highlightLabel": "Étiquette",
+    "highlightUntil": "Jusqu’au",
+    "pinned": "Épinglé sur l’accueil",
+    "pinnedRank": "Rang {n}",
+    "notPinned": "Non épinglé",
+    "lockedTitle": "Verrouillé",
+    "locked": "Ce bien a été publié et a reçu une demande : son type, ses pièces et son programme ne se modifient plus."
+  },
+  "createPage": {
+    "title": "Nouveau bien",
+    "intro": "Choisissez d’abord sa nature. Le reste se complète sur sa fiche, où vous arrivez ensuite.",
+    "typology": "Typologie d’un programme",
+    "typologyHint": "Le lieu, le standing, le promoteur et la livraison viennent du programme.",
+    "standalone": "Bien isolé",
+    "standaloneHint": "Une maison, un terrain, un local hors programme : son lot unique est créé avec lui.",
+    "program": "Programme",
+    "promoter": "Promoteur",
+    "price": "Prix",
+    "submit": "Créer le bien",
+    "reference": "La référence (par exemple DP-DZ-0142) est attribuée à la création et ne change plus."
+  },
+  "featured": {
+    "title": "Mise en avant sur l’accueil",
+    "intro": "Les trois biens que l’accueil montre en ce moment. Épinglez-en jusqu’à trois ; les autres places sont choisies automatiquement.",
+    "shown": "Ce que l’accueil affiche maintenant",
+    "pins": "Épingles",
+    "auto": "Choisi automatiquement",
+    "pinnedRank": "Épinglé n° {n}",
+    "state": {
+      "SHOWN": "Affiché",
+      "OFFLINE": "Épinglé, hors ligne",
+      "UNAVAILABLE": "Épinglé, plus disponible"
+    },
+    "stateHint": "Il garde son épingle et reprend sa place s’il redevient publié et disponible.",
+    "unpin": "Retirer l’épingle",
+    "pinOne": "Épingler un bien",
+    "pick": "Bien à épingler",
+    "pickHint": "Un bien publié et disponible.",
+    "rank": "Rang",
+    "emptyShown": "Aucun bien publié et disponible : l’accueil affiche son état sans catalogue.",
+    "noPins": "Aucun bien n’est épinglé : les trois places sont choisies automatiquement.",
+    "full": "Trois biens sont déjà épinglés : retirez-en un pour en épingler un autre.",
+    "preview": "Aperçu de la section"
+  }
+}

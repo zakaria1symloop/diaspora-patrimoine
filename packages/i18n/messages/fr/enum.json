@@ -1,0 +1,899 @@
+{
+  "UserStatus": {
+    "INVITED": "Invité",
+    "ACTIVE": "Actif",
+    "SUSPENDED": "Suspendu",
+    "DELETED": "Supprimé"
+  },
+  "MembershipRole": {
+    "OWNER": "Direction",
+    "ADMIN": "Administrateur",
+    "AGENT": "Conseiller",
+    "VIEWER": "Lecture seule",
+    "SUPPORT": "Support technique"
+  },
+  "Locale": {
+    "fr": "Français",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "SessionAudience": {
+    "WEB": "Site et espace client",
+    "ADMIN": "Back-office",
+    "MOBILE": "Application mobile",
+    "PARTNER": "Espace partenaire"
+  },
+  "ConsentType": {
+    "TERMS_OF_USE": "conditions générales",
+    "PRIVACY_POLICY": "politique de confidentialité",
+    "CONTACT_REQUEST": "être recontacté au sujet d’une demande",
+    "MARKETING_EMAIL": "recevoir les actualités",
+    "DATA_SHARING_PARTNERS": "transmettre le dossier aux promoteurs et aux banques, y compris hors de l’Union européenne",
+    "PARTY_AUTHORIZATION": "le client confirme avoir l’accord d’un co-emprunteur ou d’un garant pour transmettre ses documents",
+    "PARTNER_CHARTER": "acceptation de la charte des partenaires à l’inscription"
+  },
+  "ResidencyStatus": {
+    "NON_RESIDENT": "Non-résident : je vis et je travaille à l’étranger",
+    "EXPATRIATE": "Expatrié : je réside dans le pays d’achat, en mission à l’étranger",
+    "RESIDENT": "Résident du pays d’achat",
+    "OTHER": "Autre situation"
+  },
+  "EmploymentType": {
+    "PERMANENT": "Salarié en CDI",
+    "FIXED_TERM": "Salarié en CDD ou en intérim",
+    "CIVIL_SERVANT": "Fonctionnaire",
+    "SELF_EMPLOYED": "Indépendant, profession libérale",
+    "BUSINESS_OWNER": "Chef d’entreprise",
+    "RETIRED": "Retraité",
+    "OTHER": "Autre"
+  },
+  "PurchasePurpose": {
+    "HOLIDAY_HOME": "Un pied-à-terre pour mes séjours",
+    "RETURN_HOME": "Préparer mon retour",
+    "FAMILY": "Loger ma famille",
+    "RENTAL_INVESTMENT": "Investir pour louer",
+    "OTHER": "Autre"
+  },
+  "PurchaseTimeframe": {
+    "LT_6M": "Dans les 6 mois",
+    "M6_12": "Dans 6 à 12 mois",
+    "GT_12M": "Dans plus d’un an",
+    "UNDEFINED": "Je ne sais pas encore"
+  },
+  "FinancingPreference": {
+    "CONVENTIONAL": "Crédit bancaire classique",
+    "ISLAMIC": "Financement islamique",
+    "NO_PREFERENCE": "Sans préférence",
+    "CASH": "Sans financement"
+  },
+  "ContactChannel": {
+    "EMAIL": "E-mail",
+    "PHONE": "Téléphone",
+    "WHATSAPP": "WhatsApp"
+  },
+  "ContactTimeSlot": {
+    "MORNING": "Le matin, 9 h – 12 h",
+    "NOON": "Le midi, 12 h – 14 h",
+    "AFTERNOON": "L’après-midi, 14 h – 18 h",
+    "EVENING": "Le soir, 18 h – 20 h",
+    "ANYTIME": "Peu importe"
+  },
+  "ClientStatus": {
+    "PROSPECT": "Prospect",
+    "QUALIFIED": "Qualifié",
+    "ACTIVE": "Dossier en cours",
+    "CUSTOMER": "Acquéreur",
+    "INACTIVE": "Inactif",
+    "ARCHIVED": "Archivé"
+  },
+  "LeadKind": {
+    "PROPERTY_INTEREST": "Intérêt pour un bien",
+    "PROJECTION_REQUEST": "Demande de projection",
+    "CALLBACK_REQUEST": "Demande de rappel",
+    "GUIDED_SEARCH": "Recherche guidée",
+    "SIMULATION_FOLLOWUP": "Suite de simulation",
+    "CONTACT_MESSAGE": "Message de contact",
+    "PARTNER_REQUEST": "Candidature partenaire"
+  },
+  "LeadStatus": {
+    "NEW": "Nouvelle",
+    "IN_PROGRESS": "En cours",
+    "CLOSED": "Traitée",
+    "SPAM": "Indésirable"
+  },
+  "PartnerApplicationStatus": {
+    "EMAIL_UNVERIFIED": "Adresse non vérifiée",
+    "DRAFT": "Dossier à compléter",
+    "SUBMITTED": "En cours d’examen",
+    "INFO_REQUESTED": "Complément demandé",
+    "APPROVED": "Acceptée",
+    "DECLINED": "Refusée"
+  },
+  "LeadOutcome": {
+    "DOSSIER_OPENED": "Dossier ouvert",
+    "ATTACHED_TO_DOSSIER": "Rattachée à un dossier",
+    "ANSWERED": "Réponse apportée",
+    "UNREACHABLE": "Injoignable",
+    "NOT_INTERESTED": "Sans suite",
+    "DUPLICATE": "Doublon",
+    "OUT_OF_SCOPE": "Hors sujet"
+  },
+  "LeadSource": {
+    "WEB_FORM": "Site",
+    "MOBILE_APP": "Application",
+    "ADMIN": "Saisie interne",
+    "PHONE": "Téléphone",
+    "WHATSAPP": "WhatsApp",
+    "EMAIL": "E-mail",
+    "CAFE": "Café",
+    "IMPORT": "Import",
+    "PARTNER": "Partenaire",
+    "SIGNUP": "Inscription"
+  },
+  "SpamSignal": {
+    "HONEYPOT": "Champ piège rempli",
+    "FAST_SUBMIT": "Envoi trop rapide",
+    "MANY_LINKS": "Plusieurs liens dans le message",
+    "DISPOSABLE_DOMAIN": "Adresse e-mail jetable",
+    "IP_BURST": "Plusieurs demandes de la même adresse IP",
+    "DUPLICATE_MESSAGE": "Message identique déjà reçu",
+    "NO_MX": "Domaine sans messagerie",
+    "PHONE_COUNTRY_MISMATCH": "Indicatif sans rapport avec le pays",
+    "ALL_CAPS": "Message en capitales"
+  },
+  "PropertyType": {
+    "APARTMENT": "Appartement",
+    "APARTMENT.plural": "Appartements neufs",
+    "STUDIO": "Studio",
+    "STUDIO.plural": "Studios neufs",
+    "DUPLEX": "Duplex",
+    "DUPLEX.plural": "Duplex neufs",
+    "VILLA": "Villa",
+    "VILLA.plural": "Villas neuves",
+    "LAND": "Terrain",
+    "LAND.plural": "Terrains",
+    "COMMERCIAL": "Local commercial",
+    "COMMERCIAL.plural": "Locaux commerciaux"
+  },
+  "Standing": {
+    "COMFORT": "Habitat confortable",
+    "STANDING": "Résidence de standing",
+    "PREMIUM": "Très haut standing"
+  },
+  "LotStatus": {
+    "AVAILABLE": "Disponible",
+    "OPTIONED": "Sous option",
+    "RESERVED": "Réservé",
+    "SOLD": "Vendu",
+    "WITHDRAWN": "Retiré"
+  },
+  "Availability": {
+    "AVAILABLE": "Disponible",
+    "RESERVED": "Réservé",
+    "SOLD": "Vendu",
+    "WITHDRAWN": "Retiré"
+  },
+  "DeliveryStatus": {
+    "ON_PLAN": "Sur plan",
+    "UNDER_CONSTRUCTION": "En construction",
+    "DELIVERED": "Livré"
+  },
+  "DatePrecision": {
+    "MONTH": "Mois",
+    "QUARTER": "Trimestre",
+    "YEAR": "Année"
+  },
+  "PublicationStatus": {
+    "DRAFT": "Brouillon",
+    "PUBLISHED": "Publié",
+    "ARCHIVED": "Archivé"
+  },
+  "MediaKind": {
+    "PHOTO": "Photo",
+    "RENDER_3D": "Image 3D",
+    "PLAN": "Plan",
+    "BROCHURE": "Brochure",
+    "VIDEO": "Vidéo",
+    "PANO_360": "Vue 360°",
+    "LOGO": "Logo",
+    "DOCUMENT": "Document"
+  },
+  "ProcessingStatus": {
+    "PENDING": "En cours de traitement",
+    "READY": "Prêt",
+    "FAILED": "Échec"
+  },
+  "ConstructionStage": {
+    "FOUNDATIONS": "Fondations",
+    "STRUCTURE": "Gros œuvre",
+    "SECONDARY_WORKS": "Second œuvre",
+    "FINISHES": "Finitions",
+    "DELIVERY": "Livraison"
+  },
+  "PoiCategory": {
+    "TRANSPORT": "Transports",
+    "EDUCATION": "Écoles",
+    "SHOPPING": "Commerces",
+    "HEALTH": "Santé",
+    "LEISURE": "Loisirs",
+    "OTHER": "Autre"
+  },
+  "TravelMode": {
+    "WALK": "à pied",
+    "CAR": "en voiture",
+    "TRANSIT": "en transports"
+  },
+  "Orientation": {
+    "N": "Nord",
+    "NE": "Nord-Est",
+    "E": "Est",
+    "SE": "Sud-Est",
+    "S": "Sud",
+    "SW": "Sud-Ouest",
+    "W": "Ouest",
+    "NW": "Nord-Ouest"
+  },
+  "PartnerStatus": {
+    "PROSPECT": "En discussion",
+    "ACTIVE": "Actif",
+    "ACTIVE.promoter": "Sélectionné",
+    "SUSPENDED": "Suspendu",
+    "ENDED": "Terminé"
+  },
+  "PartnerAccessLevel": {
+    "MANAGED": "Niveau 1 — l’équipe saisit pour lui",
+    "LINK": "Niveau 2 — il répond par lien",
+    "PORTAL": "Niveau 3 — il se connecte à son portail"
+  },
+  "PartnerCategory": {
+    "NOTARY": "Notaire",
+    "INSURER": "Assureur",
+    "INSTITUTION": "Institution",
+    "MEDIA": "Média",
+    "OTHER": "Autre"
+  },
+  "FinancingType": {
+    "CONVENTIONAL": "Crédit bancaire",
+    "ISLAMIC": "Financement islamique"
+  },
+  "PricingMethod": {
+    "AMORTIZED_RATE": "Mensualités constantes, taux annuel",
+    "FLAT_MARGIN": "Marge fixe répartie"
+  },
+  "TargetSegment": {
+    "DIASPORA": "Diaspora",
+    "RESIDENT": "Résidents",
+    "ALL": "Tous"
+  },
+  "ExchangeRateKind": {
+    "OFFICIAL": "Taux officiel",
+    "INDICATIVE": "Taux indicatif"
+  },
+  "SubmissionStatus": {
+    "DRAFT": "En préparation",
+    "SUBMITTED": "Envoyée",
+    "UNDER_REVIEW": "En étude",
+    "INFO_REQUESTED": "Complément demandé",
+    "APPROVED": "Accordée",
+    "REJECTED": "Refusée",
+    "WITHDRAWN": "Retirée",
+    "EXPIRED": "Offre expirée"
+  },
+  "TransmissionMode": {
+    "SECURE_LINK": "Lien sécurisé",
+    "MANUAL": "Hors plateforme",
+    "PORTAL": "Portail banque"
+  },
+  "SubmissionEventType": {
+    "STATUS_CHANGED": "Changement d’état",
+    "NOTE": "Note",
+    "INFO_REQUESTED": "Complément demandé",
+    "INFO_PROVIDED": "Complément fourni",
+    "PACKAGE_GENERATED": "Dossier généré",
+    "PACKAGE_SENT": "Dossier envoyé",
+    "PACKAGE_DOWNLOADED": "Dossier téléchargé",
+    "REMINDER_SENT": "Relance envoyée",
+    "OFFER_ACCEPTED": "Offre acceptée",
+    "OFFER_DECLINED": "Offre déclinée",
+    "DECISION_CORRECTED": "Décision corrigée",
+    "DECISION_REVERTED": "Décision annulée",
+    "OFFER_EXTENDED": "Offre prolongée",
+    "OFFER_ACCEPT_REQUESTED": "Souhait d’acceptation du client",
+    "OFFER_ACCEPT_WITHDRAWN": "Souhait retiré",
+    "OFFER_UNACCEPTED": "Acceptation retirée",
+    "PACKAGE_FAILED": "Échec de l’envoi",
+    "SHARE_OPENED": "Lien ouvert",
+    "SHARE_LOCKED": "Lien verrouillé"
+  },
+  "SimulationType": {
+    "ELIGIBILITY": "Éligibilité",
+    "CREDIT": "Crédit",
+    "PROJECTION": "Projection"
+  },
+  "DossierStage": {
+    "INTEREST": "Intérêt",
+    "INTEREST.client": "Expression d’intérêt",
+    "QUALIFICATION": "Qualification",
+    "QUALIFICATION.client": "Qualification et mise en relation",
+    "MATCHING": "Mise en relation",
+    "MATCHING.client": "Qualification et mise en relation",
+    "DOCUMENTS": "Dossier",
+    "DOCUMENTS.client": "Constitution du dossier",
+    "BANK_REVIEW": "Étude bancaire",
+    "BANK_REVIEW.client": "Soumission à la banque",
+    "APPROVED": "Accord",
+    "APPROVED.client": "Octroi du crédit et acquisition",
+    "ACQUISITION": "Acquisition",
+    "ACQUISITION.client": "Octroi du crédit et acquisition"
+  },
+  "DossierStatus": {
+    "OPEN": "En cours",
+    "ON_HOLD": "En pause",
+    "WON": "Abouti",
+    "LOST": "Clôturé"
+  },
+  "LostReason": {
+    "UNREACHABLE": "Client injoignable",
+    "NOT_ELIGIBLE": "Non finançable en l’état",
+    "NO_SUITABLE_PROPERTY": "Aucun bien ne convient",
+    "BOUGHT_ELSEWHERE": "A acheté ailleurs",
+    "BUDGET": "Budget insuffisant",
+    "CLIENT_WITHDREW": "Abandon du client",
+    "BANK_REFUSAL": "Refus bancaire",
+    "PROPERTY_UNAVAILABLE": "Bien plus disponible",
+    "DUPLICATE": "Doublon",
+    "OTHER": "Autre"
+  },
+  "HoldReason": {
+    "CLIENT_REQUEST": "À la demande du client",
+    "WAITING_CLIENT": "En attente du client",
+    "WAITING_PROMOTER": "En attente du promoteur",
+    "WAITING_BANK": "En attente de la banque",
+    "OTHER": "Autre"
+  },
+  "PartyRole": {
+    "PRIMARY": "Emprunteur principal",
+    "CO_BORROWER": "Co-emprunteur",
+    "GUARANTOR": "Garant"
+  },
+  "CandidateOrigin": {
+    "CLIENT_INTEREST": "Intérêt du client",
+    "ADVISOR_PROPOSAL": "Proposé par le conseiller"
+  },
+  "CandidateStatus": {
+    "PROPOSED": "Proposé",
+    "VIEWED": "Vu",
+    "INTERESTED": "Intéressé",
+    "DECLINED": "Écarté",
+    "VISIT_REQUESTED": "Visite demandée",
+    "VISIT_PLANNED": "Visite planifiée",
+    "VISITED": "Visité",
+    "SELECTED": "Retenu",
+    "UNAVAILABLE": "Plus disponible"
+  },
+  "DeclineReason": {
+    "PRICE": "Trop cher",
+    "LOCATION": "L’emplacement ne convient pas",
+    "SIZE": "Surface ou nombre de pièces",
+    "DELIVERY": "Date de livraison",
+    "OTHER": "Autre raison"
+  },
+  "ReservationStatus": {
+    "OPTION": "Option",
+    "RESERVED": "Réservé",
+    "COMPLETED": "Vendu",
+    "CANCELLED": "Annulée",
+    "EXPIRED": "Expirée"
+  },
+  "AcquisitionMilestone": {
+    "CONDITIONS_ACCEPTED": "Conditions acceptées",
+    "SIGNING_SCHEDULED": "Signature planifiée",
+    "DEED_SIGNED": "Acte signé",
+    "KEYS_HANDED": "Clés remises"
+  },
+  "AppointmentType": {
+    "CALL": "Appel téléphonique",
+    "VISIO": "Visio",
+    "PROPERTY_VISIT": "Visite du bien",
+    "OFFICE_MEETING": "Rendez-vous sur place"
+  },
+  "AppointmentStatus": {
+    "REQUESTED": "Demandé",
+    "CONFIRMED": "Confirmé",
+    "DONE": "Tenu",
+    "NO_SHOW": "Absent",
+    "CANCELLED": "Annulé"
+  },
+  "ChecklistScope": {
+    "CLIENT_FILE": "Dossier client",
+    "BANK_FILE": "Dossier de financement"
+  },
+  "DocumentCategory": {
+    "IDENTITY": "Identité",
+    "RESIDENCE": "Résidence",
+    "EMPLOYMENT": "Situation professionnelle",
+    "INCOME": "Revenus",
+    "BANKING": "Comptes bancaires",
+    "PROPERTY": "Bien",
+    "FINANCING": "Financement",
+    "OTHER": "Autres"
+  },
+  "DocumentStatus": {
+    "PENDING": "En attente",
+    "PENDING.client": "À fournir",
+    "RECEIVED": "Reçue",
+    "RECEIVED.client": "Reçue, en cours de vérification",
+    "VALIDATED": "Validée",
+    "VALIDATED.client": "Validée",
+    "REJECTED": "Rejetée",
+    "REJECTED.client": "À refaire",
+    "EXPIRED": "Expirée",
+    "EXPIRED.client": "Expirée, à renouveler",
+    "WAIVED": "Dispensée",
+    "WAIVED.client": "Non demandée"
+  },
+  "RejectionReason": {
+    "ILLEGIBLE": "Document illisible",
+    "INCOMPLETE": "Document incomplet, il manque des pages",
+    "TOO_OLD": "Document trop ancien",
+    "WRONG_DOCUMENT": "Ce n’est pas le document demandé",
+    "NAME_MISMATCH": "Le nom ne correspond pas",
+    "CERTIFICATION_REQUIRED": "Copie certifiée ou traduction demandée",
+    "OTHER": "Autre motif"
+  },
+  "DocumentProvider": {
+    "CLIENT": "Le client",
+    "OPERATOR": "Diaspora Patrimoine",
+    "PROMOTER": "Le promoteur",
+    "BANK": "La banque"
+  },
+  "DocumentSource": {
+    "CHECKLIST": "Liste du dossier",
+    "AD_HOC": "Ajoutée à la main",
+    "BANK_REQUEST": "Demandée par une banque"
+  },
+  "WaiveKind": {
+    "MANUAL": "Dispense du conseiller",
+    "NOT_APPLICABLE": "N’est plus exigée",
+    "PARTY_REMOVED": "Emprunteur retiré du dossier",
+    "SUBMISSION_ENDED": "Soumission terminée"
+  },
+  "ScanStatus": {
+    "PENDING": "Vérification de sécurité en cours",
+    "CLEAN": "Sain",
+    "INFECTED": "Refusé par l’antivirus",
+    "ERROR": "Vérification impossible"
+  },
+  "Channel": {
+    "EMAIL": "E-mail",
+    "CALL": "Appel",
+    "WHATSAPP": "WhatsApp",
+    "SMS": "SMS",
+    "MEETING": "Rencontre"
+  },
+  "Direction": {
+    "OUTBOUND": "Sortant",
+    "INBOUND": "Entrant"
+  },
+  "DeliveryState": {
+    "QUEUED": "En file",
+    "SENT": "Envoyé",
+    "DELIVERED": "Remis",
+    "OPENED": "Ouvert",
+    "CLICKED": "Cliqué",
+    "BOUNCED": "Adresse en erreur",
+    "COMPLAINED": "Signalé indésirable",
+    "FAILED": "Échec",
+    "CANCELLED": "Annulé",
+    "SUPPRESSED": "Non envoyé"
+  },
+  "TriggerKind": {
+    "MANUAL": "Manuel",
+    "EVENT": "Événement",
+    "WORKFLOW": "Règle",
+    "SYSTEM": "Système"
+  },
+  "EmailAudience": {
+    "CLIENT": "Clients",
+    "STAFF": "Équipe",
+    "PARTNER": "Partenaires"
+  },
+  "TaskType": {
+    "CALL": "Appel",
+    "FOLLOW_UP": "Relance",
+    "DOC_REVIEW": "Vérification de pièces",
+    "BANK_FOLLOW_UP": "Suivi bancaire",
+    "VISIT": "Visite",
+    "MEETING": "Rendez-vous",
+    "CONTENT": "Fiche à compléter",
+    "OTHER": "Autre"
+  },
+  "TaskStatus": {
+    "OPEN": "À faire",
+    "DONE": "Terminée",
+    "CANCELLED": "Annulée"
+  },
+  "Priority": {
+    "LOW": "Basse",
+    "NORMAL": "Normale",
+    "HIGH": "Haute",
+    "URGENT": "Urgente"
+  },
+  "SurveyTrigger": {
+    "PROPOSAL_SENT": "Après une proposition de biens",
+    "DOSSIER_COMPLETE": "Dossier complet",
+    "BANK_DECISION": "Après la décision d’une banque",
+    "ACQUISITION": "Après l’acquisition",
+    "CAFE_ATTENDED": "Après un Café",
+    "MANUAL": "Envoi manuel"
+  },
+  "SurveyCancelReason": {
+    "CLIENT_ARCHIVED": "Client archivé",
+    "CLIENT_ERASED": "Données effacées",
+    "DO_NOT_CONTACT": "Ne pas contacter",
+    "NO_EMAIL": "Sans adresse e-mail",
+    "EMAIL_BOUNCED": "Adresse en erreur",
+    "RESTRICTED": "Traitement limité",
+    "ACCOUNT_SUSPENDED": "Compte suspendu",
+    "DOSSIER_DELETED": "Dossier supprimé",
+    "DECISION_REVERTED": "Décision de banque annulée",
+    "PREFERENCE_OFF": "Enquêtes désactivées par la personne",
+    "TOO_LATE": "Plus de 30 jours après l’événement",
+    "MANUAL": "Annulée par l’équipe"
+  },
+  "FeedbackKind": {
+    "SURVEY_RESPONSE": "Réponse à une enquête",
+    "SPONTANEOUS": "Avis spontané",
+    "LISTING_ERROR": "Erreur signalée sur une fiche"
+  },
+  "FeedbackStatus": {
+    "NEW": "Nouveau",
+    "REVIEWED": "Lu",
+    "ACTIONED": "Traité",
+    "DISMISSED": "Sans suite"
+  },
+  "FeedbackCategory": {
+    "JOURNEY": "Parcours",
+    "COMMUNICATION": "Communication",
+    "PROPERTY": "Bien",
+    "FINANCING": "Financement",
+    "PLATFORM": "Site ou application",
+    "EVENT": "Café",
+    "OTHER": "Autre"
+  },
+  "AlertFrequency": {
+    "INSTANT": "Dès qu’un bien correspond",
+    "DAILY": "Une fois par jour",
+    "WEEKLY": "Une fois par semaine",
+    "NONE": "Sans e-mail"
+  },
+  "EventStatus": {
+    "DRAFT": "Brouillon",
+    "PUBLISHED": "Publié",
+    "CLOSED": "Inscriptions closes",
+    "DONE": "Terminé",
+    "CANCELLED": "Annulé"
+  },
+  "RegistrationStatus": {
+    "REGISTERED": "Inscrit",
+    "WAITLISTED": "En liste d’attente",
+    "CANCELLED": "Annulée",
+    "ATTENDED": "Présent",
+    "NO_SHOW": "Absent"
+  },
+  "ContentBlockType": {
+    "TEXT": "Texte",
+    "RICH_TEXT": "Texte enrichi",
+    "NUMBER": "Nombre",
+    "MONEY": "Montant",
+    "BOOLEAN": "Oui / non",
+    "IMAGE": "Image",
+    "JSON": "Données structurées"
+  },
+  "PageKind": {
+    "EDITORIAL": "Page éditoriale",
+    "LEGAL": "Page légale"
+  },
+  "LegalDocumentType": {
+    "TERMS_OF_USE": "Conditions générales",
+    "PRIVACY_POLICY": "Politique de confidentialité",
+    "COOKIE_POLICY": "Politique des cookies",
+    "LEGAL_NOTICE": "Mentions légales",
+    "PARTNER_CHARTER": "Charte des partenaires"
+  },
+  "DataRequestType": {
+    "ACCESS": "Accès",
+    "RECTIFICATION": "Rectification",
+    "ERASURE": "Effacement",
+    "RESTRICTION": "Limitation",
+    "PORTABILITY": "Portabilité",
+    "OBJECTION": "Opposition",
+    "OTHER": "Autre demande"
+  },
+  "DataRequestStatus": {
+    "RECEIVED": "Reçue",
+    "IN_PROGRESS": "En cours",
+    "DONE": "Traitée",
+    "REJECTED": "Refusée"
+  },
+  "JobStatus": {
+    "PENDING": "En attente",
+    "RUNNING": "En cours",
+    "DONE": "Terminé",
+    "FAILED": "Échec"
+  },
+  "ImportType": {
+    "LOTS": "Grille de lots"
+  },
+  "ExportType": {
+    "LEADS": "Demandes",
+    "CLIENTS": "Clients",
+    "DOSSIERS": "Dossiers",
+    "REGISTRATIONS": "Inscriptions aux Cafés",
+    "CATALOGUE": "Catalogue",
+    "REPORT": "Rapport",
+    "AUDIT": "Journal d’audit",
+    "PERSONAL_DATA": "Données d’une personne"
+  },
+  "ActorType": {
+    "USER": "Utilisateur",
+    "SYSTEM": "Automatique",
+    "WEBHOOK": "Fournisseur d’e-mail",
+    "ANONYMOUS": "Visiteur",
+    "LINK": "Porteur d’un lien"
+  },
+  "SessionRevokedReason": {
+    "LOGOUT": "Déconnexion",
+    "PASSWORD_CHANGED": "Mot de passe changé",
+    "ROLE_CHANGED": "Rôle changé",
+    "REUSE_DETECTED": "Jeton réutilisé",
+    "ADMIN": "Fermée par l’équipe",
+    "SUSPENDED": "Compte suspendu",
+    "EXPIRED": "Expirée",
+    "PREVIEW_ENDED": "Fin de l’aperçu"
+  },
+  "SuspensionReason": {
+    "STAFF_DECISION": "Décision de l’équipe",
+    "DELETION_PENDING": "Suppression demandée"
+  },
+  "RestrictionReason": {
+    "REQUEST": "À la demande de la personne",
+    "DELETION_PENDING": "Suppression en attente"
+  },
+  "NoteEntityType": {
+    "CLIENT": "Client",
+    "LEAD": "Demande",
+    "DOSSIER": "Dossier",
+    "SUBMISSION": "Soumission",
+    "PROMOTER": "Promoteur",
+    "BANK": "Banque",
+    "PROGRAM": "Programme",
+    "PROPERTY": "Bien",
+    "EVENT": "Café"
+  },
+  "ContactSubject": {
+    "PROPERTY": "Un bien ou un programme",
+    "FINANCING": "Le financement",
+    "DOSSIER": "Mon dossier",
+    "CAFE": "Le Café",
+    "CALLBACK": "Être rappelé",
+    "OTHER": "Autre"
+  },
+  "BudgetKind": {
+    "TOTAL": "au total",
+    "MONTHLY": "par mois"
+  },
+  "AlertDeactivationReason": {
+    "USER": "Par la personne",
+    "BOUNCE": "Adresse en erreur",
+    "EXPIRED": "Arrivée à échéance",
+    "ADMIN": "Par l’équipe"
+  },
+  "DepositRefundStatus": {
+    "NONE": "Sans objet",
+    "DUE": "Remboursement à suivre",
+    "REFUNDED": "Remboursé",
+    "RETAINED": "Conservé par le promoteur"
+  },
+  "CancelledBy": {
+    "CLIENT": "Par le client",
+    "STAFF": "Par l’équipe",
+    "SYSTEM": "Automatique"
+  },
+  "UploadChannel": {
+    "WEB": "Site",
+    "MOBILE": "Application",
+    "ADMIN": "Équipe",
+    "CONVERSATION": "Message",
+    "PARTNER": "Partenaire, par lien ou dans le portail"
+  },
+  "VersionOutcome": {
+    "SCANNING": "Contrôle de sécurité en cours",
+    "IN_REVIEW": "En vérification",
+    "VALIDATED": "Validée",
+    "REJECTED": "Rejetée",
+    "REPLACED": "Remplacée",
+    "DISCARDED": "Écartée : fichiers refusés, ou photos impossibles à réunir",
+    "DELETED": "Supprimée"
+  },
+  "CallOutcome": {
+    "REACHED": "Joint",
+    "NO_ANSWER": "Pas de réponse",
+    "VOICEMAIL": "Messagerie",
+    "WRONG_NUMBER": "Faux numéro"
+  },
+  "MessageSenderType": {
+    "CLIENT": "Client",
+    "STAFF": "Équipe",
+    "SYSTEM": "Automatique"
+  },
+  "ExecutionStatus": {
+    "PENDING": "En attente",
+    "DONE": "Exécutée",
+    "SKIPPED": "Écartée",
+    "FAILED": "En échec"
+  },
+  "DelayUnit": {
+    "MINUTES": "minutes",
+    "HOURS": "heures",
+    "DAYS": "jours",
+    "BUSINESS_HOURS": "heures ouvrées",
+    "BUSINESS_DAYS": "jours ouvrés"
+  },
+  "AssigneeRef": {
+    "DOSSIER_AGENT": "Conseiller du dossier",
+    "LEAD_AGENT": "Conseiller de la demande",
+    "CLIENT_AGENT": "Conseiller référent du client",
+    "APPOINTMENT_AGENT": "Conseiller du rendez-vous",
+    "EVENT_HOST": "Animateur du Café",
+    "TEAM": "À prendre, toute l’équipe",
+    "ADMINS": "Administrateurs",
+    "OWNERS": "Direction",
+    "ALL_AGENTS": "Tous les conseillers",
+    "SUPPORT": "Support technique"
+  },
+  "EmailRecipientRef": {
+    "CLIENT": "Le client",
+    "REGISTRANT": "L’inscrit",
+    "REGISTRANTS": "Les inscrits",
+    "ATTENDEES": "Les présents",
+    "NOTIFY_REQUESTS": "Les demandes « Me prévenir »",
+    "DOSSIER_AGENT": "Conseiller du dossier",
+    "LEAD_AGENT": "Conseiller de la demande",
+    "CLIENT_AGENT": "Conseiller référent du client",
+    "APPOINTMENT_AGENT": "Conseiller du rendez-vous",
+    "EVENT_HOST": "Animateur du Café",
+    "ADMINS": "Administrateurs",
+    "OWNERS": "Direction"
+  },
+  "TaskOrigin": {
+    "MANUAL": "Manuelle",
+    "WORKFLOW": "Automatique",
+    "SYSTEM": "Système"
+  },
+  "ReminderKind": {
+    "NONE": "Aucun",
+    "AT_DUE": "À l’échéance",
+    "BEFORE_15M": "15 minutes avant",
+    "BEFORE_1H": "1 heure avant",
+    "BEFORE_1D": "1 jour avant",
+    "CUSTOM": "Une date choisie"
+  },
+  "GestureRoute": {
+    "BACK_OFFICE": "Saisi par l’équipe",
+    "LINK": "Répondu par lien",
+    "PORTAL": "Fait dans le portail"
+  },
+  "PartnerGesture": {
+    "OPTION_ANSWER": "Réponse à une option",
+    "RESERVATION_CONFIRM": "Confirmation d’une réservation",
+    "DOCUMENT_PROVIDE": "Dépôt d’une pièce",
+    "DEPOSIT_OUTCOME": "Issue d’un acompte",
+    "VISIT_HOST": "Accueil d’une visite",
+    "STOCK_UPDATE": "État du stock",
+    "DELIVERY_UPDATE": "Livraison mise à jour",
+    "PARTNER_DOCUMENT": "Document du partenaire",
+    "SUBMISSION_ACK": "Accusé de réception",
+    "INFO_REQUEST": "Complément demandé",
+    "DECISION": "Décision",
+    "OFFER_EXTEND": "Offre prolongée",
+    "PRODUCT_CONFIRM": "Barème inchangé",
+    "PRODUCT_UPDATE": "Nouvelles conditions d’un barème"
+  },
+  "PartnerAnswerStatus": {
+    "INTERNAL": "En validation chez le partenaire",
+    "PENDING": "À relire",
+    "APPLIED": "Appliquée",
+    "DISMISSED": "Écartée",
+    "SUPERSEDED": "Remplacée ou sans objet"
+  },
+  "SharePurpose": {
+    "SUBMISSION_PACKAGE": "Dossier remis à une banque",
+    "PERSONAL_DATA_EXPORT": "Données remises à une personne",
+    "PARTNER_REQUEST": "Demande faite à un partenaire"
+  },
+  "SurveyQuestionType": {
+    "NPS": "Recommandation, de 0 à 10",
+    "CSAT": "Satisfaction, de 1 à 5",
+    "CHOICE": "Choix dans une liste",
+    "TEXT": "Réponse libre"
+  },
+  "FaqCategory": {
+    "BUYING": "Acheter",
+    "FINANCING": "Financement",
+    "DOSSIER": "Votre dossier",
+    "CAFE": "Le Café",
+    "PLATFORM": "La plateforme"
+  },
+  "FaqPlacement": {
+    "FAQ": "page des questions fréquentes",
+    "FINANCEMENTS": "page Financements",
+    "LE_CAFE": "page Le Café",
+    "NOTRE_CONCEPT": "page Notre concept"
+  },
+  "EmailTemplateCategory": {
+    "ACCOUNT": "Compte",
+    "LEADS": "Demandes",
+    "DOSSIER": "Dossier",
+    "DOCUMENTS": "Pièces",
+    "FINANCING": "Financement",
+    "CAFE": "Le Café",
+    "SURVEYS": "Enquêtes",
+    "ALERTS": "Alertes",
+    "INTERNAL": "Interne",
+    "PARTNERS": "Partenaires",
+    "NEWS": "Actualités",
+    "PRIVACY": "Données personnelles",
+    "MANUAL": "Envois libres"
+  },
+  "ListingErrorKind": {
+    "PRICE": "Le prix",
+    "SURFACE": "La surface ou les pièces",
+    "PHOTOS": "Les photos",
+    "LOCATION": "La localisation",
+    "AVAILABILITY": "La disponibilité",
+    "OTHER": "Autre"
+  },
+  "EventTopic": {
+    "PROGRAMMES": "Les programmes",
+    "FINANCING": "Le financement",
+    "ISLAMIC_FINANCE": "Le financement islamique",
+    "PROCEDURE": "Les démarches"
+  },
+  "ExportFormat": {
+    "CSV": "CSV",
+    "XLSX": "XLSX",
+    "ZIP": "ZIP"
+  },
+  "CreditMode": {
+    "FROM_PRICE": "Je connais le prix du bien",
+    "FROM_AMOUNT": "Je connais le montant à financer"
+  },
+  "AssistantMode": {
+    "OFF": "Désactivé",
+    "GUIDED": "Guidé",
+    "AI": "Avec intelligence artificielle"
+  },
+  "AgentScope": {
+    "ALL": "Tous les dossiers",
+    "ASSIGNED_ONLY": "Ses dossiers seulement"
+  },
+  "AssignmentMode": {
+    "MANUAL": "Manuelle",
+    "ROUND_ROBIN": "À tour de rôle"
+  },
+  "LaunchCheckPoint": {
+    "REFERENCE_FINANCING": "Financement de référence",
+    "EXCHANGE_RATE": "Taux de change",
+    "INDICATIVE_SCALE": "Barème indicatif",
+    "BANK_PRODUCTS": "Banques et produits",
+    "ACQUISITION_FEES": "Frais d’acquisition",
+    "CHECKLIST": "Liste de pièces",
+    "CONTACT": "Coordonnées",
+    "LEGAL_TEXTS": "Textes légaux",
+    "FINANCIAL_NOTICES": "Mentions financières",
+    "HOME_COMPARISON": "Comparatif de l’accueil",
+    "IMAGES": "Images",
+    "TWO_FACTOR": "Double authentification"
+  }
+}

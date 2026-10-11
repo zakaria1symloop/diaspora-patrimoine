@@ -1,0 +1,765 @@
+/* EC-10 — the dashboard (D-098: the whole width, important data first). DOM order = the order of ECL-010 (phone);
+   on a computer two columns, on a wide screen three. Tokens only (DSN-002). */
+
+/* ─── Hero: greeting on the left, the encouragement of the moment on the right ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: var(--sp-20) var(--sp-32);
+  align-items: center;
+  padding: var(--sp-32);
+  margin-block-end: var(--sp-20);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--bo-fond-ciel) 45%, transparent) 0%, transparent 55%),
+    radial-gradient(90% 120% at 0% 100%, color-mix(in srgb, var(--bo-fond-or-clair) 90%, transparent) 0%, transparent 60%),
+    var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+}
+@media (min-width: 1100px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(24rem, 1.1fr);
+  }
+  .heroSide:empty {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .hero {
+    padding: var(--sp-20) var(--sp-16);
+    border-radius: var(--radius-l);
+  }
+}
+.heroHead,
+.heroSide {
+  position: relative;
+  display: grid;
+  gap: var(--sp-8);
+  min-width: 0;
+}
+.heroSide:empty {
+  display: none;
+}
+.heroArt {
+  position: absolute;
+  inset-inline-end: -10px;
+  bottom: -6px;
+  width: min(30%, 300px);
+  height: auto;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.heroArt path,
+.heroArt rect,
+.heroArt circle {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw var(--motion-celebrate) var(--ease-out) forwards;
+}
+.heroArt .gold {
+  stroke: var(--bo-accent-or);
+  animation-delay: 500ms;
+}
+.heroArt .line {
+  stroke: var(--bo-ligne-bleue);
+}
+.heroArt .roi {
+  stroke: var(--bo-texte-roi);
+  stroke-width: 1.6;
+}
+.heroArt .sun {
+  fill: var(--bo-fond-or-clair);
+  stroke: none;
+  stroke-dasharray: none;
+  animation: rise var(--motion-slow) var(--ease-out) both 200ms;
+}
+/* The drawing lives where nothing is written: hidden when the encouragement takes the right side, and on a phone. */
+.hero:has(.heroSide:not(:empty)) .heroArt {
+  display: none;
+}
+@media (max-width: 719px) {
+  .heroArt {
+    display: none;
+  }
+}
+.eyebrow {
+  margin: 0;
+  font: 700 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bo-texte-or);
+}
+.hello {
+  margin: 0;
+  font: 600 var(--fs-title-section) / var(--lh-title-section) var(--font-display);
+  color: var(--bo-texte-nuit);
+}
+.heroText {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--fs-subtitle-m);
+  line-height: var(--lh-subtitle-m);
+  color: var(--bo-texte-doux);
+}
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-12);
+  margin-block-start: var(--sp-12);
+}
+.leadRef {
+  margin: 0;
+  font-weight: 700;
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-body-xl);
+}
+
+/* ─── Vos repères ─────────────────────────────────────────────────────────── */
+.overview {
+  margin-block-end: var(--sp-20);
+}
+
+/* ─── Columns ─────────────────────────────────────────────────────────────────
+   Phone: one column in the order of ECL-010 (the column wrappers dissolve, `order` restores the spec order).
+   Computer (1100 px): main + side. Wide (1640 px): main · news · side. A hidden block leaves no hole. */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-20);
+}
+.colMain,
+.colNews,
+.colSide {
+  display: contents;
+}
+.todo { order: 1; }
+.project { order: 2; }
+.advisor { order: 3; }
+.property { order: 4; }
+.cafe { order: 5; }
+.news { order: 6; outline: none; scroll-margin-top: 6rem; }
+.shortcuts { order: 7; }
+@media (min-width: 1100px) {
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(19rem, 1fr);
+    grid-template-areas:
+      'main side'
+      'news side';
+    grid-template-rows: auto 1fr;
+    align-items: start;
+  }
+  .colMain,
+  .colNews,
+  .colSide {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-20);
+    min-width: 0;
+  }
+  .colMain { grid-area: main; }
+  .colNews { grid-area: news; }
+  .colSide { grid-area: side; }
+  .colMain:empty,
+  .colNews:empty,
+  .colSide:empty {
+    display: none;
+  }
+}
+@media (min-width: 1640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(22rem, 1fr) minmax(20rem, 0.85fr);
+    grid-template-areas: 'main news side';
+    grid-template-rows: auto;
+  }
+}
+/* A space without project (ECL-013): nothing in the main column — the news take its place. */
+@media (min-width: 1100px) {
+  .grid:has(.colMain:empty) {
+    grid-template-areas: 'news side';
+    grid-template-rows: auto;
+  }
+  .grid:has(.colMain:empty):has(.colSide:empty) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'news';
+  }
+}
+@media (min-width: 1640px) {
+  .grid:has(.colMain:empty) {
+    grid-template-columns: minmax(0, 1.5fr) minmax(20rem, 0.85fr);
+  }
+  .grid:has(.colMain:empty):has(.colSide:empty) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+:global([data-simple]) .grid {
+  display: flex;
+}
+:global([data-simple]) .colMain,
+:global([data-simple]) .colNews,
+:global([data-simple]) .colSide {
+  display: contents;
+}
+
+.calm {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  margin: 0;
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-body-xl);
+  line-height: var(--lh-body-xl);
+}
+.calmIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--bo-fond-vert-pale);
+  color: var(--bo-texte-succes);
+}
+
+/* ─── À faire ─────────────────────────────────────────────────────────────── */
+.todoList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-10);
+}
+@media (min-width: 1100px) {
+  /* room for two cards side by side under the first one */
+  .todoList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .todoList > li:first-child {
+    grid-column: 1 / -1;
+  }
+}
+.todoCard {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+  height: 100%;
+  min-height: 4rem;
+  padding: var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-or);
+  color: var(--bo-texte-encre);
+}
+.todoFirst {
+  background: var(--bo-fond-creme);
+  border-width: 1.5px;
+}
+.todoIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--bo-fond-or-clair);
+  color: var(--bo-texte-or);
+}
+.todoFirst .todoIcon {
+  background: var(--bo-fond-blanc);
+}
+.todoText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font: 600 var(--fs-body-xl) / var(--lh-body-xl) var(--font-ui);
+}
+.todoText span + span {
+  font-weight: 500;
+  color: var(--bo-texte-doux);
+}
+
+/* ─── Votre projet ────────────────────────────────────────────────────────── */
+.ref {
+  display: block;
+  margin-block-start: 2px;
+  font: 600 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+  color: var(--bo-texte-doux);
+}
+.next {
+  display: flex;
+  gap: var(--sp-16);
+  margin-block-start: var(--sp-20);
+  padding: var(--sp-16) var(--sp-20);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ciel-pale);
+}
+.nextIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  --icon-accent: var(--bo-texte-ciel);
+}
+.nextBody {
+  min-width: 0;
+}
+.nextLabel {
+  display: block;
+  margin-block-end: var(--sp-4);
+  font: 700 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bo-texte-roi);
+}
+.nextText {
+  margin: 0;
+  max-width: 70ch;
+  font: 600 var(--fs-subtitle-m) / var(--lh-subtitle-m) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.completeness {
+  display: grid;
+  gap: var(--sp-8);
+  margin-block-start: var(--sp-20);
+}
+.completenessHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-16);
+}
+.completenessTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin: 0;
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.others {
+  margin: var(--sp-12) 0 0;
+}
+
+/* ─── Banners (ECL-022, AUT-071) ──────────────────────────────────────────── */
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-12) var(--sp-16);
+  margin-block-end: var(--sp-20);
+  padding: var(--sp-16) var(--sp-20);
+  border-radius: var(--radius-m);
+}
+.banner > svg {
+  flex: none;
+}
+.bannerBody {
+  flex: 1 1 18rem;
+  display: grid;
+  gap: var(--sp-6);
+  max-width: 75ch;
+}
+.bannerBody p {
+  margin: 0;
+}
+.bannerTitle {
+  font-weight: 700;
+}
+.bannerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-10);
+  align-items: center;
+}
+.bannerHold {
+  background: var(--bo-fond-alerte-pale);
+  color: var(--bo-texte-encre);
+}
+.bannerHold > svg {
+  color: var(--bo-texte-or);
+}
+.bannerLost {
+  background: var(--bo-fond-gris);
+}
+.bannerWon {
+  background: var(--bo-fond-vert-pale);
+  color: var(--bo-texte-succes);
+}
+
+/* ─── Votre conseiller ────────────────────────────────────────────────────── */
+.advisorRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+  margin-block: var(--sp-16);
+}
+.avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-champagne);
+  font: 700 1.25rem / 1 var(--font-display);
+  box-shadow:
+    0 0 0 3px var(--bo-fond-blanc),
+    0 0 0 5px var(--bo-ligne-or);
+}
+.avatarM {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1rem;
+  box-shadow: none;
+}
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.advisorName {
+  margin: 0;
+  font: 700 var(--fs-heading-card) / var(--lh-heading-card) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.advisorJob {
+  margin: 2px 0 0;
+  color: var(--bo-texte-doux);
+}
+.promise {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-8);
+  margin: 0 0 var(--sp-16);
+  padding: var(--sp-10) var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ivoire);
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--bo-texte-encre);
+}
+.promise svg {
+  flex: none;
+  color: var(--bo-texte-or);
+}
+.advisorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-10);
+}
+.advisorActions > * {
+  flex: 1 1 8rem;
+}
+/* Used by the e-mail banner (a secondary action next to a tool button). */
+.ghostButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-8);
+  min-height: var(--btn-s);
+  padding-inline: var(--sp-16);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-roi);
+  border: var(--stroke-field) solid var(--bo-ligne-bleue);
+  font: 700 var(--fs-button-s) / var(--lh-button-s) var(--font-ui);
+  text-decoration: none;
+}
+.ghostButton:hover {
+  border-color: var(--bo-texte-roi);
+}
+
+/* ─── Votre bien ──────────────────────────────────────────────────────────── */
+.propertyLink {
+  display: grid;
+  gap: var(--sp-12);
+  margin-block: var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-m);
+  color: inherit;
+  text-decoration: none;
+}
+a.propertyLink:hover {
+  box-shadow: none;
+}
+.propertyPhoto {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+.propertyPhoto picture {
+  display: contents;
+}
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-slow) var(--ease-out);
+}
+a.propertyLink:hover .cover {
+  transform: scale(1.03);
+}
+.propertyGo {
+  position: absolute;
+  inset-inline-end: var(--sp-10);
+  top: var(--sp-10);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-s);
+}
+.propertyBody {
+  display: grid;
+  gap: 2px;
+}
+.propertyTitle {
+  margin: 0;
+  font: 700 var(--fs-heading-card) / var(--lh-heading-card) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+a.propertyLink:hover .propertyTitle {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.propertyPlace {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin: 0;
+  color: var(--bo-texte-doux);
+}
+.propertyPlace svg {
+  color: var(--bo-texte-or);
+}
+
+.cafe h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.cafeTitle {
+  margin: var(--sp-12) 0 var(--sp-4);
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.cafeWhen {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin: 0 0 var(--sp-16);
+  color: var(--bo-texte-doux);
+}
+
+/* ─── Dernières nouvelles ─────────────────────────────────────────────────── */
+.newsFilter {
+  margin-block-end: var(--sp-12);
+}
+.newsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-4);
+}
+.newsItem {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-12);
+  width: 100%;
+  padding: var(--sp-12);
+  border: 0;
+  border-radius: var(--radius-m);
+  background: transparent;
+  color: var(--bo-texte-encre);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.newsItem:hover {
+  background: var(--bo-fond-gris);
+}
+.newsUnread {
+  background: var(--bo-fond-ciel-pale);
+}
+.newsUnread:hover {
+  background: color-mix(in srgb, var(--bo-fond-ciel) 35%, var(--bo-fond-blanc));
+}
+.newsUnread .newsTitle {
+  font-weight: 700;
+}
+.newsIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-roi);
+}
+.newsText {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.newsTitle {
+  font-size: var(--fs-body-xl);
+  line-height: var(--lh-body-xl);
+}
+.newsTime {
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+}
+.dot {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--bo-accent-corail);
+}
+.newsGo {
+  flex: none;
+  margin-top: 0.3rem;
+  color: var(--bo-texte-roi);
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+.newsItem:hover .newsGo {
+  transform: translateX(2px);
+}
+
+/* ─── Raccourcis ──────────────────────────────────────────────────────────── */
+.shortcutRow {
+  display: grid;
+  gap: var(--sp-10);
+  margin-block-start: var(--sp-12);
+}
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: 3.5rem;
+  padding: var(--sp-10) var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-encre);
+  font-weight: 700;
+}
+.shortcutIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.shortcutLabel {
+  flex: 1;
+}
+
+/* ─── Visite guidée (TRV-126) ─────────────────────────────────────────────── */
+.tip {
+  position: absolute;
+  z-index: 70;
+  padding: var(--sp-16);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  box-shadow: var(--shadow-xl);
+  animation: tipIn var(--motion-base) var(--ease-out);
+}
+.tipAbove {
+  transform: translateY(-100%);
+}
+.tipStep {
+  margin: 0;
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-champagne);
+}
+.tipTitle {
+  margin: var(--sp-4) 0;
+  font: 700 var(--fs-subtitle-m) / var(--lh-subtitle-m) var(--font-display);
+}
+.tipText {
+  margin: 0;
+  color: var(--bo-texte-ciel);
+}
+.tipActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-8);
+  margin-block-start: var(--sp-12);
+}
+.tipSkip,
+.tipNext {
+  min-height: var(--target-min);
+  padding-inline: var(--sp-16);
+  border-radius: var(--radius-pill);
+  font: 700 var(--fs-button-m) / 1 var(--font-ui);
+  cursor: pointer;
+}
+.tipSkip {
+  border: 1px solid color-mix(in srgb, var(--bo-texte-blanc) 35%, transparent);
+  background: transparent;
+  color: var(--bo-texte-blanc);
+}
+.tipNext {
+  border: 0;
+  background: var(--bo-degrade-or);
+  color: var(--bo-texte-encre);
+}
+/* DSN-055 — the element presented wears a halo; the rest of the screen is not darkened. */
+.halo {
+  outline: 4px solid var(--bo-accent-bleu);
+  outline-offset: 4px;
+  border-radius: var(--radius-l);
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes tipIn {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroArt path,
+  .heroArt rect,
+  .heroArt circle {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .tip {
+    animation: none;
+  }
+}

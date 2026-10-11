@@ -1,0 +1,203 @@
+/* CAT-070 alert block (window and inline in the empty state), CAT-093 saved search window, active-filter actions. */
+.form {
+  display: grid;
+  gap: var(--sp-20);
+}
+.intro {
+  color: var(--bo-texte-doux);
+}
+.inline {
+  padding: var(--sp-24);
+  border-radius: var(--radius-xl);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-m);
+  border-block-start: 3px solid var(--bo-accent-or);
+  text-align: start;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+.inlineTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-title-card);
+  line-height: var(--lh-title-card);
+  color: var(--bo-texte-roi);
+}
+.label {
+  margin-block-end: var(--sp-8);
+  font-weight: 600;
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-encre);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chips li {
+  padding: var(--sp-4) var(--sp-12);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+}
+.frequencies {
+  display: grid;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.frequency {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  min-height: var(--target-min);
+  padding: 0 var(--sp-12);
+  border: 1.5px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  font-size: var(--fs-body-m);
+}
+.frequency input {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--bo-fond-bleu-roi);
+}
+.frequencyOn {
+  border-color: var(--bo-fond-bleu-roi);
+  background: var(--bo-fond-ciel-pale);
+  font-weight: 600;
+}
+.frequency:focus-within {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  color: var(--bo-texte-erreur);
+  font-weight: 600;
+}
+.mention {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+}
+.done {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-12);
+  padding-block: var(--sp-16);
+  text-align: center;
+}
+.doneIcon {
+  width: 4rem;
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bo-fond-or-clair);
+  color: var(--bo-texte-roi);
+  animation: pop var(--motion-slow) var(--ease-spring);
+}
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+.doneTitle {
+  font-weight: 700;
+  font-size: var(--fs-heading-card);
+  color: var(--bo-texte-encre);
+}
+.summaryLine {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ciel-pale);
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+}
+.buttons {
+  display: grid;
+  gap: var(--sp-10);
+}
+.alternative {
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.alternative a {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-16);
+  margin-inline-start: auto;
+}
+.action,
+.actionQuiet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: var(--target-min);
+  padding: 0 var(--sp-16);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: var(--fs-body-m);
+  text-decoration: none;
+}
+.action {
+  background: var(--bo-degrade-or);
+  color: var(--bo-texte-encre);
+  box-shadow: var(--shadow-s);
+}
+.actionQuiet {
+  color: var(--bo-texte-roi);
+  border: 1px solid var(--bo-ligne-bleue);
+  background: var(--bo-fond-blanc);
+}
+@media (prefers-reduced-motion: reduce) {
+  .doneIcon {
+    animation: none;
+  }
+}
+
+/* SFA-031 — « Mettre à jour l'alerte » banner on the catalogue. */
+.editBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-12) var(--sp-16);
+  margin-block: var(--sp-12);
+  padding: var(--sp-12) var(--sp-20);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-ciel-pale);
+  border: 1px solid var(--bo-fond-ciel);
+  color: var(--bo-texte-roi);
+}
+.editBanner p {
+  flex: 1 1 18rem;
+  margin: 0;
+  font-weight: 600;
+}
+.editBannerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+}

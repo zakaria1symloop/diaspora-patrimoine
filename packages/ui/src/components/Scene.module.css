@@ -1,0 +1,186 @@
+/* DSN-076 — drawn scenes: strokes trace once (motion.celebrate), then elements move one after the other
+   (120 ms apart, 12 px at most), 2 400 ms in all, then still. Never looped. Reduced motion: shown finished. */
+.scene {
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+  overflow: visible;
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw var(--motion-celebrate) var(--ease-in-out) forwards;
+}
+.fill {
+  opacity: 0;
+  animation: fade var(--motion-slow) var(--ease-out) forwards;
+  animation-delay: 600ms;
+}
+.d1 {
+  animation-delay: 1200ms;
+}
+.d2 {
+  animation-delay: 1320ms;
+}
+.d3 {
+  animation-delay: 1440ms;
+}
+.d4 {
+  animation-delay: 1560ms;
+}
+.d5 {
+  animation-delay: 1680ms;
+}
+.lower {
+  transform-box: fill-box;
+  animation: lower 900ms var(--ease-out) both 1200ms;
+}
+.rise {
+  transform-box: fill-box;
+  animation: rise 1200ms var(--ease-out) both 1200ms;
+}
+.seek {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: seek 1200ms var(--ease-in-out) both 1200ms;
+}
+.seekDown {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: seek 1200ms var(--ease-in-out) both 1200ms;
+}
+.dash {
+  opacity: 0;
+  animation: fade var(--motion-slow) var(--ease-out) forwards 1800ms;
+}
+.glow {
+  opacity: 0;
+  animation: fade var(--motion-base) var(--ease-out) forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes lower {
+  from {
+    transform: translateY(-12px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(12px);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes seek {
+  0% {
+    transform: rotate(-35deg);
+  }
+  45% {
+    transform: rotate(25deg);
+  }
+  75% {
+    transform: rotate(-8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draw,
+  .fill,
+  .lower,
+  .rise,
+  .seek,
+  .seekDown,
+  .dash,
+  .glow {
+    animation: none !important;
+    opacity: 1;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}
+
+/* Scenes of the account pages (acces, courrier, partenaire). */
+.open {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+  animation: open 1100ms var(--ease-in-out) both 1300ms;
+}
+.turn {
+  transform-box: fill-box;
+  transform-origin: 30% 50%;
+  animation: turn 900ms var(--ease-out) both 900ms;
+}
+.fly {
+  transform-box: fill-box;
+  animation: fly 1400ms var(--ease-out) both 900ms;
+}
+.raise {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: raise 600ms var(--ease-out) both 2100ms;
+}
+@keyframes open {
+  from {
+    transform: scaleX(1) skewY(0deg);
+  }
+  to {
+    transform: scaleX(0.38) skewY(-10deg);
+  }
+}
+@keyframes turn {
+  from {
+    transform: translateX(-12px) rotate(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes fly {
+  from {
+    transform: translate(-120px, 80px) rotate(-12deg);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes raise {
+  from {
+    transform: rotate(80deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .open {
+    animation: none !important;
+    transform: scaleX(0.38) skewY(-10deg);
+  }
+  .turn,
+  .fly,
+  .raise {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

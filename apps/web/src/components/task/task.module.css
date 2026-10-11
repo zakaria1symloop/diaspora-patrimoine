@@ -1,0 +1,139 @@
+/* D-092, DSN-076 — single-task page: the task on the left, a 480 px column with the scene on the right, on the soft
+   gradient of the page. Phone: the scene first, 200 px high. */
+.page {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--sp-32) var(--sp-96);
+  background:
+    radial-gradient(48rem 26rem at 90% 6%, color-mix(in srgb, var(--bo-fond-ciel) 45%, transparent), transparent 70%),
+    radial-gradient(40rem 24rem at 0% 96%, color-mix(in srgb, var(--bo-fond-champagne-clair) 40%, transparent), transparent 70%),
+    var(--bo-section-ivoire-ciel);
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
+  grid-template-areas:
+    'main scene'
+    'main aside';
+  grid-template-rows: auto 1fr;
+  column-gap: var(--sp-64);
+  row-gap: var(--sp-24);
+  align-items: start;
+}
+.main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-24);
+  min-width: 0;
+}
+.task {
+  margin-block-start: var(--sp-8);
+  min-width: 0;
+}
+.scene {
+  grid-area: scene;
+  display: flex;
+  justify-content: center;
+  padding-block-start: var(--sp-48);
+}
+.scene svg {
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+}
+.aside {
+  grid-area: aside;
+  min-width: 0;
+}
+
+/* What the visitor gains */
+.gains {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+  padding: var(--sp-24) var(--sp-32);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-l);
+  background: color-mix(in srgb, var(--bo-fond-blanc) 82%, transparent);
+  backdrop-filter: blur(6px);
+}
+.gainsTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-subtitle-m);
+  color: var(--bo-texte-roi);
+}
+.gainList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gain {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-12);
+  align-items: start;
+}
+.gainIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-or-clair);
+  color: var(--bo-texte-or);
+}
+.gainName {
+  display: block;
+  font-size: var(--fs-heading-item);
+  color: var(--bo-texte-nuit);
+}
+.gainText {
+  display: block;
+  margin-block-start: var(--sp-4);
+  font-size: var(--fs-body-l);
+  line-height: 1.5;
+  color: var(--bo-texte-doux);
+}
+.note {
+  margin: 0;
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.note a {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+
+@media (max-width: 1023px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'scene'
+      'main'
+      'aside';
+    grid-template-rows: auto;
+  }
+  .scene {
+    padding-block-start: 0;
+    height: 200px;
+  }
+  .scene svg {
+    height: 200px;
+    width: auto;
+  }
+}
+@media (max-width: 767px) {
+  .page {
+    padding-block: var(--sp-16) var(--sp-64);
+  }
+  .gains {
+    padding: var(--sp-20);
+  }
+}

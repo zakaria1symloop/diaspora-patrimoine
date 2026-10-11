@@ -1,0 +1,837 @@
+{
+  "meta": {
+    "title": "Mon espace"
+  },
+  "shell": {
+    "menu": "Menu de mon espace",
+    "tabs": "Navigation de mon espace",
+    "backToSite": "Retour au site Diaspora Patrimoine",
+    "browse": "Voir les programmes",
+    "bell": "Notifications",
+    "bellUnread": "{n, plural, one {Notifications : # non lue} other {Notifications : # non lues}}",
+    "badgeNew": "{n, plural, one {# nouveauté} other {# nouveautés}}",
+    "account": "Mon compte",
+    "myProfile": "Mon profil",
+    "logout": "Se déconnecter",
+    "loggingOut": "Déconnexion…",
+    "close": "Fermer",
+    "helpTitle": "Une question ?",
+    "helpText": "Votre conseiller vous répond par e-mail ou par téléphone.",
+    "renewing": "Un instant, nous rouvrons votre espace…"
+  },
+  "menu": {
+    "dashboard": "Tableau de bord",
+    "dossier": "Mon dossier",
+    "documents": "Mes pièces",
+    "interests": "Mes intérêts",
+    "proposals": "Biens proposés",
+    "messages": "Messages",
+    "simulations": "Simulations",
+    "favorites": "Favoris",
+    "alerts": "Alertes",
+    "profile": "Profil"
+  },
+  "tabs": {
+    "home": "Accueil",
+    "dossier": "Dossier",
+    "properties": "Biens",
+    "messages": "Messages",
+    "more": "Plus"
+  },
+  "dashboard": {
+    "hello": "Bonjour {prenom}",
+    "helloNoName": "Bonjour",
+    "intro": "Voici où en est votre projet.",
+    "emailBounced": {
+      "text": "Nos e-mails ne parviennent pas à votre adresse {adresse}. Vérifiez-la pour ne rien manquer.",
+      "valid": "Mon adresse est correcte",
+      "change": "Modifier mon adresse",
+      "done": "Merci, c’est noté."
+    },
+    "welcome": {
+      "title": "Bienvenue dans votre espace",
+      "text": "C’est ici que vous suivrez votre projet, de la première demande jusqu’aux clés.",
+      "browse": "Découvrir les programmes",
+      "simulate": "Simuler mon projet",
+      "callback": "Être rappelé"
+    },
+    "lead": {
+      "registered": "Votre demande {reference} est enregistrée.",
+      "callPromise": "Un conseiller vous appelle {quand}.",
+      "replyPromise": "Nous vous répondons {quand}."
+    },
+    "closed": {
+      "banner": "Votre dossier {reference} est clôturé.",
+      "messageReceived": "Votre message du {date} est bien reçu. {conseiller} vous répond {quand}.",
+      "messageReceivedPlain": "Votre message du {date} est bien reçu."
+    },
+    "won": {
+      "newProject": "Un nouveau projet ?",
+      "browse": "Découvrir les programmes"
+    },
+    "todo": {
+      "title": "À faire",
+      "none": "Rien à faire pour le moment. Nous vous prévenons dès qu’il y a du nouveau.",
+      "OFFER_WAITING": "{bank} vous fait une offre de financement.",
+      "OFFER_WAITING_until": "Valable jusqu’au {date}.",
+      "OFFER_WAITING_transmitted": "Votre souhait d’accepter l’offre de {bank} est transmis à {advisor}.",
+      "CONSENT_NEEDED": "Il ne manque que votre accord pour transmettre votre dossier à la banque.",
+      "DOCUMENTS_TO_REDO": "{n, plural, one {# pièce est à refaire.} other {# pièces sont à refaire.}}",
+      "BANK_INFO": "{bank} demande un complément.",
+      "DOCUMENTS_TO_PROVIDE": "{n, plural, one {# pièce à fournir.} other {# pièces à fournir.}}",
+      "DOCUMENTS_TO_PROVIDE_due": "{n, plural, one {# pièce à fournir} other {# pièces à fournir}} avant le {date}.",
+      "DOCUMENTS_TO_RENEW": "{n, plural, one {# pièce à renouveler} other {# pièces à renouveler}} avant le {date}.",
+      "APPOINTMENT_SOON": "{type} le {date} à {heure}.",
+      "PROPOSALS_NEW": "{n, plural, one {# bien à découvrir.} other {# biens à découvrir.}}",
+      "OPTION_ENDING": "Votre option sur le lot {lot} se termine le {date}.",
+      "SURVEY": "Votre avis en 2 minutes.",
+      "PROFILE_INCOMPLETE": "Complétez votre profil pour préparer notre échange.",
+      "go": "J’y vais",
+      "count": "{n, plural, one {# action} other {# actions}}",
+      "first": "À faire en premier"
+    },
+    "project": {
+      "title": "Votre projet",
+      "nextStep": "Prochaine étape",
+      "open": "Ouvrir mon dossier",
+      "others": "Voir mes autres dossiers",
+      "completeness": "Votre dossier est complet à {n} %.",
+      "seeDocuments": "Voir mes pièces",
+      "completenessShort": "Dossier complet à {n} %",
+      "depositDocuments": "Déposer mes pièces"
+    },
+    "advisor": {
+      "title": "Votre conseiller",
+      "defaultJob": "Votre conseiller",
+      "team": "L’équipe Diaspora Patrimoine",
+      "write": "Écrire",
+      "whatsapp": "WhatsApp",
+      "replies": "{conseiller} vous répond {quand}, par e-mail ou par téléphone.",
+      "repliesTeam": "Nous vous répondons {quand}, par e-mail ou par téléphone.",
+      "writeLong": "Écrire à mon conseiller"
+    },
+    "property": {
+      "title": "Votre bien",
+      "detail": "Voir le détail",
+      "price": "Prix",
+      "priceFrom": "Prix à partir de",
+      "downPayment": "Apport ({pct} %)",
+      "monthly": "Mensualité indicative*",
+      "helpDownPayment": "Qu’est-ce que l’apport ?",
+      "helpMonthly": "Qu’est-ce que la mensualité indicative ?",
+      "open": "Voir la fiche du bien"
+    },
+    "cafe": {
+      "title": "Prochain Café",
+      "registered": "Vous êtes inscrit au {titre}.",
+      "register": "Je m’inscris",
+      "see": "Voir le Café",
+      "when": "{date} · {lieu}"
+    },
+    "news": {
+      "title": "Dernières nouvelles",
+      "markAll": "Tout marquer comme lu",
+      "none": "Aucune notification pour le moment.",
+      "unread": "Non lue",
+      "gone": "Cet élément n’est plus disponible.",
+      "filter": "Filtrer les nouvelles",
+      "all": "Toutes",
+      "unreadOnly": "Non lues",
+      "allRead": "Vous avez tout lu.",
+      "open": "Ouvrir"
+    },
+    "shortcuts": {
+      "title": "Raccourcis",
+      "browse": "Voir les programmes",
+      "simulate": "Simuler mon projet"
+    },
+    "profile": {
+      "complete": "Profil complété à {n} %",
+      "completeLink": "Compléter mon profil"
+    },
+    "encourage": {
+      "documentsLeft": {
+        "title": "{n, plural, one {Plus qu’une pièce à déposer} other {Plus que # pièces à déposer}}",
+        "text": "Vous pouvez les photographier avec votre téléphone, une à une. Nous les vérifions au fur et à mesure.",
+        "action": "Déposer mes pièces"
+      },
+      "documentsChecking": {
+        "title": "Toutes vos pièces sont déposées",
+        "text": "Nous les vérifions une à une. Vous n’avez rien à faire pour le moment."
+      },
+      "complete": {
+        "title": "Votre dossier est complet"
+      },
+      "proposals": {
+        "title": "{n, plural, one {Un bien choisi pour vous} other {# biens choisis pour vous}}",
+        "text": "{n, plural, one {{conseiller} l’a sélectionné d’après votre projet. Dites-lui ce que vous en pensez.} other {{conseiller} les a sélectionnés d’après votre projet. Dites-lui ce que vous en pensez.}}",
+        "action": "Découvrir la sélection"
+      },
+      "started": {
+        "title": "Votre projet est lancé",
+        "text": "Vous en êtes à l’étape {n} sur 6 : {etape}."
+      },
+      "profile": {
+        "title": "Préparez notre premier échange",
+        "action": "Compléter mon profil"
+      },
+      "lead": {
+        "title": "Votre demande est bien arrivée"
+      },
+      "won": {
+        "title": "Félicitations, vous êtes propriétaire !"
+      },
+      "paused": {
+        "title": "Votre projet vous attend"
+      },
+      "docsLegend": "{x, plural, one {# pièce validée ou non demandée sur {y}} other {# pièces validées ou non demandées sur {y}}}",
+      "stepLegend": "Étape {n} sur 6"
+    },
+    "overview": {
+      "label": "Vos repères",
+      "step": "Étape {n} sur 6",
+      "documents": "{n, plural, one {pièce à déposer} other {pièces à déposer}}",
+      "documentsDone": "pièces à déposer",
+      "proposals": "{n, plural, one {bien à découvrir} other {biens à découvrir}}",
+      "interests": "{n, plural, one {bien qui m’intéresse} other {biens qui m’intéressent}}",
+      "requests": "{n, plural, one {demande en cours} other {demandes en cours}}",
+      "favorites": "{n, plural, one {favori} other {favoris}}",
+      "simulations": "{n, plural, one {simulation enregistrée} other {simulations enregistrées}}",
+      "alerts": "{n, plural, one {alerte active} other {alertes actives}}",
+      "new": "Nouveau"
+    }
+  },
+  "agreements": {
+    "marketing": {
+      "wording": "Je souhaite recevoir les actualités de Diaspora Patrimoine par e-mail."
+    },
+    "transmission": {
+      "withdrawWording": "Je retire mon accord pour la transmission de mon dossier aux partenaires.",
+      "task": "{client} a retiré son accord de transmission"
+    }
+  },
+  "tour": {
+    "1": {
+      "title": "Votre projet, étape par étape",
+      "text": "Ici, vous voyez où en est votre projet et ce qui vient ensuite."
+    },
+    "2": {
+      "title": "Ce que vous avez à faire",
+      "text": "Quand nous avons besoin de vous, c’est ici que vous le voyez en premier."
+    },
+    "3": {
+      "title": "Votre conseiller",
+      "text": "Une question ? Écrivez-lui : il vous répond."
+    },
+    "label": "Visite de votre espace"
+  },
+  "promise": {
+    "breachedCall": "Nous n’avons pas encore pu vous appeler : nous vous contactons au plus vite.",
+    "breachedReply": "Nous n’avons pas encore pu vous répondre : nous le faisons au plus vite.",
+    "breachedWrite": "Vous pouvez aussi nous écrire.",
+    "breachedWritePhone": "Vous pouvez aussi nous écrire ou nous appeler au {telephone}.",
+    "breachedWriteWhatsapp": "Vous pouvez aussi nous écrire ou nous joindre sur WhatsApp.",
+    "breachedWritePhoneWhatsapp": "Vous pouvez aussi nous écrire, nous appeler au {telephone} ou nous joindre sur WhatsApp."
+  },
+  "steps": {
+    "title": "Les étapes de votre projet",
+    "current": "Étape en cours",
+    "done": "Le {date}",
+    "notConcerned": "Non concerné",
+    "1": {
+      "label": "Découverte des biens",
+      "hint": "Vous découvrez les programmes et simulez votre financement."
+    },
+    "2": {
+      "label": "Expression d’intérêt",
+      "hint": "Vous nous dites ce qui vous intéresse."
+    },
+    "3": {
+      "label": "Qualification et mise en relation",
+      "hint": "Votre conseiller précise votre projet avec vous et vous propose des biens."
+    },
+    "4": {
+      "label": "Constitution du dossier",
+      "hint": "Vous déposez vos pièces en ligne ; nous les vérifions une à une."
+    },
+    "5": {
+      "label": "Soumission à la banque",
+      "hint": "Nous présentons votre dossier aux banques partenaires et suivons leur réponse."
+    },
+    "6": {
+      "label": "Octroi du crédit et acquisition",
+      "labelCash": "Acquisition",
+      "hint": "Accord de la banque, conditions, signature : vous êtes propriétaire.",
+      "hintCash": "Conditions, signature : vous êtes propriétaire."
+    }
+  },
+  "nextStep": {
+    "INTEREST": "Votre demande est enregistrée. Un conseiller vous appelle {quand}.",
+    "INTEREST_PLAIN": "Votre demande est enregistrée.",
+    "QUALIFICATION_CALL": "{conseiller} vous appelle {quand} pour faire le point sur votre projet : budget, financement, délais.",
+    "QUALIFICATION": "{conseiller} fait le point avec vous sur votre projet : budget, financement, délais.",
+    "MATCHING_SELECTED": "Votre bien est retenu. Nous préparons la liste de vos pièces.",
+    "MATCHING_SELECTION_REQUESTED": "Vous avez demandé à retenir {property}. {conseiller} vous confirme sa disponibilité.",
+    "MATCHING_PROPOSALS": "Des biens vous attendent : dites-nous ce que vous en pensez.",
+    "MATCHING_VISIT": "Votre visite a lieu le {date}.",
+    "MATCHING_INTERESTED": "Prochaine étape : choisir le bien que vous retenez.",
+    "MATCHING_PREPARING": "{conseiller} prépare une sélection de biens pour vous.",
+    "DOCUMENTS_UNAVAILABLE": "Le bien que vous aviez retenu n’est plus disponible. {conseiller} revient vers vous avec d’autres biens.",
+    "DOCUMENTS_TO_PROVIDE": "Déposez vos pièces : il en reste {n}.",
+    "DOCUMENTS_CHECKING": "Nous vérifions vos pièces.",
+    "DOCUMENTS_LIST_PENDING": "Complétez votre situation pour que nous finalisions la liste de vos pièces.",
+    "DOCUMENTS_CONSENT": "Votre dossier est complet. Il ne manque que votre accord pour l’envoyer à la banque.",
+    "DOCUMENTS_COMPLETE_FINANCING": "Votre dossier est complet. Nous préparons l’envoi à la banque.",
+    "DOCUMENTS_COMPLETE_CASH": "Votre dossier est complet. Place à l’acquisition.",
+    "BANK_INFO": "{bank} demande un complément : {n, plural, one {# pièce à fournir} other {# pièces à fournir}}.",
+    "BANK_STUDY": "Votre dossier est à l’étude chez {banks}. Nous vous tenons informé.",
+    "BANK_OTHER": "Nous étudions avec vous une autre solution de financement.",
+    "APPROVED_ACCEPT": "Vous souhaitez accepter l’offre de {bank}. {conseiller} finalise avec vous.",
+    "APPROVED": "{bank} a donné son accord. Prenez connaissance de l’offre avec {conseiller}.",
+    "ACQUISITION_CANCELLED": "La réservation de votre lot a été annulée. {conseiller} revient vers vous.",
+    "ACQUISITION_SIGNING": "Signature prévue le {date}.",
+    "ACQUISITION": "Prochaine étape : fixer la date de signature.",
+    "WON_KEYS": "Les clés vous ont été remises le {date}. Bienvenue chez vous.",
+    "WON": "L’acte est signé : vous êtes propriétaire. Félicitations !",
+    "advisorFallback": "Votre conseiller"
+  },
+  "banner": {
+    "ON_HOLD": "Votre projet est en pause.",
+    "ON_HOLD_until": "Reprise prévue le {date}.",
+    "ON_HOLD_note": "Nous attendons de vos nouvelles : {note}",
+    "resume": "Reprendre mon projet",
+    "LOST": "Ce dossier est clôturé. Vos documents et vos échanges restent accessibles ici. Votre projet peut reprendre à tout moment : {conseiller} vous explique où vous en êtes.",
+    "LOST_team": "Ce dossier est clôturé. Vos documents et vos échanges restent accessibles ici. Votre projet peut reprendre à tout moment : l’équipe vous explique où vous en êtes.",
+    "relaunch": "Relancer mon projet",
+    "WON": "Votre acquisition est finalisée."
+  },
+  "dossier": {
+    "title": "Dossier {reference}",
+    "eyebrow": "Mon dossier",
+    "back": "Mes dossiers",
+    "tabs": {
+      "followUp": "Suivi",
+      "documents": "Pièces",
+      "label": "Rubriques du dossier",
+      "documentsLeft": "{n, plural, one {# pièce à déposer} other {# pièces à déposer}}"
+    },
+    "list": {
+      "title": "Mes dossiers",
+      "intro": "Vous avez plusieurs dossiers. Le plus récent en cours est en tête.",
+      "lastActivity": "Dernière activité : {date}",
+      "noProperty": "Bien à choisir",
+      "filter": "Filtrer mes dossiers",
+      "all": "Tous",
+      "live": "En cours",
+      "done": "Terminés",
+      "step": "Étape {n} sur 6 · {etape}",
+      "completeness": "Complet à {n} %",
+      "open": "Ouvrir le dossier {reference}",
+      "current": "Dossier affiché sur votre tableau de bord"
+    },
+    "timeline": {
+      "title": "Ce qui s’est passé",
+      "empty": "L’historique de votre dossier s’affichera ici, au fil de votre projet.",
+      "more": "Afficher plus",
+      "LEAD_SENT": "Vous avez envoyé une demande : {nature}.",
+      "LEAD_SENT_property": "Vous avez envoyé une demande : {nature}, {bien}.",
+      "LEAD_SENT_AGAIN": "Vous avez envoyé une nouvelle demande : {nature}.",
+      "LEAD_SENT_AGAIN_property": "Vous avez envoyé une nouvelle demande : {nature}, {bien}.",
+      "AGENT_ASSIGNED": "{conseiller} suit votre projet.",
+      "QUALIFIED": "Votre projet est précisé avec {conseiller} : budget, financement, délais.",
+      "PROPERTIES_PROPOSED": "{conseiller} vous a proposé {n, plural, one {# bien} other {# biens}}.",
+      "APPOINTMENT_DONE": "{type} avec {conseiller}.",
+      "PROPERTY_SELECTED": "Vous avez retenu {bien}.",
+      "SELECTION_DECLINED": "{conseiller} n’a pas pu retenir {bien} : {raison}.",
+      "SELECTION_WITHDRAWN": "Le choix de {bien} a été retiré.",
+      "DOCUMENTS_REQUESTED": "{n, plural, one {# pièce vous a été demandée.} other {# pièces vous ont été demandées.}}",
+      "DOSSIER_COMPLETE": "Votre dossier est complet.",
+      "SUBMISSION_SENT": "Votre dossier a été envoyé à {banque}.",
+      "INFO_REQUESTED": "{banque} a demandé un complément.",
+      "BANK_APPROVED": "{banque} a accordé votre financement.",
+      "BANK_REJECTED": "{banque} n’a pas donné suite.",
+      "BANK_DECISION_REVERTED": "La réponse de {banque} a été corrigée : votre dossier est de nouveau à l’étude.",
+      "FINANCING_DROPPED": "Votre projet se poursuit sans financement bancaire.",
+      "FINANCING_RESUMED": "Votre projet se poursuit avec un financement.",
+      "OPTION_PLACED": "Une option a été posée sur le lot {lot}.",
+      "RESERVATION_CONFIRMED": "Votre réservation est confirmée.",
+      "OPTION_ENDED": "L’option sur le lot {lot} a pris fin.",
+      "RESERVATION_CANCELLED": "La réservation du lot {lot} a été annulée.",
+      "PUT_ON_HOLD": "Votre projet a été mis en pause.",
+      "RESUMED": "Votre projet a repris.",
+      "CLOSED": "Votre dossier a été clôturé.",
+      "REOPENED": "Votre dossier est rouvert.",
+      "OFFER_UPDATED": "L’offre de {banque} a été mise à jour.",
+      "OFFER_EXTENDED": "L’offre de {banque} est prolongée jusqu’au {date}.",
+      "OFFER_EXPIRED": "L’offre de {banque} est arrivée à échéance.",
+      "SUBMISSION_WITHDRAWN": "Votre demande auprès de {banque} a été retirée.",
+      "CONSENT_GIVEN": "Vous avez donné votre accord pour transmettre votre dossier.",
+      "CONSENT_WITHDRAWN": "Vous avez retiré votre accord de transmission.",
+      "DEPOSIT_DUE": "Acompte de {montant} : remboursement à suivre.",
+      "DEPOSIT_REFUNDED": "Acompte remboursé : {montant}.",
+      "DEPOSIT_RETAINED": "Acompte conservé par le promoteur.",
+      "MILESTONE_CONDITIONS": "Conditions acceptées.",
+      "MILESTONE_SIGNING": "Signature planifiée le {date}.",
+      "MILESTONE_DEED": "Acte signé.",
+      "MILESTONE_KEYS": "Clés remises.",
+      "unknown": "Votre dossier a évolué.",
+      "filter": "Filtrer le suivi",
+      "count": "{n, plural, one {# événement} other {# événements}}",
+      "families": {
+        "ALL": "Tout",
+        "REQUESTS": "Demandes",
+        "PROPERTY": "Bien",
+        "DOCUMENTS": "Pièces",
+        "FINANCING": "Financement",
+        "PROJECT": "Étapes"
+      },
+      "latest": "Dernier événement"
+    },
+    "helpCompleteness": "Que veut dire « complet à … % » ?",
+    "header": {
+      "property": "Voir la fiche du bien",
+      "noProperty": "Bien à choisir avec votre conseiller"
+    },
+    "facts": {
+      "title": "En bref",
+      "opened": "Ouvert le",
+      "lastActivity": "Dernière activité",
+      "financing": "Financement",
+      "financingYes": "Avec un crédit",
+      "financingNo": "Sans crédit",
+      "step": "Étape",
+      "stepValue": "{n} sur 6"
+    },
+    "property": {
+      "title": "Le bien de ce dossier"
+    }
+  },
+  "properties": {
+    "tabs": {
+      "interests": "Mes intérêts",
+      "proposals": "Biens proposés",
+      "label": "Mes biens"
+    },
+    "view": "Voir le bien",
+    "write": "Écrire à mon conseiller",
+    "openDossier": "Ouvrir mon dossier",
+    "seeInInterests": "Voir dans mes intérêts",
+    "offline": "Fiche en cours de mise à jour",
+    "gone": "Ce bien n’est plus proposé",
+    "unavailable": "Ce bien n’est plus disponible",
+    "reserved": "Tous les lots sont réservés pour le moment.",
+    "reservedSelected": "Tous les lots sont réservés pour le moment. {conseiller} vous tient informé.",
+    "reservedInterested": "Tous les lots sont réservés pour le moment. {conseiller} vous prévient si l’un d’eux se libère.",
+    "since": "Depuis le {date}",
+    "priceFrom": "À partir de {montant}",
+    "price": "{montant}",
+    "similar": "Voir des biens similaires",
+    "summaryClose": "Replier le résumé",
+    "summaryOpen": "Voir le résumé",
+    "surface": "Surface",
+    "status": {
+      "INTERESTED": "Intérêt envoyé",
+      "INTERESTED_requested": "Choix envoyé à votre conseiller",
+      "RESERVED": "Réservé pour le moment",
+      "VISIT_REQUESTED": "Visite demandée",
+      "VISIT_PLANNED": "Visite le {date}",
+      "VISITED": "Visité",
+      "SELECTED": "Bien retenu",
+      "DECLINED": "Écarté",
+      "UNAVAILABLE": "Plus disponible",
+      "PROPOSED": "À découvrir",
+      "VIEWED": "Consulté"
+    },
+    "detail": {
+      "VISIT_REQUESTED": "Votre conseiller confirme le créneau.",
+      "declined": "{conseiller} n’a pas pu retenir ce bien : {raison}."
+    },
+    "monthly": "Mensualité indicative*",
+    "priceLabel": "Prix",
+    "priceFromLabel": "Prix à partir de",
+    "surfaceLabel": "Surface",
+    "roomsLabel": "Pièces",
+    "viewTitled": "Voir le bien : {titre}",
+    "writeAbout": "Écrire à mon conseiller au sujet de {titre}",
+    "journey": {
+      "label": "Où en est ce bien",
+      "1": "Intérêt envoyé",
+      "2": "Visite",
+      "3": "Bien retenu"
+    },
+    "filter": {
+      "label": "Filtrer les biens",
+      "all": "Tous",
+      "waiting": "En attente",
+      "visit": "Visite",
+      "selected": "Retenu",
+      "closed": "Écartés ou indisponibles"
+    },
+    "sort": {
+      "recent": "Les plus récents",
+      "priceAsc": "Prix croissant",
+      "priceDesc": "Prix décroissant"
+    },
+    "search": "Chercher un bien, une ville"
+  },
+  "interests": {
+    "title": "Mes intérêts",
+    "intro": "Les biens qui vous intéressent et les demandes que vous nous avez envoyées.",
+    "propertiesTitle": "Les biens qui m’intéressent",
+    "requestsTitle": "Mes demandes",
+    "empty": "Vous n’avez pas encore exprimé d’intérêt.",
+    "emptyText": "Quand un bien vous plaît, dites-le depuis sa fiche : il apparaîtra ici, et un conseiller vous rappelle.",
+    "browse": "Découvrir les biens",
+    "requestsEmpty": "Vous ne nous avez pas encore envoyé de demande.",
+    "request": {
+      "NEW": "Reçue",
+      "IN_PROGRESS": "Prise en charge par {conseiller}",
+      "IN_PROGRESS_team": "Prise en charge",
+      "CLOSED": "Traitée",
+      "noCandidate": "Votre conseiller revient vers vous à ce sujet.",
+      "fromSpace": "Écrit depuis votre espace",
+      "sentOn": "Envoyée le {date}",
+      "filter": "Filtrer mes demandes",
+      "all": "Toutes",
+      "open": "En cours",
+      "closed": "Traitées",
+      "write": "Écrire à ce sujet",
+      "writeAbout": "Écrire à mon conseiller au sujet de la demande {reference}",
+      "reference": "Réf. {reference}"
+    },
+    "count": "{n, plural, one {# bien} other {# biens}}",
+    "requestsCount": "{n, plural, one {# demande} other {# demandes}}",
+    "requestsIntro": "Tout ce que vous nous avez envoyé, avec sa suite.",
+    "encourage": {
+      "selected": {
+        "title": "Votre bien est retenu",
+        "text": "{bien} est le bien de votre dossier. La suite se passe dans « Mon dossier ».",
+        "action": "Ouvrir mon dossier"
+      },
+      "waiting": {
+        "title": "{n, plural, one {Votre intérêt est bien arrivé} other {Vos intérêts sont bien arrivés}}",
+        "text": "Vous pouvez continuer à regarder des biens : chaque intérêt envoyé s’ajoute ici."
+      }
+    }
+  },
+  "proposals": {
+    "title": "Biens proposés",
+    "intro": "Les biens que votre conseiller a choisis pour vous.",
+    "group": "Proposés par {conseiller} le {date}",
+    "groupTeam": "Proposés par l’équipe le {date}",
+    "new": "Nouveau",
+    "empty": "Votre conseiller n’a pas encore proposé de bien.",
+    "emptyBefore": "Il vous contacte d’abord pour comprendre votre projet.",
+    "emptyAfter": "Sa sélection arrive.",
+    "browse": "Découvrir les biens",
+    "count": "{n, plural, one {# bien proposé} other {# biens proposés}}",
+    "filter": {
+      "label": "Filtrer les biens proposés",
+      "all": "Tous",
+      "new": "À découvrir",
+      "viewed": "Consultés",
+      "followed": "Suivis",
+      "closed": "Écartés ou indisponibles"
+    },
+    "groupCount": "{n, plural, one {# bien} other {# biens}}",
+    "note": "Le mot de {conseiller}",
+    "noteTeam": "Le mot de l’équipe",
+    "encourage": {
+      "new": {
+        "title": "{n, plural, one {Un bien vous attend} other {# biens vous attendent}}",
+        "text": "{n, plural, one {Ouvrez-le à votre rythme, puis dites à {conseiller} ce que vous en pensez : cela l’aide à mieux vous proposer.} other {Ouvrez-les à votre rythme, puis dites à {conseiller} ce que vous en pensez : cela l’aide à mieux vous proposer.}}",
+        "action": "Écrire à mon conseiller"
+      },
+      "seen": {
+        "title": "Vous avez tout regardé",
+        "text": "Un avis, une question, une préférence ? Dites-le à {conseiller} : sa prochaine sélection en tiendra compte.",
+        "action": "Donner mon avis"
+      }
+    }
+  },
+  "message": {
+    "title": "Écrire à {conseiller}",
+    "titleTeam": "Écrire à l’équipe",
+    "eyebrow": "Messages",
+    "intro": "Une question, une précision, l’envie de reprendre votre projet : écrivez-nous ici.",
+    "label": "Votre message",
+    "about": "À propos de",
+    "aboutOther": "Autre sujet",
+    "dossier": "Dossier {reference}",
+    "dossierProperty": "Dossier {reference} – {bien}",
+    "promise": "{conseiller} vous répond {quand}, par e-mail ou par téléphone.",
+    "promiseTeam": "Nous vous répondons {quand}, par e-mail ou par téléphone.",
+    "send": "Envoyer",
+    "sent": "Votre message est envoyé à {conseiller}.",
+    "sentTeam": "Votre message est envoyé à l’équipe.",
+    "sentNext": "Vous le retrouvez dans « Mes demandes », avec sa suite.",
+    "seeRequests": "Voir mes demandes",
+    "another": "Écrire un autre message",
+    "prefill": {
+      "PROPERTY_ABOUT": "Au sujet de {bien} (réf. {reference}) : ",
+      "PROPERTY_SELECT": "Je souhaite retenir {bien}. ",
+      "PROPERTY_VISIT": "Je souhaite visiter {bien} (réf. {reference}). ",
+      "RESUME_PROJECT": "Je souhaite reprendre mon projet. ",
+      "RELAUNCH_PROJECT": "Je souhaite reprendre mon projet. ",
+      "SIMULATION": "Au sujet de ma simulation du {date} : ",
+      "APPOINTMENT_AGAIN": "Je souhaite reprendre rendez-vous. "
+    },
+    "how": {
+      "title": "Comment ça se passe",
+      "1": "Vous écrivez votre message, à votre rythme. Rien ne part avant « Envoyer ».",
+      "2": "{conseiller} le reçoit et vous répond {quand}, par e-mail ou par téléphone.",
+      "2team": "L’équipe le reçoit et vous répond {quand}, par e-mail ou par téléphone.",
+      "3": "Vous retrouvez votre demande et sa suite dans « Mes demandes »."
+    },
+    "other": {
+      "title": "Vous préférez nous joindre autrement ?",
+      "phone": "Appeler le {telephone}",
+      "whatsapp": "Écrire sur WhatsApp"
+    },
+    "open": {
+      "title": "Vos demandes en cours",
+      "all": "Voir toutes mes demandes"
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "eyebrow": "Profil",
+    "intro": "Vos informations nous aident à préparer votre projet. Chaque section s’enregistre séparément.",
+    "tabs": {
+      "label": "Rubriques du profil",
+      "profile": "Mes informations",
+      "security": "Sécurité",
+      "privacy": "Mes accords"
+    },
+    "complete": "Profil complété à {n} %",
+    "completeHint": "Prénom, nom, téléphone, pays de résidence, situation, horizon, budget, apport et financement souhaité.",
+    "save": "Enregistrer",
+    "saved": "Modifications enregistrées.",
+    "nothing": "Aucune modification à enregistrer.",
+    "unsavedSection": "Modifications non enregistrées",
+    "conflict": "Cette fiche a été modifiée par {prenom} à {heure}. Rechargez-la pour voir la dernière version ; vos changements ne sont pas enregistrés.",
+    "conflictNoName": "Cette fiche a été modifiée à {heure}. Rechargez-la pour voir la dernière version ; vos changements ne sont pas enregistrés.",
+    "reload": "Recharger",
+    "sections": {
+      "identity": "Identité",
+      "contact": "Coordonnées",
+      "situation": "Situation",
+      "project": "Mon projet",
+      "finances": "Mes finances",
+      "contacts": "Personnes de confiance"
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "birthDate": "Date de naissance",
+      "nationalities": "Nationalités",
+      "nationalitiesHint": "Jusqu’à trois.",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "phoneHint": "Au format international, par exemple +33 6 12 34 56 78.",
+      "whatsappOptIn": "Joignable sur WhatsApp à ce numéro",
+      "countryOfResidence": "Pays de résidence",
+      "cityOfResidence": "Ville",
+      "preferredContactChannel": "Moyen de contact préféré",
+      "preferredContactSlot": "Moment préféré",
+      "timezone": "Fuseau horaire",
+      "timezoneDetect": "Utiliser le fuseau de cet appareil ({fuseau})",
+      "residencyStatus": "Situation de résidence",
+      "employmentType": "Situation professionnelle",
+      "profession": "Profession",
+      "employerName": "Employeur",
+      "employedSince": "Depuis le",
+      "preferredRegionIds": "Régions souhaitées",
+      "preferredTypes": "Types de bien",
+      "minRooms": "Nombre de pièces minimum",
+      "budgetMax": "Budget total",
+      "budgetCurrency": "Devise du budget",
+      "budgetMonthly": "Budget mensuel",
+      "purchasePurpose": "Raison de l’achat",
+      "purchaseTimeframe": "Horizon",
+      "financingPreference": "Financement souhaité",
+      "currency": "Devise",
+      "monthlyIncome": "Revenus nets mensuels",
+      "otherMonthlyIncome": "Autres revenus mensuels",
+      "monthlyDebts": "Mensualités de crédits en cours",
+      "downPayment": "Apport disponible",
+      "choose": "Choisir…",
+      "none": "Non renseigné"
+    },
+    "financesNote": "Ces informations servent à préparer votre financement. Elles ne sont vues que par l’équipe qui suit votre dossier et, avec votre accord, par les banques que nous sollicitons pour vous.",
+    "currencyChanged": "Vous avez changé de devise : ressaisissez les montants, rien n’est converti.",
+    "email": {
+      "change": "Modifier",
+      "title": "Changer d’adresse e-mail",
+      "intro": "Nous envoyons un lien de confirmation à la nouvelle adresse. Rien ne change tant que ce lien n’est pas ouvert (24 heures).",
+      "new": "Nouvelle adresse e-mail",
+      "submit": "Recevoir le lien de confirmation",
+      "sent": "Un e-mail de confirmation vient d’être envoyé à {adresse}.",
+      "pending": "Changement en attente : {adresse}. Ouvrez le lien reçu à cette adresse pour le confirmer."
+    },
+    "contacts": {
+      "intro": "Jusqu’à cinq proches, qui peuvent par exemple visiter un bien à votre place. Votre conseiller les voit.",
+      "empty": "Vous n’avez pas encore ajouté de personne de confiance.",
+      "add": "Ajouter une personne",
+      "edit": "Modifier",
+      "delete": "Retirer",
+      "deleteConfirm": "Retirer {nom} de vos personnes de confiance ?",
+      "fullName": "Nom et prénom",
+      "relation": "Lien avec vous",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "canVisit": "Peut visiter un bien à ma place",
+      "notes": "Note",
+      "informed": "Je confirme avoir informé cette personne que je communique ses coordonnées.",
+      "informedRequired": "Cochez cette case pour ajouter la personne.",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "limit": "Vous avez déjà cinq personnes de confiance.",
+      "visitor": "Peut visiter à votre place",
+      "added": "Personne ajoutée.",
+      "removed": "Personne retirée.",
+      "hasVisit": "{nom} doit faire une visite le {date}. Annulez ou modifiez d’abord ce rendez-vous."
+    },
+    "rail": "Où en est mon profil",
+    "sectionsNav": "Sections du profil",
+    "unsavedShort": "Non enregistré",
+    "todo": "{n, plural, one {# à indiquer} other {# à indiquer}}",
+    "missingTitle": "Il vous reste à indiquer",
+    "missing": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phone": "Téléphone",
+      "countryOfResidence": "Pays de résidence",
+      "residencyStatus": "Situation de résidence",
+      "purchaseTimeframe": "Horizon d’achat",
+      "budget": "Budget",
+      "financingPreference": "Financement souhaité",
+      "downPayment": "Apport disponible"
+    },
+    "encourage": {
+      "left": "{n, plural, one {Plus qu’une information à indiquer pour préparer notre échange.} other {Plus que # informations à indiquer pour préparer notre échange.}}",
+      "done": {
+        "title": "Votre profil est complet",
+        "text": "Merci. Votre conseiller a ce qu’il lui faut pour préparer votre projet avec vous."
+      }
+    }
+  },
+  "security": {
+    "title": "Sécurité",
+    "intro": "Votre mot de passe, la double authentification et les appareils connectés à votre espace.",
+    "proof": {
+      "password": "Votre mot de passe actuel",
+      "code": "Code reçu par e-mail",
+      "sendCode": "Recevoir un code par e-mail",
+      "codeSent": "Un code vient d’être envoyé à {adresse}. Il est valable 10 minutes.",
+      "gone": "Ce code n’est plus valable.",
+      "newCode": "Recevoir un nouveau code",
+      "noPasswordIntro": "Votre compte n’a pas encore de mot de passe : confirmez avec un code reçu par e-mail.",
+      "wrongPassword": "Mot de passe incorrect."
+    },
+    "password": {
+      "title": "Mot de passe",
+      "intro": "Choisissez un nouveau mot de passe. Vos autres appareils seront déconnectés.",
+      "introSet": "Vous vous connectez par lien. Choisissez un mot de passe si vous le souhaitez.",
+      "current": "Mot de passe actuel",
+      "submit": "Changer mon mot de passe",
+      "submitSet": "Choisir mon mot de passe",
+      "done": "Votre mot de passe est changé. Vos autres appareils sont déconnectés."
+    },
+    "twoFactor": {
+      "title": "Double authentification",
+      "intro": "Facultative : à chaque connexion, un code à 6 chiffres affiché par une application de votre téléphone vous sera demandé.",
+      "on": "Activée",
+      "off": "Désactivée",
+      "start": "Activer la double authentification",
+      "step": "Étape {n} sur {total}",
+      "step1": "Confirmez que c’est bien vous.",
+      "step2": "Ajoutez votre espace dans une application de codes (par exemple Google Authenticator ou Microsoft Authenticator) : scannez ce QR code, ou saisissez la clé.",
+      "qrAlt": "QR code à scanner avec votre application de codes",
+      "key": "Clé à saisir",
+      "copy": "Copier",
+      "copied": "Copié.",
+      "step3": "Saisissez le code à 6 chiffres affiché par l’application.",
+      "code": "Code à 6 chiffres",
+      "step4": "Voici vos dix codes de secours. Chacun ne sert qu’une fois, si vous n’avez plus votre téléphone. Gardez-les en lieu sûr.",
+      "download": "Télécharger",
+      "keep": "J’ai conservé mes codes de secours",
+      "enable": "Activer",
+      "enabled": "La double authentification est activée.",
+      "continue": "Continuer",
+      "cancel": "Annuler",
+      "disable": "Désactiver",
+      "disableIntro": "Confirmez que c’est bien vous, puis saisissez un code de votre application.",
+      "disabled": "La double authentification est désactivée.",
+      "regenerate": "Générer de nouveaux codes de secours",
+      "regenerateIntro": "Les anciens codes ne fonctionneront plus.",
+      "regenerated": "Vos nouveaux codes de secours sont prêts. Les anciens ne fonctionnent plus.",
+      "fileName": "codes-de-secours-diaspora-patrimoine.txt"
+    },
+    "sessions": {
+      "title": "Appareils connectés",
+      "intro": "Les appareils où votre espace est ouvert. Aucune localisation n’est affichée.",
+      "current": "Cet appareil",
+      "lastUsed": "Dernière utilisation : {date}",
+      "unknown": "Appareil inconnu",
+      "logout": "Déconnecter",
+      "logoutOthers": "Me déconnecter de tous les autres appareils",
+      "done": "Appareil déconnecté.",
+      "othersDone": "Vos autres appareils sont déconnectés.",
+      "none": "Aucun autre appareil n’est connecté."
+    }
+  },
+  "privacy": {
+    "title": "Mes accords",
+    "intro": "Les accords que vous nous avez donnés, et leur état. Vous pouvez en changer à tout moment.",
+    "policy": "Lire la politique de confidentialité",
+    "legal": {
+      "TERMS_OF_USE": "Conditions générales",
+      "PRIVACY_POLICY": "Politique de confidentialité",
+      "accepted": "Acceptées le {date} (version {version}).",
+      "acceptedNoVersion": "Acceptées le {date}.",
+      "acceptedPolicy": "Acceptée le {date} (version {version}).",
+      "acceptedPolicyNoVersion": "Acceptée le {date}.",
+      "notYet": "Pas encore acceptées.",
+      "read": "Lire le texte"
+    },
+    "marketing": {
+      "title": "Actualités par e-mail",
+      "text": "Les nouveaux programmes, les Cafés et nos conseils, une à deux fois par mois.",
+      "on": "Préférence enregistrée.",
+      "off": "Préférence enregistrée."
+    },
+    "transmission": {
+      "title": "Transmission du dossier aux partenaires",
+      "text": "Pour réserver votre bien et le financer, nous transmettons votre dossier au promoteur du bien retenu et aux banques partenaires que nous sollicitons pour vous.",
+      "GIVEN": "Donné le {date}.",
+      "RECORDED": "Enregistré par {conseiller} le {date}.",
+      "WITHDRAWN": "Retiré le {date}.",
+      "WITHDRAWAL_RECORDED": "Retrait enregistré par {conseiller} le {date}.",
+      "NOT_GIVEN": "Non donné.",
+      "give": "Donner mon accord",
+      "giveHint": "Vous le donnez depuis l’onglet « Pièces » de votre dossier, quand votre liste de pièces est prête.",
+      "withdraw": "Retirer mon accord",
+      "confirmTitle": "Retirer votre accord ?",
+      "confirmText": "Nous ne pourrons plus transmettre votre dossier aux banques ni au promoteur. Les transmissions déjà faites ne peuvent pas être annulées.",
+      "confirm": "Retirer mon accord",
+      "cancel": "Garder mon accord",
+      "done": "Votre accord est retiré. Votre conseiller est prévenu."
+    },
+    "parties": {
+      "title": "Accord d’un co-emprunteur ou d’un garant",
+      "line": "Vous avez confirmé l’accord de {prenom} le {date}."
+    },
+    "later": "Pour télécharger vos données, faire une autre demande à leur sujet ou supprimer votre compte, écrivez-nous : nous nous en occupons avec vous.",
+    "data": {
+      "title": "Mes données"
+    }
+  },
+  "list": {
+    "sort": "Trier",
+    "clear": "Effacer les filtres",
+    "clearSearch": "Effacer la recherche",
+    "shown": "{n} sur {total}",
+    "filter": "Filtrer"
+  }
+}

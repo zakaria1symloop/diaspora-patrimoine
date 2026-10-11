@@ -1,0 +1,98 @@
+/* ECL-004 — the band of a preview opened by the team: fixed at the bottom of the window, above everything, in the
+   colours of the back office (it is the team's tool, not the client's space). Desktop: the page keeps room for it.
+   Phone: it sits above the tab bar of the space (4.25rem, `--tabs-h` of the space's frame). */
+.band {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: 3.5rem;
+  padding: var(--sp-8) var(--sp-16);
+  padding-bottom: calc(var(--sp-8) + env(safe-area-inset-bottom));
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  box-shadow: 0 -6px 24px rgb(1 41 91 / 0.25);
+  animation: bandIn var(--motion-base, 240ms) var(--ease-out, ease-out) both;
+}
+@keyframes bandIn {
+  from {
+    transform: translateY(100%);
+  }
+}
+.mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.14);
+  --icon-accent: var(--bo-accent-or, #c9a227);
+  color: var(--bo-texte-blanc);
+}
+.text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--sp-8);
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+}
+.until {
+  color: rgb(255 255 255 / 0.72);
+  font-size: var(--fs-body-s);
+}
+.quit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0 var(--sp-16);
+  border: 1px solid rgb(255 255 255 / 0.5);
+  border-radius: var(--radius-pill, 999px);
+  background: transparent;
+  color: var(--bo-texte-blanc);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  --icon-accent: currentColor;
+  transition: background-color var(--motion-fast, 120ms) var(--ease-out, ease-out);
+}
+.quit:hover,
+.quit:focus-visible {
+  background: rgb(255 255 255 / 0.14);
+}
+.quit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+:global(html[data-preview]) body {
+  padding-bottom: 4rem;
+}
+@media (max-width: 1023px) {
+  .band {
+    bottom: calc(4.25rem + env(safe-area-inset-bottom));
+    padding-bottom: var(--sp-8);
+  }
+  :global(html[data-preview]) body {
+    padding-bottom: 8.5rem;
+  }
+}
+@media (max-width: 560px) {
+  .until {
+    display: none;
+  }
+  .quit {
+    padding: 0 var(--sp-12);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .band {
+    animation: none;
+  }
+}

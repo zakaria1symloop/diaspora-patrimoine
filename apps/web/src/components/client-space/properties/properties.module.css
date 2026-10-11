@@ -1,0 +1,331 @@
+/* EC-12, EC-13 — the property cards of the client space and their boards (D-098: cards drawn for these pages; the
+   whole width; one main action). Tokens only. */
+
+/* ─── Board: the properties, and the requests beside them on a wide screen ── */
+.board {
+  display: grid;
+  gap: var(--sp-32);
+}
+.boardMain,
+.boardSide {
+  min-width: 0;
+}
+@media (min-width: 1280px) {
+  .board {
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 27rem);
+    align-items: start;
+    gap: var(--sp-32);
+  }
+  .boardSide {
+    position: sticky;
+    top: 6rem;
+  }
+}
+:global([data-simple]) .board {
+  grid-template-columns: minmax(0, 1fr);
+}
+.boardSide {
+  scroll-margin-top: 6rem;
+}
+.encourage {
+  margin-block-end: var(--sp-20);
+}
+
+/* ─── Grid of cards: as many columns as fit; a card alone lies down ───────── */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: var(--sp-20);
+}
+.grid > li {
+  container-type: inline-size;
+  min-width: 0;
+}
+:global([data-simple]) .grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  transition:
+    box-shadow var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out);
+}
+.card:hover,
+.card:focus-within {
+  border-color: var(--bo-accent-bleu);
+  box-shadow: var(--shadow-m);
+}
+.cardNew {
+  border-color: var(--bo-ligne-or);
+  box-shadow: 0 0 0 3px var(--bo-fond-or-clair);
+}
+@container (min-width: 38rem) {
+  .card {
+    flex-direction: row;
+  }
+  .card > .photo {
+    flex: 0 0 42%;
+    aspect-ratio: auto;
+    min-height: 16rem;
+  }
+}
+.veiled .photo img {
+  filter: grayscale(0.8);
+  opacity: 0.6;
+}
+.photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-slow) var(--ease-out);
+}
+a.photo:hover .img,
+.card:has(.title a:hover) .img {
+  transform: scale(1.03);
+}
+.photo picture {
+  position: absolute;
+  inset: 0;
+}
+.newTag {
+  position: absolute;
+  top: var(--sp-12);
+  inset-inline-start: var(--sp-12);
+  box-shadow: var(--shadow-s);
+}
+.newTag::before {
+  display: none;
+}
+.veil {
+  position: absolute;
+  inset-inline: var(--sp-12);
+  bottom: var(--sp-12);
+  padding: var(--sp-6) var(--sp-12);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--bo-fond-bleu-nuit) 85%, transparent);
+  color: var(--bo-texte-blanc);
+  font-weight: 700;
+  text-align: center;
+}
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-10);
+  min-width: 0;
+  padding: var(--sp-16) var(--sp-20) var(--sp-16);
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-12);
+}
+.since {
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.title {
+  margin: 0;
+  font: 700 var(--fs-heading-card) / var(--lh-heading-card) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.title a {
+  color: inherit;
+  text-decoration: none;
+}
+.title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.place {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin: calc(var(--sp-6) * -1) 0 0;
+  color: var(--bo-texte-doux);
+}
+.place svg {
+  color: var(--bo-texte-or);
+}
+.journey {
+  display: grid;
+  gap: var(--sp-6);
+}
+.journeyText {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-8);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-doux);
+}
+.journeyText > span:last-child {
+  text-align: end;
+}
+.journeyOn {
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+}
+.journeyDone {
+  color: var(--bo-texte-or);
+}
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: var(--sp-10) var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+}
+.note svg {
+  flex: none;
+  color: var(--bo-texte-roi);
+}
+.summary {
+  padding: var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-gris);
+}
+.summary p {
+  margin: 0;
+}
+.summaryState {
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+  margin-block-start: auto;
+  padding-block-start: var(--sp-12);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+
+/* ─── A sending of proposals ──────────────────────────────────────────────── */
+.group {
+  margin-block-end: var(--sp-32);
+}
+.groupHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  margin-block-end: var(--sp-12);
+}
+.groupHeadText {
+  min-width: 0;
+}
+.groupTitle {
+  margin: 0;
+  font: 700 var(--fs-subtitle-m) / var(--lh-subtitle-m) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.groupCount {
+  margin: 0;
+  font-size: var(--fs-body-m);
+  color: var(--bo-texte-doux);
+}
+.groupMessage {
+  position: relative;
+  max-width: 75ch;
+  margin: 0 0 var(--sp-20) 1.375rem;
+  padding: var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-s) var(--radius-l) var(--radius-l) var(--radius-l);
+  background: var(--bo-fond-creme);
+  border: 1px solid var(--bo-ligne-or);
+}
+.groupMessage figcaption {
+  margin-block-end: 2px;
+  font: 700 var(--fs-body-s) / var(--lh-body-s) var(--font-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bo-texte-or);
+}
+.groupMessage blockquote {
+  margin: 0;
+  font-size: var(--fs-body-xl);
+  line-height: var(--lh-body-xl);
+  color: var(--bo-texte-encre);
+}
+
+/* ─── Mes demandes ────────────────────────────────────────────────────────── */
+.requests {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-10);
+}
+.request {
+  display: flex;
+  gap: var(--sp-12);
+  padding: var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-bleue);
+  scroll-margin-top: 6rem;
+}
+.request:target {
+  border-color: var(--bo-accent-or);
+  box-shadow: 0 0 0 3px var(--bo-fond-or-clair);
+}
+.requestIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.requestBody {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.requestKind {
+  margin: 0;
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.requestMeta {
+  margin: 0;
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--bo-texte-doux);
+}
+.requestFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-8);
+  margin-block-start: var(--sp-6);
+}

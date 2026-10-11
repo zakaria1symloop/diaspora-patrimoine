@@ -1,0 +1,179 @@
+{
+  "digest": {
+    "section": {
+      "overdue": "En retard",
+      "today": "À faire aujourd’hui",
+      "newTasks": "Nouvelles tâches",
+      "alerts": "Alertes",
+      "leadsToTake": "Demandes à prendre en charge",
+      "toReview": "Demandes écartées à vérifier",
+      "unassigned": "Tâches à prendre",
+      "documents": "Pièces à vérifier",
+      "appointments": "Rendez-vous du jour",
+      "lateDossiers": "Dossiers en retard"
+    },
+    "leadDue": "{reference} — échéance {date}",
+    "toReview": "{n, plural, one {# demande à relire} other {# demandes à relire}}",
+    "documents": "{reference} : {n, plural, one {# pièce} other {# pièces}}"
+  },
+  "title": "Tâches",
+  "intro": "Ce que vous avez à faire, rangé par échéance. Cochez le rond pour terminer une tâche.",
+  "create": "Tâche",
+  "views": "Vues des tâches",
+  "view": {
+    "mine": "Mes tâches",
+    "to-take": "À prendre",
+    "late": "En retard",
+    "done": "Terminées",
+    "team": "Toute l’équipe"
+  },
+  "dossierView": {
+    "team": "Ouvertes",
+    "done": "Terminées"
+  },
+  "group": {
+    "OVERDUE": "En retard",
+    "TODAY": "Aujourd’hui",
+    "TOMORROW": "Demain",
+    "WEEK": "Cette semaine",
+    "LATER": "Plus tard",
+    "NONE": "Sans échéance",
+    "CLOSED": "Terminées et annulées"
+  },
+  "column": {
+    "type": "Type",
+    "priority": "Priorité",
+    "origin": "Origine",
+    "assignee": "Responsable",
+    "due": "Échéance",
+    "attached": "Rattachée à"
+  },
+  "origin": {
+    "MANUAL": "Créée à la main",
+    "AUTOMATIC": "Automatique"
+  },
+  "filter": {
+    "due": "Échéance"
+  },
+  "search": "Rechercher une tâche",
+  "select": "Sélectionner « {titre} »",
+  "completeOne": "Terminer « {titre} »",
+  "menu": "Actions sur « {titre} »",
+  "panel": "Détail de la tâche",
+  "notFound": "Cette tâche n’existe plus ou ne vous est pas accessible.",
+  "automatic": "Automatique",
+  "automaticRule": "Automatique · {regle}",
+  "closedAuto": "Terminée automatiquement : {raison}",
+  "closedBy": "Terminée par {nom} le {date}",
+  "cancelled": "Annulée",
+  "createdBy": "Créée par",
+  "dossierLabel": "Dossier {reference}",
+  "dossierAppointments": "Rendez-vous du dossier",
+  "previous": "Précédent",
+  "next": "Suivant",
+  "page": "Page {page} sur {total} · {n, plural, one {# tâche} other {# tâches}}",
+  "conflict": "Cette tâche vient d’être modifiée par quelqu’un d’autre. Rechargez-la avant d’enregistrer.",
+  "action": {
+    "complete": "Terminer",
+    "edit": "Modifier",
+    "reassign": "Réaffecter",
+    "cancel": "Annuler la tâche",
+    "reopen": "Rouvrir",
+    "take": "Je la prends"
+  },
+  "postpone": {
+    "TOMORROW": "Reporter à demain",
+    "IN_3_DAYS": "Reporter de 3 jours",
+    "NEXT_WEEK": "Reporter à lundi prochain",
+    "DATE": "Reporter à une date…"
+  },
+  "assignee": {
+    "me": "Moi",
+    "meShort": "Moi",
+    "team": "L’équipe",
+    "absent": "absent"
+  },
+  "attached": {
+    "none": "—"
+  },
+  "due": {
+    "none": "Sans échéance",
+    "today": "Aujourd’hui",
+    "tomorrow": "Demain"
+  },
+  "reminder": {
+    "NONE": "Aucun rappel",
+    "AT_DUE": "À l’échéance",
+    "BEFORE_15M": "15 minutes avant",
+    "BEFORE_1H": "1 heure avant",
+    "BEFORE_1D": "La veille",
+    "CUSTOM": "À une date choisie"
+  },
+  "dialog": {
+    "createTitle": "Nouvelle tâche",
+    "editTitle": "Modifier la tâche",
+    "create": "Créer la tâche",
+    "attachedTo": "Rattachée à : {objet}"
+  },
+  "field": {
+    "title": "Intitulé",
+    "type": "Type",
+    "priority": "Priorité",
+    "dueDate": "Échéance",
+    "dueTime": "Heure",
+    "inTheDay": "Sans heure : à faire dans la journée, rappel à 9 h.",
+    "reminder": "Rappel",
+    "remindAt": "Date du rappel",
+    "assignee": "Responsable",
+    "description": "Description",
+    "choose": "Choisir…",
+    "completionNote": "Note de fin",
+    "completionHint": "Ce qui a été fait, en une phrase.",
+    "cancelReason": "Pourquoi l’annuler ?",
+    "newDate": "Nouvelle échéance",
+    "newDateHint": "L’heure de la tâche est gardée."
+  },
+  "bulk": {
+    "label": "Actions sur la sélection",
+    "selected": "{n, plural, one {# tâche sélectionnée} other {# tâches sélectionnées}}",
+    "clear": "Désélectionner"
+  },
+  "win": {
+    "postpone": "Reporter à une date",
+    "postponeSubmit": "Reporter",
+    "assign": "Réaffecter la tâche",
+    "assignSubmit": "Réaffecter",
+    "bulkAssign": "Réaffecter les tâches",
+    "bulkAssignSubmit": "Réaffecter",
+    "cancel": "Annuler la tâche",
+    "cancelSubmit": "Annuler la tâche"
+  },
+  "toast": {
+    "done": "Tâche terminée.",
+    "created": "Tâche créée.",
+    "postponed": "Tâche reportée.",
+    "reopened": "Tâche rouverte.",
+    "taken": "La tâche est à vous.",
+    "reassigned": "Tâche réaffectée.",
+    "cancelled": "Tâche annulée.",
+    "bulk": "{n, plural, one {# tâche traitée} other {# tâches traitées}}.",
+    "bulkPartial": "{n, plural, one {# tâche traitée} other {# tâches traitées}}, {k, plural, one {# refusée} other {# refusées}} (droits ou état)."
+  },
+  "empty": {
+    "mine": "Rien à faire pour l’instant.",
+    "to-take": "Aucune tâche en attente d’un responsable.",
+    "late": "Aucune tâche en retard.",
+    "done": "Aucune tâche terminée ces 30 derniers jours.",
+    "team": "Aucune tâche ouverte dans l’équipe.",
+    "dossier": "Aucune tâche sur ce dossier.",
+    "text": "Les tâches automatiques apparaissent ici d’elles-mêmes ; vous pouvez aussi en créer une."
+  },
+  "why": {
+    "generic": "Impossible dans l’état actuel.",
+    "TASK_CLOSED": "La tâche est déjà close.",
+    "TASK_TOO_OLD": "Une tâche se rouvre dans les 30 jours qui suivent sa clôture.",
+    "APPOINTMENT_STARTED": "Le rendez-vous a commencé : notez-le tenu ou absent.",
+    "APPOINTMENT_NOT_STARTED": "Possible une fois l’heure du rendez-vous passée.",
+    "CORRECTION_TOO_LATE": "L’issue se corrige dans les 7 jours."
+  }
+}

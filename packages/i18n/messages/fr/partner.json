@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Devenir partenaire",
+    "pointsTitle": "Pourquoi travailler ensemble"
+  },
+  "door": {
+    "text": "Vous êtes promoteur ou banque ?",
+    "link": "Créez votre espace partenaire"
+  },
+  "form": {
+    "title": "Votre demande",
+    "company": "Société",
+    "requesterKind": "Vous êtes",
+    "kinds": {
+      "NOTARY": "Notaire",
+      "INSURER": "Assureur",
+      "INSTITUTION": "Institution ou administration",
+      "MEDIA": "Média",
+      "OTHER": "Autre"
+    },
+    "jobTitle": "Fonction",
+    "email": "E-mail professionnel",
+    "country": "Pays",
+    "website": "Site web",
+    "websiteHint": "Par exemple https://www.exemple.fr",
+    "websiteInvalid": "Saisissez l’adresse complète du site, par exemple https://www.exemple.fr",
+    "message": "Votre message",
+    "messageHint": "Votre activité, ce que vous proposez, ce que vous attendez de ce partenariat.",
+    "submit": "Envoyer ma demande",
+    "contactLine": "Vous préférez écrire directement ?"
+  },
+  "done": {
+    "title": "Merci {prenom}, votre demande est enregistrée.",
+    "review": "Nous revenons vers vous sous {n, plural, one {# jour ouvré} other {# jours ouvrés}}.",
+    "email": "Un e-mail de confirmation part à {email}.",
+    "home": "Retour à l’accueil",
+    "partners": "Voir nos partenaires"
+  }
+}

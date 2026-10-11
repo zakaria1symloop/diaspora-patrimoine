@@ -1,0 +1,564 @@
+{
+  "meta": {
+    "title": "Back-office Diaspora Patrimoine"
+  },
+  "skip": "Aller au contenu",
+  "door": {
+    "eyebrow": "Back-office",
+    "title": "Se connecter",
+    "intro": "Accès réservé à l’équipe. Votre e-mail, votre mot de passe, puis le code de votre application.",
+    "secure": "Connexion sécurisée. Chaque connexion est inscrite au journal.",
+    "asideTitle": "Le poste de travail de l’équipe",
+    "asideText": "Demandes, clients, dossiers et catalogue : tout ce qui fait avancer un projet, au même endroit.",
+    "suspended": "Ce compte est suspendu. Adressez-vous à la Direction.",
+    "lostDevice": "Appareil perdu et plus de code de secours ? Demandez à la Direction de réinitialiser votre double authentification."
+  },
+  "setup": {
+    "heading": "Première connexion",
+    "intro": "Trois étapes avant d’entrer : votre mot de passe, la double authentification, puis la charte d’utilisation.",
+    "step": {
+      "PASSWORD": "Mot de passe",
+      "TWO_FACTOR": "Double authentification",
+      "CHARTER": "Charte"
+    },
+    "title": {
+      "PASSWORD": "Choisissez votre mot de passe",
+      "TWO_FACTOR": "Configurez la double authentification",
+      "CHARTER": "Charte d’utilisation du back-office"
+    },
+    "passwordIntro": "Il protège votre compte, avec le code de votre application à chaque connexion.",
+    "charterAccept": "J’ai lu la charte et je l’accepte."
+  },
+  "invitation": {
+    "deadTitle": "Invitation",
+    "dead": "Ce lien a expiré ou a déjà été utilisé. Demandez à un administrateur de vous renvoyer l’invitation."
+  },
+  "forgot": {
+    "sent": "Si un compte de l’équipe existe pour cette adresse, un e-mail vient d’être envoyé.",
+    "validity": "Le lien est valable 1 heure et ne sert qu’une fois."
+  },
+  "reset": {
+    "submit": "Enregistrer le mot de passe",
+    "saved": "Votre mot de passe est enregistré. Terminez la connexion."
+  },
+  "twoFactor": {
+    "scanIntro": "Ouvrez votre application de codes (Google Authenticator, Microsoft Authenticator, 1Password…) et scannez ce code. Saisissez ensuite le code à 6 chiffres qu’elle affiche.",
+    "qrLabel": "Code à scanner avec votre application de codes",
+    "manualKey": "Impossible de scanner ? Saisissez cette clé dans l’application :",
+    "codeHint": "Le code change toutes les 30 secondes.",
+    "verify": "Vérifier le code",
+    "codesIntro": "Voici vos dix codes de secours. Chacun sert une fois, si vous n’avez plus votre téléphone. Ils ne seront plus affichés : conservez-les en lieu sûr.",
+    "copy": "Copier",
+    "copied": "Codes copiés",
+    "saved": "J’ai conservé mes codes.",
+    "mustSave": "Conservez vos codes, puis cochez cette case.",
+    "activate": "Activer la double authentification"
+  },
+  "session": {
+    "renewing": "Un instant, nous retrouvons votre session…",
+    "warningTitle": "Votre session va se fermer.",
+    "warningText": "Sans activité de votre part, elle se fermera dans deux minutes. Ce que vous avez saisi est conservé.",
+    "stay": "Rester connecté",
+    "otherAccount": "Se connecter avec un autre compte"
+  },
+  "reauth": {
+    "title": "Confirmez votre mot de passe",
+    "wrong": "Mot de passe incorrect. Mot de passe oublié ? Choisissez-en un nouveau depuis la page de connexion."
+  },
+  "account": {
+    "label": "Mon compte",
+    "preferences": "Mes préférences",
+    "signOut": "Se déconnecter",
+    "absent": "Je suis absent…",
+    "back": "Je suis de retour",
+    "absentShort": "Absent jusqu’au {date}",
+    "absentTitle": "Je suis absent",
+    "absentText": "Pendant votre absence, aucune nouvelle demande ne vous est confiée par répartition ; votre travail en cours reste le vôtre et les administrateurs reçoivent aussi vos notifications.",
+    "absentUntil": "Jusqu’au (dernier jour inclus)",
+    "absentSubmit": "Enregistrer l’absence",
+    "absentSaved": "Absence enregistrée jusqu’au {date}.",
+    "backSaved": "Bon retour !"
+  },
+  "banner": {
+    "local": "ENVIRONNEMENT LOCAL — les e-mails ne partent pas vers les vrais destinataires",
+    "staging": "ENVIRONNEMENT DE RECETTE — les e-mails ne partent pas vers les vrais destinataires",
+    "clock": "Horloge avancée : nous sommes le {date} pour l’application.",
+    "elevated": "Accès administrateur temporaire jusqu’au {date}. Vos actions sont tracées.",
+    "maintenance": "Le site public est en maintenance.",
+    "masked": "Données personnelles masquées."
+  },
+  "menu": {
+    "label": "Menu principal",
+    "open": "Ouvrir le menu",
+    "fold": "Replier le menu",
+    "unfold": "Déplier le menu",
+    "badge": {
+      "leadsToTake": "{n, plural, one {# demande à prendre en charge} other {# demandes à prendre en charge}}",
+      "overdueTasks": "{n, plural, one {# tâche en retard} other {# tâches en retard}}"
+    },
+    "group": {
+      "crm": "Relation client",
+      "dossiers": "Dossiers",
+      "organisation": "Organisation",
+      "catalogue": "Catalogue",
+      "financing": "Financement",
+      "documents": "Pièces",
+      "communication": "Communication",
+      "cafe": "Le Café",
+      "satisfaction": "Satisfaction",
+      "content": "Contenus",
+      "steering": "Pilotage",
+      "administration": "Administration"
+    },
+    "dashboard": "Tableau de bord",
+    "leads": "Demandes",
+    "clients": "Clients",
+    "pipeline": "Pipeline",
+    "dossiers": "Tous les dossiers",
+    "tasks": "Tâches",
+    "agenda": "Agenda",
+    "programs": "Programmes",
+    "properties": "Biens",
+    "media": "Médias",
+    "lotImport": "Import de lots",
+    "featured": "Mise en avant",
+    "promoters": "Promoteurs",
+    "partners": "Autres partenaires",
+    "submissions": "Soumissions",
+    "banks": "Banques",
+    "exchangeRates": "Taux de change",
+    "referenceFinancing": "Financement de référence",
+    "projections": "Projections",
+    "documentsReview": "À vérifier",
+    "documentsSearch": "Recherche de pièces",
+    "checklists": "Modèles de listes",
+    "messaging": "Messagerie",
+    "sendings": "Envois",
+    "bulk": "Envoi groupé",
+    "templates": "Modèles",
+    "automations": "Automatisations",
+    "cafes": "Cafés",
+    "feedback": "Retours",
+    "surveys": "Enquêtes",
+    "siteTexts": "Textes du site",
+    "pages": "Pages",
+    "faq": "Questions fréquentes",
+    "testimonials": "Témoignages",
+    "legalTexts": "Textes légaux",
+    "redirects": "Redirections",
+    "reports": "Rapports",
+    "team": "Équipe",
+    "settings": "Paramètres",
+    "referentials": "Référentiels",
+    "audit": "Journal d’audit",
+    "personalData": "Données personnelles",
+    "trash": "Corbeille",
+    "importsExports": "Imports et exports",
+    "diagnostics": "Diagnostic"
+  },
+  "create": {
+    "label": "Créer",
+    "lead": "Demande",
+    "client": "Client",
+    "dossier": "Dossier",
+    "task": "Tâche",
+    "appointment": "Rendez-vous",
+    "program": "Programme",
+    "property": "Bien",
+    "cafe": "Café"
+  },
+  "search": {
+    "label": "Recherche globale",
+    "placeholder": "Rechercher une référence, un nom…",
+    "clear": "Effacer la recherche",
+    "exact": "Référence exacte",
+    "seeAll": "Voir tous les résultats",
+    "noResult": "Aucun résultat pour « {saisie} ». Vérifiez l’orthographe, ou cherchez une référence.",
+    "type": {
+      "CLIENT": "Clients",
+      "LEAD": "Demandes",
+      "DOSSIER": "Dossiers",
+      "SUBMISSION": "Soumissions",
+      "PROPERTY": "Biens",
+      "PROGRAM": "Programmes",
+      "PROMOTER": "Promoteurs",
+      "BANK": "Banques",
+      "EVENT": "Cafés"
+    }
+  },
+  "help": {
+    "open": "Aide et raccourcis clavier",
+    "title": "Aide",
+    "shortcuts": "Raccourcis clavier",
+    "or": "ou",
+    "shortcut": {
+      "search": "Aller à la recherche globale",
+      "escape": "Fermer une fenêtre, vider une sélection",
+      "rows": "Passer d’une ligne à l’autre dans une liste",
+      "open": "Ouvrir la ligne ; avec Ctrl, dans un nouvel onglet",
+      "note": "Sur une fiche, écrire une note",
+      "help": "Ouvrir cette fenêtre"
+    },
+    "support": "Support",
+    "supportText": "Une difficulté avec le back-office ? Écrivez au support en joignant, quand il y en a un, le code affiché sous « Détails »."
+  },
+  "bell": {
+    "title": "Notifications",
+    "label": "Notifications",
+    "labelCount": "{n, plural, one {Notifications : # non lue} other {Notifications : # non lues}}",
+    "unread": "Non lue",
+    "readAll": "Tout marquer comme lu",
+    "readFailed": "La notification n’a pas pu être marquée comme lue.",
+    "emptyTitle": "Aucune notification pour le moment.",
+    "emptyText": "Vous serez prévenu ici dès qu’une demande, un dossier ou une tâche attend quelque chose de vous.",
+    "emptyUnread": "Tout est lu.",
+    "all": "Toutes",
+    "unreadOnly": "Non lues",
+    "seeAll": "Voir toutes les notifications"
+  },
+  "page": {
+    "breadcrumb": "Fil d’Ariane",
+    "home": "Revenir à l’accueil",
+    "forbidden": "Vous n’avez pas accès à cette page.",
+    "forbiddenText": "Votre rôle ne donne pas ce droit. Si vous en avez besoin, demandez-le à un administrateur.",
+    "notFound": "Cet élément est introuvable."
+  },
+  "error": {
+    "validation": "Certains champs sont à corriger.",
+    "alreadyUsed": "Cette valeur est déjà utilisée.",
+    "code": "Code",
+    "requestId": "Identifiant de la requête",
+    "time": "Heure"
+  },
+  "reason": {
+    "LAST_OWNER": "Il doit rester au moins un compte Direction.",
+    "OWN_ACCOUNT": "Cette action ne se fait pas sur votre propre compte. Demandez-la à un autre compte Direction ou Administrateur.",
+    "NOT_INVITED": "Ce compte n’est plus « Invité » : rechargez la liste.",
+    "INVITED_NOT_SUSPENDABLE": "Un compte « Invité » ne se suspend pas : renvoyez ou annulez son invitation.",
+    "ALREADY_SUSPENDED": "Ce compte est déjà suspendu.",
+    "NOT_SUSPENDED": "Ce compte n’est pas suspendu.",
+    "TWO_FACTOR_NOT_ENABLED": "La double authentification de ce compte n’est pas active.",
+    "MAX_REACHED": "Vous avez atteint le maximum ({n}).",
+    "NOT_PUBLISHABLE": "Les conditions de publication ne sont pas réunies.",
+    "WOULD_UNPUBLISH": "Ce changement rendrait la fiche publiée non publiable : dépubliez-la d’abord, ou gardez ce qui est exigé pour publier.",
+    "WOULD_UNPUBLISH_CHILDREN": "Ce changement rendrait non publiables des biens en ligne : {liste}.",
+    "PROGRAM_HAS_PROPERTIES": "Ce programme a encore des biens : supprimez-les ou archivez-les d’abord.",
+    "PROPERTY_IN_USE": "Ce bien a reçu une demande, figure dans un dossier ou porte une réservation : archivez-le plutôt.",
+    "LOT_HELD": "Ce lot est sous option, réservé ou vendu. Passez par sa réservation.",
+    "LOT_HAS_ACTIVE_RESERVATION": "Ce lot est tenu par un dossier : son statut se change depuis sa réservation.",
+    "LOT_REFERENCE_PENDING": "Saisissez d’abord la référence de ce lot.",
+    "SALE_NOT_EXTERNAL": "Ce lot a été vendu par un dossier : la vente ne se corrige pas ici.",
+    "STANDALONE_SINGLE_LOT": "Un bien isolé a un seul lot : modifiez-le depuis sa fiche.",
+    "MISSING_CONDITIONS": "Des informations manquent pour ce changement de statut.",
+    "PROMOTER_HAS_CONTENT": "Ce promoteur a des programmes, des biens ou des dossiers : terminez plutôt la relation.",
+    "PUBLIC_PAGE_NEEDS_ACTIVE": "La page publique ne s’active que pour un promoteur sélectionné.",
+    "MEDIA_NEEDED": "Impossible : {n, plural, one {un bien en ligne n’aurait plus de quoi rester publié} other {# biens en ligne n’auraient plus de quoi rester publiés}} ({liste}). Ajoutez d’abord une autre photo.",
+    "LEAD_ALREADY_TAKEN": "Cette demande vient d’être prise en charge par {prenom}.",
+    "DOSSIER_ALREADY_OPEN_FOR_PROPERTY": "Ce client a déjà un dossier ouvert sur ce bien ({reference}).",
+    "CONFIRMATION_REQUIRED": "Confirmez l’envoi malgré l’avertissement.",
+    "EXCHANGE_EDIT_EXPIRED": "Ce compte rendu ne se modifie plus : plus de 24 heures ont passé.",
+    "EMAIL_ALREADY_SENT": "Cet e-mail est déjà parti.",
+    "HAS_OPEN_DOSSIER": "Ce client a un dossier ouvert ou en pause : il ne s’archive pas.",
+    "CLIENT_HAS_ACCOUNT": "Ce client a un compte : son adresse se change depuis l’onglet Compte.",
+    "NO_EMAIL_ADDRESS": "Ce client n’a pas d’adresse e-mail.",
+    "CLIENT_ERASED": "Les données de cette personne ont été effacées.",
+    "CONTACTS_LIMIT": "Cinq proches au plus par fiche.",
+    "BOTH_ACCOUNTS": "Ces deux fiches ont chacune un compte. L’une des deux personnes doit d’abord supprimer le sien.",
+    "KEPT_RECORD_IMPOSED": "La fiche qui a un compte doit être conservée.",
+    "ERASED": "Les données de l’une des fiches ont été effacées.",
+    "ALREADY_MERGED": "L’une des fiches a déjà été fusionnée.",
+    "LEAD_NOT_LATEST": "Une demande plus récente est arrivée : rouvrez la fenêtre.",
+    "ACCOUNT_ALREADY_ACTIVE": "Ce client a déjà activé son espace : il n’y a plus d’invitation à envoyer.",
+    "EMAIL_TAKEN": "Cette adresse est déjà celle d’un autre compte : l’invitation ne peut pas partir.",
+    "ACCOUNT_NOT_ACTIVE": "Le compte de ce client n’est pas actif.",
+    "ACCOUNT_NOT_SUSPENDED": "Le compte de ce client n’est pas suspendu.",
+    "DELETION_PENDING": "Ce compte est suspendu parce que le client a demandé sa suppression. Il se rétablit seulement si le client retire sa demande.",
+    "NO_ACCOUNT": "Ce client n’a pas de compte."
+  },
+  "format": {
+    "dateTime": "{date} à {heure}",
+    "daysHours": "{j} j {h} h",
+    "days": "{j} j",
+    "hours": "{h} h",
+    "minutes": "{n} min"
+  },
+  "list": {
+    "actions": "Actions",
+    "clearFilters": "Effacer les filtres",
+    "removeFilter": "Retirer le filtre {filtre}",
+    "noOption": "Aucune valeur.",
+    "sortAsc": "Trier par ordre croissant",
+    "sortDesc": "Trier par ordre décroissant",
+    "selectAll": "Tout sélectionner sur la page",
+    "selectRow": "Sélectionner {nom}",
+    "pagination": "Pagination",
+    "previous": "Page précédente",
+    "next": "Page suivante",
+    "page": "Page {n}",
+    "date": {
+      "today": "Aujourd’hui",
+      "last7": "7 derniers jours",
+      "month": "Ce mois-ci",
+      "between": "Entre…",
+      "from": "Du",
+      "to": "Au",
+      "range": "du {debut} au {fin}",
+      "since": "depuis le {debut}",
+      "until": "jusqu’au {fin}"
+    },
+    "columns": {
+      "label": "Colonnes",
+      "hint": "Choisissez les colonnes affichées et leur ordre. Votre choix est retenu.",
+      "up": "Monter la colonne {colonne}",
+      "down": "Descendre la colonne {colonne}"
+    },
+    "views": {
+      "label": "Vues de la liste",
+      "menu": "Vue",
+      "actions": "Actions sur la vue",
+      "saveAs": "Enregistrer cette vue",
+      "update": "Mettre à jour la vue",
+      "updated": "Vue mise à jour.",
+      "rename": "Renommer la vue",
+      "share": "Partager avec l’équipe",
+      "unshare": "Ne plus partager",
+      "shared": "Vue partagée avec l’équipe.",
+      "unshared": "La vue n’est plus partagée.",
+      "sharedTag": "Vue partagée",
+      "sharedBy": "Vue partagée par {nom}",
+      "makeDefault": "Définir comme ma vue par défaut",
+      "defaultSet": "C’est désormais votre vue par défaut.",
+      "delete": "Supprimer la vue",
+      "deleteConfirm": "Supprimer la vue « {nom} » ? Les lignes qu’elle affiche ne sont pas touchées.",
+      "deleted": "Vue supprimée.",
+      "name": "Nom de la vue",
+      "nameHint": "Elle garde les filtres, le tri, les colonnes et le nombre de lignes. Elle reste personnelle tant qu’elle n’est pas partagée.",
+      "nameTaken": "Vous avez déjà une vue de ce nom.",
+      "savedToast": "Vue enregistrée."
+    }
+  },
+  "timeline": {
+    "title": "Chronologie",
+    "quickAdd": "Ajout rapide",
+    "addNote": "Note",
+    "filter": "Filtrer la chronologie",
+    "empty": "Rien ne s’est encore passé ici.",
+    "emptyText": "Les échanges, les notes et les changements d’état apparaîtront dans ce fil.",
+    "detail": "Détail",
+    "byClient": "Le client",
+    "type": {
+      "EMAIL": "E-mail",
+      "MESSAGE": "Message",
+      "CALL": "Appel, échange",
+      "NOTE": "Note",
+      "DOCUMENT": "Pièce",
+      "STAGE": "Étape",
+      "PROPERTY": "Bien",
+      "FINANCING": "Financement",
+      "ACTIVITY": "Tâche, rendez-vous",
+      "LEAD": "Demande",
+      "SYSTEM": "Système",
+      "RECORD": "Fiche"
+    },
+    "event": {
+      "email": "E-mail",
+      "lead": {
+        "received": "Demande reçue : {nature} ({origine})",
+        "supplemented": "Demande complétée par la personne",
+        "created_by_staff": "Demande saisie par l’équipe",
+        "taken": "Demande prise en charge",
+        "assigned": "Demande affectée",
+        "released": "Demande rendue",
+        "closed": "Demande clôturée",
+        "reopened": "Demande rouverte",
+        "marked_spam": "Demande classée indésirable",
+        "restored": "Demande restaurée",
+        "reviewed": "Demande vérifiée",
+        "application_approved": "Candidature acceptée",
+        "application_declined": "Candidature refusée",
+        "application_info_requested": "Complément demandé au partenaire",
+        "receivedRef": "Demande {reference} : {nature} ({origine})",
+        "updated": "Demande rattachée à un dossier"
+      },
+      "exchange": {
+        "CALL": "Appel noté",
+        "WHATSAPP": "Échange WhatsApp noté",
+        "SMS": "SMS noté",
+        "MEETING": "Rencontre notée"
+      },
+      "note": {
+        "written": "Note interne"
+      },
+      "promoter": {
+        "created": "Promoteur créé",
+        "updated": "Fiche du promoteur modifiée",
+        "status_changed": "Statut du promoteur : {avant} → {apres}",
+        "republished": "Fiches republiées après la suspension",
+        "deleted": "Promoteur supprimé"
+      },
+      "promoter_contact": {
+        "created": "Interlocuteur ajouté",
+        "updated": "Interlocuteur modifié",
+        "deleted": "Interlocuteur retiré"
+      },
+      "partner_document": {
+        "created": "Document ajouté : {label}",
+        "updated": "Document modifié : {label}",
+        "deleted": "Document supprimé : {label}"
+      },
+      "partner": {
+        "document_viewed": "Document consulté : {label}",
+        "changed": "Partenaire modifié"
+      },
+      "program": {
+        "created": "Programme créé",
+        "updated": "Programme modifié",
+        "published": "Programme publié",
+        "unpublished": "Programme dépublié",
+        "archived": "Programme archivé",
+        "unarchived": "Programme désarchivé",
+        "deleted": "Programme supprimé",
+        "stock_confirmed": "Disponibilités vérifiées"
+      },
+      "program_update": {
+        "created": "Point d’avancement du chantier publié",
+        "updated": "Point d’avancement corrigé",
+        "deleted": "Point d’avancement supprimé"
+      },
+      "property_poi": {
+        "created": "Point d’intérêt ajouté : {label}",
+        "updated": "Point d’intérêt modifié : {label}",
+        "deleted": "Point d’intérêt retiré : {label}"
+      },
+      "property": {
+        "created": "Bien créé",
+        "updated": "Fiche du bien modifiée",
+        "published": "Bien publié",
+        "unpublished": "Bien dépublié",
+        "archived": "Bien archivé",
+        "unarchived": "Bien désarchivé",
+        "pinned": "Mise en avant sur l’accueil modifiée",
+        "deleted": "Bien supprimé"
+      },
+      "lot": {
+        "created": "Lot {label} ajouté",
+        "updated": "Lot {label} modifié",
+        "deleted": "Lot {label} supprimé",
+        "price_changed": "Prix du lot {label} : {avant} → {apres}",
+        "status_changed": "Lot {label} : {avant} → {apres}",
+        "sale_corrected": "Vente du lot {label} annulée : il revient en vente"
+      },
+      "media": {
+        "created": "Média ajouté",
+        "updated": "Média modifié",
+        "deleted": "Média supprimé"
+      },
+      "eligibility": {
+        "changed": "Éligibilité au financement modifiée"
+      },
+      "import": {
+        "executed": "Import de lots exécuté"
+      },
+      "client": {
+        "created": "Fiche créée",
+        "updated": "Fiche modifiée",
+        "assigned": "Conseiller référent changé",
+        "archived": "Fiche archivée",
+        "unarchived": "Fiche désarchivée",
+        "do_not_contact_changed": "« Ne pas contacter » modifié",
+        "do_not_contact_lifted": "Opposition levée par une demande de la personne",
+        "merged": "Fiches fusionnées",
+        "not_duplicate_marked": "Marquée « pas un doublon »",
+        "account_invited": "Invitation à l’espace envoyée",
+        "account_suspended": "Compte suspendu",
+        "account_reactivated": "Compte réactivé",
+        "sessions_revoked": "Sessions fermées",
+        "impersonated": "Espace consulté en lecture seule",
+        "impersonation_ended": "Fin de la consultation de l’espace"
+      },
+      "emailReceived": "E-mail reçu",
+      "emailScheduled": "E-mail programmé",
+      "emailManual": "E-mail écrit à la main",
+      "stage": {
+        "opened": "Dossier ouvert à l’étape « {to} »",
+        "advanced": "Passage de « {from} » à « {to} »",
+        "held": "Dossier mis en pause",
+        "resumed": "Dossier repris",
+        "closed": "Dossier clôturé sans suite",
+        "won": "Dossier abouti",
+        "reopened": "Dossier rouvert à l’étape « {to} »",
+        "moved_back": "Retour de « {from} » à « {to} »"
+      },
+      "candidate": {
+        "added": "Bien envisagé : {bien}",
+        "drafted": "Proposition préparée : {bien}",
+        "sent": "Bien proposé au client : {bien}",
+        "proposed": "Bien proposé au client : {bien}",
+        "viewed": "Le client a vu : {bien}",
+        "interested": "Le client est intéressé : {bien}",
+        "declined": "Bien écarté : {bien}",
+        "visit_requested": "Visite demandée : {bien}",
+        "visit_planned": "Visite planifiée : {bien}",
+        "visited": "Bien visité : {bien}",
+        "selected": "Bien retenu : {bien}",
+        "selection_requested": "Le client retient : {bien}",
+        "selection_cancelled": "Le client annule son choix : {bien}",
+        "selection_confirmed": "Choix du client confirmé : {bien}",
+        "selection_declined": "Choix du client non confirmé : {bien}",
+        "unselected": "Bien retiré du choix : {bien}",
+        "unavailable": "Bien plus disponible : {bien}",
+        "updated": "Bien envisagé modifié : {bien}"
+      },
+      "dossier": {
+        "assigned": "Conseiller du dossier : {conseiller}",
+        "updated": "Dossier modifié",
+        "lot_chosen": "Lot visé : {lot}"
+      },
+      "task": {
+        "created": "Tâche créée : {title}",
+        "done": "Tâche terminée : {title}",
+        "cancelled": "Tâche annulée : {title}",
+        "reopened": "Tâche rouverte : {title}",
+        "assigned": "Tâche réaffectée : {title}",
+        "updated": "Tâche modifiée : {title}"
+      },
+      "appointment": {
+        "created": "Rendez-vous créé : {type}",
+        "confirmed": "Rendez-vous confirmé : {type}",
+        "cancelled": "Rendez-vous annulé : {type}",
+        "done": "Rendez-vous tenu : {type}",
+        "no_show": "Rendez-vous manqué : {type}",
+        "requested": "Rendez-vous demandé : {type}",
+        "updated": "Rendez-vous modifié : {type}",
+        "outcome_corrected": "Issue du rendez-vous corrigée : {type}"
+      }
+    },
+    "exchangeEdit": "Corriger le compte rendu",
+    "exchangeDeleteTitle": "Supprimer ce compte rendu ?",
+    "exchangeDeleteText": "Le premier contact sera recalculé d’après les échanges qui restent.",
+    "exchangeDeleted": "Compte rendu supprimé.",
+    "emailCancel": "Annuler l’envoi",
+    "emailCancelTitle": "Annuler cet e-mail programmé ?",
+    "emailCancelText": "Il ne partira pas. Vous pourrez en écrire un autre.",
+    "emailCancelled": "Envoi annulé.",
+    "minutes": "{n} min",
+    "scheduledFor": "part le {date}",
+    "outcome": "Issue",
+    "report": "Compte rendu"
+  },
+  "notes": {
+    "newLabel": "Nouvelle note",
+    "label": "Note",
+    "internal": "Note interne : le client ne la voit pas.",
+    "saved": "Note enregistrée.",
+    "deleted": "Note supprimée.",
+    "edited": "modifiée",
+    "pin": "Épingler en tête",
+    "unpin": "Ne plus épingler",
+    "pinned": "Épinglée",
+    "actions": "Actions sur la note",
+    "editTitle": "Modifier la note",
+    "deleteTitle": "Supprimer la note",
+    "deleteConfirm": "Supprimer la note de {auteur} ? Elle disparaîtra de la chronologie."
+  }
+}

@@ -1,0 +1,33 @@
+node_modules/
+dist/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+.env
+.env.*
+!.env.example
+.local/
+generated/
+
+# Playwright
+test-results/
+playwright-report/
+e2e/shots/
+e2e/_*.mjs
+
+# Not technical: contract, offers, workshop minutes, sales material (kept on the owner's machine only)
+Legal/
+Strategie/
+Design/references/
+Design/archive/
+Dev/backup-Specs-avant-D097/
+Dev/chatbot/
+desktop.ini
+*.pdf
+
+# Local tools
+.claude/settings.local.json
+.DS_Store
+Thumbs.db

@@ -1,0 +1,284 @@
+/* DSN-015 — status tag: seven tones, pill in the client space, 4 px radius in the back office */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  max-width: 100%;
+  padding: 0.125rem var(--sp-8);
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-tag, var(--radius-pill));
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tag-info {
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.tag-pending {
+  background: var(--bo-fond-or-clair);
+  color: var(--bo-texte-or);
+}
+.tag-success {
+  background: var(--bo-fond-vert-pale);
+  color: var(--bo-texte-succes);
+}
+.tag-warning {
+  background: var(--bo-fond-alerte-pale);
+  color: var(--bo-texte-or);
+}
+.tag-error {
+  background: var(--bo-fond-erreur-pale);
+  color: var(--bo-texte-erreur);
+}
+.tag-neutral {
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+.tag-inactive {
+  background: var(--bo-fond-blanc);
+  border-color: var(--bo-ligne-bleue);
+  color: var(--bo-texte-discret);
+}
+
+/* TRV-113 — banner: state icon AND text, never colour alone */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-12);
+  padding: var(--sp-12) var(--sp-16);
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-control, var(--radius-m));
+  font-size: var(--ui-font-size, var(--fs-body-m));
+  line-height: var(--ui-line-height, var(--lh-body-m));
+  animation: bannerIn var(--motion-base) var(--ease-out);
+}
+.banner-error {
+  background: var(--bo-fond-erreur-pale);
+  border-color: color-mix(in srgb, var(--bo-fond-erreur) 30%, transparent);
+  color: var(--bo-texte-erreur);
+}
+.banner-warning {
+  background: var(--bo-fond-alerte-pale);
+  border-color: var(--bo-ligne-or);
+  color: var(--bo-texte-or);
+}
+.banner-info {
+  background: var(--bo-fond-ciel-pale);
+  border-color: var(--bo-ligne-bleue);
+  color: var(--bo-texte-roi);
+}
+.banner-success {
+  background: var(--bo-fond-vert-pale);
+  border-color: color-mix(in srgb, var(--bo-accent-vert) 35%, transparent);
+  color: var(--bo-texte-succes);
+}
+.bannerIcon {
+  flex: none;
+  margin-block-start: 1px;
+  --icon-accent: currentColor;
+}
+.bannerBody {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: var(--sp-4);
+  color: var(--bo-texte-encre);
+}
+.bannerBody a {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.bannerTitle {
+  font-weight: 600;
+  color: inherit;
+}
+.banner-error .bannerTitle {
+  color: var(--bo-texte-erreur);
+}
+.bannerAction {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin-block-start: var(--sp-4);
+}
+.bannerClose {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+}
+.bannerClose:hover {
+  background: rgb(1 41 91 / 0.08);
+}
+@keyframes bannerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* DSN-056 — error summary */
+.summary:focus {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.summaryList {
+  margin: 0;
+  padding-inline-start: var(--sp-20);
+  display: grid;
+  gap: var(--sp-4);
+}
+
+/* DSN-056 — message under a field */
+.fieldMessage {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  margin-block-start: var(--sp-6);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  animation: fieldIn var(--motion-fast) var(--ease-out);
+}
+.fieldMessage svg {
+  flex: none;
+  margin-block-start: 1px;
+  --icon-accent: currentColor;
+}
+.fieldError {
+  color: var(--bo-texte-erreur);
+}
+.fieldSuccess {
+  color: var(--bo-texte-succes);
+}
+@keyframes fieldIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* TRV-117 — « Détails » */
+.details {
+  margin-block-start: var(--sp-8);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-doux);
+}
+.details summary {
+  cursor: pointer;
+  width: fit-content;
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.detailsList {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--sp-4) var(--sp-12);
+  margin-block: var(--sp-8);
+  font-variant-numeric: tabular-nums;
+}
+.detailsList dt {
+  color: var(--bo-texte-discret);
+}
+.detailsList dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+.detailsCopy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding: var(--sp-4) var(--sp-8);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control, var(--radius-m));
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+
+/* TRV-080 — empty state */
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-48) var(--sp-24);
+  text-align: center;
+}
+.emptyCompact {
+  padding: var(--sp-24) var(--sp-16);
+}
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.emptyTitle {
+  font-weight: 600;
+  font-size: var(--fs-admin-h3, var(--fs-heading-item));
+  line-height: var(--lh-admin-h3, var(--lh-heading-item));
+  color: var(--bo-texte-encre);
+}
+.emptyText {
+  max-width: 34rem;
+  color: var(--bo-texte-doux);
+}
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-8);
+  margin-block-start: var(--sp-8);
+}
+
+/* TRV-080 — skeleton: appears only when the answer takes more than 300 ms */
+.skeleton {
+  display: inline-block;
+  border-radius: var(--radius-s);
+  background: linear-gradient(90deg, #e6e9f1 0%, #f1f3f8 50%, #e6e9f1 100%);
+  background-size: 200% 100%;
+  opacity: 0;
+  animation:
+    skeletonIn var(--motion-fast) linear 300ms forwards,
+    shimmer 1.4s linear 300ms infinite;
+}
+.skeletonRows {
+  display: grid;
+}
+.skeletonRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-24);
+  min-height: var(--ui-row-h, 3rem);
+  padding-inline: var(--sp-16);
+  border-block-end: 1px solid var(--bo-fond-gris);
+}
+@keyframes skeletonIn {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: skeletonIn 1ms linear 300ms forwards;
+  }
+}

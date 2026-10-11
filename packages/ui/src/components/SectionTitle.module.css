@@ -1,0 +1,68 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-24);
+  margin-block-end: var(--sp-48);
+}
+.start {
+  align-items: flex-start;
+  text-align: start;
+}
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  margin: 0;
+}
+.line1 {
+  font-size: var(--fs-title-section);
+  line-height: var(--lh-title-section);
+  color: var(--bo-texte-roi);
+}
+.line2 {
+  position: relative;
+  display: inline-block;
+  font-size: var(--fs-display-lead);
+  line-height: var(--lh-display-lead);
+  color: var(--bo-texte-or-titre);
+  padding-block-end: var(--sp-10);
+}
+.stroke {
+  position: absolute;
+  inset-inline: 10% 10%;
+  inset-block-end: -0.25rem;
+  width: 80%;
+  height: 1.125rem;
+}
+.hero .line1,
+.hero .line2 {
+  font-size: var(--fs-display-accent);
+  line-height: var(--lh-display-accent);
+}
+.hero .line1 {
+  color: var(--bo-texte-roi);
+}
+.sub {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  gap: var(--sp-4);
+  max-width: 48rem;
+}
+.sub1 {
+  font-size: var(--fs-subtitle-l);
+  line-height: var(--lh-subtitle-l);
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+}
+.sub2 {
+  font-size: var(--fs-subtitle-m);
+  line-height: var(--lh-subtitle-m);
+  font-weight: 600;
+  color: var(--bo-texte-or);
+}

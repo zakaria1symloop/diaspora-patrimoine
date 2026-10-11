@@ -1,0 +1,168 @@
+{
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "close": "Fermer",
+  "back": "Retour",
+  "continue": "Continuer",
+  "send": "Envoyer",
+  "retry": "Réessayer",
+  "search": {
+    "suggestions": "{n, plural, one {# suggestion} other {# suggestions}}",
+    "recent": "Recherches récentes",
+    "clearRecent": "Effacer",
+    "noResult": "Aucun résultat pour « {saisie} ». Vérifiez l’orthographe, ou cherchez une ville.",
+    "openReference": "Ouvrir le bien {reference}",
+    "save": "Enregistrer cette recherche",
+    "_": "Rechercher"
+  },
+  "filters": "Filtres",
+  "clearAll": "Tout effacer",
+  "export": "Exporter",
+  "download": "Télécharger",
+  "share": "Partager",
+  "copyLink": "Copier le lien",
+  "linkCopied": "Lien copié.",
+  "seeAll": "Tout voir",
+  "readMore": "Lire la suite",
+  "optional": "(facultatif)",
+  "yes": "Oui",
+  "no": "Non",
+  "none": "—",
+  "loading": "Chargement…",
+  "saved": "Modifications enregistrées.",
+  "undo": "Annuler",
+  "automatic": "Automatique",
+  "deletedUser": "Utilisateur supprimé",
+  "team": "L’équipe Diaspora Patrimoine",
+  "perMonth": "/ mois",
+  "from": "À partir de",
+  "rateDate": "Taux indicatif du {date}",
+  "empty": {
+    "generic": "Rien à afficher pour le moment.",
+    "filtered": "Aucun résultat pour ces filtres."
+  },
+  "error": {
+    "block": "Ce contenu n’a pas pu être chargé.",
+    "summary": "{n, plural, one {Un point est à corriger avant d’envoyer} other {# points sont à corriger avant d’envoyer}}",
+    "helpPhoneWhatsapp": "Besoin d’aide ? Appelez-nous au {telephone} ou écrivez-nous sur WhatsApp.",
+    "helpPhone": "Besoin d’aide ? Appelez-nous au {telephone}.",
+    "helpWhatsapp": "Besoin d’aide ? Écrivez-nous sur WhatsApp.",
+    "helpEmail": "Besoin d’aide ? Écrivez-nous à {email}.",
+    "notSent": "Rien n’a encore été envoyé ; ce que vous avez saisi est conservé.",
+    "details": "Détails",
+    "copyDetails": "Copier les détails",
+    "detailsCopied": "Détails copiés.",
+    "newCode": "Recevoir un nouveau code",
+    "otherFile": "Choisir un autre fichier"
+  },
+  "offline": "Connexion interrompue. Vos saisies sont conservées, nous réessayons…",
+  "online": "Connexion rétablie.",
+  "sessionExpired": {
+    "title": "Votre session a expiré",
+    "text": "Reconnectez-vous pour continuer. Rien de ce que vous avez saisi n’est perdu."
+  },
+  "unsaved": {
+    "title": "Vous avez des modifications non enregistrées.",
+    "text": "Quitter sans enregistrer ?",
+    "stay": "Rester",
+    "leave": "Quitter"
+  },
+  "conflict": {
+    "text": "Cette fiche a été modifiée par {prenom} à {heure}. Rechargez-la pour voir la dernière version ; vos changements ne sont pas enregistrés.",
+    "reload": "Recharger",
+    "copy": "Copier mes changements"
+  },
+  "confirm": {
+    "typeWord": "Pour confirmer, saisissez {mot}."
+  },
+  "time": {
+    "now": "à l’instant",
+    "minutes": "il y a {n} min",
+    "hours": "il y a {n} h",
+    "yesterday": "hier",
+    "days": "il y a {n} jours"
+  },
+  "euHosting": "Vos données sont hébergées dans l’Union européenne.",
+  "writeToAdvisor": "Écrire à mon conseiller",
+  "businessDays": "Jours ouvrés : {jours}, hors jours fériés français.",
+  "provisional": "Version provisoire, en cours de validation",
+  "list": {
+    "range": "{debut}–{fin} sur {total}",
+    "pageSize": "Lignes par page",
+    "restored": "Filtres de votre dernière visite",
+    "newItems": "{n, plural, one {# nouvel élément} other {# nouveaux éléments}} · Afficher",
+    "selected": "{n, plural, one {# sélectionné} other {# sélectionnés}}",
+    "unselectAll": "Tout désélectionner",
+    "moreFilters": "Plus de filtres"
+  },
+  "textSize": {
+    "title": "Taille du texte",
+    "normal": "Normale",
+    "large": "Grande",
+    "xlarge": "Très grande",
+    "sample": "Aa"
+  },
+  "tour": {
+    "next": "Suivant",
+    "done": "Terminer",
+    "skip": "Passer",
+    "replay": "Revoir la visite",
+    "step": "{n} sur {total}"
+  },
+  "saving": {
+    "done": "Enregistré"
+  },
+  "password": {
+    "show": "Afficher",
+    "hide": "Masquer"
+  },
+  "capsLock": "Les majuscules sont activées.",
+  "emailSuggestion": "Vouliez-vous dire {adresse} ?",
+  "codeValidity": "Ce code est valable {n} minutes.",
+  "stepOf": "Étape {n} sur {total}",
+  "simpleMode": {
+    "label": "Affichage simplifié",
+    "help": "Moins d’éléments à l’écran, une question à la fois.",
+    "more": "Voir tous les détails",
+    "on": "Affichage simplifié activé · texte agrandi",
+    "off": "Revenir à l’affichage complet",
+    "stateOn": "Affichage simplifié : activé"
+  },
+  "voice": {
+    "listenPage": "Écouter cette page",
+    "reading": "Lecture en cours…",
+    "paused": "Lecture en pause",
+    "resume": "Reprendre",
+    "listen": "Écouter",
+    "pause": "Pause",
+    "stop": "Arrêter",
+    "dictate": "Dicter",
+    "listening": "Je vous écoute…"
+  },
+  "compare": {
+    "add": "Comparer",
+    "tray": "Comparer ({n})",
+    "full": "Vous comparez déjà trois biens : retirez-en un pour ajouter celui-ci.",
+    "diffOnly": "Afficher seulement les différences"
+  },
+  "map": {
+    "list": "Liste",
+    "map": "Carte",
+    "searchArea": "Rechercher dans cette zone"
+  },
+  "shareTo": {
+    "whatsapp": "WhatsApp",
+    "email": "E-mail",
+    "facebook": "Facebook"
+  },
+  "placeholder": {
+    "email": "prenom.nom@exemple.fr",
+    "phone": "6 12 34 56 78",
+    "downPayment": "30 000",
+    "monthly": "400",
+    "birthYear": "1985",
+    "shareCode": "000000"
+  }
+}

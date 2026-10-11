@@ -1,0 +1,322 @@
+{
+  "simulations": {
+    "seoTitle": "Mes simulations",
+    "title": "Mes simulations",
+    "intro": "Vos simulations enregistrées et les projections que votre conseiller vous a envoyées.",
+    "count": "{n, plural, one {# simulation} other {# simulations}} sur {max}",
+    "type": {
+      "ELIGIBILITY": "Éligibilité",
+      "CREDIT": "Crédit",
+      "PROJECTION": "Projection"
+    },
+    "untitled": "Simulation du {date}",
+    "headline": {
+      "BUDGET": "Budget maximal : {montant}",
+      "CAPACITY": "Capacité d’emprunt : {montant}",
+      "MONTHLY": "{montant} / mois sur {duree}",
+      "MONTHLY_DETAIL": "{capital} à {taux}",
+      "NOT_ELIGIBLE": "Pas de solution de financement en l’état"
+    },
+    "property": "Bien : {titre}",
+    "propertyGone": "{titre} (plus en ligne)",
+    "createdOn": "Calculée le {date}",
+    "fromAdvisor": "Envoyée par votre conseiller",
+    "actions": {
+      "open": "Ouvrir",
+      "close": "Fermer",
+      "redo": "Refaire avec les barèmes actuels",
+      "rename": "Renommer",
+      "pdf": "Télécharger (PDF)",
+      "advisor": "En parler à mon conseiller",
+      "delete": "Supprimer",
+      "more": "Plus d’actions pour {nom}"
+    },
+    "detail": {
+      "asComputed": "Calculée le {date}, avec les barèmes et les taux de ce jour-là.",
+      "budget": "Budget maximal",
+      "capacity": "Capacité d’emprunt",
+      "maxMonthly": "Mensualité maximale",
+      "budgetMonthly": "Mensualité pour ce budget",
+      "duration": "Durée",
+      "rate": "Taux",
+      "downPayment": "Apport",
+      "income": "Revenus mensuels",
+      "amount": "Montant financé",
+      "monthly": "Mensualité",
+      "totalCost": "Coût total du crédit",
+      "notEligible": "Avec ces réglages, aucune solution de financement ne convenait ce jour-là.",
+      "indicative": "Barème indicatif",
+      "scenario": "Scénario {n}"
+    },
+    "rename": {
+      "title": "Renommer la simulation",
+      "label": "Nom de la simulation",
+      "hint": "120 caractères au plus. Laissé vide : « {defaut} ».",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "saved": "Nom enregistré.",
+      "inline": "Nouveau nom"
+    },
+    "delete": {
+      "title": "Supprimer cette simulation ?",
+      "text": "Elle disparaît de « Mes simulations ». Si elle accompagne une demande ou votre dossier, votre conseiller la garde dans votre suivi.",
+      "confirm": "Supprimer",
+      "cancel": "Annuler",
+      "done": "Simulation supprimée."
+    },
+    "limit": "Vous avez atteint le nombre maximal de simulations enregistrées. Supprimez-en une pour en garder une nouvelle.",
+    "empty": "Vous n’avez pas encore de simulation enregistrée.",
+    "emptyText": "Faites un calcul, puis « Enregistrer » : vous le retrouverez ici, sur tous vos appareils.",
+    "testEligibility": "Tester mon éligibilité",
+    "computeMonthly": "Calculer mes mensualités",
+    "error": "Cette action n’a pas abouti. Réessayez.",
+    "savedSignedIn": "Simulation enregistrée dans « Mes simulations ».",
+    "seeList": "Voir mes simulations",
+    "filter": {
+      "label": "Filtrer mes simulations",
+      "all": "Toutes",
+      "ELIGIBILITY": "Éligibilité",
+      "CREDIT": "Crédit",
+      "PROJECTION": "Projections"
+    },
+    "sort": {
+      "recent": "Les plus récentes",
+      "old": "Les plus anciennes",
+      "name": "Par nom"
+    },
+    "search": "Chercher une simulation",
+    "result": "Résultat",
+    "openResult": "Voir le résultat",
+    "closeResult": "Replier le résultat",
+    "panelEyebrow": "Simulation",
+    "newOne": "Nouvelle simulation",
+    "encourage": {
+      "budget": {
+        "title": "Votre budget estimé : {montant}",
+        "text": "D’après votre simulation du {date}. C’est une estimation : votre conseiller peut la préciser avec vous.",
+        "action": "Voir les biens dans ce budget",
+        "advisor": "En parler à mon conseiller"
+      },
+      "monthly": {
+        "title": "Votre dernière estimation : {montant} par mois",
+        "text": "D’après votre simulation du {date}. C’est une estimation, pas une offre de crédit.",
+        "action": "En parler à mon conseiller"
+      }
+    }
+  },
+  "simulator": {
+    "prefilled": "Nous avons repris les informations de votre profil. Vérifiez-les avant de continuer.",
+    "updateProfile": "Mettre à jour mon profil avec ces informations",
+    "profileUpdated": "Votre profil est mis à jour.",
+    "redoBanner": "Simulation du {date}, refaite avec les barèmes actuels : le résultat sera une nouvelle simulation.",
+    "productGone": "La solution utilisée le {date} n’est plus proposée : le calcul repart du barème indicatif.",
+    "propertyGone": "Le bien de cette simulation n’est plus en ligne : le calcul reprend le prix d’alors."
+  },
+  "favorites": {
+    "seoTitle": "Mes favoris",
+    "title": "Mes favoris",
+    "intro": "Les biens que vous avez mis de côté. Nous vous prévenons quand l’un d’eux change.",
+    "count": "{n, plural, one {# bien} other {# biens}} sur {max}",
+    "addedOn": "Ajouté le {date}",
+    "interest": "Exprimer mon intérêt",
+    "gone": "Ce bien n’est plus proposé",
+    "goneHint": "Il reste dans vos favoris quelques jours, puis disparaît de lui-même.",
+    "remove": "Retirer",
+    "removed": "Retiré de vos favoris",
+    "undo": "Annuler",
+    "limit": "Vous avez atteint le nombre maximal de favoris ({n}). Retirez-en un pour en ajouter un nouveau.",
+    "empty": "Touchez le cœur d’un bien pour le retrouver ici.",
+    "emptyText": "Vos favoris sont gardés sur votre compte : vous les retrouvez sur tous vos appareils.",
+    "discover": "Découvrir les biens",
+    "error": "Le favori n’a pas pu être enregistré. Réessayez.",
+    "notify": {
+      "priceDrop": "{titre} : le prix a baissé.",
+      "lastLots": "{titre} : {n, plural, one {plus qu’un lot disponible} other {plus que # lots disponibles}}.",
+      "unavailable": "{titre} n’est plus disponible."
+    },
+    "countShort": "{n, plural, one {# favori} other {# favoris}}",
+    "see": "Voir le bien",
+    "seeTitled": "Voir le bien : {titre}",
+    "interestSent": "Intérêt envoyé",
+    "followInterest": "Suivre dans mes intérêts",
+    "write": "Écrire à mon conseiller",
+    "writeAbout": "Écrire à mon conseiller au sujet de {titre}",
+    "removeTitled": "Retirer {titre} de mes favoris",
+    "price": "Prix",
+    "priceFrom": "Prix à partir de",
+    "downPayment": "Apport ({pct} %)",
+    "monthly": "Mensualité indicative*",
+    "surface": "Surface",
+    "delivery": "Livraison",
+    "changed": "Depuis votre ajout",
+    "changedOn": "le {date}",
+    "change": {
+      "PRICE_DROP": "Prix en baisse",
+      "LAST_LOTS": "Derniers lots",
+      "UNAVAILABLE": "Plus disponible",
+      "OTHER": "Du nouveau"
+    },
+    "availability": {
+      "RESERVED": "Réservé",
+      "SOLD": "Vendu",
+      "WITHDRAWN": "Retiré de la vente"
+    },
+    "notAvailable": "Ce bien n’est plus disponible pour le moment : vous ne pouvez pas exprimer d’intérêt, mais votre conseiller peut vous en proposer de semblables.",
+    "filter": {
+      "label": "Filtrer mes favoris",
+      "all": "Tous",
+      "available": "Disponibles",
+      "changed": "Ont changé",
+      "interest": "Intérêt envoyé",
+      "gone": "Plus proposés"
+    },
+    "sort": {
+      "recent": "Ajout récent",
+      "priceAsc": "Prix croissant",
+      "monthlyAsc": "Mensualité croissante"
+    },
+    "search": "Chercher dans mes favoris",
+    "compare": {
+      "toggle": "Comparer",
+      "toggleTitled": "Comparer {titre}",
+      "bar": "Biens à comparer",
+      "selected": "{n, plural, one {# bien choisi} other {# biens choisis}}",
+      "hint": "Choisissez un deuxième bien pour comparer.",
+      "go": "Comparer ces {n} biens",
+      "clear": "Tout désélectionner",
+      "full": "Vous comparez déjà trois biens : retirez-en un pour ajouter celui-ci."
+    },
+    "encourage": {
+      "changed": {
+        "title": "{n, plural, one {Un de vos favoris a changé} other {# de vos favoris ont changé}}",
+        "text": "Prix, disponibilité : regardez ce qui a bougé depuis que vous les avez mis de côté.",
+        "action": "Voir ce qui a changé"
+      },
+      "next": {
+        "title": "{n, plural, one {Un bien mis de côté} other {# biens mis de côté}}",
+        "text": "Un bien vous plaît vraiment ? Exprimez votre intérêt : un conseiller vous rappelle pour en parler, sans engagement."
+      },
+      "compare": {
+        "text": "Vous hésitez entre deux ou trois biens ? Cochez « Comparer » pour les voir côte à côte."
+      }
+    }
+  },
+  "alerts": {
+    "seoTitle": "Mes alertes et recherches",
+    "title": "Mes alertes et recherches",
+    "intro": "Vos alertes vous écrivent dès que de nouveaux biens correspondent. Vos recherches enregistrées n’envoient rien : elles vous font gagner du temps.",
+    "alertsTitle": "Mes alertes",
+    "alertsCount": "{n} sur {max} actives",
+    "searchesTitle": "Mes recherches enregistrées",
+    "searchesCount": "{n} sur {max}",
+    "create": "Créer une alerte",
+    "state": {
+      "ACTIVE": "Active jusqu’au {date}",
+      "PAUSED": "En pause",
+      "PAUSED_SINCE": "En pause depuis le {date}",
+      "EXPIRED": "Expirée",
+      "PENDING": "En attente d’activation"
+    },
+    "lastSent": "Dernier envoi le {date}",
+    "neverSent": "Aucun envoi pour le moment",
+    "frequencyLabel": "Fréquence",
+    "savedOn": "Enregistrée le {date}",
+    "actions": {
+      "see": "Voir les biens",
+      "run": "Lancer",
+      "edit": "Modifier les critères",
+      "pause": "Mettre en pause",
+      "resume": "Réactiver",
+      "extend": "Prolonger",
+      "activate": "Activer",
+      "delete": "Supprimer",
+      "rename": "Renommer",
+      "toAlert": "Recevoir les nouveautés"
+    },
+    "done": {
+      "saved": "Préférence enregistrée.",
+      "paused": "Alerte mise en pause.",
+      "resumed": "Alerte réactivée.",
+      "extended": "Votre alerte est prolongée jusqu’au {date}.",
+      "activated": "Votre alerte est active.",
+      "deleted": "Alerte supprimée.",
+      "searchDeleted": "Recherche supprimée.",
+      "renamed": "Nom enregistré.",
+      "toAlert": "C’est une alerte : vous recevrez les nouveaux biens qui correspondent."
+    },
+    "delete": {
+      "title": "Supprimer cette alerte ?",
+      "searchTitle": "Supprimer cette recherche ?",
+      "text": "Vous ne recevrez plus cette alerte. Cette action est définitive.",
+      "searchText": "Elle disparaît de vos recherches enregistrées. Cette action est définitive.",
+      "confirm": "Supprimer",
+      "cancel": "Annuler"
+    },
+    "rename": {
+      "title": "Renommer la recherche",
+      "label": "Nom",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "limit": "Vous avez atteint le nombre maximal d’alertes. Supprimez-en une pour en créer une nouvelle.",
+    "searchLimit": "Vous avez atteint le nombre maximal de recherches enregistrées. Supprimez-en une pour en enregistrer une nouvelle.",
+    "empty": "Vous n’avez pas encore d’alerte.",
+    "emptyText": "Lancez une recherche dans les biens, puis « Créer une alerte » : nous vous écrivons dès qu’un nouveau bien correspond.",
+    "emptySearches": "Aucune recherche enregistrée.",
+    "emptySearchesText": "Dans les biens, « Enregistrer cette recherche » la garde ici pour la relancer en un clic.",
+    "error": "Cette action n’a pas abouti. Réessayez.",
+    "notify": {
+      "matches": "{n, plural, one {# nouveau bien correspond} other {# nouveaux biens correspondent}} à votre alerte {libelle}."
+    },
+    "editBanner": {
+      "text": "Vous modifiez l’alerte « {libelle} ». Réglez les filtres, puis mettez-la à jour.",
+      "searchText": "Vous modifiez la recherche « {libelle} ». Réglez les filtres, puis mettez-la à jour.",
+      "update": "Mettre à jour l’alerte",
+      "updateSearch": "Mettre à jour la recherche",
+      "cancel": "Annuler",
+      "updated": "Critères mis à jour."
+    },
+    "saveSearch": {
+      "saving": "Enregistrement…",
+      "saved": "Recherche enregistrée",
+      "savedText": "Vous la retrouvez dans « Mes alertes et recherches », pour la relancer en un clic.",
+      "exists": "Cette recherche est déjà enregistrée.",
+      "see": "Voir mes recherches",
+      "save": "Enregistrer cette recherche",
+      "close": "Fermer"
+    },
+    "filter": {
+      "label": "Filtrer mes alertes et recherches",
+      "all": "Tout",
+      "active": "Alertes actives",
+      "paused": "En pause",
+      "expired": "Expirées",
+      "pending": "À activer",
+      "searches": "Recherches"
+    },
+    "kind": {
+      "ALERT": "Alerte",
+      "SEARCH": "Recherche enregistrée"
+    },
+    "criteria": "Critères",
+    "noCriteria": "Tous les biens",
+    "frequencyOf": "Fréquence de l’alerte {libelle}",
+    "expiresSoon": "Se termine le {date}",
+    "extendHint": "Prolongez-la pour continuer à recevoir les nouveautés.",
+    "renameInline": "Nom de la recherche",
+    "encourage": {
+      "watching": {
+        "title": "{n, plural, one {Une alerte veille pour vous} other {# alertes veillent pour vous}}",
+        "text": "Dès qu’un nouveau bien correspond, nous vous écrivons. Vous n’avez rien à surveiller."
+      },
+      "paused": {
+        "title": "Vos alertes sont en pause",
+        "text": "Réactivez-en une pour recevoir de nouveau les biens qui correspondent."
+      },
+      "expiring": {
+        "title": "{n, plural, one {Une alerte se termine bientôt} other {# alertes se terminent bientôt}}",
+        "text": "Prolongez-la d’un geste pour continuer à recevoir les nouveautés."
+      }
+    }
+  }
+}

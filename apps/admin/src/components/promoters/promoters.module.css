@@ -1,0 +1,277 @@
+/* Package 3.4 — the pieces drawn for the promoters' screens */
+
+/* Contacts: cards, the primary contact marked */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--sp-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contact {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  gap: var(--sp-12);
+  align-items: start;
+  padding: var(--sp-12) var(--sp-16);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--ui-radius-surface);
+  background: var(--bo-fond-blanc);
+}
+.contact[data-primary] {
+  border-color: var(--bo-ligne-bleue);
+  background: var(--bo-fond-ciel-pale);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  font-weight: 600;
+}
+.contactText {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  overflow-wrap: anywhere;
+  color: var(--bo-texte-roi);
+  text-decoration: none;
+  --icon-accent: currentColor;
+}
+.line:hover {
+  text-decoration: underline;
+}
+
+/* Vetting checklist */
+.checklist {
+  display: grid;
+  gap: var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.checklist li {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  gap: var(--sp-10);
+  align-items: center;
+  padding: var(--sp-8) var(--sp-12);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--ui-radius-control);
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.checklist li[data-done] {
+  background: var(--bo-fond-vert-pale);
+}
+.checklist input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--bo-accent-vert);
+}
+.progressLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+}
+.dateField {
+  min-width: 14rem;
+  margin-inline-start: auto;
+}
+
+.linkish {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bo-texte-encre);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+}
+.linkish:hover:not(:disabled) {
+  color: var(--bo-texte-roi);
+  text-decoration: underline;
+}
+.linkish:disabled {
+  color: var(--bo-texte-doux);
+  cursor: default;
+}
+.publicLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-decoration: none;
+  --icon-accent: currentColor;
+}
+
+/* Programmes and their properties */
+.programs {
+  display: grid;
+  gap: var(--sp-12);
+}
+.program {
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--ui-radius-control);
+}
+.programHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+  padding: var(--sp-10) var(--sp-12);
+  border-block-end: 1px solid var(--bo-ligne-douce);
+  background: var(--bo-fond-ciel-pale);
+}
+.programHead > :last-child {
+  margin-inline-start: auto;
+}
+.propertyList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.propertyList li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+  padding: var(--sp-8) var(--sp-12);
+}
+.propertyList li + li {
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.propertyList a {
+  color: var(--bo-texte-encre);
+  font-weight: 500;
+  text-decoration: none;
+}
+.propertyList a:hover {
+  color: var(--bo-texte-roi);
+  text-decoration: underline;
+}
+
+/* « Ce que nous attendons de lui » */
+.expect {
+  display: grid;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.expect li {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 1.5fr) minmax(10rem, 1fr) auto;
+  gap: var(--sp-12);
+  align-items: center;
+  padding: var(--sp-10) var(--sp-12);
+  border: 1px solid var(--bo-ligne-or);
+  border-inline-start-width: 4px;
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+}
+.expect li[data-late] {
+  border-color: var(--bo-texte-erreur);
+}
+.expectKind {
+  font-weight: 600;
+}
+.expectLabel {
+  overflow-wrap: anywhere;
+}
+.answer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  --icon-accent: currentColor;
+}
+.answer:hover {
+  text-decoration: underline;
+}
+.calm {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  color: var(--bo-texte-succes);
+  font-weight: 500;
+  --icon-accent: currentColor;
+}
+
+/* Relation: the figures of the period */
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+}
+.segmented button {
+  padding: var(--sp-6) var(--sp-12);
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--bo-texte-doux);
+  font: inherit;
+  font-size: var(--fs-admin-small);
+  cursor: pointer;
+}
+.segmented button[aria-pressed="true"] {
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+}
+.figures {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--sp-12);
+}
+.figure {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: var(--sp-12);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-ciel-pale);
+}
+.figure strong {
+  font-size: var(--fs-admin-h2);
+  line-height: var(--lh-admin-h2);
+  font-variant-numeric: tabular-nums;
+}
+.figure span {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+  line-height: var(--lh-admin-small);
+}
+.figure[data-zero] strong {
+  color: var(--bo-texte-discret);
+}
+@media (max-width: 1279px) {
+  .figures {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .expect li {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .checklist li {
+    transition: none;
+  }
+}

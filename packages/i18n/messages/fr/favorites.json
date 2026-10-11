@@ -1,0 +1,39 @@
+{
+  "heart": {
+    "add": "Ajouter {titre} à mes favoris",
+    "remove": "Retirer {titre} de mes favoris"
+  },
+  "toast": {
+    "added": "Ajouté à vos favoris",
+    "removed": "Retiré de vos favoris",
+    "undo": "Annuler",
+    "see": "Voir mes favoris",
+    "full": "Vous avez atteint le nombre maximal de favoris ({n}). Retirez-en un pour en ajouter un nouveau."
+  },
+  "nudge": {
+    "text": "Créez votre espace pour retrouver vos favoris sur tous vos appareils",
+    "cta": "Créer mon espace",
+    "close": "Fermer"
+  },
+  "link": "Mes favoris ({n})",
+  "page": {
+    "seoTitle": "Mes favoris",
+    "breadcrumb": "Mes favoris",
+    "eyebrow": "Mis de côté",
+    "title": "Mes favoris",
+    "intro": "Les biens que vous avez mis de côté sur cet appareil, du plus récent au plus ancien.",
+    "count": "{n, plural, one {# bien} other {# biens}}",
+    "addedOn": "Ajouté le {date}",
+    "interest": "Exprimer mon intérêt",
+    "gone": "Ce bien n’est plus proposé",
+    "goneHint": "Il restera dans vos favoris quelques jours, puis disparaîtra de lui-même.",
+    "remove": "Retirer",
+    "emptyTitle": "Touchez le cœur d’un bien pour le retrouver ici.",
+    "emptyText": "Vos favoris restent sur cet appareil, sans compte, et vous attendent à votre prochaine visite.",
+    "discover": "Découvrir les biens",
+    "loading": "Chargement de vos favoris…",
+    "error": "Vos favoris n’ont pas pu être chargés.",
+    "retry": "Réessayer",
+    "compare": "Comparer mes favoris"
+  }
+}

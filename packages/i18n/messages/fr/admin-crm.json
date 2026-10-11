@@ -1,0 +1,10 @@
+{
+  "advisor": {
+    "label": "Conseiller",
+    "placeholder": "Choisir un conseiller",
+    "none": "Personne pour l’instant",
+    "me": "{nom} (moi)",
+    "absentUntil": "{nom} — absent jusqu’au {date}",
+    "loadFailed": "La liste des conseillers n’a pas pu être chargée."
+  }
+}

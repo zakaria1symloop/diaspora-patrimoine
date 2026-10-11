@@ -1,0 +1,214 @@
+{
+  "breadcrumb": {
+    "programs": "Programmes"
+  },
+  "tags": {
+    "available": "Disponible",
+    "reserved": "Réservé",
+    "sold": "Vendu",
+    "financing": "Éligible au financement",
+    "islamic": "Financement islamique",
+    "tour360": "Visite 360°",
+    "renders": "Images 3D non contractuelles",
+    "photosSoon": "Photos à venir"
+  },
+  "header": {
+    "location": "{ville}, {region}",
+    "flight": "à {duree} de {ville}",
+    "share": "Partager",
+    "favorite": "Ajouter aux favoris",
+    "favoriteOn": "Retirer des favoris"
+  },
+  "gallery": {
+    "counter": "{photos, plural, one {# photo} other {# photos}}",
+    "counterPlans": "{photos, plural, one {# photo} other {# photos}} · {plans, plural, one {# plan} other {# plans}}",
+    "more": "+ {n} photos",
+    "open": "Voir toutes les photos",
+    "tour": "Lancer la visite 360°",
+    "emptyTitle": "Photos en cours de préparation",
+    "emptyText": "En attendant : le plan, les chiffres clés et un échange avec votre conseiller.",
+    "seePlan": "Voir le plan",
+    "tabs": {
+      "photos": "Photos ({n})",
+      "plans": "Plans ({n})",
+      "tour": "Visite 360° ({n, plural, one {# pièce} other {# pièces}})",
+      "video": "Vidéo ({n})"
+    },
+    "position": "{i} / {n}",
+    "previous": "Photo précédente",
+    "next": "Photo suivante",
+    "close": "Fermer la galerie",
+    "zoomIn": "Agrandir",
+    "zoomOut": "Réduire",
+    "brochure": "Télécharger la brochure (PDF, {taille})",
+    "plansNotice": "Plans fournis par le promoteur. Surfaces indicatives : les surfaces contractuelles figurent dans l’acte.",
+    "downloadPlans": "Télécharger les plans (PDF)",
+    "tourEmptyTitle": "Pas encore de visite 360° pour ce bien.",
+    "tourEmptyText": "Les photos et le plan restent consultables dans les autres onglets.",
+    "visio": "Demander une visite en visio",
+    "videoPlay": "Lire la vidéo",
+    "reference": "Réf. {reference}"
+  },
+  "facts": {
+    "title": "Les chiffres clés",
+    "type": "Type",
+    "rooms": "Pièces",
+    "roomsValue": "{prefix}{rooms}",
+    "bedrooms": "{n, plural, =0 {sans chambre} one {# chambre} other {# chambres}}",
+    "surface": "Surface",
+    "terrace": "+ {n} m² de terrasse",
+    "delivery": "Livraison",
+    "bathrooms": "Salles de bain",
+    "land": "Terrain",
+    "floors": "Étages",
+    "floorsRange": "du {min} au {max}",
+    "floorGround": "rez-de-chaussée",
+    "floorN": "{n, selectordinal, one {#er} other {#e}}",
+    "parking": "Stationnement",
+    "parkingIncluded": "1 place incluse",
+    "standing": "Standing",
+    "lots": "Lots disponibles",
+    "lotsValue": "{n, plural, one {# lot} other {# lots}}",
+    "statusOnPlan": "sur plan",
+    "statusConstruction": "en construction"
+  },
+  "description": {
+    "title": "Description",
+    "more": "Lire la suite",
+    "less": "Réduire"
+  },
+  "features": {
+    "title": "Ce qui est compris"
+  },
+  "lots": {
+    "title": "Lots disponibles",
+    "lot": "Lot",
+    "floor": "Étage",
+    "surface": "Surface",
+    "orientation": "Orientation",
+    "price": "Prix",
+    "interest": "Ce lot m’intéresse",
+    "seeAll": "Voir les {n} lots",
+    "perM2": "{prix} / m²"
+  },
+  "plans": {
+    "title": "Plans et visite",
+    "plan": "Plan de l’appartement",
+    "download": "Télécharger les plans",
+    "tourTitle": "Visite 360°",
+    "tourText": "Parcourez le bien pièce par pièce.",
+    "visioTitle": "Visite en visio avec votre conseiller",
+    "visioText": "Votre conseiller peut vous faire visiter l’appartement témoin en visio, ou vous envoyer une vidéo commentée."
+  },
+  "program": {
+    "title": "Le programme",
+    "units": "{n} logements",
+    "seeProgram": "Voir le programme",
+    "others": "Autres biens de ce programme",
+    "amenities": "Équipements"
+  },
+  "progress": {
+    "title": "Avancement du chantier",
+    "current": "En cours",
+    "updated": "Mis à jour le {date}"
+  },
+  "promoter": {
+    "title": "Le promoteur",
+    "selected": "Promoteur sélectionné",
+    "programs": "{n, plural, one {# programme au catalogue} other {# programmes au catalogue}}",
+    "see": "Voir le promoteur",
+    "guarantees": "Garanties du programme"
+  },
+  "location": {
+    "title": "Localisation",
+    "area": "Secteur de {ville}",
+    "notice": "Adresse exacte communiquée après qualification.",
+    "nearby": "À proximité",
+    "poi": "{label} · {minutes} min {mode}",
+    "modes": {
+      "CAR": "en voiture",
+      "WALK": "à pied",
+      "TRANSIT": "en transport"
+    },
+    "abroad": "Depuis l’étranger",
+    "flight": "{ville} · {duree}",
+    "via": "{ville} · {duree} · {via}"
+  },
+  "similar": {
+    "title": "Biens similaires",
+    "seeRegion": "Voir les {n, plural, one {# bien} other {# biens}} à {region}"
+  },
+  "footer": {
+    "line": "Réf. {reference} · Publié le {publie} · Mis à jour le {maj}",
+    "report": "Signaler une erreur sur cette fiche"
+  },
+  "price": {
+    "from": "À partir de",
+    "approx": "≈ {prix}",
+    "native": "{prix}",
+    "perM2": "{prix} / m² · Taux indicatif du {date}",
+    "perM2Range": "de {min} à {max} / m² · Taux indicatif du {date}",
+    "perM2Native": "{prix} / m²"
+  },
+  "financing": {
+    "monthly": "Mensualité indicative*",
+    "perMonth": "{montant} / mois",
+    "hypotheses": "sur {duree} · apport {pct} % · {taux} · hors assurance",
+    "adjust": "Ajuster la simulation",
+    "eligible": "Financement possible auprès de nos banques partenaires",
+    "notEligible": "Nous étudions votre financement avec nos banques partenaires.",
+    "testEligibility": "Tester mon éligibilité"
+  },
+  "actions": {
+    "interest": "Exprimer mon intérêt",
+    "visit": "Demander une visite ou une visio",
+    "whatsapp": "Poser une question sur WhatsApp",
+    "whatsappMessage": "Bonjour, je m’intéresse au bien {titre} (réf. {reference}).",
+    "whatsappProgram": "Bonjour, je m’intéresse au programme {nom}.",
+    "callback": "Être rappelé",
+    "alertLot": "M’alerter si un lot se libère",
+    "sent": "Demande envoyée",
+    "sendAnother": "Envoyer une autre demande",
+    "programInterest": "Ce programme m’intéresse",
+    "notify": "Me prévenir",
+    "notifyFree": "Me prévenir si un bien se libère"
+  },
+  "banners": {
+    "reserved": "Tous les lots de ce bien sont réservés pour le moment.",
+    "sold": "Ce bien est vendu.",
+    "withdrawn": "Ce bien n’est plus proposé pour le moment."
+  },
+  "programPage": {
+    "properties": "Les biens du programme",
+    "seeProperty": "Voir ce bien",
+    "lotsAvailable": "{n, plural, one {# lot disponible} other {# lots disponibles}}",
+    "upcoming": "Les biens de ce programme arrivent bientôt.",
+    "allReserved": "Tous les biens de ce programme sont réservés pour le moment.",
+    "sold": "Programme entièrement vendu.",
+    "withdrawn": "Ce programme n’est plus proposé pour le moment.",
+    "otherPrograms": "Autres programmes de la région",
+    "priceFrom": "à partir de {prix}",
+    "units": "Logements",
+    "deliveryTile": "Livraison",
+    "priceTile": "Prix",
+    "lotsTile": "Lots disponibles",
+    "standingTile": "Standing",
+    "description": "Description",
+    "amenities": "Équipements",
+    "seoTitle": "{nom} à {region} – programme neuf"
+  },
+  "seo": {
+    "title": "{titre} à {lieu} – {prix}",
+    "titleFrom": "{titre} à {lieu} – à partir de {prix}",
+    "share": "{titre} – {prix}"
+  },
+  "locationMap": {
+    "label": "Carte du secteur de {lieu}",
+    "loading": "Chargement de la carte…",
+    "circle": "Le cercle montre le secteur, pas l’adresse exacte."
+  },
+  "headerTools": {
+    "favorite": "Favori",
+    "compare": "Comparer"
+  }
+}

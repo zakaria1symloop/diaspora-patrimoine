@@ -1,0 +1,89 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-16);
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+.logo {
+  flex: none;
+  width: 3.5rem; /* 56px — one size, scrolled or not: nothing in the header changes size on scroll */
+  height: auto;
+  border-radius: 50%;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+.wordmark {
+  width: 17rem;
+  max-width: 100%;
+  height: auto;
+}
+.tagline {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--bo-texte-roi);
+  white-space: nowrap;
+}
+.dark .tagline {
+  color: var(--bo-texte-ciel);
+}
+@media (max-width: 1279px) {
+  /* the menu needs the room: the wordmark alone, at a size that never squeezes */
+  .brand {
+    flex: none;
+    gap: var(--sp-12);
+  }
+  .logo {
+    width: 3rem;
+  }
+  .wordmark {
+    width: 10.5rem;
+    max-width: none;
+  }
+  .tagline {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .logo {
+    width: 2.75rem;
+  }
+  .wordmark {
+    width: 12.5rem;
+  }
+  .tagline {
+    display: none;
+  }
+}
+/* the footer has the room the header lacks: the wordmark keeps a readable size at every width (Figma FooterMobile) */
+@media (max-width: 1279px) {
+  .brand.dark {
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  .dark .wordmark {
+    width: 17rem;
+    max-width: 100%;
+  }
+  .dark .tagline {
+    display: block;
+    white-space: normal;
+  }
+}
+/* TRV-123, TRV-122 — with a bigger text the header keeps its height (D-098): the tagline steps aside, the menu keeps
+   its room (« Très grande » stays right at 1 440 px, QUA-001) */
+:global(html[data-text-size]) .brand:not(.dark) .tagline,
+:global(html[data-simple]) .brand:not(.dark) .tagline {
+  display: none;
+}
+:global(html[data-text-size='xlarge']) .brand:not(.dark) .wordmark {
+  width: 12rem;
+}

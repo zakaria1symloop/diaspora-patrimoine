@@ -1,0 +1,25 @@
+.main {
+  display: block;
+  min-height: 50vh;
+  outline: none;
+  /* the row of « Écouter cette page » (TRV-127): its height is known, so that the home hero can slide under it */
+  --listen-h: 3.75rem;
+}
+.listen {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  height: var(--listen-h);
+}
+/* ENV-030 — discreet « RECETTE » band once the gate is passed */
+.staging {
+  background: var(--bo-fond-alerte-pale);
+  color: var(--bo-texte-or);
+  text-align: center;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  padding-block: var(--sp-4);
+}

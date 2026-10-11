@@ -1,0 +1,127 @@
+{
+  "page": {
+    "title": "Assistant de recherche",
+    "description": "Cinq questions pour trouver les biens neufs qui vous correspondent, puis un conseiller pour vous accompagner."
+  },
+  "chat": {
+    "assistant": "L’assistant",
+    "you": "Vous",
+    "greeting": "Bonjour. Cinq questions, et je vous montre les biens qui vous correspondent.",
+    "progress": "Question {n} sur 5",
+    "back": "Retour",
+    "restart": "Recommencer",
+    "continue": "Continuer",
+    "pickOne": "Choisissez une réponse pour continuer.",
+    "several": "Plusieurs choix possibles.",
+    "loading": "Un instant…",
+    "loadError": "L’assistant n’a pas pu se charger. Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer"
+  },
+  "questions": {
+    "region": "Où souhaitez-vous acheter ?",
+    "type": "Quel type de bien cherchez-vous ?",
+    "rooms": "Combien de pièces ?",
+    "budget": "Quel est votre budget ?",
+    "delivery": "Pour quand ?",
+    "purpose": "C’est pour quel projet ?",
+    "precision": "Une précision à ajouter, avec vos mots ?"
+  },
+  "choices": {
+    "any": "Peu importe",
+    "unknown": "Je ne sais pas encore",
+    "noAnswer": "Je préfère ne pas répondre",
+    "rooms": "{prefix}{n}",
+    "roomsFivePlus": "{prefix}5 et plus",
+    "budgetKind": "Votre budget, plutôt",
+    "monthly": "par mois",
+    "total": "au total",
+    "monthlyStep": "Jusqu’à {montant} / mois",
+    "totalStep": "Jusqu’à {montant}",
+    "delivery": {
+      "NOW": "Disponible tout de suite",
+      "SOON": "D’ici un à deux ans"
+    }
+  },
+  "precision": {
+    "label": "Votre précision",
+    "hint": "Facultatif. Votre conseiller la lira telle quelle si vous nous laissez vos coordonnées.",
+    "submit": "Voir les biens",
+    "none": "Rien à ajouter"
+  },
+  "results": {
+    "searching": "Je cherche les biens qui vous correspondent…",
+    "exact": "{n, plural, one {Voici # bien qui correspond à vos réponses.} other {Voici # biens qui correspondent à vos réponses.}}",
+    "showing": "Voici les {n} premiers, par pertinence.",
+    "relaxed": "Aucun bien ne correspond exactement. Voici les plus proches.",
+    "none": "Nous n’avons pas encore de bien pour cette recherche. Laissez-nous vos coordonnées : un conseiller cherche pour vous.",
+    "listLabel": "Biens proposés par l’assistant",
+    "seeAll": "Voir tous les résultats",
+    "receive": "Recevoir ces biens et être accompagné",
+    "alert": "Créer une alerte",
+    "error": "Les biens n’ont pas pu être chargés. Vos réponses sont conservées.",
+    "retry": "Réessayer"
+  },
+  "form": {
+    "title": "Recevoir ces biens et être accompagné",
+    "titleNone": "Un conseiller cherche pour vous",
+    "intro": "Un conseiller vous envoie ces biens et fait le point avec vous sur votre projet. Sans engagement.",
+    "introNone": "Vos réponses lui sont transmises : il vous propose des biens dès qu’ils correspondent.",
+    "submit": "Recevoir ces biens",
+    "submitNone": "Envoyer ma demande",
+    "close": "Fermer le formulaire"
+  },
+  "ai": {
+    "description": "Dites-nous ce que vous cherchez, avec vos mots : l’assistant comprend votre projet et vous montre les biens qui vous correspondent.",
+    "greeting": "Bonjour. Dites-moi ce que vous cherchez, avec vos mots, et je vous montre les biens qui vous correspondent.",
+    "inputLabel": "Dites-nous ce que vous cherchez, avec vos mots",
+    "inputPlaceholder": "Par exemple : un appartement à Oran, livré, pour moins de 700 € par mois",
+    "send": "Envoyer",
+    "examplesLabel": "Exemples à toucher",
+    "examples": {
+      "one": "Un T3 à Alger pour moins de 600 € par mois",
+      "two": "Une maison près de la mer pour ma retraite",
+      "three": "Que se passe-t-il après ma demande ?"
+    },
+    "thinking": "L’assistant réfléchit…",
+    "toQuestions": "Je préfère répondre à des questions",
+    "toConversation": "Écrire avec mes mots",
+    "advisor": "Parler à un conseiller",
+    "restart": "Nouvelle conversation",
+    "criteria": {
+      "label": "Je cherche :",
+      "remove": "Retirer « {critere} »",
+      "rooms": "{prefix}{n}",
+      "roomsFivePlus": "{prefix}5 et plus",
+      "monthlyMax": "jusqu’à {montant} / mois",
+      "priceMax": "jusqu’à {montant}",
+      "priceMin": "à partir de {montant}",
+      "surfaceMin": "{n} m² et plus",
+      "delivered": "Livré",
+      "later": "Livraison plus tard",
+      "year": "Livraison {annee}",
+      "financing": "Finançable",
+      "islamic": "Financement islamique"
+    },
+    "results": {
+      "count": "{n, plural, =0 {Aucun bien ne correspond à ces critères.} one {# bien correspond à ces critères.} other {# biens correspondent à ces critères.}}",
+      "relaxed": "Aucun bien ne correspond exactement. Voici les plus proches.",
+      "none": "Nous n’avons pas encore de bien pour cette recherche. Laissez-nous vos coordonnées : un conseiller cherche pour vous."
+    },
+    "sources": "Sources",
+    "handoff": {
+      "PERSONAL_SITUATION": "Votre question touche à votre situation personnelle : un conseiller est le mieux placé pour vous répondre.",
+      "NO_RELIABLE_ANSWER": "Je préfère vous mettre en relation avec un conseiller.",
+      "VISITOR_ASKED": "Bien sûr : laissez vos coordonnées, un conseiller vous rappelle.",
+      "OUT_OF_SCOPE": "Je ne peux vous aider que pour votre projet immobilier. Un conseiller peut répondre à vos autres questions.",
+      "LIMIT": "Notre échange devient long : un conseiller peut prendre le relais et vous répondre de vive voix."
+    },
+    "form": {
+      "title": "Être rappelé",
+      "intro": "Un conseiller reprend votre recherche là où nous en sommes et vous rappelle. Sans engagement.",
+      "submit": "Être rappelé"
+    },
+    "rateLimited": "Vous écrivez plus vite que l’assistant ne peut lire. Réessayez dans un instant, ou répondez à quelques questions.",
+    "tooLong": "Votre message dépasse 500 caractères : raccourcissez-le un peu.",
+    "privacy": "Vos messages sont conservés 30 jours pour améliorer l’assistant, sans lien avec votre identité. N’y écrivez ni coordonnées ni informations personnelles."
+  }
+}

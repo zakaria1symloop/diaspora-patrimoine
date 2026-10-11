@@ -1,0 +1,66 @@
+/* DSN-052, DSN-023, DSN-090, DSN-091 — the « Outil » register of the back office, derived from the same tokens by a
+   mode: radii of 8 and 4 px, rows of 44 px, fourteen pixels of text, Red Hat Display only. Set on <html data-register="tool">.
+   The shared components of this package read the `--ui-*` variables, with the showcase values as fallbacks. */
+
+:root[data-register='tool'] {
+  /* DSN-023 — type scale of the back office */
+  --fs-admin-title: 1.5rem;
+  --lh-admin-title: 2rem;
+  --fs-admin-h2: 1.125rem;
+  --lh-admin-h2: 1.625rem;
+  --fs-admin-h3: 0.9375rem;
+  --lh-admin-h3: 1.375rem;
+  --fs-admin-body: 0.875rem;
+  --lh-admin-body: 1.25rem;
+  --fs-admin-small: 0.8125rem;
+  --lh-admin-small: 1.125rem;
+  --fs-admin-caption: 0.75rem;
+  --lh-admin-caption: 1rem;
+  --fs-admin-kpi: 2rem;
+  --lh-admin-kpi: 2.5rem;
+
+  /* DSN-032, DSN-091 — radii: 4 for tags, 8 for fields and buttons, 12 for cards and windows */
+  --ui-radius-tag: var(--radius-s);
+  --ui-radius-control: 8px;
+  --ui-radius-button: 8px;
+  --ui-radius-surface: var(--radius-m);
+  --ui-radius-window: var(--radius-m);
+
+  /* DSN-091 — density */
+  --ui-row-h: 2.75rem; /* 44px */
+  --ui-field-h: 2.5rem;
+  --ui-font-size: var(--fs-admin-body);
+  --ui-line-height: var(--lh-admin-body);
+  --ui-title-font: var(--font-ui);
+  --ui-title-style: normal;
+  --ui-title-size: var(--fs-admin-h2);
+  --ui-title-line: var(--lh-admin-h2);
+  --ui-title-weight: 600;
+  --ui-secondary-border: var(--bo-ligne-bleue);
+  --ui-secondary-hover: var(--bo-fond-ciel-pale);
+  --ui-secondary-active: var(--bo-fond-ciel);
+  --ui-window-shadow: var(--shadow-m);
+  --ui-button-shadow: none;
+
+  /* DSN-090 — frame */
+  --admin-menu-w: 15.5rem; /* 248px */
+  --admin-menu-w-collapsed: 4rem; /* 64px */
+  --admin-topbar-h: 4rem; /* 64px */
+
+  --btn-m: 2.875rem; /* 46px: main action of a page, windows */
+  --btn-s: 2.25rem; /* 36px: toolbars and tables */
+}
+
+:root[data-register='tool'] body {
+  font-size: var(--fs-admin-body);
+  line-height: var(--lh-admin-body);
+  font-weight: 400;
+  background: var(--bo-fond-gris);
+}
+
+/* DSN-091 — with a mouse, a toolbar button is 36 px; a touch screen keeps the 48 px targets of TRV-121 */
+@media (pointer: fine) {
+  :root[data-register='tool'] {
+    --target-min: 2.25rem;
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "hero": {
+    "nextCafe": "Prochain café",
+    "cafeSeats": "{lieu} · {n, plural, one {# place} other {# places}}",
+    "cafeOpen": "{lieu} · inscriptions ouvertes",
+    "cafeFull": "{lieu} · complet",
+    "cafeOpening": "{lieu} · ouverture le {date}",
+    "cafeSoon": "Prochaines dates bientôt annoncées",
+    "register": "Je m’inscris au prochain café",
+    "waitlist": "M’inscrire sur la liste d’attente",
+    "notify": "Me prévenir",
+    "seeProperties": "Voir les biens",
+    "callback": "Être rappelé"
+  },
+  "comparison": {
+    "price": "Prix du bien",
+    "downPayment": "Apport",
+    "monthly": "Mensualité*",
+    "perMonth": "/ mois",
+    "gapAria": "Soit {gap} de moins {label}",
+    "hypotheses": "Hypothèses : {left}, {leftDuration}, {leftRate} · {right}, {rightDuration}, {rightRate}.",
+    "years": "{n, plural, one {# an} other {# ans}}",
+    "months": "{n} mois"
+  },
+  "properties": {
+    "seeAll": "Voir tous les programmes",
+    "soon": "Les premiers programmes arrivent bientôt.",
+    "moreSoonTitle": "D’autres programmes arrivent",
+    "moreSoonText": "Dites-nous ce que vous cherchez : un conseiller vous rappelle.",
+    "callback": "Être rappelé"
+  },
+  "cafe": {
+    "seats": "{n, plural, one {Il reste # place} other {Il reste # places}}",
+    "open": "Inscriptions ouvertes",
+    "full": "Complet",
+    "opening": "Ouverture le {date}",
+    "closed": "Inscriptions closes",
+    "cancelled": "Annulé",
+    "register": "Je m’inscris",
+    "waitlist": "Liste d’attente",
+    "notify": "Me prévenir",
+    "line": "{jour} · de {debut} à {fin}",
+    "both": "promoteur et banquier présents",
+    "promoter": "promoteur présent",
+    "bank": "banquier présent",
+    "soonTitle": "Prochaines dates bientôt annoncées",
+    "soonText": "Laissez votre adresse : nous vous prévenons dès l’ouverture des inscriptions."
+  },
+  "services": {
+    "callback": "Être rappelé"
+  },
+  "financing": {
+    "fallbackEligibility": "Tester mon éligibilité",
+    "fallbackCredit": "Calculer mes mensualités"
+  },
+  "final": {
+    "nextCafe": "Prochain café : {date}, à {lieu}",
+    "nextCafeSeats": "Prochain café : {date}, à {lieu} · {n, plural, one {il reste # place} other {il reste # places}}",
+    "register": "Je m’inscris au prochain café",
+    "projection": "Recevoir ma projection",
+    "discover": "Découvrir les programmes",
+    "simulate": "Simuler mon projet"
+  },
+  "stickyBar": {
+    "label": "Action rapide"
+  },
+  "simple": {
+    "lead": "Choisissez ce que vous voulez faire. Nous vous guidons pas à pas.",
+    "search": "Chercher un bien",
+    "searchText": "Tous les programmes, avec des filtres simples.",
+    "simulate": "Simuler mon financement",
+    "simulateText": "Votre capacité d’emprunt et votre mensualité, en trois questions.",
+    "advisor": "Parler à un conseiller",
+    "advisorText": "Il vous rappelle au moment qui vous convient.",
+    "note": "Le Café, les motivations, les chiffres et les témoignages restent accessibles depuis le menu : l’affichage simplifié ne retire aucune fonction."
+  },
+  "carousel": {
+    "goTo": "Afficher la carte {n} sur {total}"
+  },
+  "why": {
+    "show": "Afficher la motivation {n} sur {total} : {title}",
+    "prev": "Motivation précédente",
+    "next": "Motivation suivante",
+    "pause": "Mettre en pause le défilement des motivations",
+    "play": "Reprendre le défilement des motivations"
+  }
+}

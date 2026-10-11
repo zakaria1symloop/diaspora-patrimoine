@@ -1,0 +1,1061 @@
+{
+ "runId": "dp-bleu-or-2026-10-01",
+ "updated": "2026-10-11",
+ "figmaFile": {
+  "name": "Diaspora Patrimoine — Design",
+  "key": "H7XVzqkkeUViNnecDdCrdG",
+  "url": "https://www.figma.com/design/H7XVzqkkeUViNnecDdCrdG"
+ },
+ "direction": "Bleu & Or (D-003) — maquette d'accueil validée par Mme Mouhoubi le 01/10/2026. Règles : Specs/07-design/01-systeme-de-design.md. Écrans : Specs/07-design/02-inventaire-des-ecrans.md.",
+ "step": "page Draft ouverte le 03/10/2026 : onze écrans à l'état « À valider » — prochaine étape : réaction de Zakaria, puis de Mme Mouhoubi ; à la validation, déplacer chaque écran sur sa page et extraire les éléments dessinés en place en composants (DSN-052)",
+ "completedSteps": [
+  "cleanup: 17 old pages removed, 4 old variable collections removed, 22 old styles removed (snapshots in Design/archive/2026-10-01-avant-nettoyage/)",
+  "structure: 27 pages (25 + séparateur ARCHIVE + Maquette validée)",
+  "foundations: variables, text styles, effect styles, paint styles ; boards Couleurs, Typographie, Mesures, Icônes et drapeaux, Photos",
+  "icons: 31 renamed to English, 38 new, specimen board on Fondations; colour by variable mode (collection Icônes)",
+  "components: La bibliothèque (vue d'ensemble), Marque, Titres, Actions, Étiquettes et états, Cartes, Navigation, Formulaires, Messages, Liens et repères — 185 composants principaux, 30 jeux de variantes, 11 composants seuls",
+  "home: copie de travail EP-01 reconstruite avec les composants et les jetons (206 instances, 0 couleur ou texte hors jeton) ; original déplacé sur la page d'archive, verrouillé",
+  "couverture: couverture + plan du fichier, états d'un écran (.Doc/ScreenLabel), cinq livraisons, règles",
+  "sommaires: un sommaire par page d'écrans (19 pages), avec variantes à maquetter, specs, livraison, état",
+  "synchronisation du 03/10/2026 avec Specs v1.2 : sommaires de dix pages mis à jour (ligne EA-47 ajoutée ; variantes de 28 écrans ; EP-27 en L3 ; EC-11 en trois temps L2/L3/L4 ; EA-40 à EA-43 en L3 puis L4), plan du fichier (plages d'écrans exactes) et texte de la livraison 5",
+  "synchronisation du 03/10/2026 (seconde passe, après la vérification de clôture de l'audit) : neuf lignes de sept sommaires mises à jour — EP-04 (états « à venir », « retiré »), EP-29 (accès réservé à partir de L2), EC-12 (« Je retiens ce bien » en L3), EA-22 (Échanges : chronologie en L3, messagerie en L5), EA-50/EA-51 et EA-52/EA-53 (blocs « Ce que nous attendons », vue « Tous les produits »), EA-90 (onglet « Images »), EA-91 à EA-95 (vue « Référencement »), EA-104 (L1 Profil et Sécurité, L3 Signature, L5 Notifications)",
+  "03/10/2026 — page « Draft » (441:17, placée après la Couverture) : sommaire + onze écrans 1 440 dessinés avec la bibliothèque Bleu & Or et les jetons (aucun calque au nom par défaut, aucun texte sans style, aucune couleur hors variable — contrôle fait par script). Couverture : ligne « Draft » ajoutée au plan du fichier, repères passés à « Version du 03/10/2026 » et « Spécifications 1.2 ». Bibliothèque : le texte de la variante Link Type=Inline est désormais lié à la propriété Label. Aperçus PNG : Design/apercus/draft/. Specs : FIC-001, CAT-042, DSN-052 et 07-design/02 § 1 précisés ; contrôle vert."
+ ],
+ "audit": {
+  "date": "2026-10-01",
+  "home": "158 nœuds hors instances, 206 instances ; aucune couleur sans variable, aucun texte sans style, aucune ombre sans style ; seule exception : le voile dégradé posé sur la photo de la section « Appel final »",
+  "components": "aucune couleur sans variable, aucun texte sans style",
+  "variables": "Bleu & Or 44 · Mesures 21 · Icônes 4 (5 modes)",
+  "styles": "56 styles de texte · 4 ombres · 5 dégradés"
+ },
+ "pages": {
+  "Couverture": "371:2",
+  "Fondations": "371:3",
+  "Composants": "371:4",
+  "———  SITE PUBLIC  ———": "371:5",
+  "Accueil": "371:6",
+  "Catalogue": "371:7",
+  "Fiches": "371:8",
+  "Financement": "371:9",
+  "Le Café": "371:10",
+  "Pages": "371:11",
+  "———  ESPACE CLIENT  ———": "371:12",
+  "Compte": "371:13",
+  "Suivi et dossier": "371:14",
+  "Biens et rendez-vous": "371:15",
+  "Messages": "371:16",
+  "Outils et profil": "371:17",
+  "———  BACK-OFFICE  ———": "371:18",
+  "Socle et pilotage": "371:19",
+  "Demandes et clients": "371:20",
+  "Dossiers": "371:21",
+  "Catalogue et partenaires": "371:22",
+  "Financement et pièces": "371:23",
+  "Communication et organisation": "371:24",
+  "Café, satisfaction, contenus": "371:25",
+  "Administration": "371:26",
+  "———  ARCHIVE  ———": "405:1549",
+  "Maquette validée (01/10/2026)": "405:1550",
+  "Draft": "441:17"
+ },
+ "collections": {
+  "Bleu & Or": {
+   "id": "VariableCollectionId:288:2",
+   "mode": "Bleu & Or",
+   "variables": 44,
+   "codeSyntax": "var(--bo-{groupe}-{nom})"
+  },
+  "Mesures": {
+   "mode": "Valeur",
+   "variables": 21,
+   "groups": [
+    "espace/*",
+    "rayon/*",
+    "trait/*"
+   ]
+  },
+  "Icônes": {
+   "id": "VariableCollectionId:388:2",
+   "modes": {
+    "Clair": "388:0",
+    "Sombre": "388:1",
+    "Champagne": "388:2",
+    "Or foncé": "388:3",
+    "Encre": "388:4"
+   },
+   "variables": {
+    "icone/trait": "VariableID:388:3",
+    "icone/accent": "VariableID:388:4",
+    "icone/creux": "VariableID:388:5",
+    "icone/or": "VariableID:388:6"
+   },
+   "rule": "La couleur d'une icône suit le mode du conteneur (setExplicitVariableModeForCollection). Jamais de surcharge par icône. Coffee et Pin sont liés à icone/or. Les icônes d'état (Icon/Status*) ont une couleur fixe."
+  }
+ },
+ "styles": {
+  "text": "Vitrine/* (32) · Téléphone/* (16) · Outil/* (8)",
+  "textAddedForComponents": [
+   "heading.item",
+   "body.l.strong",
+   "body.m.strong",
+   "body.s.strong",
+   "button.s",
+   "cafemark.l",
+   "cafemark.m",
+   "cafemark.s",
+   "wordmark.s",
+   "tagline"
+  ],
+  "effect": [
+   "Ombre/s",
+   "Ombre/m",
+   "Ombre/l",
+   "Ombre/xl"
+  ],
+  "paint": [
+   "Dégradé/or",
+   "Dégradé/doux",
+   "Fond de section/Ivoire-ciel",
+   "Fond de section/Crème-or",
+   "Fond de section/Ciel-blanc"
+  ]
+ },
+ "screens": {
+  "EP-01 · Accueil — 1440 (copie de travail, composants et jetons)": {
+   "id": "393:261",
+   "page": "Accueil",
+   "size": "1440×7425",
+   "label": "405:1638",
+   "preview": "Design/apercus/EP-01-accueil-1440.png",
+   "ecarts": "Specs/07-design/01, DSN-102"
+  },
+  "Maquette validée le 01/10/2026 (référence, verrouillée)": {
+   "id": "290:102",
+   "page": "Maquette validée (01/10/2026)",
+   "size": "1440×7344",
+   "snapshot": "Design/archive/2026-10-01-avant-nettoyage/proposition-4-retenue-bleu-et-or.png"
+  }
+ },
+ "docComponents": {
+  ".Doc/ScreenLabel": {
+   "id": "404:260",
+   "page": "Couverture",
+   "variants": "Status=À maquetter|En cours|À valider|Validé",
+   "props": {
+    "ID": "ID#404:0",
+    "Name": "Name#404:5",
+    "Format": "Format#404:10"
+   },
+   "note": "l'instance imbriquée « État » (StatusTag) porte le libellé, modifiable : Label#381:214"
+  }
+ },
+ "sommaires": {
+  "rule": "Chaque page d'écrans commence par son sommaire à (0,0), largeur 1440 ; les cadres se rangent dessous. Mettre à jour la pastille d'état de la ligne quand un écran avance.",
+  "Accueil": "405:1554",
+  "Accueil · ce qui a changé": "board à x=1560",
+  "Catalogue": "405:1644",
+  "Fiches": "405:1680",
+  "Financement": "405:1740",
+  "Le Café": "405:1812",
+  "Pages": "405:1860",
+  "Compte": "407:17",
+  "Suivi et dossier": "407:137",
+  "Biens et rendez-vous": "407:215",
+  "Messages": "407:267",
+  "Outils et profil": "407:303",
+  "Socle et pilotage": "408:17",
+  "Demandes et clients": "408:103",
+  "Dossiers": "408:167",
+  "Catalogue et partenaires": "408:219",
+  "Financement et pièces": "408:327",
+  "Communication et organisation": "408:435",
+  "Café, satisfaction, contenus": "408:531",
+  "Administration": "408:615",
+  "rowStructure": "Sommaire (cadre vertical) > 'Tableau' > lignes nommées 'Ligne · {identifiants}' (mêmes identifiants que la première colonne de l'inventaire). Une ligne = cadre horizontal : 'Écran' (2 textes : identifiants, nom) · texte des variantes (560) · texte des specs (100) · 'Livraison' (150 ; instances de StatusTag 381:389, propriété 'Label#381:214', Tone=Info pour L1–L5, Inactive pour Arb. ; libellé court 'L3 · Mon bien', le détail reste dans les specs) · 'État' (StatusTag Tone=Neutral 'À maquetter').",
+  "syncProcedure": "Source de vérité : Specs/07-design/02-inventaire-des-ecrans.md. Pour chaque ligne modifiée de l'inventaire : retrouver la ligne par son nom, remplacer les textes qui diffèrent (apostrophe typographique ; sans ** ni `), régler les pastilles de livraison ; pour un écran nouveau, cloner la ligne précédente, l'insérer à sa place dans 'Tableau', layoutSizingHorizontal='FILL'. Un appel use_figma par page (une seule bascule de page par appel)."
+ },
+ "livraisons": {
+  "rule": "Cinq livraisons d'environ 20 % (Specs/08-tracabilite/02, D-006). Les maquettes d'une livraison se font juste avant elle.",
+  "L1": "EA-00 · gabarit du back-office (menu, barre du haut, liste, fiche) avec EA-96 · EA-102 (minimal) · EP-29 (page d'attente) · EM-01 (habillage des e-mails)",
+  "L2": "EP-01 en 390 et ses états · EP-02, EP-03 · EP-05, EP-06, EP-07 · EP-04 · EP-11, EP-12 · EP-10, EP-08, EP-09, EP-16 à EP-19, EP-24, EP-29, EP-30 · EC-01 à EC-09 · gabarit de l'espace client avec EC-10 · EC-11 (Suivi), EC-12, EC-13 · EC-20, EC-21 · EC-40, EC-50, EC-51, EC-53 · EM-01 (les e-mails de la livraison) · EA-10, EA-11 en lecture",
+  "L3": "EA-10, EA-11 complets · EA-12, EA-13 · EA-50, EA-51 · EA-40 à EA-47 · EA-21, EA-22 (Aperçu, Biens, Tâches, Historique) · EA-30, EA-31 · EA-104 à EA-106 · EC-13 (biens proposés par l'équipe), EC-14 · EC-11 (Mon bien) · EP-27",
+  "L4": "EA-61, EA-62 · EA-60, EA-63, EA-64 · EA-20 · EA-22 (Pièces, Financement, Réservation, Emprunteurs) · EA-52 à EA-57 · EA-40 à EA-43 (onglet Financement) · EC-20, EC-21 (vrais dossiers, emprunteurs) · EC-22, EC-11 (réservation, acompte, jalons) · EP-28",
+  "L5": "EC-30, EC-31, EC-52 · EA-70 à EA-76 · EA-22 (Échanges) · EA-105 (regroupement, préférences) · EA-01 à EA-09 · EA-85, EA-86, EC-54, EP-25 · EA-90 à EA-95 · EA-96 à EA-103 · EC-53 (données, suppression)"
+ },
+ "boards": {
+  "Couverture/Couverture": "404:2",
+  "Couverture/Le plan du fichier": "404:129",
+  "Couverture/L'état d'un écran": "404:231",
+  "Couverture/Les cinq livraisons": "404:277",
+  "Couverture/Les règles du fichier": "404:318",
+  "Fondations/Couleurs": "400:2",
+  "Fondations/Typographie": "401:99",
+  "Fondations/Mesures": "400:415",
+  "Fondations/Photos": "401:396",
+  "Composants/La bibliothèque": "409:527",
+  "Fondations/Icônes et drapeaux": "377:131",
+  "Composants/Marque": "381:13",
+  "Composants/Actions": "381:50",
+  "Composants/Étiquettes et états": "381:352",
+  "Composants/Titres": "383:69",
+  "Composants/Cartes": "383:87",
+  "Composants/Navigation": "385:284",
+  "Composants/Formulaires": "390:442",
+  "Composants/Messages": "391:491",
+  "Composants/Liens et repères": "391:568"
+ },
+ "icons": {
+  "convention": "Icon/{Name} 24×24, trait 1,7 px ; calques 'as' (trait principal), 'bs' (trait d'accent), 'af'/'bf' (aplats), 'wf' (creux), 'xs'/'xf' (couleur fixe des icônes d'état)",
+  "fromValidatedHome": [
+   "Building",
+   "Coins",
+   "Coffee",
+   "Bulb",
+   "Partners",
+   "Diamond",
+   "Bank",
+   "Crescent",
+   "ChevronRight",
+   "ArrowRight",
+   "Key",
+   "Medal",
+   "Sparkles",
+   "Sofa",
+   "Scale",
+   "Tree",
+   "Search",
+   "Sliders",
+   "Chat",
+   "Badge",
+   "Folder",
+   "Calculator",
+   "Calendar",
+   "Check",
+   "Home",
+   "Phone",
+   "Clock",
+   "Globe",
+   "Pin",
+   "Mail",
+   "Heart"
+  ],
+  "interface": {
+   "Close": "377:4",
+   "ChevronDown": "377:7",
+   "ChevronUp": "377:10",
+   "ChevronLeft": "377:13",
+   "ArrowLeft": "377:16",
+   "Plus": "377:19",
+   "Minus": "377:22",
+   "Menu": "377:26",
+   "More": "377:29",
+   "Eye": "377:33",
+   "EyeOff": "377:37",
+   "Info": "377:42",
+   "Warning": "377:47",
+   "Error": "377:52",
+   "Success": "377:56",
+   "Upload": "377:60",
+   "Download": "377:64",
+   "Trash": "377:68",
+   "Edit": "377:72",
+   "Bell": "377:76",
+   "User": "377:80",
+   "Lock": "377:84",
+   "ExternalLink": "377:88",
+   "Paperclip": "377:91",
+   "Send": "377:95",
+   "Star": "377:98",
+   "Spinner": "377:102",
+   "Copy": "377:106",
+   "Logout": "377:110",
+   "Camera": "377:114",
+   "File": "377:118",
+   "Shield": "377:122",
+   "Bed": "377:126",
+   "Surface": "377:130",
+   "StatusInfo": "391:468",
+   "StatusSuccess": "391:474",
+   "StatusWarning": "391:479",
+   "StatusError": "391:485"
+  },
+  "flags": {
+   "Flag/France": "289:251",
+   "Flag/Algeria": "289:255"
+  }
+ },
+ "components": {
+  "Logo": {
+   "id": "381:22"
+  },
+  "CafeMark": {
+   "id": "381:41",
+   "variants": "Size=L|M"
+  },
+  "GoldRule": {
+   "id": "381:49",
+   "variants": "Kind=Brush|Line"
+  },
+  "Button": {
+   "id": "381:315",
+   "variants": "Type=Primary|Secondary|Tool|Tertiary|Danger × Size=L|M|S × State=Default|Disabled (30)",
+   "props": {
+    "Label": "Label#381:0",
+    "Icon left": "Icon left#381:31",
+    "Icon": "Icon#381:62",
+    "Chevron": "Chevron#381:93",
+    "Loading": "Loading#381:124",
+    "Focus": "Focus#381:155"
+   }
+  },
+  "Chip": {
+   "id": "381:351",
+   "variants": "Size=L|M × State=Default|Selected",
+   "props": {
+    "Label": "Label#381:186",
+    "Icon left": "Icon left#381:191",
+    "Icon": "Icon#381:196",
+    "Removable": "Removable#381:201"
+   }
+  },
+  "Tag": {
+   "id": "381:371",
+   "variants": "Type=Gold|White|Soft",
+   "props": {
+    "Label": "Label#381:206",
+    "Icon": "Icon#381:210"
+   }
+  },
+  "StatusTag": {
+   "id": "381:389",
+   "variants": "Tone=Info|Pending|Success|Warning|Error|Neutral|Inactive",
+   "props": {
+    "Label": "Label#381:214"
+   }
+  },
+  "ProgressBar": {
+   "id": "381:437",
+   "variants": "Tone=Gold|Blue × Value=0..100 par pas de 10"
+  },
+  "IconBadge": {
+   "id": "381:495",
+   "variants": "Size=XS|S|M|L × Tone=White|Sky|Gold",
+   "props": {
+    "Icon": "Icon#381:222"
+   }
+  },
+  "SectionTitle": {
+   "id": "383:78",
+   "props": {
+    "Line 1": "Line 1#383:0",
+    "Line 2": "Line 2#383:1",
+    "Lead 1": "Lead 1#383:2",
+    "Lead 2": "Lead 2#383:3",
+    "Show line 1": "Show line 1#383:4",
+    "Show lead": "Show lead#383:5"
+   }
+  },
+  "PropertyCard": {
+   "id": "383:222",
+   "variants": "Standing=Comfort|Standing|Premium",
+   "props": {
+    "City": "City#383:6",
+    "Title": "Title#383:10",
+    "Price": "Price#383:14",
+    "Deposit label": "Deposit label#383:18",
+    "Deposit": "Deposit#383:22",
+    "Monthly": "Monthly#383:26",
+    "Show tag": "Show tag#383:30",
+    "Flag": "Flag#383:34"
+   }
+  },
+  "ComparisonCard": {
+   "id": "383:299",
+   "variants": "Country=Algeria|France",
+   "props": {
+    "Title": "Title#383:38",
+    "Price": "Price#383:41",
+    "Deposit label": "Deposit label#383:44",
+    "Deposit": "Deposit#383:47"
+   }
+  },
+  "ComparisonBlock": {
+   "id": "383:300",
+   "props": {
+    "Delta": "Delta#383:50",
+    "Show delta": "Show delta#383:51"
+   }
+  },
+  "FeatureCard": {
+   "id": "383:584",
+   "variants": "Kind=Photo|List × Tone=Night|Royal|Gold",
+   "props": {
+    "Title": "Title#383:52",
+    "Number": "Number#383:59",
+    "Text": "Text#383:66",
+    "Heading": "Heading#383:73",
+    "Point 1": "Point 1#383:80",
+    "Point 2": "Point 2#383:87",
+    "Point 3": "Point 3#383:94"
+   }
+  },
+  "ServiceCard": {
+   "id": "383:625",
+   "variants": "Accent=Sky|Gold",
+   "props": {
+    "Number": "Number#383:101",
+    "Title": "Title#383:104",
+    "Text": "Text#383:107"
+   }
+  },
+  "CallCard": {
+   "id": "383:637",
+   "props": {
+    "Title": "Title#383:110",
+    "Text": "Text#383:111"
+   }
+  },
+  "EventCard": {
+   "id": "383:724",
+   "variants": "Emphasis=Next|Later",
+   "props": {
+    "Weekday": "Weekday#383:112",
+    "Day": "Day#383:115",
+    "Month": "Month#383:118",
+    "Place": "Place#383:121",
+    "Info": "Info#383:124",
+    "Status": "Status#383:127",
+    "Gauge": "Gauge#383:130"
+   }
+  },
+  "Brand": {
+   "id": "385:309",
+   "variants": "Tone=Light|Dark",
+   "props": {
+    "Tagline": "Tagline#385:0"
+   }
+  },
+  "NavItem": {
+   "id": "385:358",
+   "variants": "Tone=Light|Dark × Kind=Default|Cafe",
+   "props": {
+    "Label": "Label#385:3",
+    "Icon": "Icon#385:8",
+    "Current": "Current#385:13"
+   }
+  },
+  "Header": {
+   "id": "385:397",
+   "props": {
+    "Show café": "Show café#385:18"
+   }
+  },
+  "Footer": {
+   "id": "385:530",
+   "props": {
+    "Show café": "Show café#385:19",
+    "Show phone": "Show phone#385:20",
+    "Show socials": "Show socials#385:21"
+   }
+  },
+  "SearchField": {
+   "id": "385:637",
+   "props": {
+    "Label": "Label#385:22",
+    "Value": "Value#385:23",
+    "Icon": "Icon#385:24"
+   }
+  },
+  "SearchBar": {
+   "id": "385:663"
+  },
+  "TextField": {
+   "id": "390:611",
+   "variants": "State=Default|Filled|Focus|Error|Disabled × Shape=Field|Pill",
+   "props": {
+    "Label": "Label#390:0",
+    "Value": "Value#390:11",
+    "Help": "Help#390:22",
+    "Show label": "Show label#390:33",
+    "Optional": "Optional#390:44",
+    "Icon left": "Icon left#390:55",
+    "Icon": "Icon#390:66",
+    "Suffix": "Suffix#390:77",
+    "Suffix text": "Suffix text#390:88",
+    "Icon right": "Icon right#390:99",
+    "Icon right swap": "Icon right swap#390:110"
+   }
+  },
+  "Select": {
+   "id": "390:685",
+   "variants": "State=Default|Filled|Open|Error|Disabled",
+   "props": {
+    "Label": "Label#390:121",
+    "Value": "Value#390:127",
+    "Help": "Help#390:133",
+    "Show label": "Show label#390:139",
+    "Optional": "Optional#390:145",
+    "Icon left": "Icon left#390:151",
+    "Icon": "Icon#390:157"
+   }
+  },
+  "MenuItem": {
+   "id": "390:701",
+   "variants": "State=Default|Hover|Selected",
+   "props": {
+    "Label": "Label#390:163",
+    "Count": "Count#390:167",
+    "Count text": "Count text#390:171"
+   }
+  },
+  "Menu": {
+   "id": "390:702"
+  },
+  "Textarea": {
+   "id": "390:798",
+   "variants": "State=Default|Filled|Focus|Error|Disabled",
+   "props": {
+    "Label": "Label#390:175",
+    "Value": "Value#390:181",
+    "Help": "Help#390:187",
+    "Optional": "Optional#390:193",
+    "Counter": "Counter#390:199"
+   }
+  },
+  "Checkbox": {
+   "id": "390:850",
+   "variants": "Checked=False|True × State=Default|Focus|Error|Disabled",
+   "props": {
+    "Label": "Label#390:205"
+   }
+  },
+  "Radio": {
+   "id": "390:881",
+   "variants": "Selected=False|True × State=Default|Focus|Disabled",
+   "props": {
+    "Label": "Label#390:214"
+   }
+  },
+  "Switch": {
+   "id": "390:898",
+   "variants": "On=False|True × State=Default|Disabled",
+   "props": {
+    "Label": "Label#390:221",
+    "Show label": "Show label#390:226"
+   }
+  },
+  "Banner": {
+   "id": "391:543",
+   "variants": "Tone=Info|Success|Warning|Error",
+   "props": {
+    "Message": "Message#391:23",
+    "Title": "Title#391:28",
+    "Title text": "Title text#391:33",
+    "Action": "Action#391:38",
+    "Action text": "Action text#391:43",
+    "Dismissible": "Dismissible#391:48"
+   }
+  },
+  "Toast": {
+   "id": "391:567",
+   "variants": "Tone=Success|Info|Error",
+   "props": {
+    "Message": "Message#391:53",
+    "Undo": "Undo#391:57"
+   }
+  },
+  "Link": {
+   "id": "391:589",
+   "variants": "Type=Inline|Standalone × Tone=Blue|Gold",
+   "props": {
+    "Label": "Label#391:61"
+   }
+  },
+  "IconButton": {
+   "id": "391:602",
+   "variants": "Type=Ghost|Surface × Size=M|S",
+   "props": {
+    "Icon": "Icon#391:66"
+   }
+  },
+  "Tab": {
+   "id": "391:612",
+   "variants": "State=Default|Active",
+   "props": {
+    "Label": "Label#391:71"
+   }
+  },
+  "Breadcrumb": {
+   "id": "391:627",
+   "props": {
+    "Level 1": "Level 1#391:74",
+    "Level 2": "Level 2#391:75",
+    "Level 3": "Level 3#391:76",
+    "Current": "Current#391:77",
+    "Show level 2": "Show level 2#391:78",
+    "Show level 3": "Show level 3#391:79"
+   }
+  },
+  "PageButton": {
+   "id": "391:645",
+   "variants": "State=Default|Current|Disabled",
+   "props": {
+    "Number": "Number#391:80"
+   }
+  },
+  "Pagination": {
+   "id": "391:646"
+  },
+  "Avatar": {
+   "id": "391:685",
+   "variants": "Type=Initials|Photo × Size=S|M|L",
+   "props": {
+    "Initials": "Initials#391:84"
+   }
+  },
+  "Badge": {
+   "id": "391:692",
+   "variants": "Type=Count|Dot × Tone=Alert|Info",
+   "props": {
+    "Count": "Count#391:91"
+   }
+  }
+ },
+ "gotchasThisRun": [
+  "Un paint lié à une variable doit porter la vraie couleur de la variable (pas noir) : sinon, réaffecter la même variable laisse le noir au rendu.",
+  "Un nœud cloné garde layoutAlign/layoutGrow de son parent d'origine : remettre INHERIT/0 et FIXED avant de le poser dans un cadre en auto-layout.",
+  "Les surcharges de couleur d'une icône ne survivent pas à un échange d'instance : utiliser les modes de la collection Icônes.",
+  "La valeur par défaut d'une propriété TEXT ou INSTANCE_SWAP s'applique à toutes les variantes qui la référencent.",
+  "Une mise en forme de texte (soulignement) posée sur un nœud lié à une propriété TEXT partagée se propage à tous les nœuds liés à cette propriété : ne pas lier les variantes qui doivent différer.",
+  "figma.saveVersionHistoryAsync et figma.setFileThumbnailNodeAsync ne sont pas pris en charge par use_figma : définir la vignette à la main (clic droit sur le cadre Couverture → Définir comme vignette).",
+  "Un script use_figma en erreur n'écrit rien (atomique) : vérifier la page, puis relancer.",
+  "instance.resetOverrides() remet aussi la taille de l'instance : mémoriser largeur, hauteur, nom, puis les rétablir.",
+  "node.clone() arrive sur la page courante, pas à côté de l'original ; pour poser un nœud sur une autre page : await page.loadAsync() puis page.appendChild(node).",
+  "La sortie d'un appel est tronquée vers 20 Ko : découper les lectures par section.",
+  "setBoundVariableForPaint ne garde pas l'opacité du paint : poser la couleur liée, puis réécrire n.fills = n.fills.map(f => ({...f, opacity})) (constaté le 03/10/2026 sur les voiles et le cercle de la carte).",
+  "Link Type=Inline : le texte n'était pas lié à la propriété Label (corrigé dans la bibliothèque le 03/10/2026) ; par sécurité, forcer aussi .characters sur l'instance.",
+  "Variantes : appeler setProperties en deux temps (variantes d'abord, puis textes, booléens et échanges) ; un échange d'instance (INSTANCE_SWAP) prend l'id du composant.",
+  "Recadrer une photo réutilisée : scaleMode 'CROP' + imageTransform [[fw,0,x],[0,fh,y]] calculé depuis getImageByHash(hash).getSizeAsync() ; la photo du héros (ca97f7…) n'est exploitable que sur sa moitié droite (x ≥ 0,52).",
+  "resize() sur un cadre en auto-layout fige les deux axes : remettre layoutSizingHorizontal/Vertical à 'HUG' ou 'FILL' juste après (cas du bloc d'actions d'EP-12)."
+ ],
+ "helpers": {
+  "solid": "const solid = (name, opacity) => { const v = V['bo/' + name]; const c = v.valuesByMode[modeId]; const p = { type: 'SOLID', color: { r: c.r, g: c.g, b: c.b } }; if (opacity !== undefined) p.opacity = opacity; return figma.variables.setBoundVariableForPaint(p, 'color', v); };",
+  "text": "const T = async (chars, style, color, name) => { const t = figma.createText(); await t.setTextStyleIdAsync(TS[style].id); t.characters = chars; t.fills = [solid(color)]; if (name) t.name = name; return t; };",
+  "iconMode": "node.setExplicitVariableModeForCollection(await figma.variables.getVariableCollectionByIdAsync('VariableCollectionId:388:2'), '388:1') // Sombre",
+  "fonts": "Playfair Display Bold Italic / Regular · Red Hat Display Regular / Medium / SemiBold / Bold · Cinzel Bold"
+ },
+ "specsVersion": "1.2 (03/10/2026)",
+ "draft": {
+  "page": "441:17",
+  "rule": "Sas avant validation. Écrans en rangée à y = 200, pas de 1 640 ; étiquette .Doc/ScreenLabel (Status « À valider ») 66 px au-dessus ; EP-03 est sous EP-02 (y = 3755). Périmètre : Phase 1 — replis des options [P1+] (pas de Café dans le menu, prix en grand sur les cartes, champ « Budget » au lieu de « Budget mensuel », bouton de pied de page « Découvrir les programmes »).",
+  "story": "Yacine et Sonia BENALI (Lyon) · Appartement T3 – Résidence El Yasmine, Chéraga, Alger · lot B-304 (3e étage, 85 m², 22 350 000 DA ≈ 150 000 € au cours d'exemple 149 DA/€) · promoteur fictif Bahia Promotion · conseiller Karim H. (Karim HADDAD) · dossier DOS-2026-0042 à l'étape DOCUMENTS, 9 pièces validées sur 15 (60 %), 3 à fournir, 1 à refaire, 2 en vérification, option jusqu'au 24/10/2026. Simulations au barème indicatif (6,50 %, 25 ans, 35 %, apport 20 %) : revenus 2 900 + 1 700 €, charges 250 € → mensualité maximale 1 360 €, capacité 201 000 €, budget 150 000 € (limité par l'apport de 30 000 €), 810,25 €/mois pour 120 000 €.",
+  "board": {
+   "Sommaire · Draft": "464:2969"
+  },
+  "screens": {
+   "EP-02 · Catalogue": {
+    "frame": "441:18",
+    "label": "442:1352",
+    "x": 0,
+    "grid": "442:294",
+    "pagination": "442:1132",
+    "preview": "Design/apercus/draft/01-EP-02-catalogue-1440.png"
+   },
+   "EP-03 · Fenêtre des filtres": {
+    "frame": "466:2971",
+    "label": "466:3728",
+    "x": 0,
+    "y": 3755,
+    "modal": "466:3161",
+    "preview": "Design/apercus/draft/02-EP-03-filtres-1440.png"
+   },
+   "EP-05 · Fiche bien": {
+    "frame": "444:930",
+    "label": "444:919",
+    "x": 1640,
+    "body": "446:1001",
+    "note": "448:1533",
+    "preview": "Design/apercus/draft/03-EP-05-fiche-bien-1440.png"
+   },
+   "EP-07 · Formulaire d’intérêt": {
+    "frame": "450:1344",
+    "label": "450:2253",
+    "x": 3280,
+    "modal": "450:1836",
+    "confirmation": "450:2264",
+    "confirmationLabel": "450:2332",
+    "confirmationPreview": "Design/apercus/draft/05-EP-07-confirmation-720.png",
+    "preview": "Design/apercus/draft/04-EP-07-formulaire-interet-1440.png"
+   },
+   "EP-11 · Simulateur d’éligibilité, résultat favorable": {
+    "frame": "451:1757",
+    "label": "451:1746",
+    "x": 5740,
+    "preview": "Design/apercus/draft/06-EP-11-simulateur-eligibilite-1440.png"
+   },
+   "EP-12 · Simulateur de crédit, depuis une fiche": {
+    "frame": "453:2074",
+    "label": "453:2063",
+    "x": 7380,
+    "preview": "Design/apercus/draft/07-EP-12-simulateur-credit-1440.png"
+   },
+   "EC-01 · Connexion": {
+    "frame": "456:2317",
+    "label": "456:2306",
+    "x": 9020,
+    "preview": "Design/apercus/draft/08-EC-01-connexion-1440.png"
+   },
+   "EC-10 · Tableau de bord, pièces à fournir": {
+    "frame": "458:2373",
+    "label": "458:2362",
+    "x": 10660,
+    "preview": "Design/apercus/draft/09-EC-10-tableau-de-bord-1440.png"
+   },
+   "EC-20 · Mes pièces, tous les statuts": {
+    "frame": "460:2467",
+    "label": "460:2456",
+    "x": 12300,
+    "preview": "Design/apercus/draft/10-EC-20-mes-pieces-1440.png"
+   },
+   "EA-20 · Pipeline (vue Direction, menu replié)": {
+    "frame": "462:2777",
+    "label": "462:2766",
+    "x": 13940,
+    "preview": "Design/apercus/draft/11-EA-20-pipeline-1440.png"
+   },
+   "EA-22 · Un dossier, onglet Aperçu (vue Conseiller)": {
+    "frame": "463:2866",
+    "label": "463:2855",
+    "x": 15580,
+    "preview": "Design/apercus/draft/12-EA-22-dossier-1440.png"
+   }
+  },
+  "propertyCardPhase1": "Carte de bien sans mensualité (CAT-042), obtenue par surcharges d'instance de PropertyCard 383:222 : texte « Prix · libellé » → « Surface », propriété Price → la surface ; Deposit label → « Livraison », Deposit → la livraison ; les deux instances « Icône » échangées (swapComponent) pour Icon/Surface 377:130 et Icon/Calendar 289:220 ; texte « Mensualité · libellé » → « Prix du bien » ou « À partir de », propriété Monthly → le prix, calque « Par mois » masqué ; photo : fills du cadre « Photo » (recadrage CROP). À faire à la validation : exposer ces surcharges en propriétés du composant (ou une variante Pricing=Monthly|Price).",
+  "toComponentise": [
+   "Site public : fenêtre modale (EP-03, EP-07), curseurs à une et deux poignées (EP-03, EP-12), contrôle segmenté (EP-12), tuile de fait clé et ligne de lot (EP-05), carte de scénario et tableau d'échéancier (EP-12), étapes du simulateur (EP-11), carte « Prix et actions » (EP-05).",
+   "Espace client : barre du haut et menu latéral, entrée de menu, carte « À faire », frise des six étapes, ligne de pièce et en-tête de groupe (EC-20), carte du conseiller.",
+   "Back-office (registre Outil, rayons 8/12, styles Outil/*) : menu latéral (déplié et replié), barre du haut, bouton, champ et filtre, onglet avec compteur, colonne et carte du pipeline, frise des sept étapes, ligne de condition, ligne de tâche, entrée d'activité, carte de fiche."
+  ],
+  "builder": "Les écrans ont été construits par un petit générateur déclaratif collé en tête de chaque appel use_figma : B(parent, spec), où spec est un cadre {f, d, gap, pad, fill, r, stroke, sw, shadow, style, w, h, fillW, fillH, main, cross, wrap, clip, img, abs, c}, un texte {t, s, col, fillW, w, align, lines}, une instance {i, p, name, w, h, fillW, mode, ov} ou une ellipse {e, …}. Les couleurs sont données par nom de variable (« fond/blanc », ou [« fond/bleu-profond », 0.6] avec opacité) ; espacements et rayons sont liés aux variables quand la valeur existe (espace/*, rayon/*, trait/*). Le code complet est dans la transcription de la session du 03/10/2026.",
+  "sommaires": "Sur les sommaires des pages de famille, l'état des onze écrans est passé de « À maquetter » à « En cours » (une première variante est dessinée sur la page Draft ; les autres variantes et le format 390 restent à faire). Lignes modifiées : Catalogue 405:1656 (EP-02), 405:1668 (EP-03) · Fiches 405:1704 (EP-05), 405:1728 (EP-07) · Financement 405:1764 (EP-11), 405:1776 (EP-12) · Compte 407:29 (EC-01) · Suivi et dossier 407:149 (EC-10), 407:175 (EC-20) · Dossiers 408:179 (EA-20), 408:203 (EA-22). Couverture : ligne « Draft » du plan du fichier ; les trois tableaux sous le plan ont été descendus de 69 px."
+ },
+ "session20261007": {
+  "organisation": "Depuis le 07/10/2026 (2e réorganisation, demande de Zakaria) : une page par espace — Site public 497:17, Espace client 497:18, Back-office 497:19, Espace promoteur 497:20 (note Phase 2), Espace banque 497:21 (EP-28) ; séparateur ———  ÉCRANS  ——— 495:806. Dans chaque page : sommaire à gauche (x négatif), sections de famille empilées, et dans chacune une section par ligne d’inventaire (placeholder « À maquetter » + variantes tant que non dessiné). Les pages par famille et par livraison ont été supprimées.",
+  "sections": {
+   "EP-02": "486:77",
+   "EP-03": "486:83",
+   "EP-05": "486:89",
+   "EP-07": "486:95",
+   "EP-11": "486:106",
+   "EP-12": "486:112",
+   "EC-01": "486:118",
+   "EC-10": "486:124",
+   "EC-20": "486:130",
+   "EA-20": "486:136",
+   "EA-22": "486:142",
+   "EA-00": "489:32",
+   "EA-96": "491:35"
+  },
+  "gabarits": {
+   "famille": "488:554 (Composants, y=15000)",
+   "AdminNavItem": "488:583",
+   "AdminSidebar": "488:586 (props Open {groupe}, entrées « Entrée · X » State=Active)",
+   "AdminTopBar": "488:1098 (Show search/create/bell/help, Name, Role)",
+   "SpaceNavItem": "488:1163",
+   "SpaceSidebar": "488:1166 (Show Mon dossier, Show Mon avis)",
+   "SpaceTopBar": "488:1254 (Show advisor, First name, Show bell count)",
+   "textStyles": "Vitrine/body.xl et Téléphone/body.xl créés (16/24)"
+  },
+  "faits": {
+   "EA-00": "7 états (connexion, erreur, code, 1re connexion : mot de passe, double auth., codes de secours, charte)",
+   "EA-96": "liste 491:36 + inviter, changer le rôle, suspendre, supprimer avec réaffectation",
+   "EA-104": "Profil, Sécurité, fenêtre Reconfigurer la double authentification",
+   "EA-102": "Diagnostic complet (recette, horloge avancée)"
+  },
+  "kit": "Design/kit.js : builder B, secFor/place/label, boScreen, spaceScreen, siteScreen, table/filterBar/pager/bulkBar, overlayModal. Copie à garder dans Design/kit.js.",
+  "reste": "L1 : EA-104 (Profil, Sécurité), EA-102 minimal, EP-29 attente, EM-01. Puis L2→L5 et [P1+] selon Specs/07-design/02 § 5 ; mettre à jour les sommaires (états).",
+  "sync": "python Specs/_outils/inventaire_figma.py → Design/inventaire-ecrans.json + Design/sync/page-*.js (sommaire de chaque page) et Design/sync/index.js (index de la Couverture). Coller le script dans use_figma. Les étiquettes d’écran se reconnaissent à la propriété Status (les Tag des photos s’appellent aussi « Étiquette »).",
+  "cover": "Couverture : « Le plan du fichier » refait (liens vers les pages) ; « Index des écrans » en bas (114 lignes, liens vers les sections).",
+  "photos": {
+   "facade/couverture": "2c751e296adc079c02f7e585a79f5eb32ef76407",
+   "sejour": "4f05f728f37cb8173b9f1b4c99f317310c1e0d29",
+   "terrasse/heros": "ca97f783bcf039298d4bd04dfcafbcc7fcf54d97",
+   "quartier": "5e09e81af5eedd40ab34c204a7d470cb334ab437",
+   "tasse": "fa1b9ef0202404f94164eaf06e767336b5d0710e",
+   "table cafe": "b58fc8b8f118bb65f23fad21b341b1bb147febe3"
+  },
+  "personnages": "Client : Yacine et Sonia BENALI (Lyon), T3 Résidence El Yasmine, lot B-304, DOS-2026-0042, promoteur Bahia Promotion. Équipe : Karim HADDAD (conseiller des Benali, Karim H.), Amel Kaci, Sofiane Brahimi (conseillers), Nadia Ferhat (administratrice), Leïla Benyahia (Direction), Lina Mansouri (lecture seule), Support SYMLOOP, Rachid Ouali (suspendu), Yasmine Toumi (invitée)."
+ },
+ "session20261008": {
+  "resume": "Site public complet (33 écrans), audité (Design/audit-site-public-2026-10-08.md, 124 constats), correction en cours par familles. Specs v1.5 : D-091 (inscription partenaire, 2 étapes puis dossier), D-092 (scènes illustrées), D-093 (EP-10 vivante), audit codeur appliqué (Lead.applicationStatus, LeadFile, PARTNER_CHARTER, ACC-040/041 810/1 600 €, événements lead.application_*, routes /partner, SEC-023). Soir : quatre passes de correction par familles (agents), relecture « logique = comportement » (D-095, 40 règles, 18 états), pied de page refait (réseaux sur leur ligne), en-tête avec « Les biens ».",
+  "fichiers": {
+   "donneesDeReference": "Design/donnees-de-reference.md",
+   "guide": "Design/guide-de-construction.md",
+   "audit": "Design/audit-site-public-2026-10-08.md",
+   "kit": "Design/kit.js (siteScreen/phoneScreen/placeGrid/replaceFrame/scene/listen, Show café vrai par défaut)"
+  },
+  "composants": {
+   "Header (jeu)": "533:975 — Version Default|Compact × Account Guest|Connected, Show café#533:0 ; entrée « Les biens » en premier (D-095), itemSpacing 10, padding 36",
+   "Brand": "385:309 — Size Default|Compact (534:967)",
+   "HeaderMobile": "533:7108",
+   "FooterMobile": "533:7109",
+   "Footer": "385:530 — Show café#385:19, Show phone#385:20, Show socials#385:21 (vrais par défaut), rangée Taille du texte 533:792 ; ligne « Réseaux » 627:999 (Show socials)",
+   "ErrorSummary": "545:968 — Title#545:0, Point 1..3#545:1/3/5, Show point 1..3#545:2/4/6",
+   "Illustration (jeu)": "561:1088 — Scène=Projection 561:971 · Partenaire 561:998 · Rappel 561:1026 · Alerte 561:1039 · Avis 561:1054 · Attente 561:1063 · Perdu 561:1074",
+   "SearchField": "385:637 — Dictate#586:0",
+   "Textarea": "390:798 — Dictate#586:1",
+   "icônes": {
+    "Speaker": "531:30260",
+    "Mic": "531:30268",
+    "Pause": "531:30275",
+    "Play": "531:30281"
+   }
+  },
+  "styles": "Vitrine/caption, overline.s, tagline passés à 12/16 (DSN-024 : aucun texte sous 12 px)",
+  "ecransCles": {
+   "EP-10 vivante": [
+    "563:41214",
+    "563:41638",
+    "563:42054",
+    "563:42498",
+    "563:42902",
+    "565:42240 (390)"
+   ],
+   "EP-32": [
+    "583:45957",
+    "583:46252",
+    "583:46795",
+    "566:44903 (vérifiez)",
+    "570:45776 (390)"
+   ],
+   "EP-33": [
+    "566:45160",
+    "566:45459",
+    "566:45723",
+    "583:47336",
+    "583:47623",
+    "583:48088",
+    "583:48516",
+    "566:45972",
+    "566:46202",
+    "566:46460",
+    "566:46704",
+    "570:45929 (390)"
+   ],
+   "EP-25..27": "529:26434…28383",
+   "EP-30": [
+    "529:28573",
+    "529:29682"
+   ],
+   "EP-01 états": [
+    "537:30948",
+    "537:31405",
+    "537:31903",
+    "537:32346",
+    "537:32723",
+    "537:33068",
+    "537:33311",
+    "537:33601",
+    "539:34271",
+    "539:34554",
+    "543:34716 (390)",
+    "543:35457 (menu 390)"
+   ],
+   "EP-07 états": [
+    "547:35164",
+    "547:35766",
+    "547:36203",
+    "547:36777",
+    "547:37305",
+    "547:37756",
+    "547:37814",
+    "547:37863",
+    "550:41138 (390)"
+   ],
+   "EP-03 états": [
+    "548:37133",
+    "548:38241",
+    "548:39328",
+    "548:40419",
+    "550:40846 (390)"
+   ],
+   "390": [
+    "550:40498 EP-02",
+    "550:41035 EP-05",
+    "552:40895 EP-12",
+    "552:41180 EP-14",
+    "552:41286 EP-19"
+   ],
+   "Parcours": [
+    "555:41184",
+    "555:41349",
+    "555:41508",
+    "555:41635",
+    "555:41762",
+    "555:41873"
+   ],
+   "EP-05 états (reconstruits depuis 517:14316)": [
+    "599:52517 360°",
+    "600:52644 sans 360°",
+    "602:54999 3D",
+    "604:54664 sans photo",
+    "604:59368 réservé",
+    "610:51575 vendu",
+    "610:56497 proposé",
+    "610:57919 intérêt envoyé",
+    "610:58913 retenu",
+    "626:60791 visiteur demande envoyée",
+    "626:61495 simulation récente",
+    "444:930 = Archive ancienne fiche"
+   ],
+   "EP-11 nouveaux": [
+    "622:64335 rappel envoyé",
+    "622:64750 depuis le calcul express",
+    "604:55917 ajustement",
+    "604:56336 bien visé non finançable",
+    "604:57508 rappel déplié"
+   ],
+   "EP-12": [
+    "616:58177 rien à financer",
+    "602:54464 liste des solutions ouverte",
+    "622:65090 390 barre collante"
+   ],
+   "EP-21 (sur fiche complète)": [
+    "616:58679 fenêtre",
+    "616:59173 confirmation"
+   ],
+   "EP-02 nouveaux": [
+    "622:59409 erreur",
+    "626:62225 favoris sans compte"
+   ],
+   "EP-03": [
+    "619:58427 390 (9 groupes)",
+    "626:63245 recompte indisponible"
+   ],
+   "EP-31": [
+    "613:56197 deux biens",
+    "613:56630 390"
+   ],
+   "EP-01": [
+    "616:53017 suite 390",
+    "622:57751 sans projection",
+    "622:58252 sans islamique",
+    "622:58857 tous réservés"
+   ],
+   "EP-07 nouveaux": [
+    "619:58978 vide",
+    "619:60289 programme sans bien",
+    "619:61159 défi"
+   ],
+   "EP-04 390": "622:63938",
+   "EP-06 390": "622:65626",
+   "EP-14 nouveaux": [
+    "601:52758 clos",
+    "601:53072 passé",
+    "601:53391 liste d’attente"
+   ],
+   "EP-22 nouveaux": [
+    "613:56883 résultat guidé",
+    "613:57156 dictée"
+   ],
+   "EP-26 nouveaux": [
+    "624:60009 en pause",
+    "624:60286 supprimée"
+   ],
+   "EP-25": "624:60336 merci rappel demandé",
+   "EP-29": "611:51882 attente L1",
+   "390 (D)": [
+    "615:52581 EP-13",
+    "616:57694 EP-15",
+    "616:60548 EP-16",
+    "618:54049 EP-18",
+    "618:58707 EP-22",
+    "619:58323 EP-24",
+    "619:62318 EP-25",
+    "620:56236 EP-26",
+    "621:61684 EP-27",
+    "621:61953 EP-30"
+   ]
+  },
+  "regles": [
+   "Les notes de conception sont hors des cadres : « Note · EP-xx · … » dans la section, à droite du cadre.",
+   "Chiffres et noms : uniquement Design/donnees-de-reference.md (810 €/mois pour le T3 à 150 000 € ; comparatif 810 vs 1 600 €, − 790 € ; Cafés 17 oct / 14 nov / 12 déc 2026 ; rappel jeudi 15 oct).",
+   "Le Café est actif dans les maquettes : Show café vrai partout sauf « sans Le Café ».",
+   "Un écran de page porte le bouton « Écouter cette page » en tête de contenu (TRV-127) ; les zones de texte ont Dictate vrai."
+  ],
+  "reste": [
+   "Revue visuelle finale et sommaire : faits le 08/10 au soir. Prochain module : Espace client (attendre le feu vert)."
+  ]
+ },
+ "session20261011": {
+  "resume": "Report dans Figma des changements faits dans le site construit (D-098), ligne par ligne d'après Design/a-reporter-dans-figma.md : vitrine (en-tête, pied, catalogue, fiches, accueil, simulateur, assistant, charte), cadre de l'espace client, back-office (porte, gabarits, Équipe, Mes préférences, Demandes, notifications, recherche, aide et session). Référence visuelle : le site local (captures e2e/shots, e2e/shots/admin-2).",
+  "composants": {
+   "Header (jeu)": "533:975 — Account Guest|Connected × Width « 1280 et plus »|« 1024 à 1279 » ; variantes 385:397, 533:803, 651:889, 651:920 ; une seule hauteur 80 px ; plus de propriété Version (kit.js : hdrI corrigé) ; double séparateur après « Les biens » retiré",
+   "Brand": "385:309 — nouvelle variante « Tone=Light, Size=Narrow » 651:883 (logo 48, mot-symbole 168 px, sans devise) ; style de texte Vitrine/wordmark.xs (Cinzel Bold 13/18)",
+   "Footer / FooterMobile": "« Les biens » à la place de « Tous les programmes » (textes 385:603, 533:7116)",
+   "PropertyCard": "383:222 — Show compare#653:0 (vrai), Compared#653:4 (faux), Show illustration#653:8 (vrai), Show details#653:12 (faux), Details#653:16 ; Monthly par défaut « 810 € » ; calques « Comparer » (653:1360, 653:1369, 653:1378) et « Mention · image d’illustration » (653:1366, 653:1375, 653:1384) dans « Photo »",
+   "Illustration (jeu)": "561:1088 — nouvelles scènes Questions 658:66270, Accès 667:1117, Courrier 667:1128",
+   "SpaceSidebar": "488:1166 — marque 662:998, « Mes pièces » (sous-entrée 662:1019, liée à Show Mon dossier), Favoris 662:1004, Alertes 662:1011, carte « Une question ? » 662:1031 ; fond blanc, filet à droite ; se pose en FILL sur toute la hauteur",
+   "SpaceTopBar": "488:1254 — 1176 px, sans la marque ; lien « Voir les programmes » 662:1039 à gauche ; bouton « Écrire à mon conseiller » en Type=Tool ; ordre : bouton, cloche, Aa, compte",
+   "SpaceTopBarMobile": "662:1061 (nouveau)",
+   "SpaceTabBar (jeu)": "662:1272 (nouveau) — Active=Accueil|Dossier|Biens|Messages|Plus",
+   "AdminTopBar": "488:1098 — recherche 480 px bordée, indication « Rechercher une référence, un nom… », raccourci « / » ; aide « ? » en anneau 676:8453 ; ordre aide, cloche, compte ; Show create#488:28 faux par défaut ; Name par défaut « Leïla Benyahia », initiales LB",
+   "AdminNavItem": "488:583 — State=Active (488:575) avec filet gauche accent/bleu 3 px",
+   "familles": "Page Composants : familles redescendues là où elles se recouvraient (Formulaires 13393, Messages 15135, Liens et repères 16124, Gabarits 17054, Illustrations 20588)"
+  },
+  "sitePublic": {
+   "EP-01": "héros : calques « Fondu blanc » et « Halo du titre » (657:65934 à 657:65943), titre à droite (x 838), carte du Café 608 px avec la photo b58fc8…, bloc « Prochain café » dans la carte, « Voir les biens » sous « Je m’inscris » — cadres 393:261, 537:30948, 537:31405, 537:31903, 622:58252 ; six photos des motivations ; champ région « (facultatif) » ; nouvel état 660:66240 (en-tête de 1024 à 1279 px), étiquette 660:66496",
+   "EP-02": "rangée « Vues et outils » : « Vue et regroupement » à gauche, boutons « Créer une alerte » (Primary S, cloche) et « Enregistrer cette recherche » (Secondary S, étoile) à droite — 441:18, 520:15984, 520:16302, 520:16593, 622:59409, 626:62225 ; 390 : rangée 655:65522 dans 550:40498 ; rangées « Comparer » sous les cartes supprimées (la case est dans PropertyCard) ; Show details vrai sur les cartes des grilles",
+   "EP-04": "« Autres programmes de la région » en vignettes (616:58114, 618:58519, 618:58577, 618:58671, 616:65723, 619:60722 ; 390 : 622:64205)",
+   "EP-05": "22 275 000 DA, 1 760 € / m², « Biens similaires », phrase de l'adresse, « Favori · Comparer · Partager » ; nouvel état « trois photos » 656:65434 (étiquette 656:65969, note 656:65975) ; rangée qui se recouvrait replacée",
+   "EP-12": "totaux et échéanciers recalculés avec packages/domain (computeLoan) : 25 ans 123 073,90 / 243 073,90 ; 20 ans 94 724,53 / 214 724,53 ; 30 ans 153 054,65 / 273 054,65 ; avertissements 106 566,53 / 241 566,53",
+   "EP-22": "« Scène · Questions » dans la tête des huit cadres 1 440 (cadre « Actions et dessin »)",
+   "EP-33": "charte des partenaires 0.1 : 660:66014 (étiquette 660:66124)",
+   "rangement": "sections retouchées : rangées recalées à 266 px, sections redimensionnées, familles replacées (reflow)"
+  },
+  "espaceClient": {
+   "cadre": "EC-10 458:2373 et EC-20 460:2467 : cadre horizontal [Menu latéral (instance) | Zone principale (Barre du haut, Contenu)] ; cadre du téléphone 664:1001 (étiquette 664:1162, note 664:1168)",
+   "reste": "EC-40 et le contenu de tous les écrans EC : passe de qualité en cours côté code — rien de dessiné"
+  },
+  "backOffice": {
+   "EA-00": "porte en deux panneaux, douze états : 675:7074, 675:7120, 675:7177, 675:7219, 675:7260, 675:7319, 675:7619, 675:7701, 675:7780, 675:7815, 675:7856, 675:7896 ; fenêtres : aide 671:6493, session 671:6865, 671:7203, 671:7547",
+   "EA-10": "liste 668:3010 ; états 669:3195, 669:3650, 669:4110, 669:4577 ; 390 tiroir 677:7281",
+   "EA-11": "670:3831, 670:4210",
+   "EA-96": "liste 673:5754, menu 673:6202, fenêtres 673:6607, 673:6868, 673:7103, 673:7339, 673:7573, 673:7800, 673:8027, 673:8254 ; anciens cadres gardés : 491:36 (liste L3/L5), 492:2212 (supprimer) ; supprimés : 492:339, 492:1027, 492:1608",
+   "EA-104": "676:7096 (Profil), 676:7286 (Sécurité) ; anciens gardés : 494:245, 494:716, 494:1034",
+   "EA-105": "671:4149 (cloche), 671:4529 (page)",
+   "EA-106": "671:5060, 671:5556, 671:6036",
+   "personnages": "Barre du haut : Leïla Benyahia, Direction. Équipe : neuf comptes (Amel Kaci, Karim Haddad, Leïla Benyahia, Lina Mansouri, Nadia Ferhat, Rachid Ouali suspendu, Sofiane Brahimi, Support SYMLOOP, Yasmine Toumi invitée), adresses prenom.nom@diaspora-patrimoine.exemple. Demandes : DEM-2026-00178 à 00187."
+  },
+  "gabaritsAReprendre": "Par clonage : liste 668:3010, fiche 670:3831, porte 675:7074, fenêtre sur liste 673:6607, cadre client 458:2373, cadre client téléphone 664:1001.",
+  "gotchas": [
+   "Un paint lié à une variable perd son opacité si on écrit { ...P(nom), opacity } avant de l'affecter : affecter, puis n.fills = n.fills.map(f => ({ ...f, opacity })).",
+   "Dans un dégradé, un arrêt lié à une variable (boundVariables.color) perd son alpha : pour un voile blanc vers transparent, laisser les arrêts sans liaison.",
+   "node.screenshot() dans use_figma ne renvoie parfois rien sur un grand cadre à image de fond : passer par get_screenshot.",
+   "La valeur de retour d'un appel est limitée à 20 480 octets (et non caractères) : couper plus court quand le texte porte des accents.",
+   "Ajouter une variante à un jeu sans auto-layout (Brand) la pose sur la variante clonée : la placer et agrandir le jeu.",
+   "Un cadre de bibliothèque qui grandit (Fiche · Header, famille Gabarits) peut recouvrir la famille du dessous sur la page Composants : vérifier et redescendre.",
+   "Après la suppression d'un nœud, ne plus le relire (une liste d'étiquettes calculée avant la suppression lève « node does not exist »).",
+   "Les sessions enregistrées du script e2e/space-full-shots.mjs (.local/space-shots/*.json) appartiennent à qui mène la passe de l'espace client : ne pas les réutiliser pour des captures."
+  ],
+  "reste": "Voir Design/a-reporter-dans-figma.md : lignes de l'espace client encore ouvertes (passe en cours) et section « Écarts vus dans Figma, hors liste » (six arbitrages). Les sommaires des pages (états des écrans) et l'index de la Couverture n'ont pas été resynchronisés."
+ },
+ "sessionPublicPass20261011": {
+  "resume": "Passe de qualité du site public (D-100) : arbitrage des six écarts site / Figma ; Figma suit le site pour les têtes des pages intérieures, le site suit Figma ailleurs.",
+  "illustration": "Jeu Illustration 561:1088 — nouvelles scènes d'après apps/web/src/components/editorial/Drawing.tsx : Concept 687:1115, Contact 687:1125, Document 687:1134, Financement 687:1145, Promoteurs 687:1180 (createNodeFromSvg depuis le rendu final du site, animations réduites)",
+  "tetesDePage": {
+   "EP-19": "524:23748 (texte 687:66898, scène 687:66900)",
+   "EP-08": "524:21417 (687:66909, 687:66911)",
+   "EP-17": "524:22118 (687:66945, 687:66947)",
+   "EP-18": "524:23299 (687:66975, 687:66977)",
+   "EP-16": "603:53959 basculée sur Concept",
+   "EP-24": "687:66988 (scène Document, position absolue)",
+   "EP-12": "689:75773 dans 453:2140 (état nominal seulement)"
+  },
+  "footer": "Rangée « Confort · Taille du texte » 533:792 : bascule Switch 689:1099 à la place du lien « Affichage simplifié »",
+  "gotchas": [
+   "Une tête de page passée de VERTICAL à HORIZONTAL garde primaryAxisSizingMode AUTO : remettre layoutSizingHorizontal FILL sur la tête et sur le bloc de texte, sinon tout se resserre.",
+   "Ajouter une instance puis la rescale() laisse le parent HUG à l'ancienne hauteur : remettre layoutSizingVertical HUG sur le parent."
+  ]
+ }
+}

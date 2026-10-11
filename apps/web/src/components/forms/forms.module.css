@@ -1,0 +1,157 @@
+/* DSN-050 TextField (Field shape), DSN-056 messages. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  min-width: 0;
+}
+.label {
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+}
+.optional {
+  font-weight: 500;
+  color: var(--bo-texte-doux);
+}
+.control {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--field-h);
+  padding-inline: var(--sp-16);
+  border: var(--stroke-field) solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+}
+.control:focus-within {
+  border-color: var(--bo-texte-roi);
+  box-shadow: 0 0 0 3px rgb(79 155 234 / 0.35);
+}
+.control input,
+.control select,
+.control textarea {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--bo-texte-encre);
+  padding-block: var(--sp-12);
+}
+.control input::placeholder,
+.control textarea::placeholder {
+  color: var(--bo-texte-discret);
+}
+.area {
+  align-items: stretch;
+}
+.area textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+.select {
+  position: relative;
+}
+.select select {
+  appearance: none;
+  padding-inline-end: var(--sp-24);
+  cursor: pointer;
+}
+.chevron {
+  position: absolute;
+  inset-inline-end: var(--sp-16);
+  pointer-events: none;
+  color: var(--bo-texte-roi);
+}
+.invalid {
+  border-color: var(--bo-accent-corail);
+}
+.icon {
+  display: inline-flex;
+  color: var(--bo-texte-roi);
+}
+.suffix {
+  color: var(--bo-texte-doux);
+  font-weight: 600;
+}
+.hint {
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-discret);
+}
+.counter {
+  align-self: flex-end;
+  font-size: var(--fs-caption);
+  color: var(--bo-texte-discret);
+  font-variant-numeric: tabular-nums;
+}
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-erreur);
+  animation: drop var(--motion-base) var(--ease-out);
+}
+.checkField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-10);
+  min-height: var(--target-min);
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+  cursor: pointer;
+}
+.check input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-block-start: 0.125rem;
+  accent-color: var(--bo-fond-bleu-roi);
+}
+.summary {
+  padding: var(--sp-16) var(--sp-20);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-erreur-pale);
+  color: var(--bo-texte-erreur);
+  outline: none;
+}
+.summaryTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  font-weight: 600;
+}
+.summary ul {
+  margin: var(--sp-8) 0 0;
+  padding-inline-start: var(--sp-24);
+}
+.summary a {
+  color: inherit;
+}
+.honeypot {
+  position: absolute;
+  inset-inline-start: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

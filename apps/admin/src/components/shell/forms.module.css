@@ -1,0 +1,214 @@
+/* DSN-091 — form pieces of the back office: fields of 40 px, radius 8, 14 px text */
+.form {
+  display: grid;
+  gap: var(--sp-16);
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-16);
+}
+@media (max-width: 639px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+.field {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+}
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin-block-end: var(--sp-6);
+}
+.label {
+  font-size: var(--fs-admin-small);
+  line-height: var(--lh-admin-small);
+  font-weight: 600;
+  color: var(--bo-texte-encre);
+}
+.optional {
+  font-weight: 400;
+  color: var(--bo-texte-discret);
+}
+.counter {
+  margin-inline-start: auto;
+  font-size: var(--fs-admin-caption);
+  color: var(--bo-texte-discret);
+  font-variant-numeric: tabular-nums;
+}
+.input {
+  width: 100%;
+  min-width: 0;
+  height: var(--ui-field-h);
+  padding: 0 var(--sp-12);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-admin-body);
+  line-height: var(--lh-admin-body);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+.input::placeholder {
+  color: var(--bo-texte-discret);
+}
+.input:hover {
+  border-color: var(--bo-accent-bleu);
+}
+.input:focus-visible,
+.passwordWrap:focus-within {
+  outline: none;
+  border-color: var(--bo-accent-bleu);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bo-accent-bleu) 30%, transparent);
+}
+.input:disabled,
+.input[readonly] {
+  background: var(--bo-fond-gris);
+  color: var(--bo-texte-doux);
+}
+.invalid,
+.invalid:hover {
+  border-color: var(--bo-fond-erreur);
+}
+.select {
+  appearance: none;
+  padding-inline-end: var(--sp-32);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2306177a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-10) center;
+}
+.textarea {
+  height: auto;
+  min-height: 6rem;
+  padding-block: var(--sp-10);
+  resize: vertical;
+}
+.code {
+  max-width: 12rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.hint {
+  margin-block-start: var(--sp-6);
+  font-size: var(--fs-admin-small);
+  line-height: var(--lh-admin-small);
+  color: var(--bo-texte-doux);
+}
+.passwordWrap {
+  display: flex;
+  align-items: center;
+  height: var(--ui-field-h);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: var(--bo-fond-blanc);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+.passwordInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--sp-12);
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+  outline: none;
+  font-size: var(--fs-admin-body);
+}
+.reveal {
+  flex: none;
+  height: 100%;
+  padding: 0 var(--sp-12);
+  border: 0;
+  border-radius: 0 var(--ui-radius-control) var(--ui-radius-control) 0;
+  background: transparent;
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-admin-small);
+  font-weight: 600;
+}
+.reveal:hover {
+  text-decoration: underline;
+}
+.caps {
+  margin-block-start: var(--sp-6);
+  font-size: var(--fs-admin-small);
+  color: var(--bo-texte-or);
+  font-weight: 600;
+}
+.meter {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  margin-block-start: var(--sp-8);
+  font-size: var(--fs-admin-caption);
+  color: var(--bo-texte-doux);
+}
+.bars {
+  display: inline-flex;
+  gap: 3px;
+}
+.bar {
+  width: 1.75rem;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bo-ligne-bleue);
+  transition: background-color var(--motion-base) var(--ease-out);
+}
+.bar[data-on='1'] {
+  background: var(--bo-accent-corail);
+}
+.bar[data-on='2'] {
+  background: var(--bo-accent-or-vif);
+}
+.bar[data-on='3'],
+.bar[data-on='4'] {
+  background: var(--bo-accent-vert);
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-10);
+  cursor: pointer;
+  font-size: var(--fs-admin-body);
+  line-height: var(--lh-admin-body);
+}
+.check input {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 1px 0 0;
+  accent-color: var(--bo-fond-bleu-roi);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.actionsEnd {
+  justify-content: flex-end;
+}
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.muted {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+  line-height: var(--lh-admin-small);
+}

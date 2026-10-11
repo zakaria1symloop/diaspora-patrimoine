@@ -1,0 +1,73 @@
+/* EP-23 — the partner request: a white card on the page gradient, and the door of promoters and banks above it. */
+.card {
+  padding: var(--sp-32);
+  border: var(--stroke-card, 4px) solid var(--bo-fond-blanc);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--bo-fond-blanc) 92%, transparent);
+  box-shadow: var(--shadow-l);
+}
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-title-card);
+  line-height: var(--lh-title-card);
+  color: var(--bo-texte-roi);
+}
+.doneLine {
+  font-size: var(--fs-subtitle-m);
+  font-weight: 600;
+  color: var(--bo-texte-nuit);
+}
+
+/* ACP-080 — « Vous êtes promoteur ou banque ? Créez votre espace partenaire » */
+.door {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-16);
+  padding: var(--sp-16) var(--sp-20);
+  border: 1px solid var(--bo-ligne-or);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-creme);
+}
+.doorIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-or-clair);
+  color: var(--bo-texte-or);
+}
+.doorText {
+  font-weight: 600;
+  color: var(--bo-texte-nuit);
+}
+.doorLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-24);
+}
+@media (max-width: 767px) {
+  .card {
+    padding: var(--sp-20);
+  }
+}
+
+/* TRV-121 (public-site pass, D-100) — on a phone every target is 44 px high at least */
+@media (max-width: 767px) {
+  .doorLink {
+    min-height: var(--target-min);
+  }
+}

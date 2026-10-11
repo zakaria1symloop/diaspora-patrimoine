@@ -1,0 +1,287 @@
+/* EA-00 — the door of the back office */
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: var(--bo-fond-gris);
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-16);
+  padding: var(--sp-32) var(--sp-24);
+}
+.card {
+  width: 100%;
+  max-width: 27.5rem;
+  display: grid;
+  gap: var(--sp-16);
+  padding: var(--sp-32);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-surface);
+  background: var(--bo-fond-blanc);
+  animation: enter var(--motion-base) var(--ease-out);
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.secure {
+  max-width: 27.5rem;
+  color: var(--bo-texte-discret);
+  font-size: var(--fs-admin-caption);
+  line-height: var(--lh-admin-caption);
+  text-align: center;
+}
+.aside {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-12);
+  padding: var(--sp-48);
+  overflow: hidden;
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, rgb(79 155 234 / 0.28), transparent 60%),
+    linear-gradient(160deg, var(--bo-fond-bleu-nuit) 0%, var(--bo-fond-bleu-profond) 100%);
+  color: var(--bo-texte-blanc);
+}
+.brand {
+  position: absolute;
+  inset-block-start: var(--sp-32);
+  inset-inline-start: var(--sp-48);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+}
+.logo {
+  width: 3rem;
+  height: auto;
+}
+.wordmark {
+  width: 15rem;
+  height: auto;
+}
+.sceneWrap {
+  align-self: center;
+  width: min(26rem, 100%);
+  padding: var(--sp-16);
+  border-radius: var(--radius-l);
+  background: linear-gradient(180deg, #fbfcff 0%, var(--bo-fond-ciel-pale) 100%);
+  box-shadow: var(--shadow-xl);
+}
+.scene {
+  width: 100%;
+  height: auto;
+}
+.asideTitle {
+  margin-block-start: var(--sp-24);
+  font-size: var(--fs-admin-title);
+  line-height: var(--lh-admin-title);
+  font-weight: 600;
+}
+.asideText {
+  max-width: 30rem;
+  color: var(--bo-texte-ciel);
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+}
+
+.heading {
+  display: grid;
+  gap: var(--sp-6);
+}
+.eyebrow {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-caption);
+  line-height: var(--lh-admin-caption);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.title {
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-admin-title);
+  line-height: var(--lh-admin-title);
+  font-weight: 600;
+}
+.intro {
+  color: var(--bo-texte-doux);
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-8) var(--sp-16);
+}
+
+/* BO-003 — the three steps of a first sign-in */
+.steps {
+  display: flex;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding-block-end: var(--sp-8);
+  border-block-end: 3px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-discret);
+  font-size: var(--fs-admin-caption);
+  line-height: var(--lh-admin-caption);
+  font-weight: 600;
+  transition: border-color var(--motion-slow) var(--ease-out);
+}
+.stepDot {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bo-ligne-bleue);
+  color: var(--bo-texte-doux);
+  font-variant-numeric: tabular-nums;
+}
+.step[data-state='current'] {
+  border-color: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-roi);
+}
+.step[data-state='current'] .stepDot {
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+}
+.step[data-state='done'] {
+  border-color: var(--bo-accent-vert);
+  color: var(--bo-texte-succes);
+}
+.step[data-state='done'] .stepDot {
+  background: var(--bo-accent-vert);
+  color: var(--bo-texte-blanc);
+}
+.stepTitle {
+  font-size: var(--fs-admin-h2);
+  line-height: var(--lh-admin-h2);
+  font-weight: 600;
+  color: var(--bo-texte-encre);
+}
+
+/* PRO-020 — QR code, key, recovery codes */
+.qrRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+  padding: var(--sp-12);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: #fbfcff;
+}
+.qr {
+  flex: none;
+  width: 9rem;
+  height: 9rem;
+  background: var(--bo-fond-blanc);
+}
+.qr :global(svg) {
+  width: 100%;
+  height: 100%;
+}
+.qrWaiting {
+  flex: none;
+  width: 9rem;
+  height: 9rem;
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-gris);
+}
+.secret {
+  display: grid;
+  gap: var(--sp-6);
+  min-width: 0;
+}
+.secret code {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: var(--fs-admin-small);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  color: var(--bo-texte-encre);
+}
+.codesBox {
+  display: grid;
+  gap: var(--sp-12);
+  padding: var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: #fbfcff;
+}
+.codes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-6) var(--sp-24);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: var(--fs-admin-body);
+  font-variant-numeric: tabular-nums;
+}
+.download {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: var(--btn-s);
+  padding-inline: var(--sp-12);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.charter {
+  max-height: 20rem;
+  overflow-y: auto;
+  padding: var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control);
+  background: #fbfcff;
+  line-height: 1.55;
+}
+.charter :global(h2) {
+  margin-block-end: var(--sp-8);
+  font-size: var(--fs-admin-h3);
+  line-height: var(--lh-admin-h3);
+  font-weight: 600;
+}
+.charter :global(ol),
+.charter :global(ul) {
+  display: grid;
+  gap: var(--sp-8);
+  margin: 0;
+  padding-inline-start: var(--sp-20);
+}
+.done {
+  display: grid;
+  justify-items: start;
+  gap: var(--sp-12);
+}
+
+@media (max-width: 899px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+  .aside {
+    display: none;
+  }
+  .main {
+    justify-content: flex-start;
+    padding: var(--sp-24) var(--sp-16);
+  }
+  .card {
+    padding: var(--sp-24) var(--sp-20);
+  }
+}

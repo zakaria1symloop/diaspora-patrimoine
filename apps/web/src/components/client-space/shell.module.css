@@ -1,0 +1,706 @@
+/* ECL-001, ECL-002, NAV-021, DSN-073 — the frame of the client space: « mêmes couleurs, en plus calme : fonds clairs,
+   peu d'or, l'information d'abord » (07-design/01). Side menu ≥ 1024 px; tabs below (TRV-130). */
+
+.frame {
+  --side-w: 17rem;
+  --top-h: 4.5rem;
+  --tabs-h: 4.25rem;
+  min-height: 100dvh;
+  background: var(--bo-fond-ivoire);
+}
+
+/* ─── Side menu (computer) ─────────────────────────────────────────────── */
+.side {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .frame {
+    display: grid;
+    grid-template-columns: var(--side-w) minmax(0, 1fr);
+    background: linear-gradient(90deg, var(--bo-fond-blanc) calc(var(--side-w) - 1px), var(--bo-ligne-douce) calc(var(--side-w) - 1px), var(--bo-ligne-douce) var(--side-w), var(--bo-fond-ivoire) var(--side-w));
+  }
+  .side {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-24);
+    height: 100dvh;
+    padding: var(--sp-24) var(--sp-16) var(--sp-24);
+    background: var(--bo-fond-blanc);
+    border-inline-end: 1px solid var(--bo-ligne-douce);
+    overflow-y: auto;
+  }
+}
+.sideBrand {
+  padding-inline: var(--sp-8);
+}
+/* The site's `Brand`, at the size of the side menu: logo and wordmark on one line, no tagline (one fixed size). */
+.sideBrand a {
+  gap: var(--sp-10);
+  max-width: 100%;
+}
+.sideBrand a > img {
+  width: 2.75rem;
+}
+.sideBrand a > span > img {
+  width: 10.5rem;
+  max-width: 100%;
+}
+.sideBrand a > span > span {
+  display: none;
+}
+.nav {
+  flex: 1;
+}
+.navList,
+.navChildren,
+.sheetList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.navChildren {
+  margin-block: var(--sp-4) var(--sp-4);
+  padding-inline-start: var(--sp-24);
+}
+.navLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  width: 100%;
+  min-height: 3rem;
+  padding: var(--sp-8) var(--sp-12);
+  border: 0;
+  border-radius: var(--radius-m);
+  background: transparent;
+  color: var(--bo-texte-encre);
+  font: 600 var(--fs-body-xl) / var(--lh-body-xl) var(--font-ui);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
+}
+.navLink:hover {
+  background: var(--bo-fond-gris);
+}
+.navLink[aria-current='page'] {
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.navLink[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--sp-10);
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--bo-accent-or);
+}
+.navLink:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.navNested {
+  min-height: 2.75rem;
+  font-size: var(--fs-body-l);
+  font-weight: 500;
+}
+.navIcon {
+  flex: none;
+  color: var(--bo-texte-roi);
+}
+.navLabel {
+  flex: 1;
+  min-width: 0;
+}
+.badge {
+  flex: none;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: var(--sp-6);
+  border-radius: var(--radius-pill);
+  background: var(--bo-accent-corail);
+  color: var(--bo-texte-blanc);
+  font: 700 var(--fs-caption) / 1.5rem var(--font-ui);
+  text-align: center;
+}
+.sideHelp {
+  padding: var(--sp-16);
+  border-radius: var(--radius-l);
+  background: var(--bo-degrade-doux);
+  border: 1px solid var(--bo-ligne-bleue);
+}
+.sideHelpTitle {
+  margin: 0 0 var(--sp-4);
+  font: 700 var(--fs-heading-item) / var(--lh-heading-item) var(--font-ui);
+  color: var(--bo-texte-nuit);
+}
+.sideHelpText {
+  margin: 0 0 var(--sp-12);
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+  color: var(--bo-texte-doux);
+}
+.sideHelpLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Column: top bar, content, footer ──────────────────────────────────── */
+.column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100dvh;
+}
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+  height: var(--top-h);
+  padding-inline: var(--sp-16);
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-block-end: 1px solid var(--bo-ligne-douce);
+}
+@media (min-width: 1024px) {
+  .top {
+    padding-inline: var(--sp-32);
+  }
+  .topBrand {
+    display: none;
+  }
+}
+.topBrand {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+/* Phone: the logo alone (the wordmark does not fit next to the bell, « Aa » and the account). */
+@media (max-width: 559px) {
+  .topBrand a > span {
+    display: none;
+  }
+}
+.frame {
+  overflow-x: clip;
+}
+.topLink {
+  display: none;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  text-decoration: none;
+}
+.topLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (min-width: 1024px) {
+  .topLink {
+    display: inline-flex;
+  }
+}
+.topActions {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.writeButton {
+  display: none;
+  align-items: center;
+  gap: var(--sp-8);
+  height: var(--btn-m);
+  padding-inline: var(--sp-16) var(--sp-20);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  font: 700 var(--fs-button-m) / var(--lh-button-m) var(--font-ui);
+  text-decoration: none;
+  box-shadow: var(--shadow-s);
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
+}
+.writeButton:hover {
+  background: var(--bo-fond-bleu-nuit);
+  transform: translateY(-1px);
+}
+.writeButton {
+  --icon-accent: var(--bo-texte-ciel);
+}
+@media (min-width: 1024px) {
+  .writeButton {
+    display: inline-flex;
+  }
+}
+.iconButton {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--target-min);
+  height: var(--target-min);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--bo-texte-roi);
+  cursor: pointer;
+}
+.iconButton:hover {
+  background: var(--bo-fond-gris);
+}
+.aa {
+  font: 700 1.0625rem / 1 var(--font-display);
+}
+.bellCount {
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 0;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding-inline: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--bo-accent-corail);
+  color: var(--bo-texte-blanc);
+  font: 700 0.6875rem / 1.25rem var(--font-ui);
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--bo-fond-blanc);
+}
+.popWrap {
+  position: relative;
+}
+.popover {
+  position: absolute;
+  inset-inline-end: 0;
+  top: calc(100% + var(--sp-8));
+  z-index: 60;
+  min-width: 15rem;
+  padding: var(--sp-8);
+  margin: 0;
+  list-style: none;
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  border: 1px solid var(--bo-ligne-douce);
+  box-shadow: var(--shadow-l);
+  animation: pop var(--motion-fast) var(--ease-out);
+}
+.sizePop {
+  min-width: 18rem;
+  padding: var(--sp-16);
+}
+.account {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding: 4px var(--sp-8) 4px 4px;
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-encre);
+  font: 600 var(--fs-body-l) / 1 var(--font-ui);
+  cursor: pointer;
+}
+.account:hover {
+  border-color: var(--bo-ligne-bleue);
+}
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-champagne);
+  font: 700 0.875rem / 1 var(--font-ui);
+  letter-spacing: 0.04em;
+}
+/* Visually hidden on a phone, still the accessible name of the account button. */
+.accountName {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .accountName {
+    position: static;
+    width: auto;
+    height: auto;
+    max-width: 10rem;
+    clip-path: none;
+    text-overflow: ellipsis;
+  }
+}
+.accountChevron {
+  color: var(--bo-texte-doux);
+}
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--sp-8) var(--sp-12);
+  border: 0;
+  border-radius: var(--radius-m);
+  background: transparent;
+  color: var(--bo-texte-encre);
+  font: 500 var(--fs-body-xl) / var(--lh-body-xl) var(--font-ui);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background: var(--bo-fond-gris);
+}
+.menuItem svg {
+  color: var(--bo-texte-roi);
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  padding: var(--sp-24) var(--sp-16) calc(var(--tabs-h) + 7.5rem + env(safe-area-inset-bottom));
+  outline: none;
+}
+@media (min-width: 1024px) {
+  .main {
+    padding: var(--sp-32) var(--sp-48) var(--sp-64);
+  }
+}
+/* D-098 — the space uses the whole width next to the menu: no centred column. Long lines are capped inside their
+   own card (70 to 75 characters, DSN-024), never by the page. A side panel open on the right moves the content aside. */
+.screen {
+  animation: screenIn var(--motion-fast) var(--ease-out);
+}
+@media (min-width: 1024px) {
+  .frame[data-panel] .main,
+  .frame[data-panel] .footer {
+    padding-inline-end: calc(var(--space-panel, 0rem) + var(--sp-32));
+    transition: padding var(--motion-base) var(--ease-out);
+  }
+}
+.frame[data-simple] .screen {
+  animation: none;
+}
+
+.footer {
+  display: none;
+  padding: var(--sp-16) var(--sp-48) var(--sp-24);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+@media (min-width: 1024px) {
+  .footer {
+    display: block;
+  }
+}
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6) var(--sp-20);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+}
+.legal a {
+  color: inherit;
+}
+
+/* ─── Phone: tabs, « Écrire à mon conseiller », « Plus » ─────────────────── */
+.tabs {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bo-fond-blanc);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+  box-shadow: 0 -6px 18px rgb(1 41 91 / 0.06);
+}
+@media (min-width: 1024px) {
+  .tabs,
+  .writeFab {
+    display: none !important;
+  }
+}
+.tabList {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tabItem {
+  display: flex;
+}
+.tab {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--tabs-h);
+  border: 0;
+  background: transparent;
+  color: var(--bo-texte-doux);
+  font: 600 var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  text-decoration: none;
+  cursor: pointer;
+}
+.tab[aria-current='page'] {
+  color: var(--bo-texte-roi);
+}
+.tab[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 28%;
+  right: 28%;
+  height: 3px;
+  border-radius: 0 0 var(--radius-pill) var(--radius-pill);
+  background: var(--bo-accent-or);
+}
+.tabIcon {
+  position: relative;
+  display: inline-grid;
+}
+.tabBadge {
+  position: absolute;
+  top: -4px;
+  inset-inline-end: -10px;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding-inline: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--bo-accent-corail);
+  color: var(--bo-texte-blanc);
+  font: 700 0.625rem / 1.125rem var(--font-ui);
+  text-align: center;
+}
+.tabLabel {
+  font-size: 0.8125rem;
+}
+.writeFab {
+  position: fixed;
+  inset-inline-end: var(--sp-16);
+  bottom: calc(var(--tabs-h) + var(--sp-12) + env(safe-area-inset-bottom));
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  height: 3rem;
+  padding-inline: var(--sp-16) var(--sp-20);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  font: 700 var(--fs-button-m) / 1 var(--font-ui);
+  text-decoration: none;
+  box-shadow: var(--shadow-l);
+  --icon-accent: var(--bo-texte-ciel);
+}
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgb(0 27 64 / 0.38);
+  display: flex;
+  align-items: flex-end;
+  animation: fade var(--motion-fast) var(--ease-out);
+}
+.sheet {
+  width: 100%;
+  max-height: 85dvh;
+  overflow-y: auto;
+  padding: var(--sp-16) var(--sp-16) calc(var(--sp-24) + env(safe-area-inset-bottom));
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-xl);
+  animation: sheetUp var(--motion-base) var(--ease-out);
+}
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--sp-8);
+}
+.sheetTitle {
+  font: 700 var(--fs-subtitle-m) / var(--lh-subtitle-m) var(--font-display);
+  color: var(--bo-texte-nuit);
+}
+.sheetSize {
+  margin-block-start: var(--sp-16);
+  padding-block-start: var(--sp-16);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+
+/* TRV-122 — « Affichage simplifié » */
+.simple {
+  margin-block-start: var(--sp-16);
+  padding-block-start: var(--sp-12);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.switch {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  width: 100%;
+  min-height: var(--target-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bo-texte-encre);
+  font: 600 var(--fs-body-l) / var(--lh-body-l) var(--font-ui);
+  text-align: start;
+  cursor: pointer;
+}
+.switchTrack {
+  position: relative;
+  flex: none;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--bo-ligne-bleue);
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-s);
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+.switch[aria-checked='true'] .switchTrack {
+  background: var(--bo-fond-bleu-roi);
+}
+.switch[aria-checked='true'] .switchThumb {
+  transform: translateX(1.25rem);
+}
+.simpleHelp {
+  margin: 2px 0 0;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-doux);
+}
+
+/* ─── Short messages ────────────────────────────────────────────────────── */
+.toastZone {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabs-h) + 4.5rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 96;
+  width: min(36rem, calc(100vw - 2rem));
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .toastZone {
+    bottom: var(--sp-24);
+    left: calc(50% + var(--side-w) / 2);
+  }
+}
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  padding: var(--sp-12) var(--sp-12) var(--sp-12) var(--sp-16);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  font-size: var(--fs-body-xl);
+  box-shadow: var(--shadow-xl);
+  animation: sheetUp var(--motion-base) var(--ease-out);
+  --icon-accent: var(--bo-texte-ciel);
+}
+.toastError {
+  background: var(--bo-fond-erreur-fonce);
+}
+.toastText {
+  flex: 1;
+}
+.toastAction {
+  border: 0;
+  background: transparent;
+  color: var(--bo-texte-champagne);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  min-height: var(--target-min);
+}
+.toastClose {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+@keyframes screenIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sheetUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .popover,
+  .sheet,
+  .sheetBackdrop,
+  .toast {
+    animation: none;
+  }
+}

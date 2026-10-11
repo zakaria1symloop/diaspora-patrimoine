@@ -1,0 +1,95 @@
+.wrap {
+  position: relative;
+  display: inline-block;
+  width: 5.5rem;
+  height: 5.5rem;
+}
+.svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ring {
+  fill: none;
+  stroke: var(--bo-accent-or);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.disc {
+  fill: var(--bo-fond-bleu-roi);
+}
+.check {
+  fill: none;
+  stroke: var(--bo-texte-blanc);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.play .ring {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw var(--motion-celebrate) var(--ease-out) forwards 200ms;
+}
+.play .check {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 500ms var(--ease-spring) forwards 450ms;
+}
+.play .disc {
+  transform-origin: 48px 48px;
+  animation: pop 400ms var(--ease-spring) both;
+}
+.burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dotGold,
+.dotBlue {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: -0.2rem;
+  border-radius: 50%;
+  opacity: 0;
+  animation: fly var(--motion-celebrate) var(--ease-out) forwards 500ms;
+}
+.dotGold {
+  background: var(--bo-accent-or);
+}
+.dotBlue {
+  background: var(--bo-accent-bleu);
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+  }
+}
+@keyframes fly {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--a)) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateY(-3.5rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .play .ring,
+  .play .check,
+  .play .disc {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .burst {
+    display: none;
+  }
+}

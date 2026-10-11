@@ -1,0 +1,218 @@
+/* NAV-020, NAV-021 — footer on bleu nuit, same on every public page. */
+.footer {
+  position: relative;
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  padding-block: var(--sp-64) var(--sp-32);
+  margin-block-start: var(--sp-48);
+}
+.footer::before {
+  /* the gold wave of the mockup */
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: -1.25rem;
+  height: 1.5rem;
+  background: var(--bo-fond-bleu-nuit);
+  border-block-start: 3px solid var(--bo-accent-or);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-32);
+}
+.navs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-16);
+}
+.mainNav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.mainNav li + li {
+  border-inline-start: 1px solid rgb(255 255 255 / 0.35);
+}
+.mainLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-6);
+  min-height: var(--target-min);
+  padding: var(--sp-4) var(--sp-20);
+  color: var(--bo-texte-blanc);
+  text-decoration: none;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+}
+.mainLink:hover {
+  text-decoration: underline;
+}
+.cafe {
+  color: var(--bo-texte-champagne);
+  --icon-accent: var(--bo-texte-champagne);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: var(--fs-cafemark-s);
+}
+.secondaryNav,
+.legalList {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.secondaryNav {
+  justify-content: flex-end;
+}
+.secondaryNav li + li::before,
+.legalList li + li::before {
+  content: '·';
+  padding-inline: var(--sp-8);
+  opacity: 0.7;
+}
+.smallLink {
+  color: inherit;
+  text-decoration: none;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  display: inline-block;
+  padding-block: var(--sp-6);
+}
+.smallLink:hover {
+  text-decoration: underline;
+}
+.rule {
+  border: 0;
+  border-block-start: 1px solid rgb(255 255 255 / 0.25);
+  margin-block: var(--sp-32);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-24);
+}
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-12) var(--sp-32);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.contact {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-10);
+  min-height: var(--target-min);
+  color: var(--bo-texte-blanc);
+  text-decoration: none;
+  font-size: var(--fs-body-m);
+  background: none;
+  border: 0;
+  padding: 0;
+}
+a.contact:hover {
+  text-decoration: underline;
+}
+.contactIcon {
+  color: var(--bo-texte-champagne);
+  --icon-accent: var(--bo-texte-champagne);
+  --icon-gold: var(--bo-texte-champagne);
+  --icon-hollow: var(--bo-fond-bleu-nuit);
+}
+.socialRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-12);
+  margin-block-start: var(--sp-24);
+}
+.socialTitle {
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-ciel);
+}
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  padding-inline: var(--sp-12);
+  border: 1px solid rgb(255 255 255 / 0.35);
+  border-radius: var(--radius-pill);
+  color: var(--bo-texte-blanc);
+  text-decoration: none;
+  font-size: var(--fs-body-s);
+}
+.socialLink:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+.comfort {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-16) var(--sp-32);
+  margin-block-start: var(--sp-32);
+  color: var(--bo-texte-blanc);
+}
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-16) var(--sp-32);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  color: var(--bo-texte-ciel);
+}
+.manage {
+  background: none;
+  border: 0;
+  padding-block: var(--sp-6);
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+.manage:hover {
+  text-decoration: underline;
+}
+.note {
+  max-width: 34rem;
+  text-align: end;
+}
+@media (max-width: 1023px) {
+  .navs {
+    align-items: flex-start;
+  }
+  .mainNav {
+    flex-wrap: wrap;
+  }
+  .mainNav li + li {
+    border: 0;
+  }
+  .mainLink {
+    flex-direction: row;
+    padding-inline: 0 var(--sp-20);
+  }
+  .secondaryNav {
+    justify-content: flex-start;
+  }
+  .note {
+    text-align: start;
+  }
+}
+@media print {
+  .footer {
+    display: none;
+  }
+}

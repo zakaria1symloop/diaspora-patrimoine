@@ -1,0 +1,95 @@
+{
+  "delay": {
+    "MINUTES": "{n, plural, one {# minute} other {# minutes}}",
+    "HOURS": "{n, plural, one {# heure} other {# heures}}",
+    "DAYS": "{n, plural, one {# jour} other {# jours}}",
+    "BUSINESS_HOURS": "{n, plural, one {# heure ouvrée} other {# heures ouvrées}}",
+    "BUSINESS_DAYS": "{n, plural, one {# jour ouvré} other {# jours ouvrés}}"
+  },
+  "skip": {
+    "ruleDisabled": "Règle désactivée",
+    "ruleInvalid": "Règle invalide",
+    "conditions": "Conditions non remplies au moment de l’exécution",
+    "eventGone": "Événement déclencheur introuvable",
+    "spam": "Demande indésirable",
+    "erased": "Données du client effacées",
+    "restricted": "Traitement limité",
+    "accountClosed": "Compte suspendu ou supprimé",
+    "dossierClosed": "Dossier clôturé",
+    "onHold": "Dossier en pause",
+    "templateInactive": "Modèle désactivé",
+    "noRecipient": "Destinataire introuvable",
+    "noEmail": "Pas d’adresse",
+    "bounced": "Adresse en erreur",
+    "doNotContact": "Ne pas contacter",
+    "preferenceOff": "Groupe désactivé",
+    "notInformed": "Client non informé du rendez-vous",
+    "tooLate": "Échéance passée",
+    "window": "Déjà envoyé récemment",
+    "surveyUnavailable": "Enquêtes non disponibles"
+  },
+  "close": {
+    "done": "Terminée automatiquement",
+    "firstContact": "Premier contact noté",
+    "leadClosed": "Demande clôturée ou indésirable",
+    "applicationDecided": "Candidature acceptée ou refusée",
+    "docsReviewed": "Plus aucune pièce à vérifier",
+    "docBack": "Pièce de nouveau reçue ou validée",
+    "docWaived": "Pièce dispensée",
+    "consentGiven": "Accord de transmission donné",
+    "checkedIn": "Un pointage est fait",
+    "dossierResumed": "Dossier repris",
+    "dossierClosed": "Dossier clôturé",
+    "emailFixed": "Adresse e-mail de nouveau valide",
+    "clientArchived": "Client archivé",
+    "dossierDeleted": "Dossier supprimé",
+    "selectionWithdrawn": "Le client a retiré son choix",
+    "selectionDone": "Bien retenu",
+    "selectionOther": "Le bien a changé d’état",
+    "proposed": "Des biens ont été proposés",
+    "proposalAnswered": "Le client a répondu aux biens proposés",
+    "dossierActivity": "Activité sur le dossier",
+    "stageBeyond": "Le dossier a passé l’étape du rapprochement",
+    "holdStarted": "Dossier mis en pause",
+    "unavailableReplaced": "Un bien disponible est retenu",
+    "appointmentConfirmed": "Rendez-vous confirmé",
+    "appointmentCancelled": "Rendez-vous annulé",
+    "appointmentReported": "Issue du rendez-vous renseignée"
+  },
+  "alert": {
+    "rule": "Exécution de règle en échec : {code}",
+    "ruleInvalid": "Règle invalide : {code}",
+    "jobFailed": "Tâche planifiée en échec : {job}",
+    "jobLate": "Tâche planifiée en retard : {job}",
+    "outbox": "Événement en échec : {type}",
+    "outboxStuck": "Boîte d’envoi en retard",
+    "details": {
+      "rule": "L’exécution {execution} de la règle {code} a échoué après ses nouveaux essais. Dernière erreur : {error}",
+      "ruleInvalid": "La définition de la règle {code} ne passe pas la validation : elle n’est pas exécutée. {error}",
+      "jobFailed": "Le passage de {job} a échoué. Dernière erreur : {error}",
+      "jobLate": "{job} n’a pas tourné depuis plus de deux fois son intervalle. Dernier passage : {last}.",
+      "outbox": "L’événement {type} a échoué {n} fois. Dernière erreur : {error}",
+      "outboxStuck": "{n, plural, one {# événement disponible attend} other {# événements disponibles attendent}} depuis plus de 2 minutes sans être pris."
+    }
+  },
+  "task": {
+    "unassignedNote": "Le conseiller attendu ne peut pas agir : tâche à prendre."
+  },
+  "mail": {
+    "noAgent": "non affectée"
+  },
+  "author": "Automatique",
+  "holdActivity": {
+    "DOCUMENT": "le client a déposé une pièce",
+    "MESSAGE": "le client a écrit",
+    "PROPOSAL_ANSWER": "le client a répondu à une proposition",
+    "APPOINTMENT": "le client a agi sur un rendez-vous",
+    "BANK_DECISION": "la banque a décidé",
+    "BANK_INFO": "la banque demande un complément"
+  },
+  "systemTask": {
+    "presentProposals": "Présenter les biens proposés à {client}",
+    "notifyClient": "Prévenir {client} : {objet}",
+    "phone": "Téléphone : {phone}"
+  }
+}

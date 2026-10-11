@@ -1,0 +1,362 @@
+/* DSN-053 — the scroller is the scroll container of both axes: the header sticks to its top, the first column to its
+   start edge. The list template gives it the remaining height of the screen, so the footer stays at the bottom. */
+.scroller {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--bo-fond-blanc);
+}
+.table {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+  font-size: var(--ui-font-size, var(--fs-body-m));
+  line-height: var(--ui-line-height, var(--lh-body-m));
+  font-variant-numeric: tabular-nums;
+}
+.caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  height: 2.5rem;
+  padding: 0 var(--sp-12);
+  background: #f8f9fc;
+  border-block-end: 1px solid var(--bo-ligne-bleue);
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-caption, var(--fs-caption));
+  line-height: var(--lh-admin-caption, var(--lh-caption));
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: start;
+  white-space: nowrap;
+}
+.thInner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+}
+.end {
+  text-align: end;
+}
+.end .thInner {
+  justify-content: flex-end;
+}
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-inline: calc(-1 * var(--sp-6));
+  padding: var(--sp-4) var(--sp-6);
+  border: 0;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.sort:hover {
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.sortActive {
+  color: var(--bo-texte-roi);
+}
+.arrow {
+  flex: none;
+  --icon-accent: currentColor;
+}
+.arrowIdle {
+  opacity: 0;
+}
+.sort:hover .arrowIdle,
+.sort:focus-visible .arrowIdle {
+  opacity: 0.5;
+}
+
+.td {
+  height: var(--ui-row-h, 3rem);
+  padding: var(--sp-6) var(--sp-12);
+  border-block-end: 1px solid #edf0f6;
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-encre);
+  font-weight: 400;
+  text-align: start;
+  vertical-align: middle;
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.td.end {
+  text-align: end;
+}
+.cell {
+  display: block;
+  max-width: 22rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.first {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  font-weight: 600;
+}
+.th.first {
+  z-index: 3;
+}
+/* a fine shadow when the rest passes under the first column */
+.scrolledX .first::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: -8px;
+  width: 8px;
+  background: linear-gradient(90deg, rgb(1 41 91 / 0.1), transparent);
+  pointer-events: none;
+}
+.check {
+  width: 2.75rem;
+  padding-inline: var(--sp-12) 0;
+}
+.check input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--bo-fond-bleu-roi);
+  vertical-align: middle;
+}
+.actions {
+  width: 3.25rem;
+  padding-inline: 0 var(--sp-8);
+  text-align: end;
+}
+
+.row {
+  outline-offset: -3px;
+}
+.clickable {
+  cursor: pointer;
+}
+.row:hover .td {
+  background: var(--bo-fond-ciel-pale);
+}
+.row:focus-visible .td {
+  background: var(--bo-fond-ciel-pale);
+}
+.selected .td {
+  background: #f1f6fe;
+}
+/* TRV-108, TRV-107 — ciel-pale background that fades in 1.2 s */
+.highlight .td {
+  animation: found 1.2s var(--ease-in) both;
+}
+@keyframes found {
+  from {
+    background: var(--bo-fond-ciel);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .highlight .td {
+    animation: foundStill 1.2s steps(1, end) both;
+  }
+}
+@keyframes foundStill {
+  from {
+    background: var(--bo-fond-ciel-pale);
+  }
+}
+
+/* DSN-072 — first display only: the first six rows appear 30 ms apart */
+.stagger .row {
+  animation: rowIn var(--motion-base) var(--ease-out) both;
+}
+.stagger .row:nth-child(2) {
+  animation-delay: 30ms;
+}
+.stagger .row:nth-child(3) {
+  animation-delay: 60ms;
+}
+.stagger .row:nth-child(4) {
+  animation-delay: 90ms;
+}
+.stagger .row:nth-child(5) {
+  animation-delay: 120ms;
+}
+.stagger .row:nth-child(n + 6) {
+  animation-delay: 150ms;
+}
+@keyframes rowIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* TRV-080 — reload: content stays, dimmed to 60 %, under a thin progress bar */
+.reloading .table tbody {
+  opacity: 0.6;
+  transition: opacity var(--motion-fast) linear;
+}
+.progress {
+  position: sticky;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 4;
+  display: block;
+  height: 2px;
+  margin-block-end: -2px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--bo-accent-bleu), transparent);
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
+  animation: slide 1s linear infinite;
+}
+@keyframes slide {
+  from {
+    background-position: -40% 0;
+  }
+  to {
+    background-position: 140% 0;
+  }
+}
+
+/* Footer */
+.footer {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-24);
+  min-height: 3.25rem;
+  padding: var(--sp-8) var(--sp-16);
+  border-block-start: 1px solid var(--bo-ligne-bleue);
+  background: var(--bo-fond-blanc);
+  font-size: var(--fs-admin-small, var(--fs-body-s));
+  line-height: var(--lh-admin-small, var(--lh-body-s));
+  color: var(--bo-texte-doux);
+}
+.range {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--bo-texte-encre);
+}
+.pageSize {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  margin-inline-end: auto;
+}
+.pageSize select {
+  height: 2rem;
+  padding-inline: var(--sp-8);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-control, var(--radius-m));
+  background: var(--bo-fond-blanc);
+  font-variant-numeric: tabular-nums;
+}
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.pages {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.page {
+  min-width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--sp-6);
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-control, var(--radius-pill));
+  background: transparent;
+  color: var(--bo-texte-encre);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+.page:hover {
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.pageCurrent,
+.pageCurrent:hover {
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+  font-weight: 600;
+}
+.pageArrow {
+  border-color: var(--bo-ligne-bleue);
+  --icon-accent: currentColor;
+}
+.pageDisabled,
+.pageDisabled:hover {
+  opacity: 0.4;
+  background: transparent;
+  cursor: not-allowed;
+}
+.gap {
+  min-width: 1.25rem;
+  text-align: center;
+  color: var(--bo-texte-discret);
+}
+
+/* Bulk bar — rises from the bottom when a row is selected (motion.base) */
+.bulk {
+  position: sticky;
+  inset-block-end: var(--sp-12);
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-16);
+  margin: var(--sp-8) var(--sp-16);
+  padding: var(--sp-8) var(--sp-12) var(--sp-8) var(--sp-16);
+  border-radius: var(--ui-radius-surface, var(--radius-m));
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  box-shadow: var(--shadow-l);
+  animation: bulkIn var(--motion-base) var(--ease-out);
+}
+.bulkCount {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.bulkActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin-inline-end: auto;
+}
+.bulkClear {
+  padding: var(--sp-6) var(--sp-10);
+  border: 0;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: var(--bo-texte-ciel);
+  font-weight: 600;
+  text-decoration: underline;
+}
+@keyframes bulkIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}

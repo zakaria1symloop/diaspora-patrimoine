@@ -1,0 +1,147 @@
+/* DSN-050 SearchBar — pill container, three fields separated by a rule, « Filtres » chip, « Rechercher ». */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  width: 100%;
+  max-width: 70rem;
+  margin-inline: auto;
+  padding: var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-24);
+  border: var(--stroke-field) solid var(--bo-ligne-or);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-l);
+}
+.field {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  padding-inline: var(--sp-12);
+  cursor: pointer;
+  color: var(--bo-texte-roi);
+  --icon-accent: var(--bo-accent-bleu);
+}
+.gold {
+  color: var(--bo-accent-or);
+  --icon-gold: var(--bo-accent-or);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.label {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--bo-texte-doux);
+}
+.select {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  min-height: 1.75rem;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  font-weight: 500;
+  color: var(--bo-texte-encre);
+  text-overflow: ellipsis;
+  cursor: pointer;
+  width: 100%;
+}
+.select:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 4px;
+  border-radius: var(--radius-s);
+}
+.sep {
+  align-self: stretch;
+  width: 1px;
+  margin-block: var(--sp-8);
+  background: var(--bo-ligne-bleue);
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.filters {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--btn-m);
+  padding-inline: var(--sp-16);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  font-size: var(--fs-button-s);
+  transition: background-color var(--motion-fast);
+}
+.filters:hover {
+  background: var(--bo-fond-ciel);
+}
+.submit {
+  min-height: 3.125rem;
+}
+@media (max-width: 899px) {
+  .bar {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: var(--radius-xl);
+    padding: var(--sp-16);
+    gap: var(--sp-4);
+  }
+  .field {
+    padding: var(--sp-10) var(--sp-8);
+    border-block-end: 1px solid var(--bo-ligne-bleue);
+  }
+  .sep {
+    display: none;
+  }
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    margin-block-start: var(--sp-8);
+  }
+  .filters {
+    background: transparent;
+    justify-content: center;
+  }
+  .submit {
+    width: 100%;
+  }
+}
+
+/* the stacked form at any width (home in « Affichage simplifié », TRV-122) */
+.stacked.bar {
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: var(--radius-xl);
+  padding: var(--sp-16);
+  gap: var(--sp-4);
+}
+.stacked .field {
+  padding: var(--sp-10) var(--sp-8);
+  border-block-end: 1px solid var(--bo-ligne-bleue);
+}
+.stacked .sep {
+  display: none;
+}
+.stacked .actions {
+  flex-direction: column-reverse;
+  align-items: stretch;
+  margin-block-start: var(--sp-8);
+}
+.stacked .filters {
+  background: transparent;
+  justify-content: center;
+}
+.stacked .submit {
+  width: 100%;
+}
+

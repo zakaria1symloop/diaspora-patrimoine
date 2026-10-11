@@ -1,0 +1,198 @@
+/* Package 3.5 « Biens » — the pieces drawn for the properties screens. */
+
+/* CAL-050 score in a table */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.pillTrack {
+  fill: none;
+  stroke: var(--bo-ligne-douce);
+  stroke-width: 3;
+}
+.pillValue {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--motion-base) var(--ease-out);
+}
+.pill[data-tone='low'] .pillValue {
+  stroke: var(--bo-accent-corail);
+}
+.pill[data-tone='mid'] .pillValue {
+  stroke: var(--bo-accent-or-vif);
+}
+.pill[data-tone='good'] .pillValue {
+  stroke: var(--bo-accent-vert);
+}
+.pillFigure {
+  min-width: 1.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pillValue {
+    transition: none;
+  }
+}
+
+/* CTL-043 — the completeness card */
+.card {
+  display: grid;
+  gap: var(--sp-16);
+}
+.score {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  grid-template-areas: 'ring text';
+  align-items: center;
+  gap: var(--sp-12);
+  position: relative;
+}
+.score svg {
+  grid-area: ring;
+}
+.scoreFigure {
+  grid-area: ring;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  line-height: 1;
+  text-align: center;
+}
+.scoreFigure strong {
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.scoreFigure span {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-caption);
+}
+.scoreText {
+  grid-area: text;
+  display: grid;
+  gap: 2px;
+}
+.muted {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+}
+.ringTrack {
+  fill: none;
+  stroke: var(--bo-ligne-douce);
+  stroke-width: 8;
+}
+.ringValue {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--motion-slow) var(--ease-out);
+}
+.ringMark {
+  fill: none;
+  stroke: var(--bo-texte-nuit);
+  stroke-width: 10;
+}
+.score[data-tone='low'] .ringValue {
+  stroke: var(--bo-accent-corail);
+}
+.score[data-tone='mid'] .ringValue {
+  stroke: var(--bo-accent-or-vif);
+}
+.score[data-tone='good'] .ringValue {
+  stroke: var(--bo-accent-vert);
+}
+.actions {
+  display: grid;
+  gap: var(--sp-6);
+}
+.actionsTitle {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+  font-weight: 600;
+}
+.actions ul {
+  display: grid;
+  gap: var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.action {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-10);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--ui-radius-control);
+  color: var(--bo-texte-encre);
+  text-decoration: none;
+  transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out);
+  --icon-accent: var(--bo-texte-roi);
+}
+.action:hover {
+  border-color: var(--bo-fond-bleu-roi);
+  background: var(--bo-fond-ciel-pale);
+}
+.action[data-mandatory] {
+  border-color: var(--bo-ligne-or);
+  background: var(--bo-fond-or-clair);
+  --icon-accent: var(--bo-accent-or-vif);
+}
+.mandatory {
+  margin-inline-start: auto;
+  color: var(--bo-texte-or);
+  font-size: var(--fs-admin-caption);
+  font-weight: 600;
+}
+.online {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  color: var(--bo-texte-succes);
+  font-weight: 600;
+  --icon-accent: currentColor;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ringValue,
+  .action {
+    transition: none;
+  }
+}
+
+/* CTL-041 — the two entries of the creation */
+.modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-16);
+}
+.mode {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-12);
+  padding: var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-surface);
+  background: var(--bo-fond-blanc);
+  cursor: pointer;
+  transition: border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+  --icon-accent: var(--bo-texte-roi);
+}
+.mode input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.mode > span {
+  display: grid;
+  gap: 2px;
+}
+.mode[data-on] {
+  border-color: var(--bo-fond-bleu-roi);
+  box-shadow: 0 0 0 2px var(--bo-fond-ciel);
+}
+.mode:has(input:focus-visible) {
+  outline: 2px solid var(--bo-fond-bleu-roi);
+  outline-offset: 2px;
+}

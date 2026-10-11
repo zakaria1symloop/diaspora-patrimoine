@@ -1,0 +1,32 @@
+{
+  "greeting": "Bonjour {firstName},",
+  "greetingNoName": "Bonjour,",
+  "signatureTeam": "L’équipe {company}",
+  "preferences": "Gérer mes préférences",
+  "advisorFallback": {
+    "firstName": "votre conseiller",
+    "displayName": "l’équipe {company}"
+  },
+  "teamChange": {
+    "invited": "invité le compte de {nom}",
+    "roleChanged": "modifié le rôle de {nom}",
+    "suspended": "suspendu le compte de {nom}",
+    "reactivated": "réactivé le compte de {nom}",
+    "deleted": "supprimé le compte de {nom}",
+    "recovered": "rétabli le compte de {nom}",
+    "emailChanged": "changé l’adresse du compte de {nom}",
+    "twoFactorReset": "réinitialisé la double authentification de {nom}"
+  },
+  "twoFactorState": {
+    "resetByAdmin": "réinitialisée par un administrateur : vous la configurerez de nouveau à votre prochaine connexion",
+    "disabledByTeam": "désactivée par notre équipe, à votre demande. Vous pourrez la réactiver depuis votre espace"
+  },
+  "proposals": {
+    "one": "un bien",
+    "many": "{n} biens"
+  },
+  "assigned": {
+    "lead": "la demande {reference}",
+    "dossier": "le dossier {reference}"
+  }
+}

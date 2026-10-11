@@ -1,0 +1,81 @@
+/* EA-47 — the list, and the panel on the right that leaves it visible */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-16);
+  align-items: start;
+}
+.layout[data-panel] {
+  grid-template-columns: minmax(0, 1fr) 26rem;
+}
+.listZone {
+  display: grid;
+  gap: var(--sp-12);
+  min-width: 0;
+}
+.panel {
+  position: sticky;
+  top: var(--sp-16);
+  display: grid;
+  gap: var(--sp-16);
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: var(--sp-16) var(--sp-20) var(--sp-20);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-surface);
+  background: var(--bo-fond-blanc);
+  animation: slide var(--motion-base) var(--ease-out);
+}
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-8);
+}
+.panelHead h2 {
+  font-size: var(--fs-admin-h3);
+  line-height: var(--lh-admin-h3);
+  font-weight: 600;
+}
+.logoZone {
+  padding-block-start: var(--sp-16);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.nameButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bo-texte-encre);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+}
+.nameButton:hover {
+  color: var(--bo-texte-roi);
+  text-decoration: underline;
+}
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 1023px) {
+  .layout[data-panel] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .panel {
+    position: static;
+    max-height: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}

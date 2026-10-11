@@ -1,0 +1,95 @@
+{
+  "state": {
+    "NONE": "Aucun compte",
+    "INVITED": "Invité le {date}",
+    "ACTIVE": "Actif, dernière connexion le {date}",
+    "ACTIVE_NEVER": "Actif, pas encore de connexion",
+    "SUSPENDED": "Suspendu"
+  },
+  "lead": {
+    "NONE": "{nom} n’a pas encore d’espace. Invitez-le : il recevra un lien pour choisir son mot de passe et suivre son projet en ligne.",
+    "INVITED": "L’invitation est partie. Tant que {nom} n’a pas choisi son mot de passe, vous pouvez la renvoyer.",
+    "ACTIVE": "{nom} suit son projet dans son espace.",
+    "SUSPENDED": "Le compte est suspendu : {nom} ne peut plus se connecter. Ses données restent."
+  },
+  "blocked": {
+    "NO_EMAIL": "Sans adresse e-mail, pas d’invitation possible. Ajoutez son adresse à la fiche (onglet Aperçu, section Coordonnées).",
+    "EMAIL_TAKEN": "L’adresse de cette fiche est déjà celle d’un autre compte : l’invitation ne peut pas partir."
+  },
+  "email": "Adresse de connexion",
+  "pendingEmail": "Nouvelle adresse en attente de confirmation : {email}",
+  "twoFactor": "Double authentification",
+  "twoFactorOn": "Activée",
+  "twoFactorOff": "Non activée",
+  "suspendedSince": "Suspendu le {date}",
+  "suspendedKind": {
+    "STAFF_DECISION": "Décision de l’équipe",
+    "DELETION_PENDING": "Suppression du compte demandée par le client"
+  },
+  "suspendedReason": "Raison : {raison}",
+  "deletionNote": "Le compte se rétablit seulement si le client retire sa demande de suppression.",
+  "password": "L’équipe ne voit ni ne définit jamais le mot de passe d’un client.",
+  "actionsTitle": "Gérer le compte",
+  "devicesTitle": "Appareils et dernières connexions",
+  "noDevices": "Aucun appareil connecté en ce moment.",
+  "device": "Appareil",
+  "deviceUnknown": "Appareil inconnu",
+  "lastUsed": "Dernier usage",
+  "since": "Connecté depuis",
+  "action": {
+    "invite": "Inviter le client",
+    "inviteText": "Crée son compte et lui envoie le lien d’activation.",
+    "resend": "Renvoyer l’invitation",
+    "resendText": "Un nouveau lien part ; le précédent reste valable jusqu’à sa date.",
+    "revoke": "Fermer ses sessions",
+    "revokeText": "Déconnecte tous ses appareils. Il pourra se reconnecter.",
+    "twoFactor": "Désactiver la double authentification",
+    "twoFactorText": "Après vérification de son identité, s’il a perdu son appareil et ses codes de secours.",
+    "changeEmail": "Changer l’adresse du compte",
+    "changeEmailText": "Le lien de confirmation part à la nouvelle adresse ; l’adresse change à sa confirmation.",
+    "suspend": "Suspendre le compte",
+    "suspendText": "Il ne peut plus se connecter ; toutes ses sessions se ferment. Ses données restent.",
+    "reactivate": "Réactiver le compte",
+    "reactivateText": "Il peut de nouveau se connecter."
+  },
+  "dialog": {
+    "inviteTitle": "Inviter {nom}",
+    "inviteText": "Un e-mail part à {email} avec le lien pour activer son espace. Le lien vaut 7 jours.",
+    "resendTitle": "Renvoyer l’invitation",
+    "resendText": "Un nouveau lien d’activation part à {email}.",
+    "revokeTitle": "Fermer les sessions de {nom}",
+    "revokeText": "Tous ses appareils sont déconnectés tout de suite. Rien d’autre ne change.",
+    "suspendTitle": "Suspendre le compte de {nom}",
+    "suspendText": "Il ne pourra plus se connecter ; la connexion lui dira « Ce compte est suspendu. Contactez-nous. ». Toutes ses sessions se ferment.",
+    "reactivateTitle": "Réactiver le compte de {nom}",
+    "twoFactorTitle": "Désactiver la double authentification de {nom}",
+    "twoFactorText": "Faites-le seulement après avoir vérifié son identité : rappel au numéro connu, question sur son dossier. Il recevra un e-mail qui le lui dit.",
+    "twoFactorChecked": "J’ai vérifié l’identité de la personne",
+    "changeEmailTitle": "Changer l’adresse du compte de {nom}",
+    "changeEmailText": "Le lien de confirmation part à la nouvelle adresse, et un avis à l’ancienne. L’adresse ne change qu’à la confirmation ; l’ancienne n’est pas gardée.",
+    "newEmail": "Nouvelle adresse",
+    "reason": "Raison",
+    "reasonHint": "Gardée au journal. Le client ne la voit pas.",
+    "confirm": "Confirmer"
+  },
+  "toast": {
+    "invited": "Invitation envoyée.",
+    "resent": "Invitation renvoyée.",
+    "revoked": "{n, plural, =0 {Aucune session ouverte : rien à fermer.} one {# session fermée.} other {# sessions fermées.}}",
+    "suspended": "Compte suspendu.",
+    "reactivated": "Compte réactivé.",
+    "twoFactor": "Double authentification désactivée. Le client est prévenu.",
+    "changeEmail": "Lien de confirmation envoyé à la nouvelle adresse."
+  },
+  "preview": {
+    "button": "Voir comme le client",
+    "noAccount": "Disponible quand le client a un compte actif",
+    "title": "Voir l’espace de {nom}",
+    "text": "Son espace s’ouvre dans un nouvel onglet, en lecture seule, pour 30 minutes. Rien n’est marqué comme lu ou vu à sa place, et il n’est pas prévenu. L’ouverture et la fermeture sont tracées.",
+    "reason": "Raison",
+    "reasonHint": "Facultative. Gardée au journal avec l’ouverture.",
+    "open": "Ouvrir son espace",
+    "popup": "Le navigateur a bloqué l’onglet. Autorisez les fenêtres pour ce site, puis réessayez."
+  },
+  "activatedLabel": "Espace activé le"
+}

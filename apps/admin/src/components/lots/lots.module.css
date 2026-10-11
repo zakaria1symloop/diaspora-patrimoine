@@ -1,0 +1,38 @@
+/* CTL-064 — the line « Disponibilités vérifiées » above the lots */
+.stockBar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  padding: var(--sp-12) var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--ui-radius-surface);
+  background: var(--bo-fond-blanc);
+}
+.stockBar[data-due] {
+  border-color: var(--bo-ligne-or);
+  background: var(--bo-fond-or-clair);
+}
+.stockIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--bo-fond-vert-pale);
+  color: var(--bo-texte-succes);
+  --icon-accent: currentColor;
+}
+.stockBar[data-due] .stockIcon {
+  background: var(--bo-fond-blanc);
+  color: var(--bo-accent-or-vif);
+}
+.stockText {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.stockSub {
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-admin-small);
+}

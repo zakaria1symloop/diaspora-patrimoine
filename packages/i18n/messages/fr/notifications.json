@@ -1,0 +1,64 @@
+{
+  "NC_LEAD_RECEIVED": {
+    "request": "Votre demande est enregistrée. Un conseiller vous contacte {quand}.",
+    "contact": "Votre message est bien reçu. Nous vous répondons {quand}."
+  },
+  "NC_ADVISOR_ASSIGNED": "{conseiller} suit désormais votre projet.",
+  "NC_ADVISOR_CHANGED": "Votre conseiller est désormais {conseiller}.",
+  "NS_TASK_AUTO": "Nouvelle tâche : {titre}.",
+  "NS_TASK_ASSIGNED": "{auteur} vous a confié une tâche : {titre}.",
+  "NS_TECH_ALERT": "Alerte technique : {cause}.",
+  "NS_TEAM_CHANGE": {
+    "platform": "La plateforme",
+    "invited": "{auteur} a invité le compte de {nom}.",
+    "roleChanged": "{auteur} a modifié le compte de {nom}.",
+    "suspended": "{auteur} a suspendu le compte de {nom}.",
+    "reactivated": "{auteur} a réactivé le compte de {nom}.",
+    "deleted": "{auteur} a supprimé le compte de {nom}.",
+    "recovered": "{auteur} a rétabli le compte de {nom}.",
+    "emailChanged": "L’adresse du compte de {nom} a changé.",
+    "twoFactorReset": "La double authentification de {nom} a été réinitialisée par {auteur}."
+  },
+  "NS_LEAD_NEW": {
+    "new": "Nouvelle demande : {nature} – {client}.",
+    "assigned": "Nouvelle demande : {nature} – {client}. Elle vous est confiée.",
+    "duringDossier": "Nouvelle demande : {nature} – {client}. {client} a déjà un dossier en cours ({reference})."
+  },
+  "NC_PROPOSAL_NEW": {
+    "one": "{conseiller} vous propose un bien.",
+    "many": "{conseiller} vous propose {n} biens."
+  },
+  "NC_SELECTION_CONFIRMED": "Votre choix est confirmé : {titre}.",
+  "NC_SELECTION_DECLINED": "{conseiller} n’a pas pu retenir {titre} : {raison}.",
+  "NC_SELECTION_WITHDRAWN": "{titre} n’est plus votre bien retenu. {conseiller} revient vers vous.",
+  "NC_PROJECT_QUALIFIED": "Nous avons fait le point sur votre projet. {conseiller} va vous proposer des biens.",
+  "NC_DOSSIER_ON_HOLD": "Votre projet est en pause.",
+  "NC_DOSSIER_RESUMED": "Votre projet reprend.",
+  "NC_DOSSIER_CLOSED": "Votre dossier {reference} est clôturé.",
+  "NS_ASSIGNED": {
+    "lead": "{auteur} vous a confié la demande {reference}.",
+    "dossier": "{auteur} vous a confié le dossier {reference}."
+  },
+  "NS_UNASSIGNED": "Le dossier {reference} est désormais suivi par {conseiller}.",
+  "NS_CANDIDATE_RESPONSE": {
+    "interested": "{client} est intéressé par {bien}.",
+    "declined": "{client} a écarté {bien} : {raison}."
+  },
+  "NC_PROGRAM_UPDATE": "Le chantier de {programme} avance : {etape}, {n} %.",
+  "NS_PARTNER_SUSPENDED": {
+    "suspended": "Le promoteur {nom} est suspendu. {n, plural, one {# de vos dossiers est concerné.} other {# de vos dossiers sont concernés.}}",
+    "ended": "La relation avec le promoteur {nom} est terminée. {n, plural, one {# de vos dossiers est concerné.} other {# de vos dossiers sont concernés.}}"
+  },
+  "NS_PARTNER_EXPIRING": {
+    "convention": "La convention de {partenaire} arrive à échéance le {date}.",
+    "document": "Un document de {partenaire} expire le {date}."
+  },
+  "NS_IMPORT_FINISHED": "Import terminé : {n} lignes, {s} signalées, {m} en erreur.",
+  "NS_LEAD_ATTACHED": "{client} a envoyé une nouvelle demande (dossier {reference}).",
+  "NS_EMAIL_FAILED": "L’e-mail envoyé à {client} n’a pas pu être remis.",
+  "NC_APPOINTMENT_CONFIRMED": "Rendez-vous confirmé le {date} à {heure}.",
+  "NC_APPOINTMENT_CANCELLED": "Votre rendez-vous du {date} est annulé.",
+  "NS_APPOINTMENT_CANCELLED": "{client} a annulé le rendez-vous du {date}.",
+  "NS_EMAIL_BOUNCED": "L’adresse e-mail de {client} rejette nos messages.",
+  "NS_TASK_DUE": "À faire : {titre}."
+}

@@ -1,0 +1,179 @@
+{
+  "page": {
+    "title": "Mes pièces",
+    "seoTitle": "Mes pièces",
+    "completeness": "Votre dossier est complet à {n} %",
+    "completenessDetail": "{x} pièces validées ou non demandées sur {y}",
+    "completenessHelp": "La part des pièces demandées qui sont validées par votre conseiller.",
+    "noList": "La liste de vos pièces n’est pas encore établie.",
+    "noListText": "Votre conseiller la prépare à l’étape des pièces. Vous serez prévenu dès qu’elle est prête.",
+    "purged": "Les fichiers de ce dossier ont été supprimés le {date}, comme le prévoit notre politique de conservation.",
+    "readOnly": "Ce dossier est terminé : ses pièces sont en lecture seule.",
+    "missingSituation": "Complétez la situation de {prenom} : la liste de ses pièces en dépend.",
+    "missingSituationYou": "Complétez votre situation : la liste de vos pièces en dépend.",
+    "missingSituationCta": "Compléter",
+    "filterToProvide": "À fournir ({n})",
+    "filterAll": "Toutes",
+    "filterLabel": "Filtrer mes pièces",
+    "emptyToProvide": "Rien à fournir pour le moment.",
+    "emptyToProvideText": "Toutes vos pièces sont déposées. Nous les vérifions ; vous êtes prévenu dès qu’une est validée.",
+    "loadError": "Vos pièces n’ont pas pu être chargées.",
+    "retry": "Réessayer",
+    "filterTodo": "À fournir",
+    "filterReview": "En vérification",
+    "filterDone": "Validées",
+    "search": "Chercher une pièce"
+  },
+  "people": {
+    "title": "Qui emprunte ?",
+    "titleCash": "Qui achète ?",
+    "you": "Vous",
+    "coBorrower": "{prenom}, co-emprunteur",
+    "coBuyer": "{prenom}, co-acquéreur",
+    "guarantor": "{prenom}, garant",
+    "common": "Le dossier",
+    "byUs": "Fournies par nos soins",
+    "edit": "Modifier",
+    "frozen": "Informations gelées à la demande de {prenom}",
+    "later": "Pour ajouter un co-emprunteur ou un garant, écrivez à votre conseiller."
+  },
+  "state": {
+    "SCANNING": "Vérification de sécurité en cours",
+    "PENDING": "À fournir",
+    "RECEIVED": "Reçue, en cours de vérification",
+    "VALIDATED": "Validée",
+    "VALIDATED_RENEWAL_PENDING": "Validée · nouveau document en cours de vérification",
+    "VALIDATED_TO_RENEW": "Validée · à renouveler avant le {date}",
+    "REJECTED": "À refaire",
+    "EXPIRED": "Expirée, à renouveler",
+    "WAIVED": "Non demandée",
+    "PENDING_OURS": "En préparation par nos soins"
+  },
+  "line": {
+    "optional": "facultatif",
+    "due": "avant le {date}",
+    "duePast": "à fournir depuis le {date}",
+    "help": "Aide",
+    "helpOpen": "Afficher l’aide pour {libelle}",
+    "receivedOn": "Déposée le {date} · {n, plural, one {# fichier} other {# fichiers}}",
+    "validatedOn": "Validée le {date}",
+    "validUntil": "valable jusqu’au {date}",
+    "renewalDeposited": "Nouveau document déposé le {date}",
+    "toRenewText": "Ce document ne sera bientôt plus valable. Déposez-en un plus récent : nous le vérifions, l’actuel reste valable d’ici là.",
+    "renewalRejected": "Votre nouveau document n’a pas été retenu : {motif}.",
+    "expiredText": "Ce document n’est plus valable depuis le {date}.",
+    "viaMessage": "Fichier reçu par message",
+    "byAdvisor": "Déposée par votre conseiller",
+    "lockedHint": "Cette pièce est validée. Pour la modifier, écrivez à votre conseiller.",
+    "photos": "{n, plural, one {# photo réunie} other {# photos réunies}} en un document",
+    "pages": "{n, plural, one {# page} other {# pages}}"
+  },
+  "action": {
+    "deposit": "Déposer",
+    "depositAgain": "Déposer à nouveau",
+    "depositNew": "Déposer une nouvelle version",
+    "view": "Voir",
+    "viewNew": "Voir le nouveau document",
+    "edit": "Modifier",
+    "renew": "Renouveler",
+    "replaceRenewal": "Le remplacer",
+    "download": "Télécharger",
+    "close": "Fermer"
+  },
+  "outcome": {
+    "REFUSED": "Un fichier a été refusé pour des raisons de sécurité. Déposez-le à nouveau depuis un autre appareil.",
+    "PARTIAL": "Un fichier a été refusé pour des raisons de sécurité ; les autres sont bien reçus.",
+    "UNREADABLE": "Nous n’avons pas pu lire une de vos photos. Reprenez-la et déposez à nouveau."
+  },
+  "deposit": {
+    "title": "Déposer : {libelle}",
+    "titleEdit": "Modifier : {libelle}",
+    "titleRenew": "Renouveler : {libelle}",
+    "tip": "Document à plat, bien éclairé, les quatre coins visibles, sans reflet.",
+    "choose": "Choisir des fichiers",
+    "photo": "Prendre une photo",
+    "drop": "ou glissez-déposez vos fichiers ici",
+    "formats": "Formats possibles : {liste} · {mo} Mo au plus par fichier · {n, plural, one {# fichier} other {# fichiers}} au plus",
+    "joined": "Vos {n} photos seront réunies en un seul document.",
+    "current": "Fichiers actuels",
+    "keep": "Garder",
+    "removeCurrent": "Retirer ce fichier",
+    "lastCannotGo": "Le dernier fichier ne se retire pas : il se remplace.",
+    "modeAdd": "Ajouter des fichiers",
+    "modeRemove": "Retirer un fichier",
+    "modeReplace": "Tout remplacer",
+    "newFiles": "Nouveaux fichiers",
+    "sending": "Envoi… {pct} %",
+    "checking": "Contrôle du fichier…",
+    "ready": "Prêt",
+    "failed": "Échec de l’envoi",
+    "retry": "Réessayer",
+    "remove": "Retirer",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "submit": "{n, plural, one {Envoyer # fichier} other {Envoyer # fichiers}}",
+    "submitRemove": "Enregistrer",
+    "cancel": "Annuler",
+    "leaveWarning": "Un envoi est en cours. Quitter quand même ?",
+    "done": "Merci. Votre pièce est reçue : nous la vérifions. Si quelque chose ne va pas, nous vous écrivons ; sinon, elle passe simplement à « Validée » dans votre espace.",
+    "doneClose": "Fermer",
+    "partyConsent": "Je confirme avoir l’accord de {prenom} pour transmettre ses documents.",
+    "partyConsentSave": "Confirmer",
+    "errors": {
+      "format": "Ce format n’est pas accepté. Formats possibles : {liste}.",
+      "size": "Ce fichier dépasse {mo} Mo.",
+      "count": "{n} fichiers au maximum pour cette pièce.",
+      "images": "30 photos au maximum par dépôt. Pour un document plus long, déposez un PDF.",
+      "empty": "Ce fichier semble vide ou endommagé.",
+      "network": "La connexion a été interrompue. Réessayez.",
+      "generic": "Le dépôt n’a pas pu être enregistré. Réessayez."
+    },
+    "eyebrow": "Déposer une pièce",
+    "eyebrowEdit": "Modifier mon dépôt",
+    "eyebrowRenew": "Renouveler une pièce",
+    "doneFirst": "Votre première pièce est déposée !"
+  },
+  "viewer": {
+    "title": "{libelle}",
+    "file": "Fichier {i} sur {n}",
+    "loading": "Ouverture du document…",
+    "error": "Le document n’a pas pu être ouvert. Réessayez.",
+    "download": "Télécharger",
+    "previous": "Fichier précédent",
+    "next": "Fichier suivant",
+    "eyebrow": "Voir une pièce"
+  },
+  "consent": {
+    "title": "Votre accord pour transmettre votre dossier",
+    "text": "Pour réserver votre bien, nous transmettons vos coordonnées et les pièces utiles à la réservation au promoteur du bien retenu. Si vous le financez par un crédit, nous transmettons votre dossier de financement (identité, situation, revenus, pièces) aux banques partenaires que nous sollicitons pour vous. Certains sont établis hors de l’Union européenne, notamment en Algérie. Vous pouvez retirer cet accord à tout moment ; nous ne pourrons alors plus transmettre votre dossier.",
+    "checkbox": "J’accepte la transmission de mon dossier à ces partenaires.",
+    "save": "Enregistrer",
+    "required": "Cochez la case pour donner votre accord.",
+    "given": "Accord de transmission donné le {date}.",
+    "recorded": "Accord enregistré par {conseiller} le {date}.",
+    "withdraw": "Le retirer depuis mon profil",
+    "saved": "Votre accord est enregistré."
+  },
+  "party": {
+    "authorization": "Je confirme avoir l’accord de {prenom} pour transmettre ses documents."
+  },
+  "notify": {
+    "refused": "Le fichier déposé pour {libelle} a été refusé pour des raisons de sécurité. Déposez-le à nouveau depuis un autre appareil.",
+    "partial": "Un fichier déposé pour {libelle} a été refusé ; les autres sont bien reçus. Vérifiez qu’il ne manque pas une page.",
+    "unreadable": "Nous n’avons pas pu lire une de vos photos pour {libelle}. Reprenez-la et déposez à nouveau."
+  },
+  "encourage": {
+    "left": {
+      "title": "{n, plural, one {Plus qu’une pièce à déposer} other {Plus que # pièces à déposer}}",
+      "text": "Une photo nette avec votre téléphone suffit. Déposez-les une à une : nous les vérifions au fur et à mesure."
+    },
+    "checking": {
+      "title": "Toutes vos pièces sont déposées",
+      "text": "Nous les vérifions une à une. Vous êtes prévenu dès que l’une d’elles est validée, ou s’il faut la refaire."
+    },
+    "complete": {
+      "title": "Votre dossier est complet",
+      "text": "Toutes les pièces demandées sont validées. Votre conseiller s’occupe de la suite."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+/* DSN-020 — three OFL fonts served by the platform itself (no third-party service), font-display: swap. */
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/700-italic.css';
+@import '@fontsource/red-hat-display/400.css';
+@import '@fontsource/red-hat-display/500.css';
+@import '@fontsource/red-hat-display/600.css';
+@import '@fontsource/red-hat-display/700.css';
+@import '@fontsource/cinzel/700.css';

@@ -1,0 +1,127 @@
+{
+  "title": "Équipe",
+  "search": "Rechercher un nom, un e-mail",
+  "you": "(vous)",
+  "elevatedUntil": "Accès administrateur jusqu’au {date}",
+  "invitationExpired": "Invitation expirée",
+  "column": {
+    "name": "Nom",
+    "email": "E-mail",
+    "role": "Rôle",
+    "jobTitle": "Fonction",
+    "status": "État",
+    "twoFactor": "Double authentification",
+    "lastLogin": "Dernière connexion",
+    "receivesLeads": "Reçoit des demandes",
+    "absentUntil": "Absent jusqu’au",
+    "workload": "En cours"
+  },
+  "empty": {
+    "title": "L’équipe n’a pas encore de membre.",
+    "text": "Invitez un collègue : il reçoit un lien pour choisir son mot de passe et configurer la double authentification."
+  },
+  "singleOwner": {
+    "title": "Désignez un second compte Direction.",
+    "text": "Aujourd’hui, un seul compte Direction existe. S’il perd son accès, aucun écran ne peut le rétablir."
+  },
+  "invite": {
+    "open": "Inviter",
+    "intro": "La personne reçoit un e-mail avec un lien valable 7 jours. Elle choisit son mot de passe, configure la double authentification, puis accepte la charte.",
+    "emailHint": "Une adresse ne sert qu’à un seul compte.",
+    "submit": "Envoyer l’invitation"
+  },
+  "field": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "role": "Rôle",
+    "rolePlaceholder": "Choisir un rôle",
+    "jobTitle": "Fonction",
+    "jobTitleHint": "Montrée aux clients sous son nom.",
+    "reason": "Raison",
+    "reasonHint": "Elle est inscrite au journal d’audit.",
+    "receivesLeads": "Reçoit des demandes par répartition",
+    "absentUntil": "Absent jusqu’au",
+    "absentUntilHint": "Dernier jour inclus ; vide : présent."
+  },
+  "roleHelp": {
+    "OWNER": "Tous les droits, y compris la sécurité, les textes légaux et les comptes Direction.",
+    "ADMIN": "Gère l’activité, le catalogue, les contenus et l’équipe, hors comptes Direction.",
+    "AGENT": "Traite les demandes, suit ses clients et ses dossiers.",
+    "VIEWER": "Consulte sans modifier, sans les données sensibles.",
+    "SUPPORT": "Support technique : données personnelles masquées, diagnostic et maintenance."
+  },
+  "action": {
+    "menu": "Actions sur le compte de {nom}",
+    "edit": "Modifier la fonction",
+    "changeRole": "Changer le rôle",
+    "resend": "Renvoyer l’invitation",
+    "cancel": "Annuler l’invitation",
+    "suspend": "Suspendre",
+    "reactivate": "Réactiver",
+    "resetTwoFactor": "Réinitialiser la double authentification"
+  },
+  "dialog": {
+    "invite": {
+      "title": "Inviter un membre de l’équipe"
+    },
+    "edit": {
+      "title": "Modifier la fonction",
+      "text": "Fonction de {nom}. Son nom et son mot de passe lui appartiennent : il les modifie dans « Mes préférences »."
+    },
+    "role": {
+      "title": "Changer le rôle",
+      "text": "Le nouveau rôle de {nom} prend effet tout de suite : ses sessions sont fermées et il devra se reconnecter.",
+      "submit": "Changer le rôle"
+    },
+    "suspend": {
+      "title": "Suspendre le compte",
+      "text": "Suspendre le compte de {nom} ? Ses sessions sont fermées et il ne peut plus se connecter. Ses demandes, ses dossiers et ses tâches restent les siens.",
+      "submit": "Suspendre le compte"
+    },
+    "reactivate": {
+      "title": "Réactiver le compte",
+      "text": "Réactiver le compte de {nom} ? Il pourra de nouveau se connecter avec son mot de passe et sa double authentification.",
+      "submit": "Réactiver le compte"
+    },
+    "resend": {
+      "title": "Renvoyer l’invitation",
+      "text": "Envoyer une nouvelle invitation à {nom} ({email}) ? Le lien précédent ne servira plus.",
+      "submit": "Renvoyer l’invitation"
+    },
+    "cancel": {
+      "title": "Annuler l’invitation",
+      "text": "Annuler l’invitation de {nom} ? Son compte est supprimé et son lien ne sert plus. Vous pourrez l’inviter de nouveau.",
+      "submit": "Annuler l’invitation"
+    },
+    "reset": {
+      "title": "Réinitialiser la double authentification",
+      "text": "Réinitialiser la double authentification de {nom} ? Ses sessions sont fermées ; à sa prochaine connexion, il devra la configurer de nouveau avant d’entrer.",
+      "submit": "Réinitialiser"
+    }
+  },
+  "toast": {
+    "invited": "Invitation envoyée.",
+    "resent": "Nouvelle invitation envoyée.",
+    "cancelled": "Invitation annulée.",
+    "roleChanged": "Rôle modifié.",
+    "suspended": "Compte suspendu.",
+    "reactivated": "Compte réactivé.",
+    "twoFactorReset": "Double authentification réinitialisée."
+  },
+  "workload": {
+    "leads": "{n} dem.",
+    "dossiers": "{n} doss.",
+    "tasks": "{n} tâch.",
+    "leadsLong": "{n, plural, one {# demande} other {# demandes}}",
+    "dossiersLong": "{n, plural, one {# dossier} other {# dossiers}}",
+    "tasksLong": "{n, plural, one {# tâche} other {# tâches}}"
+  },
+  "notice": {
+    "absent": "{prenom} est absent jusqu’au {date} : {travail} en cours.",
+    "absentIdle": "{prenom} est absent jusqu’au {date}.",
+    "suspended": "{prenom} est suspendu : {travail} à réaffecter.",
+    "role": "{prenom} ne traite plus de dossiers (rôle changé) : {travail} à réaffecter.",
+    "reassignLeads": "Réaffecter ses demandes"
+  }
+}

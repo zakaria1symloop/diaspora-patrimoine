@@ -1,0 +1,85 @@
+{
+  "notification": {
+    "suppressed": "L’e-mail programmé pour {client} n’est pas parti : la situation du client a changé depuis."
+  },
+  "button": {
+    "call": "Appel",
+    "exchange": "Échange",
+    "email": "E-mail",
+    "received": "E-mail reçu"
+  },
+  "openWhatsapp": "Ouvrir WhatsApp",
+  "with": "Avec {nom}",
+  "toast": {
+    "noted": "Échange noté.",
+    "firstContact": "Échange noté : le premier contact est fait.",
+    "received": "E-mail reçu noté."
+  },
+  "call": {
+    "title": "Noter un appel",
+    "direction": "Sens de l’appel",
+    "OUTBOUND": "Sortant",
+    "INBOUND": "Entrant",
+    "outcome": "Issue",
+    "help": {
+      "REACHED": "La personne a répondu : c’est un premier contact.",
+      "NO_ANSWER": "Personne n’a décroché.",
+      "VOICEMAIL": "Un message a été laissé, ou c’est la messagerie.",
+      "WRONG_NUMBER": "Le numéro ne correspond pas : la fiche le signalera."
+    },
+    "when": "Date et heure",
+    "duration": "Durée (minutes)",
+    "report": "Compte rendu",
+    "reportHint": "Ce qui a été dit, ce qui est convenu. L’équipe seule le lit.",
+    "reportRequired": "Le compte rendu est obligatoire quand la personne a été jointe.",
+    "followUp": "Me rappeler de…",
+    "followUpTitle": "Quoi",
+    "followUpDate": "Échéance",
+    "followUpTime": "Heure",
+    "followUpDefault": "Rappeler {nom}",
+    "submit": "Noter l’appel"
+  },
+  "exchange": {
+    "title": "Noter un échange",
+    "channel": "Canal"
+  },
+  "received": {
+    "title": "Noter un e-mail reçu",
+    "intro": "Les réponses des clients arrivent dans la boîte de l’équipe : gardez-en la trace ici.",
+    "when": "Reçu le",
+    "subject": "Objet",
+    "body": "Texte de l’e-mail",
+    "submit": "Noter l’e-mail"
+  },
+  "email": {
+    "title": "Écrire un e-mail",
+    "tabWrite": "Écrire",
+    "tabPreview": "Aperçu",
+    "to": "À",
+    "template": "Modèle",
+    "subject": "Objet",
+    "body": "Message",
+    "bodyHint": "Gras : **texte** · italique : *texte* · liste : « - » en début de ligne · lien : [texte](adresse).",
+    "keepButton": "Garder le bouton « {label} »",
+    "signedBy": "Signé",
+    "later": "Envoyer plus tard",
+    "when": "Date et heure d’envoi",
+    "previewHead": "Tel que le client le recevra, de la part de « {from} »",
+    "submit": "Envoyer",
+    "submitLater": "Programmer l’envoi",
+    "sent": "E-mail envoyé.",
+    "queued": "E-mail en file : il partira dans un instant.",
+    "scheduled": "E-mail programmé pour le {date}.",
+    "failed": "Le service d’envoi a refusé l’e-mail : vérifiez l’adresse.",
+    "noAddress": "Cette personne n’a pas d’adresse e-mail : appelez-la, ou ajoutez son adresse sur sa fiche.",
+    "erased": "Les données de cette personne ont été effacées : aucun e-mail ne peut partir.",
+    "sendAnyway": "Envoyer quand même : je réponds à sa demande ou à son dossier en cours.",
+    "warn": {
+      "bounced": "Cette adresse a rejeté notre dernier e-mail le {date}.",
+      "doNotContact": "{nom} a demandé à ne pas être contacté : {raison}.",
+      "doNotContactNoReason": "{nom} a demandé à ne pas être contacté.",
+      "restricted": "Le traitement de cette fiche est limité : seul un e-mail qui répond à sa demande est permis.",
+      "doubtful": "Cette adresse semble douteuse : son domaine ne reçoit peut-être pas d’e-mails."
+    }
+  }
+}

@@ -1,0 +1,61 @@
+.name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-10);
+  min-width: 0;
+}
+.avatar {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.nameText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.self {
+  margin-inline-start: var(--sp-6);
+  color: var(--bo-texte-discret);
+  font-weight: 400;
+}
+.sub {
+  display: block;
+  color: var(--bo-texte-discret);
+  font-size: var(--fs-admin-caption);
+  line-height: var(--lh-admin-caption);
+  font-weight: 400;
+}
+.status {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.notice {
+  margin-block-end: var(--sp-12);
+}
+
+.workload {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-8);
+  font-variant-numeric: tabular-nums;
+}
+.workload span + span::before {
+  content: '·';
+  margin-inline-end: var(--sp-8);
+  color: var(--bo-texte-discret);
+}
+.noticeLink {
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  white-space: nowrap;
+}
