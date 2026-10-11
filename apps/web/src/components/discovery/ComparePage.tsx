@@ -11,9 +11,10 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { CompareItem } from '@dp/contracts';
 import { Icon, buttonClass, ButtonInner } from '@dp/ui';
 import { Picture } from '@/components/Picture';
-import { useCompare, showToast } from '@/lib/discovery';
+import { askSignInForFavorite, useCompare, showToast } from '@/lib/discovery';
 import { useHearts } from '@/lib/account-favorites';
 import { deliveryText, money, surfaceText } from '@/lib/format';
+import { RowsSkeleton } from '@/components/vitrine/Skeletons';
 import { t } from '@/lib/i18n';
 import p from './pages.module.css';
 
@@ -51,7 +52,7 @@ export function CompareFromStorage({ empty }: { empty: ReactNode }) {
     setChecked(true);
     if (refs.length) router.replace(`/comparer?biens=${refs.join(',')}`);
   }, [refs, router]);
-  if (!checked || refs.length) return <p className={p.loading}>{t('ui.compare.page.loading')}</p>;
+  if (!checked || refs.length) return <RowsSkeleton rows={Math.max(refs.length, 2)} label={t('ui.compare.page.loading')} />;
   return <>{empty}</>;
 }
 
@@ -285,6 +286,7 @@ export function CompareTable({
                         onClick={async () => {
                           if (saved) return;
                           const r = await favorites.toggle(i.card.reference);
+                          if (r === 'SIGN_IN') return askSignInForFavorite(i.card.reference);
                           if (r === 'ERROR') return showToast({ message: t('ui.clientTools.favorites.error'), tone: 'error' });
                           showToast(r === 'FULL' ? { message: t('ui.favorites.toast.full', { n: favorites.max }), tone: 'info' } : { message: t('ui.favorites.toast.added'), link: { label: t('ui.favorites.toast.see'), href: favorites.href } });
                         }}

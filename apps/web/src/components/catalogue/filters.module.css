@@ -124,22 +124,43 @@
   gap: var(--sp-8);
 }
 .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-6);
   min-height: var(--target-min);
   min-width: 3.5rem;
   padding-inline: var(--sp-16);
-  border: 0;
+  border: var(--stroke-field) solid transparent;
   border-radius: var(--radius-pill);
   background: var(--bo-fond-ciel-pale);
   color: var(--bo-texte-roi);
   font-weight: 600;
-  transition: background-color var(--motion-fast);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast),
+    border-color var(--motion-fast);
 }
 .pill:hover:not(:disabled) {
-  background: var(--bo-fond-ciel);
+  border-color: var(--bo-texte-roi);
 }
-.pill[aria-pressed='true'] {
+/* A chosen value stays plainly chosen under the pointer that has just clicked it (it used to turn pale, as if the
+   click had done nothing). */
+.pill[aria-pressed='true'],
+.pill[aria-pressed='true']:hover {
   background: var(--bo-fond-bleu-roi);
+  border-color: var(--bo-fond-bleu-roi);
   color: var(--bo-texte-blanc);
+}
+.pillCount {
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+.pill:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
 }
 .pill:disabled {
   opacity: 0.4;
@@ -199,7 +220,6 @@
   clear: both;
 }
 .numField input,
-.selectField select,
 .search {
   height: var(--field-h);
   padding-inline: var(--sp-16);
@@ -215,6 +235,41 @@
   width: 100%;
   margin-block-end: var(--sp-8);
   clear: both;
+}
+.numField {
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+.numField input {
+  width: 100%;
+  min-width: 0;
+}
+.numField input:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+/* CAT-034 — a minimum above its maximum: both fields marked, the reason under them, nothing searched */
+.numField[data-invalid] input {
+  border-color: var(--bo-fond-erreur);
+  background: color-mix(in srgb, var(--bo-fond-erreur) 6%, var(--bo-fond-blanc));
+}
+.rangeError {
+  clear: both;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-8);
+  margin: var(--sp-8) 0 0;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body-s);
+  font-weight: 600;
+  color: var(--bo-texte-erreur, var(--bo-fond-erreur));
+}
+.pendingNote {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 600;
+  color: var(--bo-texte-or);
+  text-align: end;
 }
 .switches {
   clear: both;

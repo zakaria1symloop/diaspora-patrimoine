@@ -131,6 +131,21 @@ export function useFavorites() {
 /** Read once without subscribing (event handlers). */
 export const readFavorites = () => favoritesStore.snapshot();
 
+// ---------- SFA-020, D-103 — a favourite asks for an account ----------
+
+/** The property whose heart was touched without a session: added to the account right after sign-in (lib/after-sign-in.ts). */
+export const PENDING_FAVORITE_KEY = 'dp_favorite_pending';
+
+/** Opens the « Connectez-vous » window of the hearts (DiscoveryHost) and remembers the property for after sign-in. */
+export function askSignInForFavorite(ref: string): void {
+  try {
+    localStorage.setItem(PENDING_FAVORITE_KEY, ref);
+  } catch {
+    /* storage unavailable: the visitor adds it again once signed in */
+  }
+  window.dispatchEvent(new CustomEvent('dp:favorite-sign-in'));
+}
+
 // ---------- TRV-081 — short messages ----------
 
 export interface ToastInput {

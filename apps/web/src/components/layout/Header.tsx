@@ -123,13 +123,15 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
                 aria-controls="menu-espace"
                 onClick={() => setAccountOpen((v) => !v)}
               >
-                <ButtonInner chevron size="M">
+                {/* the only header entry with a menu: a chevron that points down, turned when the menu is open */}
+                <ButtonInner size="M">
                   {accountLabel}
                   {session.unread > 0 ? (
                     <span className={s.badge} aria-label={t('ui.nav.header.unread', { n: session.unread })}>
                       {session.unread > 99 ? '99+' : session.unread}
                     </span>
                   ) : null}
+                  <Icon name="chevron-down" size={16} className={[s.accountChevron, accountOpen && s.accountChevronOpen].filter(Boolean).join(' ')} />
                 </ButtonInner>
               </button>
               {accountOpen ? (
@@ -172,9 +174,7 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
             </div>
           ) : (
             <Link href={accountHref} className={`${buttonClass('primary', 'M')} ${s.login}`}>
-              <ButtonInner chevron size="M">
-                {accountLabel}
-              </ButtonInner>
+              <ButtonInner size="M">{accountLabel}</ButtonInner>
             </Link>
           )}
           <button
@@ -212,16 +212,13 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
                     >
                       <Icon name={e.icon} size={24} className={s.sheetIcon} />
                       <span className={s.sheetLabel}>{t(e.label)}</span>
-                      <Icon name="chevron-right" size={20} />
                     </Link>
                   </li>
                 ))}
             </ul>
             <div className={s.sheetFooter}>
               <Link href={accountHref} className={buttonClass('primary', 'L', true)} onClick={() => setOpen(false)}>
-                <ButtonInner chevron size="L">
-                  {accountLabel}
-                </ButtonInner>
+                <ButtonInner size="L">{accountLabel}</ButtonInner>
               </Link>
               {session.status === 'authenticated' ? (
                 <button type="button" className={buttonClass('secondary', 'L', true)} onClick={() => void logout()}>

@@ -1,0 +1,84 @@
+/* TRV-080 — skeletons of the public site. The card repeats the measures of PropertyCard.module.css. */
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: var(--stroke-card) solid var(--bo-fond-blanc);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-m);
+  overflow: hidden;
+}
+.band {
+  min-height: 2.75rem;
+  background: var(--bo-fond-gris);
+}
+.photo {
+  height: 10.5rem;
+  background: var(--bo-fond-ciel-pale);
+}
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-10);
+  padding: var(--sp-16) var(--sp-24);
+}
+.values {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-block-start: var(--sp-8);
+}
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: 5.5rem;
+  padding: var(--sp-12) var(--sp-16) var(--sp-16);
+  background: var(--bo-fond-gris);
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+}
+.row {
+  display: flex;
+  gap: var(--sp-16);
+  padding: var(--sp-16);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-s);
+}
+.thumb {
+  flex: none;
+  width: 7.5rem;
+  height: 5.5rem;
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ciel-pale);
+}
+.rowLines {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-10);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-20);
+  max-width: 36rem;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}

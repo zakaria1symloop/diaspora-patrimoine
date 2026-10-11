@@ -7,7 +7,7 @@
 >
 > **Comment l'écrire.** Court, daté (AAAA-MM-JJ), au présent. On n'efface pas le journal : on ajoute en haut.
 
-Dernière mise à jour : **2026-10-11** — Zakaria (session Claude).
+Dernière mise à jour : **2026-10-11** — Amrani-Mahdi01 (session Claude).
 
 ---
 
@@ -85,6 +85,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Zakaria (Claude, agent 6) | 3.4 Promoteurs · 3.5 Programmes, biens, lots · 3.6 Médias et import de lots · étude des candidatures de partenaires (ACP-084) | `apps/api/src/catalogue-admin/` (ajouts), `apps/api/src/files/` (dépôt API-080), `apps/admin/src/app/(shell)/promoteurs`, `/programmes`, `/biens`, `/partenaires`, `apps/admin/src/components/catalogue`, `packages/contracts/src/admin-catalogue*.ts`, `packages/i18n/messages/fr/admin-catalogue*.json`, `e2e/tests/admin-catalogue*` | 2026-10-11 | fait le 2026-10-11 (voir journal) — reste ce qui est listé au § 2, ligne 3.4 · 3.5 · 3.6 |
 | Zakaria (Claude, agent 7) | 3.7 Dossier (création, fiche, rapprochement, réponses du client, pause, clôture, recul…) · 3.8 Tâches et rendez-vous (écrans, règles AUT-043 / AUT-051, résumé du matin, `R_EMAIL_BOUNCED`) | `apps/api/src/dossiers-admin/`, `apps/api/src/tasks-admin/`, `apps/api/src/client-space/` (routes de réponse du client, ajouts), `apps/api/src/automation/rule-seeds.ts` (ajouts), `apps/admin/src/app/(shell)/dossiers`, `/taches`, `/agenda`, `apps/admin/src/components/dossiers`, `tasks`, `agenda`, `packages/contracts/src/admin-dossiers.ts`, `admin-tasks.ts`, `packages/i18n/messages/fr/admin-dossiers.json`, `admin-tasks.json`, `e2e/tests/admin-dossiers*`, `admin-tasks*` | 2026-10-11 | en cours |
 | Zakaria (Claude, agent 8) | Passe de qualité de tout le site public (alignement sur Figma : tête du catalogue, cartes de motivation, carrousels 390, fiches bien et programme ; principes D-098 sur chaque page ; contrôle de chaque bouton) + report dans Figma | `apps/web/src/app/(site)/`, `apps/web/src/components/` (sauf `client-*`), `packages/i18n/messages/fr/` (espaces de noms du site, ajouts), `e2e/tests/public-controls.spec.ts`, `Design/`, fichier Figma (page Site public) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — restent les têtes d'EP-11 / EP-12 dans Figma et l'affichage simplifié des autres pages |
+| Amrani-Mahdi01 (Claude) | Retour de recette du site public du 11/10/2026 (`docs/retours-site-2026-10-11.md`) : menu, cartes cliquables, listes de choix, filtres appliqués au bouton, contrôle minimum / maximum, favori réservé au compte, défilements du téléphone, squelettes, carte de localisation, partage par e-mail, pied de page en grand texte | `apps/web/src/components/` (`vitrine`, `catalogue`, `home`, `layout`, `discovery`, `property`, `forms/QueryDialog.tsx`), `apps/web/src/app/(site)/programmes/page.tsx`, `apps/web/src/lib/` (`discovery`, `account-favorites`, `after-sign-in`), `packages/ui` (`Flag`, `map/`, `TextSizeControl`), `packages/i18n/messages/fr/` (`catalogue`, `favorites`, `common`), `e2e/tests/` (`public-review`, `catalogue-filters`, `discovery`), `Specs/` (D-102 à D-104) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — branche `retours/site-public-2026-10-11` |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -135,6 +136,41 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-11 — Amrani-Mahdi01 (Claude) · retour de recette du site public (D-102 à D-104)
+
+- Liste reçue : `docs/retours-site-2026-10-11.md`. Chaque défaut est corrigé dans le composant qui le porte, donc sur
+  toutes les pages qui l'emploient (D-098). Branche `retours/site-public-2026-10-11`.
+- **Menu** (NAV-010, NAV-014) : plus de flèche sur les entrées sans sous-menu (« Se connecter », entrées du menu du
+  téléphone) ; « Mon espace », seule entrée à menu, porte un chevron vers le bas.
+- **Accueil** : drapeaux dessinés (composant `Flag` de `@dp/ui`, croissant et étoile) sur le comparatif et sur toutes
+  les cartes de bien ; les deux colonnes du comparatif et la carte du Café sont cliquables en entier (« En France » mène
+  au simulateur de crédit) ; « Lecture » relance les motivations aussitôt (le pointeur posé sur le bouton les retenait) ;
+  autant de points que de cartes dans les défilements du téléphone (`Children.count` comptait une place vide).
+- **Carte de bien** (CAT-040) : le lien couvrait le seul panneau blanc (le panneau positionné l'enfermait) ; il couvre
+  maintenant bandeau, photo, panneau et mensualité, partout où la carte sert.
+- **Listes de choix** (CAT-001, CAT-050) : composant `vitrine/Dropdown` à la place de la liste du navigateur — barre de
+  recherche, tri, ville des filtres.
+- **Filtres** (CAT-031, CAT-032, CAT-034, D-102) : brouillon sur ordinateur comme sur téléphone, appliqué par « Voir
+  {m} biens » ; un seul recompte, 500 ms après le dernier choix, jamais deux fois pour les mêmes critères ; minimum
+  au-dessus du maximum refusé (prix, surface) ; le champ de la mensualité ne se vide plus au sommet du curseur ; une
+  pastille « pièces » choisie reste marquée sous le pointeur (elle pâlissait : on la croyait non cliquée).
+- **Favoris** (SFA-020, SFA-021, D-103) : sans session, le cœur ouvre « Gardez ce bien dans vos favoris » ; le bien
+  rejoint le compte à la connexion (`dp_favorite_pending`). **Écart assumé avec D-095** (le cœur sans compte), décidé
+  par le retour de recette : à confirmer par Zakaria.
+- **Chargements** (TRV-080) : squelettes de la forme des cartes pendant une recherche du catalogue
+  (`catalogue/ResultsPending`), et à la place de « Chargement… » sur Mes favoris et le comparateur. Pas de
+  `loading.tsx` sur les pages publiques : il ferait perdre le statut 404 et les redirections de l'adresse (CAT-020).
+- **Fiche bien** : la carte cadre le cercle entier, crédits repliés, cadre plus haut sur téléphone ; `.env.example` du
+  site donne le style OpenFreeMap (sans lui le lieu s'écrit sur une carte sobre, FIC-061) ; « Partager » par e-mail
+  propose l'application de messagerie, Gmail, Outlook et Yahoo Mail (NAV-037).
+- **Grand texte** (TRV-123) : plus aucun débordement en « Grande » et « Très grande » (en-tête à 1 100 px, téléphone) :
+  l'en-tête passe plus tôt au menu du téléphone, le pied de page s'empile, ses séparateurs suivent leur élément.
+- **Pagination du catalogue** (CAT-055) : elle existait déjà ; elle n'apparaît qu'au-delà de 12 biens, et la
+  démonstration n'en a que 6 — non vue à l'écran pendant cette passe.
+- Tests : `e2e/tests/public-review.spec.ts` (nouveau, un test par défaut), `catalogue-filters` et `discovery` mis à
+  jour. Specs : vérificateur vert (93 décisions).
+- Environnement : `pnpm` 10 installé globalement échoue en voulant passer à la 12.4.2 : utiliser `corepack pnpm …`.
 
 ### 2026-10-11 — Zakaria (Claude, coordination) · premier serveur de recette
 

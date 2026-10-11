@@ -6,6 +6,8 @@ import { useId, useState, type FormEvent } from 'react';
 import { SORTS, criteriaToSearch, type CatalogueCriteria, type CatalogueSort } from '@dp/contracts';
 import { Icon } from '@dp/ui';
 import { t } from '@/lib/i18n';
+import { Dropdown } from '@/components/vitrine/Dropdown';
+import { announceCatalogueSearch } from './ResultsPending';
 import s from './catalogue.module.css';
 
 export interface CatalogueToolbarProps {
@@ -26,7 +28,9 @@ export function CatalogueToolbar({ criteria, count, summary, filterCount, monthl
     const n = { ...next };
     delete n.page;
     const qs = criteriaToSearch(n);
-    router.push(`${pathname}${qs}${extra ? `${qs ? '&' : '?'}${extra}` : ''}`);
+    const url = `${pathname}${qs}${extra ? `${qs ? '&' : '?'}${extra}` : ''}`;
+    announceCatalogueSearch(url);
+    router.push(url);
   };
 
   const onSearch = (e: FormEvent) => {
@@ -70,27 +74,21 @@ export function CatalogueToolbar({ criteria, count, summary, filterCount, monthl
         <Icon name="sliders" size={20} />
         {filterCount ? t('ui.catalogue.page.filtersCount', { n: filterCount }) : t('ui.catalogue.page.filters')}
       </button>
-      <label className={s.sortLabel}>
-        <span className="visually-hidden">{t('ui.catalogue.page.sortLabel')}</span>
-        <select
-          className={s.sortSelect}
-          value={current}
-          onChange={(e) => {
-            const sort = e.target.value as CatalogueSort;
-            const next = { ...criteria };
-            if (sort === 'relevance') delete next.sort;
-            else next.sort = sort;
-            navigate(next);
-          }}
-        >
-          {sorts.map((x) => (
-            <option key={x} value={x}>
-              {t('ui.catalogue.page.sort', { tri: t(`ui.catalogue.sort.${x}`) })}
-            </option>
-          ))}
-        </select>
-        <Icon name="chevron-down" size={16} className={s.sortChevron} />
-      </label>
+      <Dropdown
+        className={s.sort}
+        align="end"
+        label={t('ui.catalogue.page.sortLabel')}
+        value={current}
+        groups={[{ options: sorts.map((x) => ({ value: x, label: t(`ui.catalogue.sort.${x}`) })) }]}
+        prefix={<span className={s.sortPrefix}>{`${t('ui.catalogue.page.sortPrefix')} `}</span>}
+        onChange={(value) => {
+          const sort = value as CatalogueSort;
+          const next = { ...criteria };
+          if (sort === 'relevance') delete next.sort;
+          else next.sort = sort;
+          navigate(next);
+        }}
+      />
     </div>
   );
 }

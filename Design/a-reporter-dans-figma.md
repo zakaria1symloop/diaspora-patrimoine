@@ -124,3 +124,18 @@
 | ☐ | EA-51 Un promoteur, onglet Relation | En tête « Ce que nous attendons de lui » (nature, objet, depuis combien de jours, échéance en rouge si dépassée, « Saisir la réponse » →) ; puis les chiffres de la période en tuiles (30 j · 90 j · 12 mois, segmenté), ventes hors plateforme sur leur ligne, dossiers clos par raison en pastilles ; puis dossiers ouverts et options ou réservations en tableaux. | CTL-005, ACP-015 | 11/10/2026 |
 | ☐ | EA-11 Une demande, candidature partenaire | Panneau « Candidature partenaire · Promoteur/Banque » sous la demande : statut et état de l'e-mail, trois blocs (société, personne, sections remplies), réponses sur fond bleu pâle, justificatifs avec « Ouvrir », et les décisions « Accepter » (ou « Rattacher à {nom} » quand une fiche correspond), « Demander un complément », « Refuser » ; bandeau vert « Fiche créée » avec son lien après acceptation. | ACP-084 | 11/10/2026 |
 | ☐ | EA-51 Un promoteur, suspension | Fenêtre « Suspendre » qui annonce l'effet avant de confirmer (« 1 programme et 1 bien seront dépubliés. ») et demande une raison ; après réactivation, bandeau « n fiches ont été dépubliées par la suspension du {date}. » avec « Les republier ». | MOD-110, CTL-004 | 11/10/2026 |
+
+## Site public — retour de recette du 11/10/2026 (D-102 à D-104)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | En-tête, menu du téléphone | Plus de flèche sur « Se connecter » ni sur les entrées du menu du téléphone ; « Mon espace » porte un chevron vers le bas, retourné quand son menu est ouvert. | NAV-010, NAV-014 | 11/10/2026 |
+| ☐ | EP-01 Accueil, comparatif ; toutes les cartes de bien | Drapeaux ronds dessinés : Algérie moitié verte, moitié blanche, croissant et étoile rouges ; France tricolore. | DSN-042 | 11/10/2026 |
+| ☐ | EP-01 Accueil, haut de page | Les deux colonnes du comparatif et la carte du Café se soulèvent au survol : elles sont cliquables en entier. | ACC-030, ACC-040 | 11/10/2026 |
+| ☐ | EP-01, EP-02 Barre de recherche ; EP-02 tri ; EP-03 ville | Liste de choix du site : chevron à droite de la valeur, liste arrondie sous le champ, options de 44 px avec leur nombre de biens, valeur choisie en gras avec une coche, groupes titrés (« Par mensualité », « Par prix total »). | CAT-001, CAT-050 | 11/10/2026 |
+| ☐ | EP-03 Filtres | Pastilles « pièces » : coche et fond bleu roi quand elles sont choisies, nombre de biens en petit ; sous le bouton « Voir {m} biens », « Vos choix ne sont pas encore appliqués. » ; prix ou surface inversés : champs bordés de rouge et message sous eux, bouton inactif. | CAT-031, CAT-034 | 11/10/2026 |
+| ☐ | Cartes de bien, fiche bien | Fenêtre « Gardez ce bien dans vos favoris » (cœur dans un rond, texte, « Se connecter », « Créer mon espace », « Plus tard ») quand le visiteur n'est pas connecté. | SFA-021 | 11/10/2026 |
+| ☐ | EP-02 Catalogue, Mes favoris, comparateur | Squelettes de la forme des cartes pendant un chargement. | TRV-080 | 11/10/2026 |
+| ☐ | EP-11, EP-12 Fiches, section Localisation | Carte : le cercle entier dans le cadre, crédits repliés derrière « i », cadre 4:3 sur téléphone ; sans fond de carte, le lieu sur une carte blanche bordée. | FIC-060, FIC-061 | 11/10/2026 |
+| ☐ | EP-11, EP-12, EP-14, EP-31 Menu « Partager » | « E-mail » se déplie : « Mon application de messagerie », Gmail, Outlook, Yahoo Mail. | NAV-037 | 11/10/2026 |
+| ☐ | Pied de page | En « Grande » et « Très grande » : menus sous la marque, alignés à gauche ; séparateurs « · » après chaque lien ; les trois tailles de texte passent à la ligne sur téléphone. | TRV-123 | 11/10/2026 |

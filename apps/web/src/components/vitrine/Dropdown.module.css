@@ -1,0 +1,163 @@
+/* Dropdown — the choice list of the search bar, the sort and the filters. */
+.root {
+  position: relative;
+  min-width: 0;
+}
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-8);
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bo-texte-encre);
+  font: inherit;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  font-weight: 500;
+  text-align: start;
+  cursor: pointer;
+}
+.value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chevron {
+  flex: none;
+  color: var(--bo-texte-roi);
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+.button[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+.button:focus-visible {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 4px;
+  border-radius: var(--radius-s);
+}
+
+/* bare: inside a field that already has its frame (search bar) */
+.bare .button {
+  min-height: 1.75rem;
+  padding: 0;
+}
+
+/* field: a framed form field */
+.field .button {
+  min-height: var(--field-h);
+  padding-inline: var(--sp-16);
+  border: var(--stroke-field) solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+}
+.field .button:hover,
+.field .button[aria-expanded='true'] {
+  border-color: var(--bo-texte-roi);
+}
+.field .button:focus-visible {
+  outline-offset: 2px;
+  border-radius: var(--radius-m);
+}
+
+.list {
+  position: absolute;
+  inset-block-start: calc(100% + var(--sp-8));
+  inset-inline-start: 0;
+  z-index: 60;
+  min-width: max(100%, 15rem);
+  max-width: min(24rem, calc(100vw - 2rem));
+  max-height: min(22rem, 60dvh);
+  margin: 0;
+  padding: var(--sp-8);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-l);
+  animation: dropdownIn var(--motion-fast) var(--ease-out);
+}
+.list.up {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--sp-8));
+}
+.list.end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+.options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.group {
+  margin: 0;
+  padding: var(--sp-10) var(--sp-12) var(--sp-4);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--bo-texte-doux);
+}
+.list > li + li {
+  margin-block-start: var(--sp-4);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: var(--target-min);
+  padding: var(--sp-8) var(--sp-12);
+  border-radius: var(--radius-m);
+  color: var(--bo-texte-encre);
+  font-size: var(--fs-body-m);
+  line-height: var(--lh-body-m);
+  font-weight: 500;
+  cursor: pointer;
+}
+.optionLabel {
+  flex: 1;
+  min-width: 0;
+}
+.note {
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+  font-variant-numeric: tabular-nums;
+}
+.tick {
+  flex: none;
+  visibility: hidden;
+  color: var(--bo-texte-roi);
+}
+.active {
+  background: var(--bo-fond-ciel-pale);
+}
+.option[aria-selected='true'] {
+  color: var(--bo-texte-roi);
+  font-weight: 700;
+}
+.option[aria-selected='true'] .tick {
+  visibility: visible;
+}
+.option[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .list {
+    animation: none;
+  }
+}

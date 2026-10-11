@@ -3967,6 +3967,8 @@ export const messages = {
     "ui.catalogue.page.filtersCount": "Filtres ({n})",
     "ui.catalogue.page.sort": "Trier : {tri}",
     "ui.catalogue.page.sortLabel": "Trier par",
+    "ui.catalogue.page.sortPrefix": "Trier :",
+    "ui.catalogue.page.loading": "Chargement des biens…",
     "ui.catalogue.page.clearAll": "Tout effacer",
     "ui.catalogue.page.remove": "Retirer le filtre {filtre}",
     "ui.catalogue.page.createAlert": "Créer une alerte",
@@ -4012,6 +4014,10 @@ export const messages = {
     "ui.catalogue.filters.showNone": "Aucun bien ne correspond",
     "ui.catalogue.filters.showUnknown": "Voir les biens",
     "ui.catalogue.filters.countUnavailable": "Nombre indisponible pour l’instant.",
+    "ui.catalogue.filters.pending": "Vos choix ne sont pas encore appliqués.",
+    "ui.catalogue.filters.fixFirst": "Corrigez les valeurs signalées pour voir les biens.",
+    "ui.catalogue.filters.priceOrder": "Le prix minimum dépasse le prix maximum. Corrigez l’un des deux.",
+    "ui.catalogue.filters.surfaceOrder": "La surface minimum dépasse la surface maximum. Corrigez l’une des deux.",
     "ui.catalogue.filters.close": "Fermer les filtres",
     "ui.catalogue.filters.type": "Type de bien",
     "ui.catalogue.filters.rooms": "Pièces",
@@ -5090,6 +5096,10 @@ export const messages = {
     "ui.common.map.searchArea": "Rechercher dans cette zone",
     "ui.common.shareTo.whatsapp": "WhatsApp",
     "ui.common.shareTo.email": "E-mail",
+    "ui.common.shareTo.mailApp": "Mon application de messagerie",
+    "ui.common.shareTo.gmail": "Gmail",
+    "ui.common.shareTo.outlook": "Outlook",
+    "ui.common.shareTo.yahoo": "Yahoo Mail",
     "ui.common.shareTo.facebook": "Facebook",
     "ui.common.placeholder.email": "prenom.nom@exemple.fr",
     "ui.common.placeholder.phone": "6 12 34 56 78",
@@ -6235,6 +6245,11 @@ export const messages = {
     "ui.favorites.nudge.text": "Créez votre espace pour retrouver vos favoris sur tous vos appareils",
     "ui.favorites.nudge.cta": "Créer mon espace",
     "ui.favorites.nudge.close": "Fermer",
+    "ui.favorites.signIn.title": "Gardez ce bien dans vos favoris",
+    "ui.favorites.signIn.text": "Vos favoris se retrouvent dans votre espace, sur tous vos appareils. Connectez-vous ou créez votre espace : ce bien y sera ajouté aussitôt.",
+    "ui.favorites.signIn.login": "Se connecter",
+    "ui.favorites.signIn.signup": "Créer mon espace",
+    "ui.favorites.signIn.later": "Plus tard",
     "ui.favorites.link": "Mes favoris ({n})",
     "ui.favorites.page.seoTitle": "Mes favoris",
     "ui.favorites.page.breadcrumb": "Mes favoris",
@@ -6248,7 +6263,7 @@ export const messages = {
     "ui.favorites.page.goneHint": "Il restera dans vos favoris quelques jours, puis disparaîtra de lui-même.",
     "ui.favorites.page.remove": "Retirer",
     "ui.favorites.page.emptyTitle": "Touchez le cœur d’un bien pour le retrouver ici.",
-    "ui.favorites.page.emptyText": "Vos favoris restent sur cet appareil, sans compte, et vous attendent à votre prochaine visite.",
+    "ui.favorites.page.emptyText": "Connectez-vous pour mettre des biens de côté et les retrouver sur tous vos appareils.",
     "ui.favorites.page.discover": "Découvrir les biens",
     "ui.favorites.page.loading": "Chargement de vos favoris…",
     "ui.favorites.page.error": "Vos favoris n’ont pas pu être chargés.",
@@ -11015,6 +11030,7 @@ export type MessageKey =
   | 'ui.catalogue.filters.estimate'
   | 'ui.catalogue.filters.estimated'
   | 'ui.catalogue.filters.estimatedApply'
+  | 'ui.catalogue.filters.fixFirst'
   | 'ui.catalogue.filters.location'
   | 'ui.catalogue.filters.max'
   | 'ui.catalogue.filters.min'
@@ -11028,6 +11044,8 @@ export type MessageKey =
   | 'ui.catalogue.filters.optTour360'
   | 'ui.catalogue.filters.optTour360Help'
   | 'ui.catalogue.filters.options'
+  | 'ui.catalogue.filters.pending'
+  | 'ui.catalogue.filters.priceOrder'
   | 'ui.catalogue.filters.priceRange'
   | 'ui.catalogue.filters.promoter'
   | 'ui.catalogue.filters.promoterSearch'
@@ -11043,6 +11061,7 @@ export type MessageKey =
   | 'ui.catalogue.filters.standing'
   | 'ui.catalogue.filters.status'
   | 'ui.catalogue.filters.surface'
+  | 'ui.catalogue.filters.surfaceOrder'
   | 'ui.catalogue.filters.surfaceRange'
   | 'ui.catalogue.filters.title'
   | 'ui.catalogue.filters.type'
@@ -11095,6 +11114,7 @@ export type MessageKey =
   | 'ui.catalogue.page.keyword'
   | 'ui.catalogue.page.keywordPlaceholder'
   | 'ui.catalogue.page.loadMore'
+  | 'ui.catalogue.page.loading'
   | 'ui.catalogue.page.next'
   | 'ui.catalogue.page.page'
   | 'ui.catalogue.page.pagination'
@@ -11106,6 +11126,7 @@ export type MessageKey =
   | 'ui.catalogue.page.saveSearch'
   | 'ui.catalogue.page.sort'
   | 'ui.catalogue.page.sortLabel'
+  | 'ui.catalogue.page.sortPrefix'
   | 'ui.catalogue.page.suggestions'
   | 'ui.catalogue.page.summaryNone'
   | 'ui.catalogue.page.titleAll'
@@ -12122,7 +12143,11 @@ export type MessageKey =
   | 'ui.common.share'
   | 'ui.common.shareTo.email'
   | 'ui.common.shareTo.facebook'
+  | 'ui.common.shareTo.gmail'
+  | 'ui.common.shareTo.mailApp'
+  | 'ui.common.shareTo.outlook'
   | 'ui.common.shareTo.whatsapp'
+  | 'ui.common.shareTo.yahoo'
   | 'ui.common.simpleMode.help'
   | 'ui.common.simpleMode.label'
   | 'ui.common.simpleMode.more'
@@ -13314,6 +13339,11 @@ export type MessageKey =
   | 'ui.favorites.page.retry'
   | 'ui.favorites.page.seoTitle'
   | 'ui.favorites.page.title'
+  | 'ui.favorites.signIn.later'
+  | 'ui.favorites.signIn.login'
+  | 'ui.favorites.signIn.signup'
+  | 'ui.favorites.signIn.text'
+  | 'ui.favorites.signIn.title'
   | 'ui.favorites.toast.added'
   | 'ui.favorites.toast.full'
   | 'ui.favorites.toast.removed'

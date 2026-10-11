@@ -12,6 +12,7 @@ import { PropertyCard } from '@/components/vitrine/PropertyCard';
 import { useFavorites } from '@/lib/discovery';
 import { useClientSession } from '@/lib/session-client';
 import { useRouter } from 'next/navigation';
+import { RowsSkeleton } from '@/components/vitrine/Skeletons';
 import { t } from '@/lib/i18n';
 import { LineArt } from './LineArt';
 import p from './pages.module.css';
@@ -65,9 +66,8 @@ export function FavoritesList({ monthlyEnabled, illustrationNote }: { monthlyEna
 
   if (!hydrated || (!data && !failed)) {
     return (
-      <p className={p.loading} role="status">
-        {t('ui.favorites.page.loading')}
-      </p>
+      // TRV-080 — the rows to come, in their shape
+      <RowsSkeleton rows={Math.min(Math.max(items.length, 2), 6)} label={t('ui.favorites.page.loading')} />
     );
   }
   if (failed) {

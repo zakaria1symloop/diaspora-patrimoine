@@ -3,7 +3,7 @@
 // shared, and « Retour » closes the window. DSN-050 Modal: centred 720px on desktop, full screen on phones,
 // focus trapped and returned (native <dialog>), Escape closes (TRV-121).
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useRef, type ReactNode } from 'react';
 import { Icon } from '@dp/ui';
 import s from './dialog.module.css';
 
@@ -38,6 +38,8 @@ export function QueryDialog({
   width?: 480 | 720 | 800;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  // several windows live on one page (callback, interest, sign-in of the hearts): each is named by its own title
+  const titleId = useId();
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
@@ -49,7 +51,7 @@ export function QueryDialog({
       ref={ref}
       className={s.dialog}
       style={{ ['--w' as string]: `${width / 16}rem` }}
-      aria-labelledby="dialog-titre"
+      aria-labelledby={titleId}
       onCancel={(e) => {
         e.preventDefault();
         onClose();
@@ -57,7 +59,7 @@ export function QueryDialog({
     >
       <div className={s.frame}>
         <header className={s.header}>
-          <h2 id="dialog-titre" className={s.title}>
+          <h2 id={titleId} className={s.title}>
             {title}
           </h2>
           <button type="button" className={s.close} onClick={onClose}>

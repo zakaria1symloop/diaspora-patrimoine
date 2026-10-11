@@ -247,8 +247,10 @@
 }
 .captionHead {
   display: flex;
+  flex-wrap: wrap; /* the arrows go under a long title rather than out of the card (phone, « Très grande ») */
   align-items: center;
   gap: var(--sp-12);
+  min-width: 0;
 }
 .captionIcon {
   width: 2.5rem;
@@ -262,7 +264,9 @@
   color: var(--bo-texte-blanc);
 }
 .captionTitle {
-  flex: 1;
+  flex: 1 1 8rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
   margin: 0;
   font-size: var(--fs-overline-l);
   line-height: var(--lh-overline-l);

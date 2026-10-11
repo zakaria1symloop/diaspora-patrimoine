@@ -9,6 +9,8 @@ import { Icon, buttonClass, ButtonInner } from '@dp/ui';
 import { formatNumber } from '@dp/i18n';
 import { t } from '@/lib/i18n';
 import { typeRooms } from '@/lib/format';
+import { Dropdown, type DropdownGroup } from './Dropdown';
+import { announceCatalogueSearch } from '@/components/catalogue/ResultsPending';
 import s from './SearchBar.module.css';
 
 const KEY = 'dp_form_search';
@@ -103,7 +105,9 @@ export function SearchBar({ options, monthlyEnabled, roomsPrefix, initial, persi
       }
     }
     const qs = criteriaToSearch(c);
-    router.push(`/programmes${qs}${filters ? `${qs ? '&' : '?'}filtres=1` : ''}`);
+    const url = `/programmes${qs}${filters ? `${qs ? '&' : '?'}filtres=1` : ''}`;
+    announceCatalogueSearch(url);
+    router.push(url);
   };
 
   const submit = (e: FormEvent) => {
@@ -114,67 +118,82 @@ export function SearchBar({ options, monthlyEnabled, roomsPrefix, initial, persi
   const monthlySteps = monthlyEnabled ? options.monthlyBudgetSteps : [];
   const fmt = (n: number) => formatNumber(n);
 
+  const budgetGroups: DropdownGroup[] = [{ options: [{ value: '', label: t('ui.catalogue.search.budgetAny') }] }];
+  if (monthlySteps.length > 0) {
+    budgetGroups.push({
+      label: t('ui.catalogue.search.budgetGroupMonthly'),
+      options: monthlySteps.map((n) => ({ value: `m:${n}`, label: t('ui.catalogue.search.budgetMonthlyStep', { n: fmt(n) }) })),
+    });
+  }
+  if (options.priceBudgetSteps.length > 0) {
+    budgetGroups.push({
+      label: t('ui.catalogue.search.budgetGroupTotal'),
+      options: options.priceBudgetSteps.map((n) => ({
+        value: `p:${n}`,
+        label: monthlyEnabled ? t('ui.catalogue.search.budgetPriceStep', { n: fmt(n) }) : t('ui.catalogue.search.budgetPriceStepShort', { n: fmt(n) }),
+      })),
+    });
+  }
+
   return (
     <form className={[s.bar, stacked && s.stacked].filter(Boolean).join(' ')} role="search" onSubmit={submit} aria-label={t('ui.catalogue.search.label')}>
-      <label className={s.field} htmlFor={`${id}-region`}>
+      <div className={s.field}>
         <Icon name="map-pin" size={24} className={s.gold} />
         <span className={s.text}>
-          <span className={s.label}>{t('ui.catalogue.search.city')}</span>
-          <select id={`${id}-region`} className={s.select} value={state.region} onChange={(e) => update({ region: e.target.value })}>
-            <option value="">{t('ui.catalogue.search.cityAll')}</option>
-            {options.regions.map((r) => (
-              <option key={r.slug} value={r.slug}>
-                {r.name}
-              </option>
-            ))}
-          </select>
+          <label className={s.label} id={`${id}-region-label`} htmlFor={`${id}-region`}>
+            {t('ui.catalogue.search.city')}
+          </label>
+          <Dropdown
+            id={`${id}-region`}
+            labelledBy={`${id}-region-label ${id}-region`}
+            variant="bare"
+            value={state.region}
+            onChange={(region) => update({ region })}
+            groups={[{ options: [{ value: '', label: t('ui.catalogue.search.cityAll') }, ...options.regions.map((r) => ({ value: r.slug, label: r.name, note: fmt(r.count) }))] }]}
+          />
         </span>
-      </label>
+      </div>
       <span className={s.sep} aria-hidden="true" />
-      <label className={s.field} htmlFor={`${id}-budget`}>
+      <div className={s.field}>
         <Icon name="coins" size={24} />
         <span className={s.text}>
-          <span className={s.label}>{monthlyEnabled ? t('ui.catalogue.search.budgetMonthly') : t('ui.catalogue.search.budget')}</span>
-          <select id={`${id}-budget`} className={s.select} value={state.budget} onChange={(e) => update({ budget: e.target.value })}>
-            <option value="">{t('ui.catalogue.search.budgetAny')}</option>
-            {monthlySteps.length > 0 ? (
-              <optgroup label={t('ui.catalogue.search.budgetGroupMonthly')}>
-                {monthlySteps.map((n) => (
-                  <option key={`m${n}`} value={`m:${n}`}>
-                    {t('ui.catalogue.search.budgetMonthlyStep', { n: fmt(n) })}
-                  </option>
-                ))}
-              </optgroup>
-            ) : null}
-            {options.priceBudgetSteps.length > 0 ? (
-              <optgroup label={t('ui.catalogue.search.budgetGroupTotal')}>
-                {options.priceBudgetSteps.map((n) => (
-                  <option key={`p${n}`} value={`p:${n}`}>
-                    {monthlyEnabled
-                      ? t('ui.catalogue.search.budgetPriceStep', { n: fmt(n) })
-                      : t('ui.catalogue.search.budgetPriceStepShort', { n: fmt(n) })}
-                  </option>
-                ))}
-              </optgroup>
-            ) : null}
-          </select>
+          <label className={s.label} id={`${id}-budget-label`} htmlFor={`${id}-budget`}>
+            {monthlyEnabled ? t('ui.catalogue.search.budgetMonthly') : t('ui.catalogue.search.budget')}
+          </label>
+          <Dropdown
+            id={`${id}-budget`}
+            labelledBy={`${id}-budget-label ${id}-budget`}
+            variant="bare"
+            value={state.budget}
+            onChange={(budget) => update({ budget })}
+            groups={budgetGroups}
+          />
         </span>
-      </label>
+      </div>
       <span className={s.sep} aria-hidden="true" />
-      <label className={s.field} htmlFor={`${id}-type`}>
+      <div className={s.field}>
         <Icon name="home" size={24} />
         <span className={s.text}>
-          <span className={s.label}>{t('ui.catalogue.search.type')}</span>
-          <select id={`${id}-type`} className={s.select} value={state.type} onChange={(e) => update({ type: e.target.value })}>
-            <option value="">{t('ui.catalogue.search.typeAll')}</option>
-            {options.types.map((o) => (
-              <option key={`${o.type}:${o.rooms ?? ''}`} value={`${o.type}:${o.rooms ?? ''}`}>
-                {typeRooms(o.type, o.rooms, roomsPrefix)}
-              </option>
-            ))}
-          </select>
+          <label className={s.label} id={`${id}-type-label`} htmlFor={`${id}-type`}>
+            {t('ui.catalogue.search.type')}
+          </label>
+          <Dropdown
+            id={`${id}-type`}
+            labelledBy={`${id}-type-label ${id}-type`}
+            variant="bare"
+            value={state.type}
+            onChange={(type) => update({ type })}
+            groups={[
+              {
+                options: [
+                  { value: '', label: t('ui.catalogue.search.typeAll') },
+                  ...options.types.map((o) => ({ value: `${o.type}:${o.rooms ?? ''}`, label: typeRooms(o.type, o.rooms, roomsPrefix), note: fmt(o.count) })),
+                ],
+              },
+            ]}
+          />
         </span>
-      </label>
+      </div>
       <div className={s.actions}>
         <button type="button" className={s.filters} onClick={() => go(true)}>
           <Icon name="sliders" size={20} />

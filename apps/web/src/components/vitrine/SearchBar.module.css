@@ -19,7 +19,6 @@
   align-items: center;
   gap: var(--sp-12);
   padding-inline: var(--sp-12);
-  cursor: pointer;
   color: var(--bo-texte-roi);
   --icon-accent: var(--bo-accent-bleu);
 }
@@ -37,25 +36,7 @@
   font-size: var(--fs-caption);
   line-height: var(--lh-caption);
   color: var(--bo-texte-doux);
-}
-.select {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  min-height: 1.75rem;
-  font-size: var(--fs-body-l);
-  line-height: var(--lh-body-l);
-  font-weight: 500;
-  color: var(--bo-texte-encre);
-  text-overflow: ellipsis;
   cursor: pointer;
-  width: 100%;
-}
-.select:focus-visible {
-  outline: 3px solid var(--bo-accent-bleu);
-  outline-offset: 4px;
-  border-radius: var(--radius-s);
 }
 .sep {
   align-self: stretch;
