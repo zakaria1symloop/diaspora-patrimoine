@@ -9,7 +9,7 @@ import { scannerFor, VIRUS_SCANNER } from './virus-scanner.js';
 @Module({
   providers: [
     { provide: OBJECT_STORAGE, useFactory: () => new LocalObjectStorage() },
-    { provide: VIRUS_SCANNER, useFactory: (env: Env) => scannerFor(env.APP_ENV), inject: [ENV] },
+    { provide: VIRUS_SCANNER, useFactory: (env: Env) => scannerFor(env.APP_ENV, env.VIRUS_SCAN_STUB), inject: [ENV] },
     MediaPipeline,
     PrivateFileResolvers,
   ],

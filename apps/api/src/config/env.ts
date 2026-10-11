@@ -32,6 +32,11 @@ const schema = z
       .optional()
       .transform((v) => v === 'true'),
     TRUSTED_PROXIES: z.string().optional(),
+    // MED-021, Q-096 — test server without ClamAV: files are considered clean. Forbidden in production.
+    VIRUS_SCAN_STUB: z
+      .enum(['true', 'false'])
+      .optional()
+      .transform((v) => v === 'true'),
     // ARC-060, NOT-003, NOT-013 — e-mail. `log` (default in local) writes .eml files; `memory` is for automated tests.
     MAIL_PROVIDER: z.enum(['log', 'smtp', 'memory']).optional(),
     MAIL_FROM_ADDRESS: z.email().optional(),
@@ -58,6 +63,9 @@ const schema = z
     }
     if (env.APP_ENV !== 'production' && env.APP_ENV !== 'local' && !env.SITE_GATE_PASSWORD) {
       ctx.addIssue({ code: 'custom', path: ['SITE_GATE_PASSWORD'], message: 'required outside production (ENV-040)' });
+    }
+    if (env.APP_ENV === 'production' && env.VIRUS_SCAN_STUB) {
+      ctx.addIssue({ code: 'custom', path: ['VIRUS_SCAN_STUB'], message: 'forbidden in production (MED-021, Q-096)' });
     }
     if (env.APP_ENV === 'production' && env.MAIL_SANDBOX_RECIPIENT) {
       ctx.addIssue({ code: 'custom', path: ['MAIL_SANDBOX_RECIPIENT'], message: 'forbidden in production (ENV-040)' });
