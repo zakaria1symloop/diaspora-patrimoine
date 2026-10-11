@@ -62,8 +62,8 @@ export function QueryDialog({
           <h2 id={titleId} className={s.title}>
             {title}
           </h2>
-          <button type="button" className={s.close} onClick={onClose}>
-            <Icon name="close" label={closeLabel} />
+          <button type="button" className={s.close} onClick={onClose} aria-label={closeLabel}>
+            <Icon name="close" />
           </button>
         </header>
         <div className={s.body}>{open ? children : null}</div>
