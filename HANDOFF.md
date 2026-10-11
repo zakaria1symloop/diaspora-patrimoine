@@ -84,6 +84,29 @@ cd apps/admin && npx next dev --hostname 0.0.0.0 --port 3001
   `CLAUDE.md`). Dans le navigateur, jamais `crypto.randomUUID`, `crypto.subtle` ni `navigator.clipboard` en direct :
   ils n'existent pas sur une adresse réseau en http (utiliser `newUuid()`, `sha256Hex()`, `copyText()` de `@dp/ui`).
 
+## 4 bis. Le serveur de recette (en ligne depuis le 2026-10-11)
+
+| Quoi | Adresse |
+|---|---|
+| Site public, espace client | https://patrimoine.72-60-190-211.sslip.io (page d'attente : « Accès réservé », mot de passe à demander à Zakaria) |
+| Back-office | https://admin.patrimoine.72-60-190-211.sslip.io (compte Direction de recette : à demander à Zakaria) |
+
+- **Environnement** `APP_ENV=staging` : le site est fermé derrière la page d'attente (NAV-064) ; les e-mails ne partent
+  pas, ils sont écrits en `.eml` dans `/opt/diaspora-patrimoine/app/.local/mail/` (tous adressés à
+  `sandbox@diaspora-patrimoine.test`, NOT-013) ; pas d'antivirus, remplacé par `VIRUS_SCAN_STUB=true` (Q-096).
+- **Sur le serveur** (VPS partagé avec d'autres projets de SYMLOOP — ne toucher qu'à ce qui suit) :
+  `/opt/diaspora-patrimoine/` (`app/` = ce dépôt, `env.sh` = Node 22 et pnpm 12 pour ce projet seulement,
+  `deploy.sh`, `build-fronts.sh`, `ecosystem.config.cjs`) ; base PostgreSQL 16 dans le conteneur Docker `dp-postgres`
+  (127.0.0.1:5440) ; processus pm2 `dp-patrimoine-api` (4600), `dp-patrimoine-web` (3600), `dp-patrimoine-admin`
+  (3601) ; nginx `/etc/nginx/sites-available/diaspora-patrimoine.conf` (certificats Let's Encrypt). Les `.env` du
+  serveur ont leurs propres secrets, jamais recopiés ailleurs.
+- **Mettre à jour la recette** après un `git push` sur `main` : `ssh` sur le serveur puis
+  `/opt/diaspora-patrimoine/deploy.sh 2>&1 | tee /opt/diaspora-patrimoine/deploy.log` (tirage de `main`,
+  installation, construction, migrations, données d'installation, construction des deux Next.js, redémarrage des
+  trois processus de ce projet seulement).
+- Lire le dernier e-mail (lien de vérification, d'invitation…) :
+  `ls -t /opt/diaspora-patrimoine/app/.local/mail/ | head`.
+
 ## 5. Vérifier avant de dire « fait »
 
 ```bash
@@ -106,7 +129,7 @@ Le détail par paquet est dans `SUIVI.md` § 2. En résumé :
 | **Lot 3 — back-office** | 3.1 socle ✅ · 3.4 à 3.6 catalogue 🟡 (fait, avec une liste de restes) · 3.7 dossier ✅ · 3.8 tâches et agenda ✅ · **3.2 demandes et 3.3 clients : en cours, interrompus** (voir § 7). |
 | **Lots 4 à 6** (GED et banques, communication, ouverture) | À faire. |
 
-**Rien n'est déployé** : pas d'hébergeur choisi, pas de recette en ligne (questions au `SUIVI.md` § 5).
+**Production : rien n'est déployé** (hébergeur et domaine à choisir, `SUIVI.md` § 5). Une **recette** tourne sur un VPS de SYMLOOP (§ 4 bis).
 
 ## 7. Ce qui était en cours quand le travail s'est arrêté
 

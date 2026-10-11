@@ -18,7 +18,8 @@ Dernière mise à jour : **2026-10-11** — Zakaria (session Claude).
 - **Back-office : en cours** — l'application `apps/admin` et le moteur d'automatisations sont en construction ; les
   écrans du Lot 3 viennent ensuite.
 - **Rien n'est déployé.** Dépôt git : `github.com/zakaria1symloop/diaspora-patrimoine` (depuis le 2026-10-11, partie
-  technique seulement). Pas d'hébergeur choisi, pas de recette en ligne. Nouveau développeur : lire `HANDOFF.md`.
+  technique seulement). Recette en ligne depuis le 2026-10-11 : https://patrimoine.72-60-190-211.sslip.io et https://admin.patrimoine.72-60-190-211.sslip.io
+  (VPS de SYMLOOP, `HANDOFF.md` § 4 bis). Production : hébergeur et domaine à choisir. Nouveau développeur : lire `HANDOFF.md`.
 
 ## 2. État par paquet du plan
 
@@ -134,6 +135,21 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-11 — Zakaria (Claude, coordination) · premier serveur de recette
+
+- Recette en ligne sur le VPS partagé de SYMLOOP, à côté des autres projets sans les toucher : dossier
+  `/opt/diaspora-patrimoine`, Node 22 propre au projet, PostgreSQL 16 en conteneur `dp-postgres`, trois processus pm2
+  `dp-patrimoine-*`, un fichier nginx et ses certificats. Adresses : https://patrimoine.72-60-190-211.sslip.io (site,
+  derrière la page d'attente) et https://admin.patrimoine.72-60-190-211.sslip.io (back-office). `APP_ENV=staging`,
+  e-mails en `.eml` sur le serveur, données d'installation et démonstration chargées, compte Direction de recette créé
+  par l'invitation réelle (identifiants chez Zakaria, jamais dans le dépôt).
+- Code : `VIRUS_SCAN_STUB` (Q-096) — sans ClamAV, aucune image ne passait hors du local. Test ajouté.
+- Pièges du serveur : Next écouté sur toutes les interfaces (le pare-feu ferme 3600/3601), sinon la page d'attente
+  échoue (`localhost` → `::1`) ; les deux `next build` l'un après l'autre (mémoire partagée).
+- Vérifié par un navigateur : page d'attente, accueil (20 images sur 20, vitrine des motivations), catalogue, accueil
+  390 px (19 sur 19), connexion au back-office avec code d'application. Les autres applications pm2 du serveur sont
+  restées en ligne.
 
 ### 2026-10-11 — Zakaria (Claude, coordination) · dépôt git public et dossier de reprise
 
