@@ -45,6 +45,12 @@
   min-height: 1.75rem;
   padding: 0;
 }
+/* TRV-121 — on a phone, the finger needs 44 px even inside the search bar's frame */
+@media (max-width: 767px) {
+  .bare .button {
+    min-height: var(--target-min);
+  }
+}
 
 /* field: a framed form field */
 .field .button {

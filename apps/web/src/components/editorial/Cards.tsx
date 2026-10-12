@@ -1,6 +1,6 @@
-// EDI-030 promoter card, EDI-031 programme card (state pill, CYC-127), EDI-071 testimonials, EDI-070 key figures.
+// EDI-030 promoter card, EDI-020 bank card, EDI-031 programme card (state pill, CYC-127), EDI-071 testimonials, EDI-070 key figures.
 import Link from 'next/link';
-import type { PromoterProgramCard, PublicPromoterCard, PublicTestimonial } from '@dp/contracts';
+import type { PromoterProgramCard, PublicBank, PublicPromoterCard, PublicTestimonial } from '@dp/contracts';
 import { Icon } from '@dp/ui';
 import { deliveryText, money } from '@/lib/format';
 import { t } from '@/lib/i18n';
@@ -16,37 +16,68 @@ function start(text: string | null, max = 140): string | null {
   return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
 }
 
-export function PromoterCard({ promoter }: { promoter: PublicPromoterCard }) {
+/** EDI-030 — a picture (the promoter's cover, else one of its programmes'), the logo over its edge, the name, the region,
+ *  the programmes; the whole card leads to the promoter's page. Same card on « Promoteurs » and « Nos partenaires ». */
+export function PromoterCard({ promoter, headingLevel = 'h3' }: { promoter: PublicPromoterCard; headingLevel?: 'h3' | 'h4' }) {
+  const Heading = headingLevel;
   return (
     <article className={`${s.card} ${s.cardLink} ${s.promoterCard}`}>
-      <div className={s.promoterTop}>
-        <Logo image={promoter.logo} name={promoter.name} />
-        <div>
-          <h3 className={s.promoterName}>
-            <Link href={`/promoteurs/${promoter.slug}`} className={s.stretch}>
-              {promoter.name}
-            </Link>
-          </h3>
-          <p className={s.facts}>
-            {promoter.region ? (
-              <span>
-                <Icon name="map-pin" size={16} />
-                {promoter.region}
-              </span>
-            ) : null}
-            <span>
-              <Icon name="building" size={16} />
-              {t('ui.editorial.promoters.programs', { n: promoter.programCount })}
-            </span>
-          </p>
-        </div>
+      <div className={s.promoterMedia}>
+        {promoter.image ? (
+          <Picture image={promoter.image} sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 420px" className={s.programImg} alt="" />
+        ) : (
+          <span className={s.programNoPhoto}>
+            <Icon name="building" size={32} />
+          </span>
+        )}
+        {promoter.onSaleCount ? (
+          <span className={`${s.programState} ${s.state_ON_SALE}`}>{t('ui.editorial.promoters.onSale', { n: promoter.onSaleCount })}</span>
+        ) : null}
+        <span className={s.promoterLogo}>
+          <Logo image={promoter.logo} name={promoter.name} size="s" />
+        </span>
       </div>
-      {promoter.referencesPublic ? <p className={s.cardText}>{start(promoter.referencesPublic)}</p> : null}
-      <span className={s.more} aria-hidden="true">
-        {t('ui.editorial.promoters.see')}
-        <Icon name="chevron-right" size={16} />
-      </span>
+      <div className={s.promoterBody}>
+        <Heading className={s.promoterName}>
+          <Link href={`/promoteurs/${promoter.slug}`} className={s.stretch}>
+            {promoter.name}
+          </Link>
+        </Heading>
+        <p className={s.facts}>
+          {promoter.region ? (
+            <span>
+              <Icon name="map-pin" size={16} />
+              {promoter.region}
+            </span>
+          ) : null}
+          <span>
+            <Icon name="building" size={16} />
+            {t('ui.editorial.promoters.programs', { n: promoter.programCount })}
+          </span>
+        </p>
+        {promoter.referencesPublic ? <p className={s.cardText}>{start(promoter.referencesPublic)}</p> : null}
+        <span className={s.more} aria-hidden="true">
+          {t('ui.editorial.promoters.see')}
+          <Icon name="chevron-right" size={16} />
+        </span>
+      </div>
     </article>
+  );
+}
+
+/** EDI-020, EDI-035 — a partner bank: its logo (else its initials on a medallion), its name, « Banque partenaire ». */
+export function BankCard({ bank }: { bank: PublicBank }) {
+  return (
+    <div className={s.bankCard}>
+      <Logo image={bank.logo} name={bank.name} size="m" />
+      <div className={s.bankText}>
+        <p className={s.bankName}>{bank.name}</p>
+        <p className={s.bankNote}>
+          <Icon name="bank" size={16} />
+          {bank.shortName && bank.shortName !== bank.name ? `${bank.shortName} · ${t('ui.editorial.partners.bank')}` : t('ui.editorial.partners.bank')}
+        </p>
+      </div>
+    </div>
   );
 }
 

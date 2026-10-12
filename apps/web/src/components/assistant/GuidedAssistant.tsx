@@ -305,6 +305,27 @@ interface Choice {
   label: string;
 }
 
+/** Above this many choices, a field narrows the list (the regions, as the catalogue grows). */
+const FILTER_FROM = 8;
+/** Question 2: the types one lives in, then the others (land, shops). */
+const HOME_TYPES = new Set(['apartment', 'studio', 'duplex', 'villa']);
+const fold = (v: string) => v.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+
+/** Titled groups when a question has kinds of answers that differ; one untitled group otherwise. */
+function groupChoices(step: GuidedStep, choices: Choice[]): { key: string; label: string | null; items: Choice[] }[] {
+  if (step === 'type') {
+    const home = choices.filter((c) => HOME_TYPES.has(c.value));
+    const other = choices.filter((c) => !HOME_TYPES.has(c.value));
+    if (home.length && other.length) {
+      return [
+        { key: 'home', label: t('ui.assistant.choices.groups.home'), items: home },
+        { key: 'other', label: t('ui.assistant.choices.groups.other'), items: other },
+      ];
+    }
+  }
+  return [{ key: 'all', label: null, items: choices }];
+}
+
 function QuestionStep({
   step,
   options,
@@ -386,7 +407,34 @@ function QuestionStep({
     onAnswer(valid[0] as never);
   };
 
-  const all = [...choices, neutral];
+  // D-105 — choices that keep their structure as they grow: titled groups (types: to live in, other properties), a
+  // field that narrows a long list (more than FILTER_FROM choices: the regions), the count of what is chosen, and the
+  // neutral answer set apart under « Ou bien ».
+  const [narrow, setNarrow] = useState('');
+  const groups = useMemo(() => groupChoices(step, choices), [step, choices]);
+  const filterable = choices.length > FILTER_FROM;
+  const words = fold(narrow).split(/\s+/).filter(Boolean);
+  const visible = (c: Choice) => !filterable || picked.includes(c.value) || words.every((w) => fold(c.label).includes(w));
+  const shownGroups = groups.map((g) => ({ ...g, items: g.items.filter(visible) })).filter((g) => g.items.length);
+  const pickedCount = picked.filter((x) => x !== neutral.value).length;
+
+  const chip = (c: Choice) => (
+    <label key={c.value} className={`${s.chip} ${c.value === neutral.value ? s.chipNeutral : ''}`}>
+      <input
+        type={multiple ? 'checkbox' : 'radio'}
+        name={legendId}
+        value={c.value}
+        checked={picked.includes(c.value)}
+        onChange={(e) => toggle(c.value, e.target.checked)}
+        className={s.chipInput}
+      />
+      <span className={s.chipMark} aria-hidden="true">
+        <Icon name="check" size={16} />
+      </span>
+      <span>{c.label}</span>
+    </label>
+  );
+
   return (
     <form
       className={s.question}
@@ -421,26 +469,47 @@ function QuestionStep({
         ) : null}
         {multiple ? (
           <p id={`${legendId}-hint`} className={s.hint}>
-            {t('ui.assistant.chat.several')}
+            {t('ui.assistant.chat.several')}{' '}
+            <span className={s.pickedCount} aria-live="polite">
+              {t('ui.assistant.chat.picked', { n: pickedCount })}
+            </span>
           </p>
         ) : null}
-        <div className={s.choices}>
-          {all.map((c) => (
-            <label key={c.value} className={`${s.chip} ${c.value === neutral.value ? s.chipNeutral : ''}`}>
-              <input
-                type={multiple ? 'checkbox' : 'radio'}
-                name={legendId}
-                value={c.value}
-                checked={picked.includes(c.value)}
-                onChange={(e) => toggle(c.value, e.target.checked)}
-                className={s.chipInput}
-              />
-              <span className={s.chipMark} aria-hidden="true">
-                <Icon name="check" size={16} />
-              </span>
-              <span>{c.label}</span>
-            </label>
-          ))}
+        {filterable ? (
+          <label className={s.narrow}>
+            <span className="visually-hidden">{t('ui.assistant.chat.filter')}</span>
+            <Icon name="search" size={20} />
+            <input
+              type="search"
+              value={narrow}
+              onChange={(e) => setNarrow(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.preventDefault(); // narrowing is not answering
+              }}
+              placeholder={t('ui.assistant.chat.filter')}
+              autoComplete="off"
+              className={s.narrowInput}
+            />
+          </label>
+        ) : null}
+        {shownGroups.map((g) =>
+          g.label ? (
+            <div key={g.key} className={s.choiceGroup} role="group" aria-labelledby={`${legendId}-${g.key}`}>
+              <p id={`${legendId}-${g.key}`} className={s.choiceGroupTitle}>
+                {g.label}
+              </p>
+              <div className={s.choices}>{g.items.map(chip)}</div>
+            </div>
+          ) : (
+            <div key={g.key} className={s.choices}>
+              {g.items.map(chip)}
+            </div>
+          ),
+        )}
+        {filterable && !shownGroups.length ? <p className={s.hint}>{t('ui.assistant.chat.noMatch')}</p> : null}
+        <div className={s.neutralRow}>
+          <span className={s.or}>{t('ui.assistant.chat.or')}</span>
+          {chip(neutral)}
         </div>
         {error ? (
           <p id={`${legendId}-error`} className={s.error} role="alert">

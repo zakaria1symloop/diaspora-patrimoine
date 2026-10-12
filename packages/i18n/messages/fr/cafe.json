@@ -7,7 +7,19 @@
     "all": "Tous",
     "reminder": "Gratuit, sur inscription. Le lieu exact vous est communiqué à l’inscription.",
     "none": "Les prochaines dates seront bientôt annoncées.",
-    "faq": "Questions fréquentes"
+    "faq": "Questions fréquentes",
+    "filters": {
+      "title": "Filtrer les dates",
+      "place": "Lieu",
+      "month": "Mois",
+      "seats": "Places",
+      "anyMonth": "Tous les mois",
+      "anySeats": "Toutes les dates",
+      "withSeats": "Avec des places libres",
+      "count": "{n, plural, =0 {Aucune date} one {# date} other {# dates}}",
+      "none": "Aucune date ne correspond à ces critères.",
+      "reset": "Voir toutes les dates"
+    }
   },
   "page": {
     "title": "{marque} – {lieu}",

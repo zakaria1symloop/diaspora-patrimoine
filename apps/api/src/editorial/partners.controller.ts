@@ -10,6 +10,7 @@ import type {
   PublicBank,
   PublicPartner,
   PublicPromoterCard,
+  PublicImage,
   PublicPromoterDetail,
 } from '@dp/contracts';
 import { CatalogueIndex } from '../catalogue/catalogue-index.js';
@@ -49,20 +50,32 @@ export class PublicPartnersController {
       where: PUBLIC_PROMOTER,
       select: {
         id: true, sortOrder: true, slug: true, brandName: true, legalName: true, referencesPublic: true, logoMediaId: true,
+        coverMediaId: true,
         region: { select: { nameFr: true } },
       },
     });
     const counts = await this.programCounts(rows.map((r) => r.id));
     const names = rows.map((r) => ({ ...r, name: r.brandName ?? r.legalName }));
     names.sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name, 'fr')); // EDI-030
-    const logos = await imagesById(this.prisma, this.index.mediaUrl, names.map((r) => ({ id: r.logoMediaId, alt: r.name })));
+    const images = await imagesById(
+      this.prisma,
+      this.index.mediaUrl,
+      names.flatMap((r) => [
+        { id: r.logoMediaId, alt: r.name },
+        { id: r.coverMediaId, alt: r.name },
+      ]),
+    );
+    // EDI-030 — a card always tries to show a picture: the promoter's cover, else one of its programmes' covers.
+    const programCovers = await this.programCovers(names.filter((r) => !r.coverMediaId || !images.get(r.coverMediaId)).map((r) => r.id));
     return {
       data: names.map((r) => ({
         slug: r.slug,
         name: r.name,
-        logo: r.logoMediaId ? (logos.get(r.logoMediaId) ?? null) : null,
+        logo: r.logoMediaId ? (images.get(r.logoMediaId) ?? null) : null,
+        image: (r.coverMediaId ? images.get(r.coverMediaId) : undefined) ?? programCovers.get(r.id) ?? null,
         region: r.region?.nameFr ?? null,
-        programCount: counts.get(r.id) ?? 0,
+        programCount: counts.get(r.id)?.listed ?? 0,
+        onSaleCount: counts.get(r.id)?.onSale ?? 0,
         referencesPublic: r.referencesPublic,
       })),
     };
@@ -88,19 +101,23 @@ export class PublicPartnersController {
     }
     const name = p.brandName ?? p.legalName;
     const [images, programs] = await Promise.all([
+      // (the cover first: EDI-031 heads the page with it, else with a programme's picture)
       imagesById(this.prisma, this.index.mediaUrl, [
         { id: p.logoMediaId, alt: name },
         { id: p.coverMediaId, alt: name },
       ]),
       this.programs(p.id),
     ]);
+    const cover = p.coverMediaId ? (images.get(p.coverMediaId) ?? null) : null;
     return {
       slug: p.slug,
       name,
       logo: p.logoMediaId ? (images.get(p.logoMediaId) ?? null) : null,
-      cover: p.coverMediaId ? (images.get(p.coverMediaId) ?? null) : null,
+      cover,
+      image: cover ?? programs.find((pr) => pr.cover)?.cover ?? null,
       region: p.region?.nameFr ?? null,
       programCount: programs.length,
+      onSaleCount: programs.filter((pr) => pr.state === 'ON_SALE').length,
       referencesPublic: p.referencesPublic,
       selectedSince: p.vettedAt ? p.vettedAt.getUTCFullYear() : null,
       descriptionPublic: p.descriptionPublic,
@@ -146,18 +163,51 @@ export class PublicPartnersController {
     };
   }
 
-  private async programCounts(promoterIds: string[]): Promise<Map<string, number>> {
+  private async programCounts(promoterIds: string[]): Promise<Map<string, { listed: number; onSale: number }>> {
     if (promoterIds.length === 0) return new Map();
     const rows = await this.prisma.program.findMany({
       where: { promoterId: { in: promoterIds }, publication: 'PUBLISHED', deletedAt: null },
       select: { promoterId: true, listedPropertyCount: true, lotsAvailable: true, lotsHeld: true, lotsSold: true },
     });
-    const counts = new Map<string, number>();
+    const counts = new Map<string, { listed: number; onSale: number }>();
     for (const r of rows) {
-      if (commercialState(r) === 'WITHDRAWN') continue;
-      counts.set(r.promoterId, (counts.get(r.promoterId) ?? 0) + 1);
+      const state = commercialState(r);
+      if (state === 'WITHDRAWN') continue;
+      const c = counts.get(r.promoterId) ?? { listed: 0, onSale: 0 };
+      c.listed += 1;
+      if (state === 'ON_SALE') c.onSale += 1;
+      counts.set(r.promoterId, c);
     }
     return counts;
+  }
+
+  /** EDI-030 — for each promoter without a cover, the cover of its most recently published programme that has one. */
+  private async programCovers(promoterIds: string[]): Promise<Map<string, PublicImage>> {
+    const out = new Map<string, PublicImage>();
+    if (promoterIds.length === 0) return out;
+    const programs = await this.prisma.program.findMany({
+      where: { promoterId: { in: promoterIds }, publication: 'PUBLISHED', deletedAt: null },
+      orderBy: [{ publishedAt: 'desc' }],
+      select: { id: true, name: true, promoterId: true },
+    });
+    if (programs.length === 0) return out;
+    const media = await this.prisma.media.findMany({
+      where: {
+        ownerType: 'PROGRAM',
+        ownerId: { in: programs.map((p) => p.id) },
+        kind: { in: ['PHOTO', 'RENDER_3D'] },
+        processingStatus: 'READY',
+        deletedAt: null,
+        isPublic: true,
+      },
+      select: MEDIA_SELECT,
+    });
+    for (const p of programs) {
+      if (out.has(p.promoterId)) continue;
+      const cover = pickCover(media.filter((m) => m.ownerId === p.id) as MediaRow[]);
+      if (cover) out.set(p.promoterId, toPublicImage(this.index.mediaUrl, cover, p.name));
+    }
+    return out;
   }
 
   /** EDI-031 — published programmes: current ones first, then sold; withdrawn ones never. */

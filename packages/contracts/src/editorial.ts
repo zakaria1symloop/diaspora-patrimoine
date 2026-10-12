@@ -17,6 +17,10 @@ export interface PublicPromoterCard {
   region: string | null;
   /** Published programmes. */
   programCount: number;
+  /** Published programmes with a property for sale now (CYC-127 ON_SALE) — the « En vente » filter (EDI-030). */
+  onSaleCount: number;
+  /** The promoter's cover, else the cover of one of its published programmes; null: the card shows its logo alone. */
+  image: PublicImage | null;
   referencesPublic: string | null;
 }
 

@@ -139,3 +139,15 @@
 | ☐ | EP-11, EP-12 Fiches, section Localisation | Carte : le cercle entier dans le cadre, crédits repliés derrière « i », cadre 4:3 sur téléphone ; sans fond de carte, le lieu sur une carte blanche bordée. | FIC-060, FIC-061 | 11/10/2026 |
 | ☐ | EP-11, EP-12, EP-14, EP-31 Menu « Partager » | « E-mail » se déplie : « Mon application de messagerie », Gmail, Outlook, Yahoo Mail. | NAV-037 | 11/10/2026 |
 | ☐ | Pied de page | En « Grande » et « Très grande » : menus sous la marque, alignés à gauche ; séparateurs « · » après chaque lien ; les trois tailles de texte passent à la ligne sur téléphone. | TRV-123 | 11/10/2026 |
+
+## Site public — retour de recette du 12/10/2026 (D-105)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | EP-08 Promoteurs, EP-17 Nos partenaires | Carte de promoteur : image en haut (pastille « {n} programmes en vente »), logo ou initiales posé sur le bord de l'image, nom, région, programmes, références, « Voir le promoteur ». | EDI-030, EDI-035 | 12/10/2026 |
+| ☐ | EP-08 Promoteurs, EP-17 Nos partenaires | Barre de filtres blanche au-dessus des cartes : « Nom du promoteur » (loupe), « Région » (liste du site), case « Avec des biens en vente », bouton « Afficher », « Effacer les filtres » ; sous elle « {n} promoteurs » ; pagination du catalogue. | EDI-030 | 12/10/2026 |
+| ☐ | EP-09 Fiche promoteur | Image du promoteur (ou d'un de ses programmes) à droite du titre, à la place du dessin ; quatrième fait « {n} programmes en vente ». | EDI-031 | 12/10/2026 |
+| ☐ | EP-17 Nos partenaires | Pastilles « Tous nos partenaires · Promoteurs · Banques » avec leur nombre, la choisie en bleu roi. | EDI-035 | 12/10/2026 |
+| ☐ | EP-10 Financements (#banques), EP-17 | Banque en carte horizontale : logo (sinon initiales en médaillon), nom, « Banque partenaire ». | EDI-020 | 12/10/2026 |
+| ☐ | EP-13 Le Café, « Prochaines dates » | Trois rangées de pastilles titrées « Lieu », « Mois », « Places » ; « {n} dates » ; état vide « Aucune date ne correspond à ces critères. » avec « Voir toutes les dates ». | CAF-003 | 12/10/2026 |
+| ☐ | EP-22 Assistant | Choix en colonnes de même largeur, titres de groupe en petites capitales, compteur « {n} choix retenus », champ « Filtrer les choix » au-delà de huit, « Ou bien » + réponse neutre sous un trait pointillé. | ASS-010 | 12/10/2026 |

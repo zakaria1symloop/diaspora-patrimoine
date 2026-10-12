@@ -3402,6 +3402,10 @@ export const messages = {
     "ui.assistant.chat.loading": "Un instant…",
     "ui.assistant.chat.loadError": "L’assistant n’a pas pu se charger. Vérifiez votre connexion et réessayez.",
     "ui.assistant.chat.retry": "Réessayer",
+    "ui.assistant.chat.filter": "Filtrer les choix",
+    "ui.assistant.chat.noMatch": "Aucun choix ne correspond. Effacez quelques lettres.",
+    "ui.assistant.chat.picked": "{n, plural, =0 {Aucun choix pour l’instant} one {# choix retenu} other {# choix retenus}}",
+    "ui.assistant.chat.or": "Ou bien",
     "ui.assistant.questions.region": "Où souhaitez-vous acheter ?",
     "ui.assistant.questions.type": "Quel type de bien cherchez-vous ?",
     "ui.assistant.questions.rooms": "Combien de pièces ?",
@@ -3421,6 +3425,8 @@ export const messages = {
     "ui.assistant.choices.totalStep": "Jusqu’à {montant}",
     "ui.assistant.choices.delivery.NOW": "Disponible tout de suite",
     "ui.assistant.choices.delivery.SOON": "D’ici un à deux ans",
+    "ui.assistant.choices.groups.home": "Pour habiter",
+    "ui.assistant.choices.groups.other": "Autres biens",
     "ui.assistant.precision.label": "Votre précision",
     "ui.assistant.precision.hint": "Facultatif. Votre conseiller la lira telle quelle si vous nous laissez vos coordonnées.",
     "ui.assistant.precision.submit": "Voir les biens",
@@ -3795,6 +3801,16 @@ export const messages = {
     "ui.cafe.list.reminder": "Gratuit, sur inscription. Le lieu exact vous est communiqué à l’inscription.",
     "ui.cafe.list.none": "Les prochaines dates seront bientôt annoncées.",
     "ui.cafe.list.faq": "Questions fréquentes",
+    "ui.cafe.list.filters.title": "Filtrer les dates",
+    "ui.cafe.list.filters.place": "Lieu",
+    "ui.cafe.list.filters.month": "Mois",
+    "ui.cafe.list.filters.seats": "Places",
+    "ui.cafe.list.filters.anyMonth": "Tous les mois",
+    "ui.cafe.list.filters.anySeats": "Toutes les dates",
+    "ui.cafe.list.filters.withSeats": "Avec des places libres",
+    "ui.cafe.list.filters.count": "{n, plural, =0 {Aucune date} one {# date} other {# dates}}",
+    "ui.cafe.list.filters.none": "Aucune date ne correspond à ces critères.",
+    "ui.cafe.list.filters.reset": "Voir toutes les dates",
     "ui.cafe.page.title": "{marque} – {lieu}",
     "ui.cafe.page.hours": "de {debut} à {fin} (heure de {ville})",
     "ui.cafe.page.place": "Lieu",
@@ -5405,6 +5421,17 @@ export const messages = {
     "ui.editorial.promoters.state.ALL_RESERVED": "Tout est réservé",
     "ui.editorial.promoters.state.UPCOMING": "À venir",
     "ui.editorial.promoters.state.SOLD": "Vendu",
+    "ui.editorial.promoters.onSale": "{n, plural, one {# programme en vente} other {# programmes en vente}}",
+    "ui.editorial.promoters.loadMore": "Voir les promoteurs suivants",
+    "ui.editorial.promoters.filters.title": "Trouver un promoteur",
+    "ui.editorial.promoters.filters.search": "Nom du promoteur",
+    "ui.editorial.promoters.filters.region": "Région",
+    "ui.editorial.promoters.filters.regionAll": "Toutes les régions",
+    "ui.editorial.promoters.filters.onSale": "Avec des biens en vente",
+    "ui.editorial.promoters.filters.apply": "Afficher",
+    "ui.editorial.promoters.filters.reset": "Effacer les filtres",
+    "ui.editorial.promoters.filters.count": "{n, plural, =0 {Aucun promoteur} one {# promoteur} other {# promoteurs}}",
+    "ui.editorial.promoters.filters.none": "Aucun promoteur ne correspond à ces critères.",
     "ui.editorial.partners.title": "Nos partenaires",
     "ui.editorial.partners.promoters": "Promoteurs",
     "ui.editorial.partners.banks": "Banques",
@@ -5421,6 +5448,9 @@ export const messages = {
     "ui.editorial.partners.category.INSTITUTION": "Institutions",
     "ui.editorial.partners.category.MEDIA": "Médias",
     "ui.editorial.partners.category.OTHER": "Autres",
+    "ui.editorial.partners.show": "Afficher",
+    "ui.editorial.partners.all": "Tous nos partenaires",
+    "ui.editorial.partners.bank": "Banque partenaire",
     "ui.editorial.faq.title": "Questions fréquentes",
     "ui.editorial.faq.searchLabel": "Rechercher une question",
     "ui.editorial.faq.clear": "Effacer la recherche",
@@ -10513,10 +10543,14 @@ export type MessageKey =
   | 'ui.assistant.chat.assistant'
   | 'ui.assistant.chat.back'
   | 'ui.assistant.chat.continue'
+  | 'ui.assistant.chat.filter'
   | 'ui.assistant.chat.greeting'
   | 'ui.assistant.chat.loadError'
   | 'ui.assistant.chat.loading'
+  | 'ui.assistant.chat.noMatch'
+  | 'ui.assistant.chat.or'
   | 'ui.assistant.chat.pickOne'
+  | 'ui.assistant.chat.picked'
   | 'ui.assistant.chat.progress'
   | 'ui.assistant.chat.restart'
   | 'ui.assistant.chat.retry'
@@ -10526,6 +10560,8 @@ export type MessageKey =
   | 'ui.assistant.choices.budgetKind'
   | 'ui.assistant.choices.delivery.NOW'
   | 'ui.assistant.choices.delivery.SOON'
+  | 'ui.assistant.choices.groups.home'
+  | 'ui.assistant.choices.groups.other'
   | 'ui.assistant.choices.monthly'
   | 'ui.assistant.choices.monthlyStep'
   | 'ui.assistant.choices.noAnswer'
@@ -10907,6 +10943,16 @@ export type MessageKey =
   | 'ui.cafe.list.all'
   | 'ui.cafe.list.dates'
   | 'ui.cafe.list.faq'
+  | 'ui.cafe.list.filters.anyMonth'
+  | 'ui.cafe.list.filters.anySeats'
+  | 'ui.cafe.list.filters.count'
+  | 'ui.cafe.list.filters.month'
+  | 'ui.cafe.list.filters.none'
+  | 'ui.cafe.list.filters.place'
+  | 'ui.cafe.list.filters.reset'
+  | 'ui.cafe.list.filters.seats'
+  | 'ui.cafe.list.filters.title'
+  | 'ui.cafe.list.filters.withSeats'
   | 'ui.cafe.list.how'
   | 'ui.cafe.list.none'
   | 'ui.cafe.list.reminder'
@@ -12544,6 +12590,8 @@ export type MessageKey =
   | 'ui.editorial.legal.rightsText'
   | 'ui.editorial.legal.rightsTitle'
   | 'ui.editorial.legal.version'
+  | 'ui.editorial.partners.all'
+  | 'ui.editorial.partners.bank'
   | 'ui.editorial.partners.banks'
   | 'ui.editorial.partners.category.INSTITUTION'
   | 'ui.editorial.partners.category.INSURER'
@@ -12558,12 +12606,24 @@ export type MessageKey =
   | 'ui.editorial.partners.partnerLogin'
   | 'ui.editorial.partners.partnerTitle'
   | 'ui.editorial.partners.promoters'
+  | 'ui.editorial.partners.show'
   | 'ui.editorial.partners.title'
   | 'ui.editorial.partners.website'
   | 'ui.editorial.promoters.currentTitle'
   | 'ui.editorial.promoters.delivered'
   | 'ui.editorial.promoters.empty'
+  | 'ui.editorial.promoters.filters.apply'
+  | 'ui.editorial.promoters.filters.count'
+  | 'ui.editorial.promoters.filters.none'
+  | 'ui.editorial.promoters.filters.onSale'
+  | 'ui.editorial.promoters.filters.region'
+  | 'ui.editorial.promoters.filters.regionAll'
+  | 'ui.editorial.promoters.filters.reset'
+  | 'ui.editorial.promoters.filters.search'
+  | 'ui.editorial.promoters.filters.title'
   | 'ui.editorial.promoters.inCatalogue'
+  | 'ui.editorial.promoters.loadMore'
+  | 'ui.editorial.promoters.onSale'
   | 'ui.editorial.promoters.presentation'
   | 'ui.editorial.promoters.priceFrom'
   | 'ui.editorial.promoters.programs'

@@ -124,7 +124,16 @@ export function CallCard({ href, secondary }: { href: string; secondary?: { href
   );
 }
 
-/** A logo, or the initial of the name in a medallion when there is none. */
+/** The first letters of the first two words (« Al Salam Bank » → « AS »), like a monogram. */
+function initials(name: string): string {
+  const words = name.split(/[\s'’-]+/).filter((w) => /\p{L}/u.test(w));
+  return words
+    .slice(0, 2)
+    .map((w) => w.match(/\p{L}/u)![0]!.toUpperCase())
+    .join('');
+}
+
+/** A logo, or the initials of the name in a medallion when there is none. */
 export function Logo({ image, name, size = 'm' }: { image: PublicImage | null; name: string; size?: 's' | 'm' | 'l' }) {
   return (
     <span className={`${s.logo} ${s[`logo_${size}`]}`}>
@@ -132,7 +141,7 @@ export function Logo({ image, name, size = 'm' }: { image: PublicImage | null; n
         <Picture image={image} sizes="160px" alt="" className={s.logoImg} />
       ) : (
         <span className={s.logoInitial} aria-hidden="true">
-          {name.charAt(0)}
+          {initials(name) || name.charAt(0)}
         </span>
       )}
     </span>

@@ -19,13 +19,18 @@ function pages(current: number, total: number): (number | '…')[] {
 }
 
 export function Pagination({ criteria, page, totalPages }: { criteria: CatalogueCriteria; page: number; totalPages: number }) {
-  if (totalPages <= 1) return null;
   const href = (p: number) => {
     const c: CatalogueCriteria = { ...criteria };
     if (p > 1) c.page = p;
     else delete c.page;
     return `/programmes${criteriaToSearch(c)}#resultats`;
   };
+  return <PageNav page={page} totalPages={totalPages} href={href} loadMore={t('ui.catalogue.page.loadMore')} />;
+}
+
+/** The same pagination for any list paged in its address (promoters, EDI-030): `href(p)` is the address of page p. */
+export function PageNav({ page, totalPages, href, loadMore }: { page: number; totalPages: number; href: (p: number) => string; loadMore: string }) {
+  if (totalPages <= 1) return null;
   return (
     <nav className={s.pagination} aria-label={t('ui.catalogue.page.pagination')}>
       <ul role="list" className={s.pageList}>
@@ -76,7 +81,7 @@ export function Pagination({ criteria, page, totalPages }: { criteria: Catalogue
       </ul>
       {page < totalPages ? (
         <Link href={href(page + 1)} className={s.loadMore} scroll={false}>
-          {t('ui.catalogue.page.loadMore')}
+          {loadMore}
         </Link>
       ) : null}
     </nav>

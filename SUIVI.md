@@ -7,7 +7,7 @@
 >
 > **Comment l'écrire.** Court, daté (AAAA-MM-JJ), au présent. On n'efface pas le journal : on ajoute en haut.
 
-Dernière mise à jour : **2026-10-11** — Amrani-Mahdi01 (session Claude).
+Dernière mise à jour : **2026-10-12** — Amrani-Mahdi01 (session Claude).
 
 ---
 
@@ -86,6 +86,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Zakaria (Claude, agent 7) | 3.7 Dossier (création, fiche, rapprochement, réponses du client, pause, clôture, recul…) · 3.8 Tâches et rendez-vous (écrans, règles AUT-043 / AUT-051, résumé du matin, `R_EMAIL_BOUNCED`) | `apps/api/src/dossiers-admin/`, `apps/api/src/tasks-admin/`, `apps/api/src/client-space/` (routes de réponse du client, ajouts), `apps/api/src/automation/rule-seeds.ts` (ajouts), `apps/admin/src/app/(shell)/dossiers`, `/taches`, `/agenda`, `apps/admin/src/components/dossiers`, `tasks`, `agenda`, `packages/contracts/src/admin-dossiers.ts`, `admin-tasks.ts`, `packages/i18n/messages/fr/admin-dossiers.json`, `admin-tasks.json`, `e2e/tests/admin-dossiers*`, `admin-tasks*` | 2026-10-11 | en cours |
 | Zakaria (Claude, agent 8) | Passe de qualité de tout le site public (alignement sur Figma : tête du catalogue, cartes de motivation, carrousels 390, fiches bien et programme ; principes D-098 sur chaque page ; contrôle de chaque bouton) + report dans Figma | `apps/web/src/app/(site)/`, `apps/web/src/components/` (sauf `client-*`), `packages/i18n/messages/fr/` (espaces de noms du site, ajouts), `e2e/tests/public-controls.spec.ts`, `Design/`, fichier Figma (page Site public) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — restent les têtes d'EP-11 / EP-12 dans Figma et l'affichage simplifié des autres pages |
 | Amrani-Mahdi01 (Claude) | Retour de recette du site public du 11/10/2026 (`docs/retours-site-2026-10-11.md`) : menu, cartes cliquables, listes de choix, filtres appliqués au bouton, contrôle minimum / maximum, favori réservé au compte, défilements du téléphone, squelettes, carte de localisation, partage par e-mail, pied de page en grand texte | `apps/web/src/components/` (`vitrine`, `catalogue`, `home`, `layout`, `discovery`, `property`, `forms/QueryDialog.tsx`), `apps/web/src/app/(site)/programmes/page.tsx`, `apps/web/src/lib/` (`discovery`, `account-favorites`, `after-sign-in`), `packages/ui` (`Flag`, `map/`, `TextSizeControl`), `packages/i18n/messages/fr/` (`catalogue`, `favorites`, `common`), `e2e/tests/` (`public-review`, `catalogue-filters`, `discovery`), `Specs/` (D-102 à D-104) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — branche `retours/site-public-2026-10-11` |
+| Amrani-Mahdi01 (Claude) | Retour de recette du 12/10/2026 (`docs/retours-site-2026-10-12.md`, D-105) : promoteurs en cartes à image, filtres et pages ; fiche promoteur ; Nos partenaires par groupe ; banques en cartes ; filtres des dates du Café ; choix de l'assistant structurés | `apps/api/src/editorial/partners.controller.ts`, `packages/contracts/src/editorial.ts`, `apps/web/src/app/(site)/` (`promoteurs`, `nos-partenaires`, `financements`, `le-cafe`), `apps/web/src/components/` (`editorial`, `cafe/CafeFilters`, `assistant/GuidedAssistant`, `catalogue/Pagination`, `vitrine/FormDropdown`), `packages/i18n/messages/fr/` (`editorial`, `cafe`, `assistant`), `e2e/tests/public-review-2.spec.ts`, `Specs/` (D-105) | 2026-10-12 | **terminé** le 2026-10-12 — branche `retours/site-public-2026-10-12` (part de `retours/site-public-2026-10-11`) |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -136,6 +137,29 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-12 — Amrani-Mahdi01 (Claude) · retour de recette du 12/10/2026 (D-105)
+
+- Liste reçue : `docs/retours-site-2026-10-12.md`. Ses points déjà traités la veille (D-102 à D-104 : partage par
+  e-mail, carte, lecture, pièces, curseur, favori, filtres au bouton, squelettes, points des défilements, pied de page,
+  flèches du menu, cartes de l'accueil, drapeau, listes de choix) ne sont pas refaits. Branche
+  `retours/site-public-2026-10-12`, partie de `retours/site-public-2026-10-11` (pas encore fusionnée).
+- **Promoteurs** (EDI-030) : cartes à image — `GET /public/promoters` donne `image` (couverture, sinon celle du dernier
+  programme publié) et `onSaleCount` ; filtres nom, région, « Avec des biens en vente », appliqués par « Afficher »,
+  dans l'adresse ; pages de neuf (`PageNav`, tirée de la pagination du catalogue). **Fiche** (EDI-031) : image en tête,
+  « {n} programmes en vente ». **Nos partenaires** (EDI-035) : mêmes cartes et filtres, « Afficher » un seul groupe.
+- **Banques** (EDI-020) : cartes `BankCard` sur Financements et Nos partenaires ; sans logo, les initiales (« AS ») —
+  aucun logo inventé : l'équipe les dépose au back-office.
+- **Le Café** (CAF-003) : filtres lieu, mois, places libres (`cafe/CafeFilters`, remplace `PlaceFilter`).
+- **Assistant** (ASS-010) : choix en colonnes, groupes « Pour habiter » / « Autres biens », champ de filtre au-delà de
+  huit choix, nombre de choix retenus, réponse neutre à part.
+- Correction de la veille : sur téléphone, les listes de la barre de recherche de l'accueil faisaient 28 px de haut ;
+  elles font 44 px (TRV-121, relevé par l'audit `public-controls` sur téléphone).
+- Tests : `e2e/tests/public-review-2.spec.ts` (7 tests × ordinateur et téléphone, verts) ; non-régression :
+  `public-controls`, `public-review`, `assistant-ai`, `assistant-projection-partner`, `cafe-signed-in` verts. Specs : vérificateur vert
+  (94 décisions).
+- **Reste** : les formulaires du site gardent la liste du navigateur (`<select>` : Café, contact, rappel,
+  simulateurs, inscription partenaire…) ; les passer au composant `Dropdown` est un chantier à part.
 
 ### 2026-10-11 — Amrani-Mahdi01 (Claude) · retour de recette du site public (D-102 à D-104)
 

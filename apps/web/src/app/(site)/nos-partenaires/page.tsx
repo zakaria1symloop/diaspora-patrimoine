@@ -1,5 +1,6 @@
-// EP-17 — Nos partenaires (EDI-035): three groups, each hidden when empty — promoters (logos, links to their pages),
-// public banks, other public partners by category; all empty: the sentence of the spec. Then the two calls.
+// EP-17 — Nos partenaires (EDI-035): three groups, each hidden when empty — promoters (the cards of « Promoteurs », with
+// their filters), public banks, other public partners by category; « Afficher » shows one group (D-105); all empty: the
+// sentence of the spec. Then the two calls.
 // Tags: catalogue, settings.
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -10,9 +11,12 @@ import { getSettings } from '@/lib/settings';
 import { callbackHref, editorialTitle } from '@/lib/editorial';
 import { t } from '@/lib/i18n';
 import { CallCard, EmptyState, Logo, PageHead, SectionHeading } from '@/components/editorial/Parts';
+import { BankCard, PromoterCard } from '@/components/editorial/Cards';
+import { PromoterFilters, filterPromoters, readPromoterQuery } from '@/components/editorial/PromoterFilters';
 import s from '@/components/editorial/editorial.module.css';
 
 const CATEGORY_ORDER: PartnerCategory[] = ['NOTARY', 'INSURER', 'INSTITUTION', 'MEDIA', 'OTHER'];
+type Group = 'promoteurs' | 'banques' | 'autres';
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
@@ -22,55 +26,92 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function PartnersPage() {
-  const [settings, promoters, banks, partners] = await Promise.all([
+export default async function PartnersPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const [settings, promoters, banks, partners, sp] = await Promise.all([
     getSettings(),
     apiGet<ListResponse<PublicPromoterCard>>('/public/promoters', { tags: ['catalogue'] }),
     apiGet<ListResponse<PublicBank>>('/public/banks', { tags: ['catalogue'] }),
     apiGet<ListResponse<PublicPartner>>('/public/partners', { tags: ['catalogue'] }),
+    searchParams,
   ]);
   const allEmpty = !promoters.data.length && !banks.data.length && !partners.data.length;
   const categories = CATEGORY_ORDER.map((c) => ({ category: c, items: partners.data.filter((p) => p.category === c) })).filter((g) => g.items.length);
+
+  // EDI-035, D-105 — « Afficher » : all partners, or one group; the promoters can be filtered like on their page.
+  const groups: { key: Group; label: string; count: number }[] = [
+    { key: 'promoteurs' as const, label: t('ui.editorial.partners.promoters'), count: promoters.data.length },
+    { key: 'banques' as const, label: t('ui.editorial.partners.banks'), count: banks.data.length },
+    { key: 'autres' as const, label: t('ui.editorial.partners.others'), count: partners.data.length },
+  ].filter((g) => g.count > 0);
+  const asked = Array.isArray(sp.groupe) ? sp.groupe[0] : sp.groupe;
+  const group = groups.find((g) => g.key === asked)?.key ?? null;
+  const showing = (g: Group) => group === null || group === g;
+  const query = readPromoterQuery(sp);
+  const matching = filterPromoters(promoters.data, query);
+  const keep: Record<string, string> = group ? { groupe: group } : {};
 
   return (
     <>
       <PageHead title={t('ui.editorial.partners.title')} drawing="partenaire" />
 
-      <section className={`${s.section} ${s.bgIvoire}`} aria-label={t('ui.editorial.partners.title')}>
+      <section id="partenaires" className={`${s.section} ${s.bgIvoire}`} aria-label={t('ui.editorial.partners.title')}>
         <div className="container">
           {allEmpty ? <EmptyState text={t('ui.editorial.partners.empty')} drawing="promoteurs" /> : null}
 
-          {promoters.data.length ? (
-            <section className={s.group} aria-labelledby="groupe-promoteurs">
-              <SectionHeading id="groupe-promoteurs" title={t('ui.editorial.partners.promoters')} icon="building" />
-              <ul role="list" className={s.logoWall}>
-                {promoters.data.map((p) => (
-                  <li key={p.slug} className={`${s.logoTile} ${s.cardLink}`}>
-                    <Logo image={p.logo} name={p.name} />
-                    <Link href={`/promoteurs/${p.slug}`} className={s.stretch}>
-                      {p.name}
+          {groups.length >= 2 ? (
+            <nav className={s.groupChips} aria-label={t('ui.editorial.partners.show')}>
+              <ul role="list">
+                {[{ key: null, label: t('ui.editorial.partners.all'), count: groups.reduce((n, g) => n + g.count, 0) }, ...groups].map((g) => (
+                  <li key={g.key ?? 'tous'}>
+                    <Link
+                      href={`${g.key ? `/nos-partenaires?groupe=${g.key}` : '/nos-partenaires'}#partenaires`}
+                      className={s.groupChip}
+                      aria-current={group === g.key ? 'true' : undefined}
+                      scroll={false}
+                    >
+                      {g.label}
+                      <span className={s.groupChipCount}>{g.count}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
+            </nav>
+          ) : null}
+
+          {promoters.data.length && showing('promoteurs') ? (
+            <section className={s.group} aria-labelledby="groupe-promoteurs">
+              <SectionHeading id="groupe-promoteurs" title={t('ui.editorial.partners.promoters')} icon="building" />
+              {promoters.data.length >= 2 ? (
+                <PromoterFilters action="/nos-partenaires" anchor="groupe-promoteurs" keep={keep} promoters={promoters.data} query={query} shown={matching.length} />
+              ) : null}
+              {matching.length ? (
+                <ul role="list" className={s.cardGrid}>
+                  {matching.map((p) => (
+                    <li key={p.slug}>
+                      <PromoterCard promoter={p} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className={s.filterNone}>{t('ui.editorial.promoters.filters.none')}</p>
+              )}
             </section>
           ) : null}
 
-          {banks.data.length ? (
+          {banks.data.length && showing('banques') ? (
             <section className={s.group} aria-labelledby="groupe-banques">
               <SectionHeading id="groupe-banques" title={t('ui.editorial.partners.banks')} icon="bank" />
-              <ul role="list" className={s.logoWall}>
+              <ul role="list" className={s.bankWall}>
                 {banks.data.map((b) => (
-                  <li key={b.slug} className={s.logoTile}>
-                    <Logo image={b.logo} name={b.name} />
-                    {b.name}
+                  <li key={b.slug}>
+                    <BankCard bank={b} />
                   </li>
                 ))}
               </ul>
             </section>
           ) : null}
 
-          {categories.length ? (
+          {categories.length && showing('autres') ? (
             <section className={s.group} aria-labelledby="groupe-autres">
               <SectionHeading id="groupe-autres" title={t('ui.editorial.partners.others')} icon="partners" />
               {categories.map((g) => (
