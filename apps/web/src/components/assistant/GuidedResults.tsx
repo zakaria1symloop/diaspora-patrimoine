@@ -11,7 +11,7 @@ import { useDraft } from '@/lib/public-form';
 import { recordOrigin } from '@/lib/tracking';
 import { t } from '@/lib/i18n';
 import { CheckboxField, Honeypot, TextField } from '@/components/forms/fields';
-import { ConsentBlock, PhoneField, consentWire, useLeadSubmit } from '@/components/forms/lead-parts';
+import { ConsentBlock, PhoneField, SignedInConsent, SignedInContact, askedOf, consentWire, contactOf, signedInConsentWire, useLeadSubmit, useSignedInClient } from '@/components/forms/lead-parts';
 import { LeadDone } from '@/components/forms/LeadDone';
 import { PropertyCard } from '@/components/vitrine/PropertyCard';
 import l from '@/components/forms/lead.module.css';
@@ -169,6 +169,8 @@ export function GuidedLeadForm({
   const [done, setDone] = useState<{ data: LeadSubmitResponse; phone: boolean } | null>(null);
   const send = useLeadSubmit('GUIDED_SEARCH', settings);
   const none = result.outcome === 'NONE';
+  const me = useSignedInClient(); // DEM-022
+  const asked = askedOf(me);
 
   useEffect(() => recordOrigin(), []);
 
@@ -189,9 +191,10 @@ export function GuidedLeadForm({
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const local: Record<string, string> = {};
-    if (!v.firstName.trim()) local.firstName = t('ui.validation.REQUIRED');
-    if (!v.email.trim()) local.email = t('ui.validation.REQUIRED');
-    if (!v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
+    const c = contactOf(me, v);
+    if (!c.firstName.trim()) local.firstName = t('ui.validation.REQUIRED');
+    if (!c.email.trim()) local.email = t('ui.validation.REQUIRED');
+    if (!me && !v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
     setErrors(local);
     const first = ['firstName', 'email', 'consentContact'].find((k) => local[k]);
     if (first) return document.getElementById(`${id}-${first === 'consentContact' ? 'consent' : first}`)?.focus();
@@ -199,17 +202,17 @@ export function GuidedLeadForm({
     setBanner(null);
     const res = await send(
       {
-        firstName: v.firstName,
-        email: v.email,
-        phone: v.phone || null,
-        whatsappOptIn: v.phone ? v.whatsapp : false,
+        firstName: c.firstName,
+        email: c.email,
+        phone: c.phone || null,
+        whatsappOptIn: c.phone ? v.whatsapp : false,
         answers,
         criteria: result.criteria,
         propertyReferences: result.references,
         freeText: precision || null,
         ...(assistantConversationId ? { assistantConversationId } : {}),
-        ...consentWire(v.consent, v.marketing),
-        createAccount: v.createAccount,
+        ...(me ? signedInConsentWire() : consentWire(v.consent, v.marketing)),
+        createAccount: me ? false : v.createAccount,
       },
       {},
       honeypot,
@@ -217,7 +220,7 @@ export function GuidedLeadForm({
     setPending(false);
     if (res.ok) {
       clear();
-      setDone({ data: res.data, phone: Boolean(v.phone) });
+      setDone({ data: res.data, phone: Boolean(c.phone) });
     } else {
       setErrors(res.errors.fields);
       setBanner(res.errors.banner);
@@ -236,6 +239,8 @@ export function GuidedLeadForm({
           {banner}
         </p>
       ) : null}
+      {me ? <SignedInContact me={me} /> : null}
+      {me ? null : (
       <div className={l.row}>
         <TextField id={`${id}-firstName`} label={t('ui.lead.fields.firstName')} autoComplete="given-name" value={v.firstName} onChange={(e) => set({ firstName: e.target.value })} error={errors.firstName} />
         <TextField
@@ -250,16 +255,24 @@ export function GuidedLeadForm({
           error={errors.email}
         />
       </div>
-      <PhoneField id={`${id}-phone`} value={v.phone} onChange={(phone) => set({ phone })} error={errors.phone} optional />
-      {v.phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={v.whatsapp} onChange={(whatsapp) => set({ whatsapp })} /> : null}
-      <ConsentBlock
-        idPrefix={id}
-        consent={v.consent}
-        marketing={v.marketing}
-        createAccount={v.createAccount}
-        error={errors.consentContact}
-        onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })}
-      />
+      )}
+      {me && asked.name ? (
+        <TextField id={`${id}-firstName`} label={t('ui.lead.fields.firstName')} autoComplete="given-name" value={v.firstName} onChange={(e) => set({ firstName: e.target.value })} error={errors.firstName} />
+      ) : null}
+      {asked.phone ? <PhoneField id={`${id}-phone`} value={v.phone} onChange={(phone) => set({ phone })} error={errors.phone} optional /> : null}
+      {asked.phone && v.phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={v.whatsapp} onChange={(whatsapp) => set({ whatsapp })} /> : null}
+      {me ? (
+        <SignedInConsent />
+      ) : (
+        <ConsentBlock
+          idPrefix={id}
+          consent={v.consent}
+          marketing={v.marketing}
+          createAccount={v.createAccount}
+          error={errors.consentContact}
+          onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })}
+        />
+      )}
       <Honeypot name="homepageUrl" value={honeypot} onChange={setHoneypot} />
       <Button type="submit" variant="primary" size="L" fullWidth chevron pending={pending}>
         {texts ? texts.submit : none ? t('ui.assistant.form.submitNone') : t('ui.assistant.form.submit')}

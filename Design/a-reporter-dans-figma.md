@@ -151,3 +151,9 @@
 | ☐ | EP-10 Financements (#banques), EP-17 | Banque en carte horizontale : logo (sinon initiales en médaillon), nom, « Banque partenaire ». | EDI-020 | 12/10/2026 |
 | ☐ | EP-13 Le Café, « Prochaines dates » | Trois rangées de pastilles titrées « Lieu », « Mois », « Places » ; « {n} dates » ; état vide « Aucune date ne correspond à ces critères. » avec « Voir toutes les dates ». | CAF-003 | 12/10/2026 |
 | ☐ | EP-22 Assistant | Choix en colonnes de même largeur, titres de groupe en petites capitales, compteur « {n} choix retenus », champ « Filtrer les choix » au-delà de huit, « Ou bien » + réponse neutre sous un trait pointillé. | ASS-010 | 12/10/2026 |
+
+## Formulaires de demande — client connecté (D-106)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | EP-07 « Exprimer mon intérêt », EP-21 « Être rappelé », EP-19 Contact, EP-20 Projection, résultats de l'assistant et des simulateurs, EP-13 inscription au Café | Variante « client connecté » : à la place des champs Prénom, Nom, E-mail, Téléphone, un encadré blanc à filet doux titré « VOS COORDONNÉES » (petites capitales), la ligne « {Prénom Nom} · {e-mail} · {téléphone} » et le lien souligné « Modifier mes coordonnées » ; seuls restent les champs que la fiche n'a pas (souvent le pays de résidence). La case de consentement et « Créer mon espace » disparaissent au profit de la phrase « En envoyant, vous demandez à être contacté au sujet de cette demande. » (sauf au Café, dont la case reste). | DEM-022, CAF-020 | 13/10/2026 |

@@ -15,7 +15,9 @@
     "marketing": "Je souhaite recevoir les actualités et les nouveaux programmes par e-mail.",
     "createAccount": "Créer mon espace client en même temps",
     "createAccountHint": "Pour suivre votre demande, retrouver vos simulations et, plus tard, déposer vos pièces.",
-    "euHosting": "Vos données sont hébergées dans l’Union européenne."
+    "euHosting": "Vos données sont hébergées dans l’Union européenne.",
+    "signedInAs": "Vos coordonnées",
+    "editDetails": "Modifier mes coordonnées"
   },
   "when": {
     "day": "Quel jour ?",

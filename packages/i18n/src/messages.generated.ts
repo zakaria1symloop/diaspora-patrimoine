@@ -6391,6 +6391,8 @@ export const messages = {
     "ui.lead.fields.createAccount": "Créer mon espace client en même temps",
     "ui.lead.fields.createAccountHint": "Pour suivre votre demande, retrouver vos simulations et, plus tard, déposer vos pièces.",
     "ui.lead.fields.euHosting": "Vos données sont hébergées dans l’Union européenne.",
+    "ui.lead.fields.signedInAs": "Vos coordonnées",
+    "ui.lead.fields.editDetails": "Modifier mes coordonnées",
     "ui.lead.when.day": "Quel jour ?",
     "ui.lead.when.dayAsap": "Dès que possible",
     "ui.lead.when.slot": "À quel moment ?",
@@ -13538,6 +13540,7 @@ export type MessageKey =
   | 'ui.lead.fields.countryPlaceholder'
   | 'ui.lead.fields.createAccount'
   | 'ui.lead.fields.createAccountHint'
+  | 'ui.lead.fields.editDetails'
   | 'ui.lead.fields.email'
   | 'ui.lead.fields.euHosting'
   | 'ui.lead.fields.firstName'
@@ -13548,6 +13551,7 @@ export type MessageKey =
   | 'ui.lead.fields.phone'
   | 'ui.lead.fields.phoneHint'
   | 'ui.lead.fields.privacy'
+  | 'ui.lead.fields.signedInAs'
   | 'ui.lead.fields.whatsapp'
   | 'ui.lead.interest.budget'
   | 'ui.lead.interest.budgetMonthly'

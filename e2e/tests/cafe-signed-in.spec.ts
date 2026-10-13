@@ -1,6 +1,6 @@
 // CAF-024, CYC-186 — a signed-in client who registers again for the same Café gets his registration UPDATED (seats,
 // questions) instead of the anonymous « C'est noté » that changes nothing. Uses the next demo Café; the registration
-// is cancelled at the end so the demo seats stay as they were.
+// is cancelled at the end so the demo seats stay as they were. DEM-022 — signed in, the form shows his details.
 import { expect, test, type Page } from '@playwright/test';
 import { freshIp, signUpClient } from './helpers/account';
 
@@ -15,9 +15,9 @@ async function nextCafe(page: Page): Promise<string> {
 async function register(page: Page, slug: string, email: string, seats: number) {
   await page.goto(`/le-cafe/${slug}`);
   const form = page.locator('form').filter({ has: page.getByRole('button', { name: 'Je m’inscris' }) }).first();
-  await form.getByLabel('Prénom').fill('Karima');
-  await form.getByLabel('Nom', { exact: true }).fill('Testeuse');
-  await form.getByRole('textbox', { name: 'E-mail' }).fill(email);
+  // DEM-022 — signed in: his details are shown, not asked again
+  await expect(form.getByTestId('signed-in-contact')).toContainText(email, { timeout: 15_000 });
+  await expect(form.getByRole('textbox', { name: 'E-mail' })).toHaveCount(0);
   await form.getByLabel('Vous venez à combien ?').selectOption(String(seats));
   await form.getByLabel(/J’accepte que Diaspora Patrimoine m’envoie/).check();
   await page.waitForTimeout(3_000); // a human takes a few seconds (spam signal on a too-fast submission, DEM-030)

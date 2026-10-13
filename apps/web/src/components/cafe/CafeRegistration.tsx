@@ -1,9 +1,12 @@
 'use client';
 // CAF-020 … CAF-025 — registration form, its « only {n} seats left » choice, and the confirmation in place of the form.
+// DEM-022 — a signed-in client registers from his account: his details shown, not asked again (his own consent box stays:
+// its sentence is the Café's).
 import Link from 'next/link';
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { Button, Icon, buttonClass, ButtonInner } from '@dp/ui';
 import { CheckboxField, ErrorSummary, Honeypot, SelectField, TextArea, TextField } from '@/components/forms/fields';
+import { SignedInContact, askedOf, contactOf, useSignedInClient } from '@/components/forms/lead-parts';
 import { usePublicForm, useDraft } from '@/lib/public-form';
 import { hasMessage } from '@dp/i18n';
 import { CURRENT_CAFE_CONTACT_CONSENT_KEY, CURRENT_MARKETING_CONSENT_KEY, LEAD_HONEYPOT_FIELD, LeadConsentWording } from '@dp/contracts';
@@ -67,6 +70,8 @@ export function CafeRegistration({ slug, maxSeats, waitlist, islamicEnabled }: {
   const [pending, setPending] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
   const { submit } = usePublicForm('CAFE_REGISTRATION');
+  const me = useSignedInClient();
+  const asked = askedOf(me);
 
   const labels: Record<string, string> = {
     [`${id}-firstName`]: t('ui.cafe.form.firstName'),
@@ -77,10 +82,11 @@ export function CafeRegistration({ slug, maxSeats, waitlist, islamicEnabled }: {
 
   const validate = (): Record<string, string> => {
     const e: Record<string, string> = {};
-    if (!v.firstName.trim()) e[`${id}-firstName`] = t('ui.validation.REQUIRED');
-    if (!v.lastName.trim()) e[`${id}-lastName`] = t('ui.validation.REQUIRED');
-    if (!v.email.trim()) e[`${id}-email`] = t('ui.validation.REQUIRED');
-    else if (!/^\S+@\S+\.\S+$/.test(v.email.trim())) e[`${id}-email`] = t('ui.validation.INVALID_EMAIL');
+    const c = contactOf(me, v);
+    if (!c.firstName.trim()) e[`${id}-firstName`] = t('ui.validation.REQUIRED');
+    if (!c.lastName.trim()) e[`${id}-lastName`] = t('ui.validation.REQUIRED');
+    if (!c.email.trim()) e[`${id}-email`] = t('ui.validation.REQUIRED');
+    else if (!/^\S+@\S+\.\S+$/.test(c.email.trim())) e[`${id}-email`] = t('ui.validation.INVALID_EMAIL');
     if (!v.consent) e[`${id}-consent`] = t('ui.validation.MUST_ACCEPT');
     return e;
   };
@@ -94,11 +100,12 @@ export function CafeRegistration({ slug, maxSeats, waitlist, islamicEnabled }: {
     }
     setPending(true);
     setBanner(null);
+    const c = contactOf(me, v);
     const res = await submit<Registered>(`/api/v1/public/events/${encodeURIComponent(slug)}/registrations`, {
-      firstName: v.firstName.trim(),
-      lastName: v.lastName.trim(),
-      email: v.email.trim(),
-      phone: v.phone.trim() || null,
+      firstName: c.firstName.trim(),
+      lastName: c.lastName.trim(),
+      email: c.email.trim(),
+      phone: c.phone.trim() || null,
       whatsappOptIn: v.whatsappOptIn,
       seats: choice?.seats ?? v.seats,
       topics: v.topics,
@@ -232,10 +239,14 @@ export function CafeRegistration({ slug, maxSeats, waitlist, islamicEnabled }: {
           </div>
         </div>
       ) : null}
+      {me ? <SignedInContact me={me} /> : null}
+      {asked.name ? (
       <div className={s.row}>
         <TextField id={`${id}-firstName`} label={t('ui.cafe.form.firstName')} autoComplete="given-name" value={v.firstName} onChange={(e) => set({ firstName: e.target.value })} error={errors[`${id}-firstName`]} maxLength={80} />
         <TextField id={`${id}-lastName`} label={t('ui.cafe.form.lastName')} autoComplete="family-name" value={v.lastName} onChange={(e) => set({ lastName: e.target.value })} error={errors[`${id}-lastName`]} maxLength={80} />
       </div>
+      ) : null}
+      {asked.email ? (
       <TextField
         id={`${id}-email`}
         type="email"
@@ -248,6 +259,8 @@ export function CafeRegistration({ slug, maxSeats, waitlist, islamicEnabled }: {
         onChange={(e) => set({ email: e.target.value })}
         error={errors[`${id}-email`]}
       />
+      ) : null}
+      {asked.phone ? (
       <TextField
         id={`${id}-phone`}
         type="tel"
@@ -260,7 +273,8 @@ export function CafeRegistration({ slug, maxSeats, waitlist, islamicEnabled }: {
         onChange={(e) => set({ phone: e.target.value })}
         error={errors[`${id}-phone`]}
       />
-      {v.phone.trim() ? <CheckboxField id={`${id}-wa`} label={t('ui.cafe.form.whatsapp')} checked={v.whatsappOptIn} onChange={(x) => set({ whatsappOptIn: x })} /> : null}
+      ) : null}
+      {contactOf(me, v).phone.trim() ? <CheckboxField id={`${id}-wa`} label={t('ui.cafe.form.whatsapp')} checked={v.whatsappOptIn} onChange={(x) => set({ whatsappOptIn: x })} /> : null}
       <SelectField id={`${id}-seats`} label={t('ui.cafe.form.seats')} value={v.seats} onChange={(e) => set({ seats: Number(e.target.value) })}>
         {Array.from({ length: Math.max(1, maxSeats) }, (_, i) => i + 1).map((n) => (
           <option key={n} value={n}>

@@ -67,7 +67,7 @@ export class AccountService {
   async clientMe(ctx: AuthContext): Promise<ClientMe> {
     const user = await this.prisma.user.findUniqueOrThrow({ where: { id: ctx.userId }, select: { id: true, email: true, pendingEmail: true, passwordHash: true, twoFactorEnabled: true, phone: true } });
     const client = ctx.clientId
-      ? await this.prisma.client.findUnique({ where: { id: ctx.clientId }, select: { id: true, firstName: true, lastName: true, phone: true } })
+      ? await this.prisma.client.findUnique({ where: { id: ctx.clientId }, select: { id: true, firstName: true, lastName: true, phone: true, countryOfResidence: true } })
       : null;
     const [unread, dossiers] = await Promise.all([
       this.prisma.notification.count({ where: { userId: ctx.userId, readAt: null } }).catch(() => 0),
@@ -80,6 +80,7 @@ export class AccountService {
       lastName: client?.lastName ?? ctx.lastName,
       email: user.email,
       phone: client?.phone ?? user.phone,
+      countryOfResidence: client?.countryOfResidence ?? null,
       unreadNotifications: unread,
       hasDossier: dossiers > 0,
       hasPassword: Boolean(user.passwordHash),

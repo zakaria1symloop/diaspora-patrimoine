@@ -87,6 +87,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Zakaria (Claude, agent 8) | Passe de qualité de tout le site public (alignement sur Figma : tête du catalogue, cartes de motivation, carrousels 390, fiches bien et programme ; principes D-098 sur chaque page ; contrôle de chaque bouton) + report dans Figma | `apps/web/src/app/(site)/`, `apps/web/src/components/` (sauf `client-*`), `packages/i18n/messages/fr/` (espaces de noms du site, ajouts), `e2e/tests/public-controls.spec.ts`, `Design/`, fichier Figma (page Site public) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — restent les têtes d'EP-11 / EP-12 dans Figma et l'affichage simplifié des autres pages |
 | Amrani-Mahdi01 (Claude) | Retour de recette du site public du 11/10/2026 (`docs/retours-site-2026-10-11.md`) : menu, cartes cliquables, listes de choix, filtres appliqués au bouton, contrôle minimum / maximum, favori réservé au compte, défilements du téléphone, squelettes, carte de localisation, partage par e-mail, pied de page en grand texte | `apps/web/src/components/` (`vitrine`, `catalogue`, `home`, `layout`, `discovery`, `property`, `forms/QueryDialog.tsx`), `apps/web/src/app/(site)/programmes/page.tsx`, `apps/web/src/lib/` (`discovery`, `account-favorites`, `after-sign-in`), `packages/ui` (`Flag`, `map/`, `TextSizeControl`), `packages/i18n/messages/fr/` (`catalogue`, `favorites`, `common`), `e2e/tests/` (`public-review`, `catalogue-filters`, `discovery`), `Specs/` (D-102 à D-104) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — branche `retours/site-public-2026-10-11` |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 12/10/2026 (`docs/retours-site-2026-10-12.md`, D-105) : promoteurs en cartes à image, filtres et pages ; fiche promoteur ; Nos partenaires par groupe ; banques en cartes ; filtres des dates du Café ; choix de l'assistant structurés | `apps/api/src/editorial/partners.controller.ts`, `packages/contracts/src/editorial.ts`, `apps/web/src/app/(site)/` (`promoteurs`, `nos-partenaires`, `financements`, `le-cafe`), `apps/web/src/components/` (`editorial`, `cafe/CafeFilters`, `assistant/GuidedAssistant`, `catalogue/Pagination`, `vitrine/FormDropdown`), `packages/i18n/messages/fr/` (`editorial`, `cafe`, `assistant`), `e2e/tests/public-review-2.spec.ts`, `Specs/` (D-105) | 2026-10-12 | **terminé** le 2026-10-12 — branche `retours/site-public-2026-10-12` (part de `retours/site-public-2026-10-11`) |
+| Amrani-Mahdi01 (Claude) | DEM-022 : un client connecté envoie ses demandes depuis son compte (coordonnées non redemandées, rattachement par la session, pas par l'e-mail saisi) — formulaires de demande et inscription au Café | `apps/api/src/leads/`, `apps/api/src/events/cafe-registration*`, `apps/api/src/client-space/` (`/client/me`), `packages/contracts/src/auth.ts`, `apps/web/src/components/forms/`, `apps/web/src/components/cafe/CafeRegistration.tsx`, `apps/web/src/components/simulators/ResultActions.tsx`, `apps/web/src/components/assistant/GuidedResults.tsx`, `packages/i18n/messages/fr/lead.json`, `e2e/tests/` | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/demandes-client-connecte` (part de `retours/site-public-recette-octobre-2026`), D-106 |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -137,6 +138,26 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-13 — Amrani-Mahdi01 (Claude) · demandes d'un client connecté (DEM-022, D-106)
+
+- Constat de recette : connecté, un client voyait les formulaires vides ; le navigateur y mettait l'adresse d'un autre
+  compte, et la demande partait sur la fiche de cet autre client (projet vide au back-office) pendant que la sienne
+  restait complète. DEM-022 (P1) n'était fait ni côté site ni côté API.
+- **API** : `POST /public/leads` lit la session (`OptionalClientSession`, comme l'inscription au Café) ; un client
+  connecté envoie depuis sa fiche — e-mail de la fiche, prénom, nom, téléphone et pays de la fiche prioritaires, la
+  phrase de DEM-022 pour consentement (`lead.contact.signedIn.v1`, refusée sans session), jamais « créer mon espace ».
+  Candidature partenaire hors session. Même règle pour l'inscription au Café. `GET /client/me` rend `countryOfResidence`.
+- **Site** (`forms/lead-parts.tsx` : `useSignedInClient`, `contactOf`, `askedOf`, `SignedInContact`,
+  `SignedInConsent`) : intérêt, rappel, contact, projection (deux écrans ; l'adresse ne s'y modifie plus), suite de
+  simulation, assistant, Café — « Vos coordonnées » + « Modifier mes coordonnées », seuls les champs manquants.
+- Tests : `e2e/tests/signed-in-requests.spec.ts` (formulaire sur ordinateur et téléphone ; rattachement au compte
+  malgré une autre adresse envoyée ; la phrase refusée sans session), `cafe-signed-in.spec.ts` mis à jour : verts.
+  Non-régression : `assistant-projection-partner` 9/10 (le dixième pris par la limite horaire par adresse, en mémoire,
+  après plusieurs séries dans l'heure). `admin-leads` ne tourne plus sur ce poste : il attend le compte Direction
+  `direction.test@example.test`, et un autre compte Direction (`direction@diaspora.local`) y a été créé pour la
+  recette. API vitest : 449/452 — les 3 échecs (`identity.test` sur `CatalogueAdminController.once`,
+  `catalogue-caches.int`) touchent du code que cette branche ne modifie pas.
 
 ### 2026-10-13 — Amrani-Mahdi01 (Claude) · le back-office refusait tout en local (API-003)
 

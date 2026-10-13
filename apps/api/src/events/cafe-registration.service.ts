@@ -103,7 +103,7 @@ export class CafeRegistrationService {
     let email: string | null = null;
     const result = await this.idempotency.run(req, { route: 'public.cafe.registrations' }, {
       prepare: async () => {
-        const p = { ...(await this.prepare(req, slug, body)), sessionClientId };
+        const p = await this.prepare(req, slug, body, sessionClientId);
         email = p.input.email;
         return p;
       },
@@ -127,7 +127,7 @@ export class CafeRegistrationService {
   }
 
   /** CAF-026 — form token, limits, spam score (DEM-030 … DEM-032), before and outside the transaction. */
-  private async prepare(req: Request, slug: string, body: unknown): Promise<Prepared> {
+  private async prepare(req: Request, slug: string, body: unknown, sessionClientId: string | null): Promise<Prepared> {
     const now = this.clock.now();
     const header = req.headers[FORM_TOKEN_HEADER.toLowerCase()];
     const token = verifyFormToken(this.env.LINK_SIGNING_KEY, Array.isArray(header) ? header[0] : header, now);
@@ -135,6 +135,17 @@ export class CafeRegistrationService {
     if (token.claims.form !== CAFE_REGISTRATION_FORM) throw new AppError(ErrorCode.BAD_REQUEST);
 
     const input = parseOrThrow(cafeRegistrationSchema, body);
+    // DEM-022 — a signed-in client registers from his account: his record's e-mail, name and phone, whatever the
+    // browser carries (the form only fills what the record lacks).
+    const account = sessionClientId
+      ? await this.prisma.client.findFirst({ where: { id: sessionClientId, deletedAt: null }, select: { email: true, firstName: true, lastName: true, phone: true } })
+      : null;
+    if (account?.email) {
+      input.email = account.email;
+      if (account.firstName) input.firstName = account.firstName;
+      if (account.lastName) input.lastName = account.lastName;
+      if (account.phone) input.phone = account.phone;
+    }
     if (input.topics.includes('ISLAMIC_FINANCING') && !(await this.settings.get('features.islamicFinance'))) {
       throw AppError.validation([{ field: 'topics', code: 'INVALID_CHOICE' }]);
     }
@@ -172,7 +183,7 @@ export class CafeRegistrationService {
       throw AppError.conflictState(SPAM_REFUSAL_REASON);
     }
     const userAgent = (req.headers['user-agent'] ?? '').slice(0, 400) || null;
-    return { slug, input, ipHash, userAgent, mx, sessionClientId: null };
+    return { slug, input, ipHash, userAgent, mx, sessionClientId: account?.email ? sessionClientId : null };
   }
 
   private async execute(tx: Tx, p: Prepared): Promise<CafeRegistrationResponse> {

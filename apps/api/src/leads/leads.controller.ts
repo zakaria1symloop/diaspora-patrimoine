@@ -1,9 +1,11 @@
 // API-100 « Demandes » — public routes of 02-site-public/05: `POST /public/form-token` (DEM-030), `POST /public/leads`
 // (DEM-002, DEM-027) and `POST /public/leads/complete` (DEM-013).
-import { Body, Controller, HttpCode, Inject, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, Inject, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { formTokenRequestSchema, type FormTokenResponse, type LeadCompleteResponse, type LeadSubmitResponse } from '@dp/contracts';
 import type { Request, Response } from 'express';
 import { ENV, type Env } from '../config/env.js';
+import { CurrentAuth, OptionalClientSession } from '../identity/access.js';
+import type { AuthContext } from '../identity/sessions.service.js';
 import { Clock } from '../platform/clock.js';
 import { parseOrThrow } from '../platform/validation.js';
 import { CompleteLeadService } from './complete-lead.service.js';
@@ -28,10 +30,11 @@ export class LeadsController {
     return { token, expiresAt: expiresAt.toISOString() };
   }
 
-  /** DEM-027 — always 201 with the same shape for an anonymous visitor. */
+  /** DEM-027 — always 201 with the same shape for an anonymous visitor. DEM-022 — a signed-in client sends from his account. */
   @Post('leads')
-  async create(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Body() body: unknown): Promise<LeadSubmitResponse> {
-    const result = await this.submitLead.submit(req, body);
+  @UseGuards(OptionalClientSession)
+  async create(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Body() body: unknown, @CurrentAuth() auth: AuthContext | null): Promise<LeadSubmitResponse> {
+    const result = await this.submitLead.submit(req, body, auth?.kind === 'CLIENT' ? auth.clientId : null);
     res.status(result.status);
     return result.body;
   }
