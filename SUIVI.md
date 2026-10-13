@@ -138,6 +138,15 @@ Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de b
 
 ## 7. Journal (le plus récent en haut)
 
+### 2026-10-13 — Amrani-Mahdi01 (Claude) · le back-office refusait tout en local (API-003)
+
+- Sans `ADMIN_URL` dans `apps/api/.env`, l'API ne reconnaît pas l'origine du back-office et répond 400 à toutes ses
+  requêtes, connexion comprise (`/auth/step`). La ligne était commentée dans `apps/api/.env.example` : elle y est
+  maintenant active (`http://localhost:3001`) ; à ajouter à la main dans un `.env` déjà créé.
+- Ouvrir le site depuis le réseau local, sous Windows : si Node vient de `nvm` (`C:\nvm4w\nodejs`), la règle de
+  pare-feu « Node.js » (créée pour `C:\Program Files\nodejs`) ne s'applique pas ; ouvrir les ports 3000 et 3001 au
+  sous-réseau local par une règle de port (réseau Wi-Fi en profil « Public » compris).
+
 ### 2026-10-12 — Amrani-Mahdi01 (Claude) · retour de recette du 12/10/2026 (D-105)
 
 - Liste reçue : `docs/retours-site-2026-10-12.md`. Ses points déjà traités la veille (D-102 à D-104 : partage par
