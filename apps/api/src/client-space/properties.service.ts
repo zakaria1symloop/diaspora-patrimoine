@@ -125,6 +125,7 @@ export class PropertiesService {
         createdAt: true,
         assignedAgentId: true,
         payload: true,
+        message: true,
         property: { select: { title: true } },
         program: { select: { name: true } },
         dossierCandidates: { select: { id: true }, take: 1 },
@@ -141,6 +142,7 @@ export class PropertiesService {
       subject: l.property?.title ?? l.program?.name ?? null,
       noCandidate: l.kind === 'PROPERTY_INTEREST' && Boolean(l.property),
       fromSpace: (l.payload as { form?: string } | null)?.form === 'CLIENT_SPACE_MESSAGE',
+      message: l.message,
     }));
     return { properties, requests };
   }

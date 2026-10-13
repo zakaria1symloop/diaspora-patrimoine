@@ -5,7 +5,7 @@
 // « {conseiller} vous répond {quand}, par e-mail ou par téléphone. » (NOT-053, CAL-061). TRV-081: a confirmation that
 // says what comes next. MSG-011: an idempotency key prevents a double sending; the text is never lost on failure.
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useId, useMemo, useRef, useState } from 'react';
 import {
   CLIENT_MESSAGE_MAX,
@@ -39,6 +39,7 @@ export interface MessageFormProps {
 export function AdvisorMessageForm({ context, prefill, origin, dossier }: MessageFormProps) {
   const { summary, settings } = useSpace();
   const pathname = usePathname() ?? '/espace-client/messages';
+  const router = useRouter();
   const ids = { message: useId(), about: useId() };
   const [message, setMessage] = useState(prefill);
   const initialAbout = dossier && context.dossiers.some((d) => d.reference === dossier) ? dossier : (context.defaultDossierReference ?? '');
@@ -80,6 +81,7 @@ export function AdvisorMessageForm({ context, prefill, origin, dossier }: Messag
     const to = advisorName(res.data.advisor);
     showToast({ message: to ? t('ui.client.message.sent', { conseiller: to }) : t('ui.client.message.sentTeam') });
     signalSpaceChanged();
+    router.refresh(); // D-107 — « Demandes en cours » beside the form shows the message just sent
   }
 
   if (sent) {

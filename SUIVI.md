@@ -88,6 +88,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Amrani-Mahdi01 (Claude) | Retour de recette du site public du 11/10/2026 (`docs/retours-site-2026-10-11.md`) : menu, cartes cliquables, listes de choix, filtres appliqués au bouton, contrôle minimum / maximum, favori réservé au compte, défilements du téléphone, squelettes, carte de localisation, partage par e-mail, pied de page en grand texte | `apps/web/src/components/` (`vitrine`, `catalogue`, `home`, `layout`, `discovery`, `property`, `forms/QueryDialog.tsx`), `apps/web/src/app/(site)/programmes/page.tsx`, `apps/web/src/lib/` (`discovery`, `account-favorites`, `after-sign-in`), `packages/ui` (`Flag`, `map/`, `TextSizeControl`), `packages/i18n/messages/fr/` (`catalogue`, `favorites`, `common`), `e2e/tests/` (`public-review`, `catalogue-filters`, `discovery`), `Specs/` (D-102 à D-104) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — branche `retours/site-public-2026-10-11` |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 12/10/2026 (`docs/retours-site-2026-10-12.md`, D-105) : promoteurs en cartes à image, filtres et pages ; fiche promoteur ; Nos partenaires par groupe ; banques en cartes ; filtres des dates du Café ; choix de l'assistant structurés | `apps/api/src/editorial/partners.controller.ts`, `packages/contracts/src/editorial.ts`, `apps/web/src/app/(site)/` (`promoteurs`, `nos-partenaires`, `financements`, `le-cafe`), `apps/web/src/components/` (`editorial`, `cafe/CafeFilters`, `assistant/GuidedAssistant`, `catalogue/Pagination`, `vitrine/FormDropdown`), `packages/i18n/messages/fr/` (`editorial`, `cafe`, `assistant`), `e2e/tests/public-review-2.spec.ts`, `Specs/` (D-105) | 2026-10-12 | **terminé** le 2026-10-12 — branche `retours/site-public-2026-10-12` (part de `retours/site-public-2026-10-11`) |
 | Amrani-Mahdi01 (Claude) | DEM-022 : un client connecté envoie ses demandes depuis son compte (coordonnées non redemandées, rattachement par la session, pas par l'e-mail saisi) — formulaires de demande et inscription au Café | `apps/api/src/leads/`, `apps/api/src/events/cafe-registration*`, `apps/api/src/client-space/` (`/client/me`), `packages/contracts/src/auth.ts`, `apps/web/src/components/forms/`, `apps/web/src/components/cafe/CafeRegistration.tsx`, `apps/web/src/components/simulators/ResultActions.tsx`, `apps/web/src/components/assistant/GuidedResults.tsx`, `packages/i18n/messages/fr/lead.json`, `e2e/tests/` | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/demandes-client-connecte` (part de `retours/site-public-recette-octobre-2026`), D-106 |
+| Amrani-Mahdi01 (Claude) | Retour de recette du 13/10/2026 (`docs/retours-site-2026-10-13.md`, D-107) : e-mail « autre espace » à l’inscription, double envoi, liste de choix, messages retrouvés, âge minimum, profil non enregistré, fenêtres, simulateur, « Mon espace », menus du back-office | `apps/api/src/identity/signup.service.ts`, `apps/api/src/install/auth-email-templates.ts`, `apps/api/src/client-space/properties.service.ts`, `packages/contracts` (`client-space`, `errors`), `packages/ui` (`Overlays`), `apps/web/src/lib` (`auth-client`, `public-form`), `apps/web/src/components` (`layout/Header`, `vitrine/Dropdown`, `forms/QueryDialog`, `simulators`, `client-space`), `apps/web/src/app/espace-client/messages`, `apps/admin/src/lib/admin-client.ts`, `e2e/tests/public-review-3.spec.ts`, `Specs/` (D-107) | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/recette-2026-10-13` (part de `retours/demandes-client-connecte`) |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -138,6 +139,29 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-13 — Amrani-Mahdi01 (Claude) · retour de recette du 13/10/2026 (D-107)
+
+- Liste reçue (PDF) : `docs/retours-site-2026-10-13.md`. Branche `retours/recette-2026-10-13`, partie de
+  `retours/demandes-client-connecte` (le point « Exprimer mon intérêt connecté » y est déjà fait : D-106).
+- **E-mail de vérification « qui ne part pas »** : en local, les e-mails partent bien (`.local/mail`). Le cas réel :
+  une inscription client avec l'adresse d'un compte partenaire ou de l'équipe ne créait rien et n'envoyait rien
+  (AUTH-003, ligne 7). Désormais `C_ACCOUNT_EXISTS` en version « autre espace » ; l'écran ne change pas. Les modèles du
+  compte suivent PAR-081 à la réinstallation (`install:run` a mis à jour `C_ACCOUNT_EXISTS`). Le téléphone reste
+  partageable entre comptes (une famille) : pas de changement.
+- **Double clic** : `apiCall` (site), `usePublicForm` (formulaires publics), `adminCall` (back-office) ne renvoient pas un
+  envoi identique encore en route.
+- **Liste de choix de la barre de recherche** : focus en trait sous la valeur (le cadre recouvrait le libellé).
+- **Messages** : le message envoyé apparaît à côté du formulaire (rafraîchi à l'envoi) et dans « Mes demandes »
+  (`ClientRequestRow.message`).
+- **Âge minimum** (SEC-095) : date de naissance de moins de 18 ans refusée (`UNDER_AGE`), au profil et au back-office.
+- **Profil** : `client-space/UnsavedGuard.tsx` (même garde que le back-office) — un lien du site demande « Rester » /
+  « Quitter ».
+- **Fenêtres de demande** : un toucher hors de la fenêtre la ferme (brouillon gardé).
+- **Simulateur** : sélecteur aux marges égales. **« Mon espace »** : lien vers le tableau de bord + chevron du menu.
+- **Back-office** : `Menu` de `@dp/ui` rendu au niveau de la page (portail, position fixe) — plus coupé par une carte.
+- Tests : `e2e/tests/public-review-3.spec.ts` verts (sur ce poste : `E2E_STAFF_EMAIL` désigne le compte Direction
+  local). Captures regardées : menus du back-office, en-tête connecté. Specs : vérificateur vert (96 décisions).
 
 ### 2026-10-13 — Amrani-Mahdi01 (Claude) · demandes d'un client connecté (DEM-022, D-106)
 

@@ -286,18 +286,30 @@
 }
 
 /* Segmented choice (mode, type, financing preference). */
+/* D-107 — the track hugs its options (the same space on both sides); wrapped on a phone, the options share the width */
 .segmented {
   display: inline-flex;
   flex-wrap: wrap;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
   gap: var(--sp-4);
   padding: var(--sp-4);
   border-radius: var(--radius-pill);
   background: var(--bo-fond-gris);
 }
+@media (max-width: 639px) {
+  .segmented {
+    border-radius: var(--radius-l);
+  }
+}
 .segmented label {
   position: relative;
+  flex: 1 1 auto;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   min-height: 2.5rem;
   padding: var(--sp-6) var(--sp-16);
   border-radius: var(--radius-pill);

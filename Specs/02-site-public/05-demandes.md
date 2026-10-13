@@ -48,7 +48,7 @@ L'inscription à un Café et la création d'une alerte ne sont pas des demandes 
 
 ### 2.1 Intérêt pour un bien
 
-**DEM-011** `[P1]` Fenêtre centrée sur ordinateur (720 px), plein écran sur téléphone. En tête : « Exprimer mon intérêt » · « Un conseiller vous rappelle pour faire le point sur votre projet. Sans engagement, avec ou sans compte. » — le délai n'est dit qu'une fois, sous le bouton, d'après le jour choisi. Puis le rappel du bien : vignette, titre, « {ville} · {prix} · Réf. {référence} » ; et, si un lot a été choisi, « Lot {référence} ».
+**DEM-011** `[P1]` Fenêtre centrée sur ordinateur (720 px), plein écran sur téléphone ; un toucher hors de la fenêtre la ferme, comme Échap (le brouillon est gardé, TRV-092) (D-107). En tête : « Exprimer mon intérêt » · « Un conseiller vous rappelle pour faire le point sur votre projet. Sans engagement, avec ou sans compte. » — le délai n'est dit qu'une fois, sous le bouton, d'après le jour choisi. Puis le rappel du bien : vignette, titre, « {ville} · {prix} · Réf. {référence} » ; et, si un lot a été choisi, « Lot {référence} ».
 
 | Champ | Clé | Oblig. | Règles |
 |---|---|---|---|

@@ -136,6 +136,12 @@
   inset-block-start: auto;
   inset-block-end: calc(100% + var(--sp-4));
 }
+/* D-107 — a menu's panel lives at the page (or window) level, placed from its trigger: no container can cut it */
+.anchored {
+  position: fixed;
+  inset-block-start: auto;
+  z-index: 80;
+}
 @keyframes drop {
   from {
     opacity: 0;

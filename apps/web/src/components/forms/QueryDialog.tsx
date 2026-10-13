@@ -40,6 +40,9 @@ export function QueryDialog({
   const ref = useRef<HTMLDialogElement>(null);
   // several windows live on one page (callback, interest, sign-in of the hearts): each is named by its own title
   const titleId = useId();
+  // D-107 — a tap on the backdrop closes the window, like Escape; the forms keep their draft (TRV-092), so nothing typed
+  // is lost. Only a press that starts AND ends on the backdrop counts (selecting text inside, released outside, does not).
+  const downOnBackdrop = useRef(false);
   useEffect(() => {
     const d = ref.current;
     if (!d) return;
@@ -55,6 +58,13 @@ export function QueryDialog({
       onCancel={(e) => {
         e.preventDefault();
         onClose();
+      }}
+      onPointerDown={(e) => {
+        downOnBackdrop.current = e.target === e.currentTarget;
+      }}
+      onClick={(e) => {
+        if (downOnBackdrop.current && e.target === e.currentTarget) onClose();
+        downOnBackdrop.current = false;
       }}
     >
       <div className={s.frame}>

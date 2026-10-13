@@ -157,3 +157,13 @@
 | État | Écran | Changement | Règle | Date |
 |---|---|---|---|---|
 | ☐ | EP-07 « Exprimer mon intérêt », EP-21 « Être rappelé », EP-19 Contact, EP-20 Projection, résultats de l'assistant et des simulateurs, EP-13 inscription au Café | Variante « client connecté » : à la place des champs Prénom, Nom, E-mail, Téléphone, un encadré blanc à filet doux titré « VOS COORDONNÉES » (petites capitales), la ligne « {Prénom Nom} · {e-mail} · {téléphone} » et le lien souligné « Modifier mes coordonnées » ; seuls restent les champs que la fiche n'a pas (souvent le pays de résidence). La case de consentement et « Créer mon espace » disparaissent au profit de la phrase « En envoyant, vous demandez à être contacté au sujet de cette demande. » (sauf au Café, dont la case reste). | DEM-022, CAF-020 | 13/10/2026 |
+
+## Retour de recette du 13/10/2026 (D-107)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | En-tête du site, client connecté | « Mon espace » en bouton double : le libellé (lien vers le tableau de bord), puis, séparé d'un filet, un chevron seul qui ouvre le menu. | NAV-013 | 13/10/2026 |
+| ☐ | Barre de recherche (EP-01, EP-02) | Focus d'une liste de choix : trait bleu de 3 px sous la valeur, plus de cadre autour (il recouvrait le libellé « Budget mensuel »). | CAT-001 | 13/10/2026 |
+| ☐ | EP-11 Simulateur de crédit | Sélecteur « Je connais le prix du bien · Je connais le montant à financer » : le rail épouse ses deux choix (4 px de chaque côté) ; sur téléphone, les deux choix pleine largeur, centrés, sur deux lignes, coins arrondis. | D-107 | 13/10/2026 |
+| ☐ | EC-30 Messages, EC « Mes demandes » | « Demandes en cours » : sous le type, le début du message envoyé (deux lignes). « Mes demandes » : le message entier dans un encadré ciel pâle à filet gauche bleu. | MSG-021 | 13/10/2026 |
+| ☐ | EC Profil | Fenêtre « Vous avez des modifications non enregistrées. Quitter sans enregistrer ? » — « Quitter » (secondaire) · « Rester » (principal), comme au back-office. | TRV-093 | 13/10/2026 |

@@ -6503,6 +6503,7 @@ export const messages = {
     "ui.nav.header.faq": "Questions fréquentes",
     "ui.nav.header.contact": "Contact",
     "ui.nav.header.unread": "{n, plural, one {# notification non lue} other {# notifications non lues}}",
+    "ui.nav.header.spaceMenu.open": "Ouvrir le menu de mon espace",
     "ui.nav.header.spaceMenu.dashboard": "Tableau de bord",
     "ui.nav.header.spaceMenu.messages": "Messages",
     "ui.nav.header.spaceMenu.dossier": "Mon dossier",
@@ -7096,6 +7097,7 @@ export const messages = {
     "ui.validation.INVALID_DATE": "Cette date n’est pas valide.",
     "ui.validation.DATE_NOT_FUTURE": "Choisissez une date à venir.",
     "ui.validation.DATE_IN_FUTURE": "Cette date ne peut pas être dans le futur.",
+    "ui.validation.UNDER_AGE": "Diaspora Patrimoine s’adresse aux personnes majeures : la date de naissance doit donner 18 ans ou plus.",
     "ui.validation.MUST_ACCEPT": "Vous devez accepter pour continuer.",
     "ui.validation.ALREADY_USED": "Cette valeur est déjà utilisée.",
     "ui.validation.INVALID_CHOICE": "Choisissez une valeur dans la liste.",
@@ -13641,6 +13643,7 @@ export type MessageKey =
   | 'ui.nav.header.spaceMenu.dossier'
   | 'ui.nav.header.spaceMenu.logout'
   | 'ui.nav.header.spaceMenu.messages'
+  | 'ui.nav.header.spaceMenu.open'
   | 'ui.nav.header.spaceMenu.profile'
   | 'ui.nav.header.unread'
   | 'ui.nav.skipToContent'
@@ -14219,4 +14222,5 @@ export type MessageKey =
   | 'ui.validation.TOO_MANY_ROWS'
   | 'ui.validation.TOO_SHORT'
   | 'ui.validation.UNCHANGED'
+  | 'ui.validation.UNDER_AGE'
   | 'ui.validation.VIDEO_URL';
