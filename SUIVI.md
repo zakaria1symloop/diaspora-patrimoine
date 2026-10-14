@@ -191,6 +191,19 @@ Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de b
 - **Reste** : les formulaires du site gardent la liste du navigateur (`<select>` : Café, contact, rappel,
   simulateurs, inscription partenaire…) ; les passer au composant `Dropdown` est un chantier à part.
 
+### 2026-10-12 — Zakaria (Claude, coordination) · comptes du back-office sans double authentification (recette)
+
+- Demande de Zakaria : un compte du back-office sans vérification. Paramètre `security.staff.twoFactorRequired` (D-033)
+  passé à `false` par `ops setting:set` (journalisé) **en local et sur la recette seulement** — la production garde
+  `true`. Compte Direction `admin@diaspora-patrimoine.test` invité depuis « Équipe » et activé sans l'étape de double
+  authentification ; connexion vérifiée avec e-mail et mot de passe seuls, sur les deux. Identifiants chez Zakaria.
+- Les comptes qui avaient déjà activé leur double authentification la gardent (tests e2e inchangés).
+- **Défaut relevé, à corriger (BO-003)** : la page « Première connexion » annonce toujours « Trois étapes … la double
+  authentification » alors que l'API ne demande plus que le mot de passe et la charte : la frise doit suivre
+  `remainingSteps`.
+- Serveurs locaux : lancés hors de Claude Code (`.local/serve/start-all.cmd`, boucle de redémarrage, raccourci dans le
+  dossier Démarrage de Windows) après deux arrêts pour mémoire insuffisante.
+
 ### 2026-10-11 — Amrani-Mahdi01 (Claude) · retour de recette du site public (D-102 à D-104)
 
 - Liste reçue : `docs/retours-site-2026-10-11.md`. Chaque défaut est corrigé dans le composant qui le porte, donc sur
