@@ -11,6 +11,16 @@ export interface PromiseSettings {
   whatsapp: string | null;
 }
 
+/**
+ * D-108 — « Votre conseiller » stands for an advisor not named yet; inside a sentence it is written « votre conseiller »
+ * (« Merci, votre conseiller est prévenu. »). Every sentence that may carry it goes through here.
+ */
+export function inSentence(text: string): string {
+  const name = t('ui.client.nextStep.advisorFallback');
+  const lower = name.charAt(0).toLocaleLowerCase('fr') + name.slice(1);
+  return text.split(name).reduce((out, part, i) => (i === 0 ? part : out + (/(^\s*|[.!?…]\s+)$/.test(out) ? name : lower) + part), '');
+}
+
 /** TRV-145 — « Amel K. ». */
 export function advisorName(a: AdvisorCard | null | undefined): string | null {
   if (!a) return null;
@@ -100,7 +110,7 @@ export function nextStepSentence(n: DossierNextStep, advisor: AdvisorCard | null
   if (n.params.bank !== undefined) values.bank = n.params.bank;
   if (n.params.banks) values.banks = n.params.banks;
   if (n.params.date) values.date = n.params.date.length > 10 ? `${dateTime(n.params.date, timeZone).date}, ${dateTime(n.params.date, timeZone).time}` : longDate(n.params.date, timeZone);
-  return t(`ui.client.nextStep.${n.code}` as MessageKey, values);
+  return inSentence(t(`ui.client.nextStep.${n.code}` as MessageKey, values));
 }
 
 /** ECL-031 — one line of the timeline, from its kind and its frozen values. */
@@ -114,5 +124,5 @@ export function timelineSentence(e: TimelineEntry, timeZone: string): string {
   let key = `ui.client.dossier.timeline.${e.kind}`;
   if ((e.kind === 'LEAD_SENT' || e.kind === 'LEAD_SENT_AGAIN') && p.bien) key += '_property';
   if (e.kind === 'MILESTONE_REACHED' && typeof p.milestone === 'string') key = `ui.client.dossier.timeline.MILESTONE_${p.milestone}`;
-  return hasMessage(key) ? t(key as MessageKey, values) : t('ui.client.dossier.timeline.unknown');
+  return hasMessage(key) ? inSentence(t(key as MessageKey, values)) : t('ui.client.dossier.timeline.unknown');
 }

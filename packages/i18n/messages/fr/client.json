@@ -123,7 +123,7 @@
     },
     "cafe": {
       "title": "Prochain Café",
-      "registered": "Vous êtes inscrit au {titre}.",
+      "registered": "Vous êtes inscrit à « {titre} ».",
       "register": "Je m’inscris",
       "see": "Voir le Café",
       "when": "{date} · {lieu}"
@@ -472,7 +472,38 @@
       "priceAsc": "Prix croissant",
       "priceDesc": "Prix décroissant"
     },
-    "search": "Chercher un bien, une ville"
+    "search": "Chercher un bien, une ville",
+    "answer": {
+      "interested": "Ce bien m’intéresse",
+      "interestedAgain": "Finalement, il m’intéresse",
+      "decline": "Ce bien ne me convient pas",
+      "declineFollowed": "Ce bien ne m’intéresse plus",
+      "select": "Je retiens ce bien",
+      "cancelSelect": "Annuler mon choix",
+      "visit": "Demander une visite",
+      "labelled": "{action} : {titre}",
+      "comment": "Qu’est-ce qui vous plaît ?",
+      "reason": "Pour quelle raison ?",
+      "reasonHint": "Votre réponse aide {conseiller} à mieux vous proposer.",
+      "reasonRequired": "Choisissez une raison.",
+      "note": "Une précision ?",
+      "send": "Envoyer ma réponse",
+      "visitToCancel": "Votre visite du {date} sera annulée.",
+      "visitToCancelSend": "Écarter ce bien et annuler la visite",
+      "selectText": "Vous indiquez à {conseiller} que c’est ce bien que vous souhaitez acheter. Il vous recontacte pour confirmer et préparer votre dossier.",
+      "selectNoCommit": "Cela ne vous engage pas.",
+      "lot": "Un lot vous attire en particulier ?",
+      "lotNone": "Pas de préférence",
+      "lotLine": "Lot {reference}",
+      "lotFloor": "{n, selectordinal, one {#er} other {#e}} étage",
+      "lotGround": "rez-de-chaussée",
+      "selectComment": "Un commentaire ?",
+      "selectSend": "Envoyer mon choix",
+      "replace": "Vous aviez indiqué {bien}. Le remplacer ?",
+      "replaceSend": "Oui, le remplacer",
+      "thanks": "Merci, {conseiller} est prévenu.",
+      "selectCancelled": "Votre choix est annulé."
+    }
   },
   "interests": {
     "title": "Mes intérêts",

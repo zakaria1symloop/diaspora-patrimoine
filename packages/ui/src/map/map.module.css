@@ -9,8 +9,18 @@
 }
 .area {
   aspect-ratio: 16 / 9;
+  min-height: 16rem;
+  max-height: 30rem;
+  width: 100%;
   border-radius: var(--radius-l);
   border: 1px solid var(--bo-ligne-bleue);
+}
+/* a phone: a taller frame, the sector stays readable */
+@media (max-width: 639px) {
+  .area {
+    aspect-ratio: 4 / 3;
+    min-height: 17.5rem;
+  }
 }
 .canvas {
   position: absolute;

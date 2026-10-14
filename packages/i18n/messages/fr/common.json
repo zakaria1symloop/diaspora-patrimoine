@@ -155,6 +155,10 @@
   "shareTo": {
     "whatsapp": "WhatsApp",
     "email": "E-mail",
+    "mailApp": "Mon application de messagerie",
+    "gmail": "Gmail",
+    "outlook": "Outlook",
+    "yahoo": "Yahoo Mail",
     "facebook": "Facebook"
   },
   "placeholder": {

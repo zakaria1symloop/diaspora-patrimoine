@@ -639,10 +639,6 @@
 }
 
 /* ---------- Promoteurs ---------- */
-.promoterCard {
-  align-items: flex-start;
-  gap: var(--sp-16);
-}
 .promoterTop {
   display: flex;
   align-items: center;
@@ -699,7 +695,7 @@
 }
 .keyFacts {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: var(--grid-gap);
   margin-block-end: var(--sp-48);
 }
@@ -776,25 +772,225 @@
   color: var(--bo-texte-encre);
 }
 
-/* ---------- Partenaires ---------- */
-.logoWall {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: var(--grid-gap);
+/* ---------- Promoter card (EDI-030, D-105): picture, logo on its edge, text ---------- */
+.promoterCard {
+  padding: 0;
+  overflow: hidden;
+  gap: 0;
 }
-.logoTile {
+.promoterMedia {
   position: relative;
+  height: 11rem;
+  background: var(--bo-degrade-doux);
+}
+.promoterLogo {
+  position: absolute;
+  inset-block-end: calc(var(--sp-24) * -1);
+  inset-inline-start: var(--sp-24);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-m);
+}
+.promoterLogo > span {
+  border: 3px solid var(--bo-fond-blanc);
+}
+.promoterBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-12);
+  padding: var(--sp-48) var(--sp-24) var(--sp-24);
+}
+.logo_s .logoInitial {
+  font-size: var(--fs-subtitle-l);
+}
+/* EDI-031 — picture of the promoter's page head */
+.promoterHero {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: var(--stroke-card) solid var(--bo-fond-blanc);
+  background: var(--bo-degrade-doux);
+  box-shadow: var(--shadow-l);
+}
+
+/* ---------- Filters of a short list (promoters, EDI-030, EDI-035) ---------- */
+.filterBox {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: var(--sp-12);
-  padding: var(--sp-24) var(--sp-16);
+  margin-block-end: var(--sp-32);
+}
+.filterForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--sp-16) var(--sp-20);
+  padding: var(--sp-20) var(--sp-24);
   border-radius: var(--radius-l);
   background: var(--bo-fond-blanc);
   box-shadow: var(--shadow-m);
-  text-align: center;
+}
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+.filterLabel {
+  font-size: var(--fs-body-s);
   font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.filterSearch {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding-inline: var(--sp-12);
+  border: 1.5px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-doux);
+}
+.filterSearch:focus-within {
+  border-color: var(--bo-texte-roi);
+  outline: 3px solid var(--bo-fond-ciel);
+}
+.filterInput {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.5rem;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--bo-texte-encre);
+  outline: none;
+}
+.filterCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  font-weight: 600;
+  color: var(--bo-texte-nuit);
+  cursor: pointer;
+}
+.filterCheck input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--bo-fond-bleu-roi);
+}
+.filterActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-16);
+}
+.filterCount {
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.filterNone {
+  padding: var(--sp-32);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  text-align: center;
+  font-weight: 600;
+  color: var(--bo-texte-doux);
+}
+
+/* ---------- Partenaires ---------- */
+.groupChips {
+  margin-block-end: var(--sp-32);
+}
+.groupChips ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.groupChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: var(--target-min);
+  padding-inline: var(--sp-16) var(--sp-12);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-s);
   color: var(--bo-texte-roi);
+  font-weight: 700;
+  text-decoration: none;
+}
+.groupChip:hover {
+  box-shadow: var(--shadow-m);
+}
+.groupChip[aria-current='true'] {
+  background: var(--bo-fond-bleu-roi);
+  color: var(--bo-texte-blanc);
+}
+.groupChipCount {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding-inline: var(--sp-6);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-body-s);
+}
+.groupChip[aria-current='true'] .groupChipCount {
+  background: var(--bo-fond-blanc);
+}
+
+/* ---------- Bank card (EDI-020, EDI-035) ---------- */
+.bankWall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bankCard {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+  height: 100%;
+  padding: var(--sp-20);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-m);
+}
+.bankText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+.bankName {
+  font-size: var(--fs-subtitle-m);
+  font-weight: 700;
+  color: var(--bo-texte-encre);
+  overflow-wrap: anywhere;
+}
+.bankNote svg {
+  flex: none;
+  margin-block-start: 0.125rem;
+}
+.bankNote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  color: var(--bo-texte-doux);
 }
 .group + .group {
   margin-block-start: var(--sp-48);

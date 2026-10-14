@@ -52,7 +52,7 @@ Bouton « Créer mon espace ». Sous le formulaire : « Déjà un espace ? Se co
 | Un compte client existe, adresse **non vérifiée** | Un nouveau lien de vérification part. Le mot de passe saisi est ignoré : le compte garde le sien. |
 | Un compte client actif et vérifié existe | L'e-mail `C_ACCOUNT_EXISTS` part : « Vous avez déjà un espace », avec les liens pour se connecter et pour réinitialiser le mot de passe. |
 | Un compte client **suspendu** existe | Rien n'est créé ; aucun e-mail. |
-| Un compte du personnel ou d'un partenaire existe | Rien n'est créé ; aucun e-mail (ROL-003). |
+| Un compte du personnel ou d'un partenaire existe | Rien n'est créé (ROL-003). L'e-mail `C_ACCOUNT_EXISTS` part, dans sa version « autre espace » (`action.otherSpace`) : l'adresse est déjà celle d'un compte partenaire ou de l'équipe, une adresse ne sert qu'à un seul compte, s'inscrire avec une autre (D-107 ; comme ACP-080 dans l'autre sens). |
 
 Raison de la deuxième ligne : sinon, quelqu'un pourrait s'inscrire avec l'adresse d'une autre personne et, après un clic distrait de celle-ci, accéder à ses demandes. La première ligne a la même parade, côté vérification (AUTH-013).
 

@@ -17,6 +17,7 @@
 }
 .options {
   display: inline-flex;
+  flex-wrap: wrap; /* three chips do not fit a phone in « Très grande » */
   gap: var(--sp-6);
 }
 .option {
@@ -39,6 +40,7 @@
   border: var(--stroke-field) solid currentColor;
   font-size: var(--fs-body-s);
   font-weight: 600;
+  white-space: nowrap;
   transition: background-color var(--motion-fast);
   opacity: 0.85;
 }

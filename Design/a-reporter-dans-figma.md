@@ -124,3 +124,50 @@
 | ☐ | EA-51 Un promoteur, onglet Relation | En tête « Ce que nous attendons de lui » (nature, objet, depuis combien de jours, échéance en rouge si dépassée, « Saisir la réponse » →) ; puis les chiffres de la période en tuiles (30 j · 90 j · 12 mois, segmenté), ventes hors plateforme sur leur ligne, dossiers clos par raison en pastilles ; puis dossiers ouverts et options ou réservations en tableaux. | CTL-005, ACP-015 | 11/10/2026 |
 | ☐ | EA-11 Une demande, candidature partenaire | Panneau « Candidature partenaire · Promoteur/Banque » sous la demande : statut et état de l'e-mail, trois blocs (société, personne, sections remplies), réponses sur fond bleu pâle, justificatifs avec « Ouvrir », et les décisions « Accepter » (ou « Rattacher à {nom} » quand une fiche correspond), « Demander un complément », « Refuser » ; bandeau vert « Fiche créée » avec son lien après acceptation. | ACP-084 | 11/10/2026 |
 | ☐ | EA-51 Un promoteur, suspension | Fenêtre « Suspendre » qui annonce l'effet avant de confirmer (« 1 programme et 1 bien seront dépubliés. ») et demande une raison ; après réactivation, bandeau « n fiches ont été dépubliées par la suspension du {date}. » avec « Les republier ». | MOD-110, CTL-004 | 11/10/2026 |
+
+## Site public — retour de recette du 11/10/2026 (D-102 à D-104)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | En-tête, menu du téléphone | Plus de flèche sur « Se connecter » ni sur les entrées du menu du téléphone ; « Mon espace » porte un chevron vers le bas, retourné quand son menu est ouvert. | NAV-010, NAV-014 | 11/10/2026 |
+| ☐ | EP-01 Accueil, comparatif ; toutes les cartes de bien | Drapeaux ronds dessinés : Algérie moitié verte, moitié blanche, croissant et étoile rouges ; France tricolore. | DSN-042 | 11/10/2026 |
+| ☐ | EP-01 Accueil, haut de page | Les deux colonnes du comparatif et la carte du Café se soulèvent au survol : elles sont cliquables en entier. | ACC-030, ACC-040 | 11/10/2026 |
+| ☐ | EP-01, EP-02 Barre de recherche ; EP-02 tri ; EP-03 ville | Liste de choix du site : chevron à droite de la valeur, liste arrondie sous le champ, options de 44 px avec leur nombre de biens, valeur choisie en gras avec une coche, groupes titrés (« Par mensualité », « Par prix total »). | CAT-001, CAT-050 | 11/10/2026 |
+| ☐ | EP-03 Filtres | Pastilles « pièces » : coche et fond bleu roi quand elles sont choisies, nombre de biens en petit ; sous le bouton « Voir {m} biens », « Vos choix ne sont pas encore appliqués. » ; prix ou surface inversés : champs bordés de rouge et message sous eux, bouton inactif. | CAT-031, CAT-034 | 11/10/2026 |
+| ☐ | Cartes de bien, fiche bien | Fenêtre « Gardez ce bien dans vos favoris » (cœur dans un rond, texte, « Se connecter », « Créer mon espace », « Plus tard ») quand le visiteur n'est pas connecté. | SFA-021 | 11/10/2026 |
+| ☐ | EP-02 Catalogue, Mes favoris, comparateur | Squelettes de la forme des cartes pendant un chargement. | TRV-080 | 11/10/2026 |
+| ☐ | EP-11, EP-12 Fiches, section Localisation | Carte : le cercle entier dans le cadre, crédits repliés derrière « i », cadre 4:3 sur téléphone ; sans fond de carte, le lieu sur une carte blanche bordée. | FIC-060, FIC-061 | 11/10/2026 |
+| ☐ | EP-11, EP-12, EP-14, EP-31 Menu « Partager » | « E-mail » se déplie : « Mon application de messagerie », Gmail, Outlook, Yahoo Mail. | NAV-037 | 11/10/2026 |
+| ☐ | Pied de page | En « Grande » et « Très grande » : menus sous la marque, alignés à gauche ; séparateurs « · » après chaque lien ; les trois tailles de texte passent à la ligne sur téléphone. | TRV-123 | 11/10/2026 |
+
+## Site public — retour de recette du 12/10/2026 (D-105)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | EP-08 Promoteurs, EP-17 Nos partenaires | Carte de promoteur : image en haut (pastille « {n} programmes en vente »), logo ou initiales posé sur le bord de l'image, nom, région, programmes, références, « Voir le promoteur ». | EDI-030, EDI-035 | 12/10/2026 |
+| ☐ | EP-08 Promoteurs, EP-17 Nos partenaires | Barre de filtres blanche au-dessus des cartes : « Nom du promoteur » (loupe), « Région » (liste du site), case « Avec des biens en vente », bouton « Afficher », « Effacer les filtres » ; sous elle « {n} promoteurs » ; pagination du catalogue. | EDI-030 | 12/10/2026 |
+| ☐ | EP-09 Fiche promoteur | Image du promoteur (ou d'un de ses programmes) à droite du titre, à la place du dessin ; quatrième fait « {n} programmes en vente ». | EDI-031 | 12/10/2026 |
+| ☐ | EP-17 Nos partenaires | Pastilles « Tous nos partenaires · Promoteurs · Banques » avec leur nombre, la choisie en bleu roi. | EDI-035 | 12/10/2026 |
+| ☐ | EP-10 Financements (#banques), EP-17 | Banque en carte horizontale : logo (sinon initiales en médaillon), nom, « Banque partenaire ». | EDI-020 | 12/10/2026 |
+| ☐ | EP-13 Le Café, « Prochaines dates » | Trois rangées de pastilles titrées « Lieu », « Mois », « Places » ; « {n} dates » ; état vide « Aucune date ne correspond à ces critères. » avec « Voir toutes les dates ». | CAF-003 | 12/10/2026 |
+| ☐ | EP-22 Assistant | Choix en colonnes de même largeur, titres de groupe en petites capitales, compteur « {n} choix retenus », champ « Filtrer les choix » au-delà de huit, « Ou bien » + réponse neutre sous un trait pointillé. | ASS-010 | 12/10/2026 |
+
+## Formulaires de demande — client connecté (D-106)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | EP-07 « Exprimer mon intérêt », EP-21 « Être rappelé », EP-19 Contact, EP-20 Projection, résultats de l'assistant et des simulateurs, EP-13 inscription au Café | Variante « client connecté » : à la place des champs Prénom, Nom, E-mail, Téléphone, un encadré blanc à filet doux titré « VOS COORDONNÉES » (petites capitales), la ligne « {Prénom Nom} · {e-mail} · {téléphone} » et le lien souligné « Modifier mes coordonnées » ; seuls restent les champs que la fiche n'a pas (souvent le pays de résidence). La case de consentement et « Créer mon espace » disparaissent au profit de la phrase « En envoyant, vous demandez à être contacté au sujet de cette demande. » (sauf au Café, dont la case reste). | DEM-022, CAF-020 | 13/10/2026 |
+
+## Retour de recette du 13/10/2026 (D-107)
+
+| État | Écran | Changement | Règle | Date |
+|---|---|---|---|---|
+| ☐ | En-tête du site, client connecté | « Mon espace » en bouton double : le libellé (lien vers le tableau de bord), puis, séparé d'un filet, un chevron seul qui ouvre le menu. | NAV-013 | 13/10/2026 |
+| ☐ | Barre de recherche (EP-01, EP-02) | Focus d'une liste de choix : trait bleu de 3 px sous la valeur, plus de cadre autour (il recouvrait le libellé « Budget mensuel »). | CAT-001 | 13/10/2026 |
+| ☐ | EP-11 Simulateur de crédit | Sélecteur « Je connais le prix du bien · Je connais le montant à financer » : le rail épouse ses deux choix (4 px de chaque côté) ; sur téléphone, les deux choix pleine largeur, centrés, sur deux lignes, coins arrondis. | D-107 | 13/10/2026 |
+| ☐ | EC-30 Messages, EC « Mes demandes » | « Demandes en cours » : sous le type, le début du message envoyé (deux lignes). « Mes demandes » : le message entier dans un encadré ciel pâle à filet gauche bleu. | MSG-021 | 13/10/2026 |
+| ☐ | EC Profil | Fenêtre « Vous avez des modifications non enregistrées. Quitter sans enregistrer ? » — « Quitter » (secondaire) · « Rester » (principal), comme au back-office. | TRV-093 | 13/10/2026 |
+| ☐ | EC-13 Biens proposés (carte d'un bien) | Bien en attente de réponse : « Ce bien m’intéresse » (bouton principal, cœur) et « Ce bien ne me convient pas » (secondaire) ; « Voir le bien » passe en lien texte avec un œil. Bien écarté : lien « Finalement, il m’intéresse » (cœur). | INT-010, INT-020, INT-021 | 14/10/2026 |
+| ☐ | EC-12 Mes intérêts (carte d'un bien) | Sous « Voir le bien », liens texte avec icône : « Je retiens ce bien » (coche), « Annuler mon choix » (flèche), « Demander une visite » (calendrier), « Ce bien ne m’intéresse plus » (croix), « Écrire à mon conseiller ». | INT-004, INT-030, INT-031 | 14/10/2026 |
+| ☐ | Fenêtres de réponse (EC-12, EC-13) | Fenêtre centrée (plein écran sur téléphone) : titre = la réponse ; le bien (icône immeuble + titre) ; « Pour quelle raison ? » en cinq choix encadrés (fond ciel pâle quand choisi) + « Une précision ? » ; « Je retiens ce bien » : phrase de INT-030 avec « Cela ne vous engage pas. » en gras, lots en choix encadrés quand il y en a plusieurs, « Un commentaire ? » ; boutons « Annuler » · « Envoyer ma réponse » / « Envoyer mon choix ». | INT-020, INT-021, INT-030 | 14/10/2026 |
+| ☐ | EA-11 Une demande (recherche guidée) | Les réponses sous leur question (« Où souhaitez-vous acheter ? », « Combien de pièces ? »…) et dans les mots du client ; plus de bloc « critères » répété ; « Devise du budget ». | CRM-010 | 14/10/2026 |

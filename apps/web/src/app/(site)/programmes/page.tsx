@@ -23,6 +23,7 @@ import { SearchBar } from '@/components/vitrine/SearchBar';
 import { CatalogueToolbar } from '@/components/catalogue/CatalogueToolbar';
 import { FiltersDialog } from '@/components/catalogue/FiltersDialog';
 import { Pagination } from '@/components/catalogue/Pagination';
+import { ResultsPending } from '@/components/catalogue/ResultsPending';
 import { CatalogueMapView } from '@/components/catalogue/CatalogueMapView';
 import { GroupedResults } from '@/components/catalogue/GroupedResults';
 import { ViewControls } from '@/components/catalogue/ViewControls';
@@ -200,6 +201,8 @@ export default async function CataloguePage({ searchParams }: { searchParams: SP
               </div>
             )}
 
+            {/* TRV-080 — while a new search is on its way, skeletons in the shape of the cards */}
+            <ResultsPending count={res.data.length} stamp={canonicalQs}>
             {allReserved ? (
               <div className={s.emptyBox}>
                 <p>{t('ui.catalogue.page.allReserved')}</p>
@@ -278,6 +281,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: SP
                 {notes.length ? <p className={s.note}>{notes.join(' ')}</p> : null}
               </>
             )}
+            </ResultsPending>
           </section>
           <Suspense fallback={null}>
             {alertsOn ? <AlertDialog criteria={applied} chips={chipLabels} summary={summary} /> : null}

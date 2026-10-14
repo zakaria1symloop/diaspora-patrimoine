@@ -11,6 +11,7 @@
   "INVALID_DATE": "Cette date n’est pas valide.",
   "DATE_NOT_FUTURE": "Choisissez une date à venir.",
   "DATE_IN_FUTURE": "Cette date ne peut pas être dans le futur.",
+  "UNDER_AGE": "Diaspora Patrimoine s’adresse aux personnes majeures : la date de naissance doit donner 18 ans ou plus.",
   "MUST_ACCEPT": "Vous devez accepter pour continuer.",
   "ALREADY_USED": "Cette valeur est déjà utilisée.",
   "INVALID_CHOICE": "Choisissez une valeur dans la liste.",

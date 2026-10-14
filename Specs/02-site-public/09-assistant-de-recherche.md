@@ -39,6 +39,8 @@ Le lien de l'accueil dit : « Vous préférez le dire avec vos mots ? Notre assi
 
 Un choix sans aucun bien n'est pas proposé : les choix de chaque question sont calculés d'après les réponses précédentes, et seuls restent ceux qui ont encore des biens (`GET /public/assistant/questions`). Si `features.monthlyBudgetSearch` est faux, la question 3 ne propose que le budget « au total ». **Lectures retenues** (D-097) : « D'ici un à deux ans » couvre les biens livrés et ceux livrés dans l'année en cours ou les deux suivantes (Q-063) ; « Peu importe » au type fait sauter la question 2 bis (Q-064) ; un nombre de pièces écarte les terrains et les locaux commerciaux, comme le filtre du catalogue (Q-065).
 
+**Présentation des choix (D-105)** : les choix d'une question s'alignent en colonnes de même largeur ; la question 2 les range sous deux titres dès qu'ils existent tous deux — « Pour habiter » (appartement, studio, duplex, villa) et « Autres biens » (terrain, local commercial) ; au-delà de huit choix (les régions, quand le catalogue grandit), un champ « Filtrer les choix » restreint la liste sans effacer ce qui est coché (« Aucun choix ne correspond. Effacez quelques lettres. ») ; à côté de « Plusieurs choix possibles. », le nombre retenu (« Aucun choix pour l'instant », « 2 choix retenus ») ; la réponse neutre est mise à part, sous un trait, après « Ou bien ».
+
 **ASS-011** Après la question 5, un champ facultatif : « Une précision à ajouter, avec vos mots ? » (500 caractères). Ce texte n'est **pas interprété** : il est transmis tel quel au conseiller si le visiteur laisse ses coordonnées.
 
 ## 3. Résultat

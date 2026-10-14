@@ -53,11 +53,16 @@
   }
 }
 @media (max-width: 1023px) {
+  /* beside the menu button alone: the brand may shrink, the button never leaves the screen (TRV-123 on a phone) */
+  .brand {
+    flex: 0 1 auto;
+  }
   .logo {
     width: 2.75rem;
   }
   .wordmark {
     width: 12.5rem;
+    max-width: 100%;
   }
   .tagline {
     display: none;

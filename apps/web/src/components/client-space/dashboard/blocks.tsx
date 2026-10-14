@@ -16,7 +16,7 @@ import { documentsPath, dossierPath } from '../menu';
 import { Figures } from '../kit/Figures';
 import { PhotoNote } from '../kit/PhotoNote';
 import { Progress } from '../kit/Progress';
-import { advisorName, dateTime, longDate, nextStepSentence, promiseSentence, type PromiseSettings } from '../texts';
+import { advisorName, dateTime, inSentence, longDate, nextStepSentence, promiseSentence, type PromiseSettings } from '../texts';
 import k from '../kit/kit.module.css';
 import sp from '../space.module.css';
 import s from './dashboard.module.css';
@@ -47,7 +47,7 @@ function todoText(c: TodoCard, timeZone: string, advisor: AdvisorCard | null): s
   const date = p.date ? (p.date.length > 10 ? dateTime(p.date, timeZone).date : longDate(p.date, timeZone)) : undefined;
   switch (c.code) {
     case 'OFFER_WAITING':
-      if (p.transmitted) return [t('ui.client.dashboard.todo.OFFER_WAITING_transmitted', { bank: p.bank ?? '', advisor: advisorName(advisor) ?? t('ui.client.nextStep.advisorFallback') })];
+      if (p.transmitted) return [inSentence(t('ui.client.dashboard.todo.OFFER_WAITING_transmitted', { bank: p.bank ?? '', advisor: advisorName(advisor) ?? t('ui.client.nextStep.advisorFallback') }))];
       return [t('ui.client.dashboard.todo.OFFER_WAITING', { bank: p.bank ?? '' }), ...(date ? [t('ui.client.dashboard.todo.OFFER_WAITING_until', { date })] : [])];
     case 'DOCUMENTS_TO_PROVIDE':
       return [date ? t('ui.client.dashboard.todo.DOCUMENTS_TO_PROVIDE_due', { n: p.n ?? 0, date }) : t('ui.client.dashboard.todo.DOCUMENTS_TO_PROVIDE', { n: p.n ?? 0 })];

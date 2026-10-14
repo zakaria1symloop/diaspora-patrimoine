@@ -43,7 +43,7 @@ Onglets du téléphone : **Accueil** · **Dossier** · **Biens** (intérêts et 
 | « Je retiens ce bien » | le choix d'un bien n'est pas encore traité par l'équipe (paquet 3.7) | Bouton absent ; « Écrire à mon conseiller », message prérempli (« Je souhaite retenir {bien}. »). |
 | « Ce bien ne m'intéresse plus », « Finalement, il m'intéresse », « Annuler mon choix » | les réponses sur un bien envisagé ne sont pas encore traitées par l'équipe (paquet 3.7) | Boutons absents ; « Écrire à mon conseiller », message prérempli « Au sujet de {bien} (réf. {référence}) : ». |
 | « Tout voir » sous « Dernières nouvelles » ; page des notifications | EC-31 n'est pas livré | Lien absent ; le bloc montre les dix dernières nouvelles. |
-| « Demander une visite », « Reprendre rendez-vous », « Proposer un créneau » | `features.clientAppointments` est faux | « Écrire à mon conseiller », message prérempli (« Je souhaite visiter {bien}. »). |
+| « Demander une visite », « Reprendre rendez-vous », « Proposer un créneau » | la demande de rendez-vous (INT-040) n'est pas livrée, ou `features.clientAppointments` est faux | Le bouton garde son libellé et ouvre « Écrire à mon conseiller » avec un message prérempli (« Je souhaite visiter {bien} (réf. {référence}). »), comme « Reprendre mon projet » (D-108). |
 | « Gérer mes préférences », réglages des notifications | la page des préférences n'est pas livrée | Lien absent des écrans. Les e-mails d'un groupe portent leur lien de désinscription dès leur premier envoi (NOT-022). |
 
 Les boutons des e-mails suivent la même règle (NOT-026).

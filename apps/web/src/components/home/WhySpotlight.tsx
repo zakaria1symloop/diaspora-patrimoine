@@ -32,6 +32,9 @@ export function WhySpotlight({ items, label }: { items: WhyItem[]; label: string
   const [stopped, setStopped] = useState(false); // the visitor took over, or pressed pause
   const [visible, setVisible] = useState(true);
   const swipe = useRef<{ x: number; y: number } | null>(null);
+  // « Lecture » pressed: the pointer and the focus are on the button itself, so they must not hold the spotlight still
+  // (the button looked dead: nothing moved until the pointer left the block). Lifted when the pointer or the focus leaves.
+  const played = useRef(false);
   const count = items.length;
 
   useEffect(() => {
@@ -83,11 +86,17 @@ export function WhySpotlight({ items, label }: { items: WhyItem[]; label: string
     <div
       ref={root}
       className={`${s.spotlight} ${running ? s.running : ''}`}
-      onPointerEnter={(e) => e.pointerType === 'mouse' && setHeld(true)}
-      onPointerLeave={(e) => e.pointerType === 'mouse' && setHeld(false)}
-      onFocus={() => setHeld(true)}
+      onPointerEnter={(e) => e.pointerType === 'mouse' && !played.current && setHeld(true)}
+      onPointerLeave={(e) => {
+        if (e.pointerType !== 'mouse') return;
+        played.current = false;
+        setHeld(false);
+      }}
+      onFocus={() => !played.current && setHeld(true)}
       onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setHeld(false);
+        if (e.currentTarget.contains(e.relatedTarget as Node | null)) return;
+        played.current = false;
+        setHeld(false);
       }}
       data-reveal=""
     >
@@ -171,7 +180,12 @@ export function WhySpotlight({ items, label }: { items: WhyItem[]; label: string
             className={s.pause}
             aria-label={stopped ? t('ui.home.why.play') : t('ui.home.why.pause')}
             aria-pressed={stopped}
-            onClick={() => setStopped((v) => !v)}
+            onClick={() => {
+              // « Pause » stops for good; « Lecture » starts again at once, even with the pointer still on the block.
+              played.current = stopped;
+              if (stopped) setHeld(false);
+              setStopped(!stopped);
+            }}
           >
             <Icon name={stopped ? 'play' : 'pause'} size={16} />
           </button>

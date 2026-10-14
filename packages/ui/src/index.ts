@@ -16,6 +16,7 @@ export {
   readTextSize,
   type TextSize,
 } from './components/TextSizeControl';
+export { Flag, type FlagCountry } from './components/Flag';
 export { icons } from './icons/icons.generated';
 export { Scene, type SceneName } from './components/Scene';
 export { SectionTitle, type SectionTitleProps } from './components/SectionTitle';

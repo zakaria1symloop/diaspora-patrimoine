@@ -49,6 +49,11 @@ export const LeadConsentWording = {
     type: 'MARKETING_EMAIL',
     text: 'Je souhaite recevoir les actualités et les nouveaux programmes par e-mail.',
   },
+  /** DEM-022 — a signed-in client: the sentence under the button replaces the box and is recorded as the consent. */
+  'lead.contact.signedIn.v1': {
+    type: 'CONTACT_REQUEST',
+    text: 'En envoyant, vous demandez à être contacté au sujet de cette demande.',
+  },
   /** CAF-020 — the consent of a Café registration (the marketing box reuses `lead.marketing.v1`). */
   'cafe.contact.v1': {
     type: 'CONTACT_REQUEST',
@@ -58,6 +63,7 @@ export const LeadConsentWording = {
 export type LeadConsentKey = keyof typeof LeadConsentWording;
 export const CURRENT_CONTACT_CONSENT_KEY = 'lead.contact.v1' satisfies LeadConsentKey;
 export const CURRENT_MARKETING_CONSENT_KEY = 'lead.marketing.v1' satisfies LeadConsentKey;
+export const SIGNED_IN_CONTACT_CONSENT_KEY = 'lead.contact.signedIn.v1' satisfies LeadConsentKey;
 
 // ─── Field primitives ───────────────────────────────────────────────────────
 

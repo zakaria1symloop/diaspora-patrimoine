@@ -214,6 +214,8 @@ export function InterestsBoard({ properties, requests, timeZone, footnote }: { p
                           {r.fromSpace ? ` · ${t('ui.client.interests.request.fromSpace')}` : ''}
                         </p>
                         {r.noCandidate ? <p className={s.requestMeta}>{t('ui.client.interests.request.noCandidate')}</p> : null}
+                        {/* D-107 — his message, as he wrote it: what he sent is found again here */}
+                        {r.message ? <blockquote className={s.requestMessage}>{r.message}</blockquote> : null}
                         <div className={s.requestFoot}>
                           <span className={`${sp.tag} ${REQUEST_TONE[r.status]}`}>{stateLabel}</span>
                           {r.status !== 'CLOSED' ? (

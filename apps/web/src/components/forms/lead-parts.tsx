@@ -1,7 +1,7 @@
 'use client';
 // Pieces shared by the lead forms (DEM-011 … DEM-017): phone with dialling code (TRV-040, E.164), residence country
-// (TRV-044, DEM-006), « Quand vous appeler ? » (DEM-008), the consent block (DEM-020, DEM-021), and the submission
-// with its error handling (DEM-032 limits, DEM-040 errors).
+// (TRV-044, DEM-006), « Quand vous appeler ? » (DEM-008), the consent block (DEM-020, DEM-021), the signed-in client's
+// details in place of the contact fields (DEM-022), and the submission with its error handling (DEM-032, DEM-040).
 import { useEffect, useMemo, useState } from 'react';
 import { AsYouType, parsePhoneNumberFromString, getCountryCallingCode, type CountryCode } from 'libphonenumber-js';
 import {
@@ -10,12 +10,16 @@ import {
   LEAD_HONEYPOT_FIELD,
   LEAD_SHORT_LIMIT_SECONDS,
   LeadConsentWording,
+  SIGNED_IN_CONTACT_CONSENT_KEY,
+  type ClientMe,
   type LeadSubmitInput,
   type LeadSubmitResponse,
   type PublicSettings,
 } from '@dp/contracts';
 import { hasMessage } from '@dp/i18n';
 import { callbackDays, callbackSlots, browserTimeZone, dayOptionLabel, type Slot } from '@/lib/callback';
+import { formatPhone } from '@/lib/contact';
+import { useClientSession } from '@/lib/session-client';
 import { trackingPayload } from '@/lib/tracking';
 import { usePublicForm } from '@/lib/public-form';
 import { t } from '@/lib/i18n';
@@ -266,6 +270,60 @@ export const consentWire = (consent: boolean, marketing: boolean) => ({
   consentContact: consent,
   consentKey: CURRENT_CONTACT_CONSENT_KEY,
   marketingOptIn: marketing,
+  marketingKey: CURRENT_MARKETING_CONSENT_KEY,
+});
+
+// ─── DEM-022 — a signed-in client sends from his account ────────────────────
+
+/** The signed-in client, else null (anonymous, or the session still loading: the anonymous form shows meanwhile). */
+export function useSignedInClient(): ClientMe | null {
+  const session = useClientSession();
+  return session.status === 'authenticated' ? session.me : null;
+}
+
+/** What the request carries: the account's details, the form's only where the record has none (the server does the same). */
+export function contactOf(
+  me: ClientMe | null,
+  v: { firstName?: string; lastName?: string; email?: string; phone?: string; country?: string },
+): { firstName: string; lastName: string; email: string; phone: string; country: string } {
+  return {
+    firstName: me?.firstName || v.firstName || '',
+    lastName: me?.lastName || v.lastName || '',
+    email: me?.email || v.email || '',
+    phone: me?.phone || v.phone || '',
+    country: me?.countryOfResidence || v.country || '',
+  };
+}
+
+/** The fields a signed-in client is still asked for: those his record lacks. Anonymous: all of them. */
+export function askedOf(me: ClientMe | null): { name: boolean; email: boolean; phone: boolean; country: boolean } {
+  return { name: !me?.firstName || !me?.lastName, email: !me, phone: !me?.phone, country: !me?.countryOfResidence };
+}
+
+/** « {Prénom Nom} · {e-mail} · {téléphone} » and « Modifier mes coordonnées », in place of the contact fields. */
+export function SignedInContact({ me }: { me: ClientMe }) {
+  const name = [me.firstName, me.lastName].filter(Boolean).join(' ');
+  const line = [name, me.email, me.phone ? formatPhone(me.phone) : null].filter(Boolean).join(' · ');
+  return (
+    <div className={s.signedIn} data-testid="signed-in-contact">
+      <span className={s.signedInLabel}>{t('ui.lead.fields.signedInAs')}</span>
+      <span className={s.signedInLine}>{line}</span>
+      <a href="/espace-client/profil" className={s.signedInEdit}>
+        {t('ui.lead.fields.editDetails')}
+      </a>
+    </div>
+  );
+}
+
+/** The sentence that replaces the consent box; the server records it as the consent (`lead.contact.signedIn.v1`). */
+export function SignedInConsent() {
+  return <p className={s.hint}>{LeadConsentWording[SIGNED_IN_CONTACT_CONSENT_KEY].text}</p>;
+}
+
+export const signedInConsentWire = () => ({
+  consentContact: true as const,
+  consentKey: SIGNED_IN_CONTACT_CONSENT_KEY,
+  marketingOptIn: false,
   marketingKey: CURRENT_MARKETING_CONSENT_KEY,
 });
 

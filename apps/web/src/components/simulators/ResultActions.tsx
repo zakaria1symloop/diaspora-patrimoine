@@ -21,7 +21,7 @@ import { usePublicForm } from '@/lib/public-form';
 import { trackingPayload, recordOrigin } from '@/lib/tracking';
 import { t } from '@/lib/i18n';
 import { CheckboxField, Honeypot, TextField } from '@/components/forms/fields';
-import { CallbackWhen, ConsentBlock, PhoneField } from '@/components/forms/lead-parts';
+import { CallbackWhen, ConsentBlock, PhoneField, SignedInConsent, SignedInContact, askedOf, contactOf, signedInConsentWire, useSignedInClient } from '@/components/forms/lead-parts';
 import { LeadDone } from '@/components/forms/LeadDone';
 import { fieldMessage, postJson, useDownload } from './shared';
 import s from './sim.module.css';
@@ -258,16 +258,19 @@ function FollowupForm({
   const [banner, setBanner] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState<LeadSubmitResponse | null>(null);
+  const me = useSignedInClient(); // DEM-022
+  const asked = askedOf(me);
   useEffect(() => recordOrigin(), []);
 
   async function send(e: FormEvent) {
     e.preventDefault();
     const local: Record<string, string> = {};
-    if (!v.firstName.trim()) local.firstName = t('ui.validation.REQUIRED');
-    if (!v.lastName.trim()) local.lastName = t('ui.validation.REQUIRED');
-    if (!v.email.trim()) local.email = t('ui.validation.REQUIRED');
-    if (!v.phone) local.phone = t('ui.validation.REQUIRED');
-    if (!v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
+    const c = contactOf(me, v);
+    if (!c.firstName.trim()) local.firstName = t('ui.validation.REQUIRED');
+    if (!c.lastName.trim()) local.lastName = t('ui.validation.REQUIRED');
+    if (!c.email.trim()) local.email = t('ui.validation.REQUIRED');
+    if (!c.phone) local.phone = t('ui.validation.REQUIRED');
+    if (!me && !v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
     setErrors(local);
     setBanner(null);
     if (Object.keys(local).length) return;
@@ -281,18 +284,17 @@ function FollowupForm({
       form: 'SIMULATION_FOLLOWUP',
       simulationId,
       fields: {
-        firstName: v.firstName,
-        lastName: v.lastName,
-        email: v.email,
-        phone: v.phone,
+        firstName: c.firstName,
+        lastName: c.lastName,
+        email: c.email,
+        phone: c.phone,
         whatsappOptIn: v.whatsapp,
         preferredCallbackDate: v.day || null,
         preferredSlot: v.slot || null,
-        consentContact: v.consent,
-        consentKey: CURRENT_CONTACT_CONSENT_KEY,
-        marketingOptIn: v.marketing,
-        marketingKey: CURRENT_MARKETING_CONSENT_KEY,
-        createAccount: v.createAccount,
+        ...(me
+          ? signedInConsentWire()
+          : { consentContact: v.consent, consentKey: CURRENT_CONTACT_CONSENT_KEY, marketingOptIn: v.marketing, marketingKey: CURRENT_MARKETING_CONSENT_KEY }),
+        createAccount: me ? false : v.createAccount,
       },
       context: propertyReference ? { propertyReference } : {},
       tracking: trackingPayload(),
@@ -343,10 +345,14 @@ function FollowupForm({
           {banner}
         </p>
       ) : null}
+      {me ? <SignedInContact me={me} /> : null}
+      {asked.name ? (
       <div className={s.row}>
         <TextField id={`${id}-fn`} label={t('ui.lead.fields.firstName')} autoComplete="given-name" value={v.firstName} onChange={(e) => set({ firstName: e.target.value })} error={errors.firstName} />
         <TextField id={`${id}-ln`} label={t('ui.lead.fields.lastName')} autoComplete="family-name" value={v.lastName} onChange={(e) => set({ lastName: e.target.value })} error={errors.lastName} />
       </div>
+      ) : null}
+      {asked.email ? (
       <TextField
         id={`${id}-email`}
         type="email"
@@ -358,17 +364,22 @@ function FollowupForm({
         onChange={(e) => set({ email: e.target.value })}
         error={errors.email}
       />
-      <PhoneField id={`${id}-phone`} value={v.phone} onChange={(phone) => set({ phone })} error={errors.phone} />
-      {v.phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={v.whatsapp} onChange={(whatsapp) => set({ whatsapp })} /> : null}
+      ) : null}
+      {asked.phone ? <PhoneField id={`${id}-phone`} value={v.phone} onChange={(phone) => set({ phone })} error={errors.phone} /> : null}
+      {contactOf(me, v).phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={v.whatsapp} onChange={(whatsapp) => set({ whatsapp })} /> : null}
       <CallbackWhen settings={settings} day={v.day} slot={v.slot} idPrefix={id} onChange={(p) => set(p)} />
-      <ConsentBlock
-        idPrefix={id}
-        consent={v.consent}
-        marketing={v.marketing}
-        createAccount={v.createAccount}
-        error={errors.consentContact}
-        onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })}
-      />
+      {me ? (
+        <SignedInConsent />
+      ) : (
+        <ConsentBlock
+          idPrefix={id}
+          consent={v.consent}
+          marketing={v.marketing}
+          createAccount={v.createAccount}
+          error={errors.consentContact}
+          onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })}
+        />
+      )}
       <Honeypot name={LEAD_HONEYPOT_FIELD} value={honeypot} onChange={setHoneypot} />
       <Button type="submit" variant="primary" size="L" chevron pending={pending}>
         {t('ui.sim.actions.callbackSubmit')}

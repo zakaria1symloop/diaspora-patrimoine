@@ -9,7 +9,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
 import { Icon } from '../components/Icon';
-import { clusterPoints } from './cluster';
+import { clusterPoints, foldAttribution } from './cluster';
 import s from './map.module.css';
 
 export interface MapPoint {
@@ -99,6 +99,7 @@ export function CatalogueMap({ styleUrl, workerUrl, points, highlighted, selecte
         }, LOAD_TIMEOUT_MS);
         m.on('load', () => {
           if (timer) clearTimeout(timer);
+          foldAttribution(m.getContainer());
           if (!cancelled) setReady(true);
         });
         m.on('error', () => {

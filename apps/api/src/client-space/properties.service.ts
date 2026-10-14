@@ -1,5 +1,6 @@
 // EC-12, EC-13 — `GET /client/interests`, `GET /client/proposals`, `POST /client/candidates/{id}/view` (INT-001 …
-// INT-023). The answers on a candidate (« Ce bien m'intéresse », « Je retiens ce bien »…) are package 3.7 (ECL-006).
+// INT-023). Each card says which answers the client may give now (INT-004, `clientActions`); the answers themselves
+// (« Ce bien m'intéresse », « Je retiens ce bien »…) are `dossiers-admin/client-answers.service.ts`.
 import { Injectable } from '@nestjs/common';
 import type { CandidateCard, ClientInterests, ClientProposals, ClientRequestRow, ProposalGroup } from '@dp/contracts';
 import type { AuthContext } from '../identity/sessions.service.js';
@@ -7,6 +8,8 @@ import { Clock } from '../platform/clock.js';
 import { AppError } from '../platform/errors.js';
 import { OutboxWriter, EVENT_DISPATCHER, type EventDispatcher } from '../platform/outbox.js';
 import { Inject } from '@nestjs/common';
+import { clientActions } from '../dossiers-admin/dossier-rules.js';
+import { PropertyCards } from '../dossiers-admin/property-cards.js';
 import { SpaceReader, PROMISE_SELECT } from './space-reader.js';
 
 /** INT-001 — proposals that no longer wait for an answer join « Les biens qui m'intéressent ». */
@@ -26,13 +29,14 @@ const CANDIDATE_SELECT = {
   selectionDeclineNote: true,
   createdAt: true,
   statusChangedAt: true,
-  dossier: { select: { reference: true, stage: true, assignedAgentId: true } },
+  dossier: { select: { reference: true, stage: true, status: true, assignedAgentId: true } },
 } as const;
 
 @Injectable()
 export class PropertiesService {
   constructor(
     private readonly reader: SpaceReader,
+    private readonly propertyCards: PropertyCards,
     private readonly clock: Clock,
     private readonly outbox: OutboxWriter,
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
@@ -54,14 +58,16 @@ export class PropertiesService {
       selectionRequestedAt: Date | null;
       selectionDeclineNote: string | null;
       createdAt: Date;
-      dossier: { reference: string; stage: string; assignedAgentId: string | null };
+      dossier: { reference: string; stage: string; status: string; assignedAgentId: string | null };
     }>,
     clientTimezone: string | null,
   ): Promise<CandidateCard[]> {
     if (!rows.length) return [];
     const now = this.clock.now();
-    const [props, advisors, visits, leads] = await Promise.all([
+    const [props, states, online, advisors, visits, leads] = await Promise.all([
       this.reader.propertySummaries(rows.map((r) => r.propertyId)),
+      this.propertyCards.rows(rows.map((r) => r.propertyId)),
+      this.propertyCards.onlineIds(),
       this.reader.advisorCards(rows.map((r) => r.dossier.assignedAgentId)),
       this.prisma.appointment.findMany({
         where: { candidateId: { in: rows.map((r) => r.id) }, status: 'CONFIRMED', startsAt: { gt: now } },
@@ -78,6 +84,7 @@ export class PropertiesService {
       const property = props.get(r.propertyId);
       if (!property) continue;
       const lead = leads.find((l) => l.id === r.leadId) ?? null;
+      const state = states.get(r.propertyId);
       out.push({
         id: r.id,
         dossierReference: r.dossier.reference,
@@ -94,6 +101,7 @@ export class PropertiesService {
         visitAt: visits.find((v) => v.candidateId === r.id)?.startsAt?.toISOString() ?? null,
         promise: r.status === 'INTERESTED' ? await this.reader.promiseOf(lead, clientTimezone) : null,
         advisor: (r.dossier.assignedAgentId && advisors.get(r.dossier.assignedAgentId)) || null,
+        actions: state ? clientActions(r, r.dossier, this.propertyCards.state(state, online)) : { interested: false, decline: false, selectRequest: false, cancelSelect: false, visit: false },
       });
     }
     return out;
@@ -125,6 +133,7 @@ export class PropertiesService {
         createdAt: true,
         assignedAgentId: true,
         payload: true,
+        message: true,
         property: { select: { title: true } },
         program: { select: { name: true } },
         dossierCandidates: { select: { id: true }, take: 1 },
@@ -141,6 +150,7 @@ export class PropertiesService {
       subject: l.property?.title ?? l.program?.name ?? null,
       noCandidate: l.kind === 'PROPERTY_INTEREST' && Boolean(l.property),
       fromSpace: (l.payload as { form?: string } | null)?.form === 'CLIENT_SPACE_MESSAGE',
+      message: l.message,
     }));
     return { properties, requests };
   }

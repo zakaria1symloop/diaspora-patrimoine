@@ -10,7 +10,8 @@ import s from './Snap.module.css';
 export function Snap({ children, className, label, wide }: { children: ReactNode; className?: string; label: string; wide?: boolean }) {
   const ref = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
-  const count = Children.count(children);
+  // toArray leaves out the empty children (`cond ? <li /> : null`): Children.count counted them, one dot too many.
+  const count = Children.toArray(children).length;
 
   useEffect(() => {
     const el = ref.current;

@@ -87,6 +87,40 @@
   color: var(--bo-texte-erreur);
   font-weight: 600;
 }
+/* DEM-022 — the signed-in client's details, in place of the contact fields */
+.signedIn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-12) var(--sp-16);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+}
+.signedInLabel {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--bo-texte-doux);
+}
+.signedInLine {
+  color: var(--bo-texte-encre);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.signedInEdit {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  color: var(--bo-texte-roi);
+  font-size: var(--fs-body-s);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .notice {
   padding: var(--sp-10) var(--sp-14, var(--sp-16));
   border-radius: var(--radius-m);

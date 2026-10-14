@@ -14,12 +14,27 @@ import { useDraft } from '@/lib/public-form';
 import { recordOrigin } from '@/lib/tracking';
 import { t } from '@/lib/i18n';
 import { CheckboxField, Honeypot, SelectField, TextArea, TextField } from './fields';
-import { CallbackWhen, ConsentBlock, CountrySelect, PhoneField, consentWire, useLeadSubmit } from './lead-parts';
+import {
+  CallbackWhen,
+  ConsentBlock,
+  CountrySelect,
+  PhoneField,
+  SignedInConsent,
+  SignedInContact,
+  askedOf,
+  consentWire,
+  contactOf,
+  signedInConsentWire,
+  useLeadSubmit,
+  useSignedInClient,
+} from './lead-parts';
 import { LeadDone } from './LeadDone';
 import { QueryDialog, useQueryFlag } from './QueryDialog';
 import l from './lead.module.css';
 
-const SENT_KEY = (ref: string) => `dp_sent_${ref}`;
+// FIC-054, D-108 — « Demande envoyée » is remembered for the session of ONE person: a request sent as one account (or
+// anonymously) must not show as sent for another account signed in later in the same tab.
+const SENT_KEY = (ref: string, who: string | null | undefined) => `dp_sent_${who ?? 'anonymous'}_${ref}`;
 
 export interface InterestTarget {
   /** Property: its reference; programme: its slug. */
@@ -39,10 +54,12 @@ export interface InterestTarget {
 
 export function InterestButton({ target, label, href }: { target: InterestTarget; label: string; href: string }) {
   const [sent, setSent] = useState(false);
+  const me = useSignedInClient();
+  const who = me?.clientId ?? null;
   useEffect(() => {
     const read = () => {
       try {
-        setSent(sessionStorage.getItem(SENT_KEY(target.key)) === '1');
+        setSent(sessionStorage.getItem(SENT_KEY(target.key, who)) === '1');
       } catch {
         /* storage unavailable */
       }
@@ -50,7 +67,7 @@ export function InterestButton({ target, label, href }: { target: InterestTarget
     read();
     window.addEventListener('dp:lead-sent', read);
     return () => window.removeEventListener('dp:lead-sent', read);
-  }, [target.key]);
+  }, [target.key, who]);
   if (sent) {
     return (
       <div className={l.consents}>
@@ -120,6 +137,8 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
   const [done, setDone] = useState<LeadSubmitResponse | null>(null);
   const send = useLeadSubmit('PROPERTY_INTEREST', settings);
   const monthlyOn = settings['features.monthlyBudgetSearch'];
+  const me = useSignedInClient(); // DEM-022
+  const asked = askedOf(me);
 
   useEffect(() => {
     if (params.get('visio') === '1') set({ visio: true });
@@ -128,12 +147,13 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
   async function submit(e: FormEvent) {
     e.preventDefault();
     const local: Record<string, string> = {};
-    if (!v.firstName.trim()) local.firstName = t('ui.validation.REQUIRED');
-    if (!v.lastName.trim()) local.lastName = t('ui.validation.REQUIRED');
-    if (!v.email.trim()) local.email = t('ui.validation.REQUIRED');
-    if (!v.phone) local.phone = t('ui.validation.REQUIRED');
-    if (!v.country) local.countryOfResidence = t('ui.validation.REQUIRED');
-    if (!v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
+    const c = contactOf(me, v);
+    if (!c.firstName.trim()) local.firstName = t('ui.validation.REQUIRED');
+    if (!c.lastName.trim()) local.lastName = t('ui.validation.REQUIRED');
+    if (!c.email.trim()) local.email = t('ui.validation.REQUIRED');
+    if (!c.phone) local.phone = t('ui.validation.REQUIRED');
+    if (!c.country) local.countryOfResidence = t('ui.validation.REQUIRED');
+    if (!me && !v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
     setErrors(local);
     if (Object.keys(local).length) {
       document.getElementById(`${id}-${Object.keys(local)[0]}`)?.focus();
@@ -144,12 +164,12 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
     const chosen = target.kind === 'program' && v.choice ? v.choice : undefined;
     const res = await send(
       {
-        firstName: v.firstName,
-        lastName: v.lastName,
-        email: v.email,
-        phone: v.phone,
+        firstName: c.firstName,
+        lastName: c.lastName,
+        email: c.email,
+        phone: c.phone,
         whatsappOptIn: v.whatsapp,
-        countryOfResidence: v.country,
+        countryOfResidence: c.country,
         preferredChannel: v.channel,
         residencyStatus: v.residency || null,
         purchaseTimeframe: v.timeframe || null,
@@ -160,8 +180,8 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
         preferredSlot: v.slot || null,
         wantsVideoVisit: v.visio,
         message: v.message || null,
-        ...consentWire(v.consent, v.marketing),
-        createAccount: v.createAccount,
+        ...(me ? signedInConsentWire() : consentWire(v.consent, v.marketing)),
+        createAccount: me ? false : v.createAccount,
       },
       {
         propertyReference: chosen ?? target.propertyReference,
@@ -179,7 +199,7 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
     if (res.ok) {
       clear();
       try {
-        sessionStorage.setItem(SENT_KEY(target.key), '1');
+        sessionStorage.setItem(SENT_KEY(target.key, me?.clientId), '1');
       } catch {
         /* storage unavailable */
       }
@@ -241,14 +261,19 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
           ))}
         </SelectField>
       ) : null}
-      <div className={l.row}>
-        <TextField id={`${id}-firstName`} label={t('ui.lead.fields.firstName')} autoComplete="given-name" value={v.firstName} onChange={(e) => set({ firstName: e.target.value })} error={errors.firstName} />
-        <TextField id={`${id}-lastName`} label={t('ui.lead.fields.lastName')} autoComplete="family-name" value={v.lastName} onChange={(e) => set({ lastName: e.target.value })} error={errors.lastName} />
-      </div>
-      <TextField id={`${id}-email`} type="email" inputMode="email" autoComplete="email" label={t('ui.lead.fields.email')} placeholder={t('ui.common.placeholder.email')} value={v.email} onChange={(e) => set({ email: e.target.value })} error={errors.email} />
-      <PhoneField id={`${id}-phone`} value={v.phone} onChange={(phone) => set({ phone })} error={errors.phone} onCountryDetected={(c) => !v.country && set({ country: c })} />
-      {v.phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={v.whatsapp} onChange={(whatsapp) => set({ whatsapp })} /> : null}
-      <CountrySelect id={`${id}-countryOfResidence`} value={v.country} onChange={(country) => set({ country })} error={errors.countryOfResidence} />
+      {me ? <SignedInContact me={me} /> : null}
+      {asked.name ? (
+        <div className={l.row}>
+          <TextField id={`${id}-firstName`} label={t('ui.lead.fields.firstName')} autoComplete="given-name" value={v.firstName} onChange={(e) => set({ firstName: e.target.value })} error={errors.firstName} />
+          <TextField id={`${id}-lastName`} label={t('ui.lead.fields.lastName')} autoComplete="family-name" value={v.lastName} onChange={(e) => set({ lastName: e.target.value })} error={errors.lastName} />
+        </div>
+      ) : null}
+      {asked.email ? (
+        <TextField id={`${id}-email`} type="email" inputMode="email" autoComplete="email" label={t('ui.lead.fields.email')} placeholder={t('ui.common.placeholder.email')} value={v.email} onChange={(e) => set({ email: e.target.value })} error={errors.email} />
+      ) : null}
+      {asked.phone ? <PhoneField id={`${id}-phone`} value={v.phone} onChange={(phone) => set({ phone })} error={errors.phone} onCountryDetected={(c) => !v.country && set({ country: c })} /> : null}
+      {contactOf(me, v).phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={v.whatsapp} onChange={(whatsapp) => set({ whatsapp })} /> : null}
+      {asked.country ? <CountrySelect id={`${id}-countryOfResidence`} value={v.country} onChange={(country) => set({ country })} error={errors.countryOfResidence} /> : null}
 
       <button type="button" className={l.toggle} aria-expanded={more} onClick={() => setMore((m) => !m)}>
         <Icon name={more ? 'chevron-up' : 'chevron-down'} size={16} />
@@ -318,7 +343,11 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
         </div>
       ) : null}
 
-      <ConsentBlock idPrefix={id} consent={v.consent} marketing={v.marketing} createAccount={v.createAccount} error={errors.consentContact} onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })} />
+      {me ? (
+        <SignedInConsent />
+      ) : (
+        <ConsentBlock idPrefix={id} consent={v.consent} marketing={v.marketing} createAccount={v.createAccount} error={errors.consentContact} onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })} />
+      )}
       <Honeypot name="homepageUrl" value={honeypot} onChange={setHoneypot} />
       <Button type="submit" variant="primary" size="L" fullWidth chevron pending={pending}>
         {t('ui.lead.interest.submit')}

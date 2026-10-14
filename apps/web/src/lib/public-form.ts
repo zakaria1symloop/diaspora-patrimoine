@@ -78,7 +78,11 @@ export function usePublicForm(form: string, options: { headers?: Record<string, 
     token.current = formToken(form);
   }, [form]);
 
-  const submit = useCallback(
+  // D-107 — a second submission while the first is on its way (double click, Enter twice) is not sent: it gets the
+  // first one's answer (the server would replay it anyway under the same Idempotency-Key, or answer 409 meanwhile).
+  const inFlight = useRef<Promise<SubmitResult<unknown>> | null>(null);
+
+  const submitOnce = useCallback(
     async <T,>(url: string, body: unknown, method: 'POST' | 'PATCH' = 'POST'): Promise<SubmitResult<T>> => {
       if (!key.current) key.current = newKey();
       const send = async (tok: string | null) =>
@@ -117,6 +121,18 @@ export function usePublicForm(form: string, options: { headers?: Record<string, 
       };
     },
     [form],
+  );
+
+  const submit = useCallback(
+    <T,>(url: string, body: unknown, method: 'POST' | 'PATCH' = 'POST'): Promise<SubmitResult<T>> => {
+      if (inFlight.current) return inFlight.current as Promise<SubmitResult<T>>;
+      const run = submitOnce<T>(url, body, method).finally(() => {
+        inFlight.current = null;
+      });
+      inFlight.current = run;
+      return run;
+    },
+    [submitOnce],
   );
 
   return { submit };

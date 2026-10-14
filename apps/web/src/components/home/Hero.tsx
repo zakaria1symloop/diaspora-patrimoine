@@ -64,6 +64,8 @@ export function Hero(p: HeroProps) {
         <div className={s.heroLeft}>
           {p.cafeEnabled ? (
             <article className={`${s.cafeCard} ${p.cafePhoto ? s.cafeCardPhoto : ''}`}>
+              {/* The whole card leads where its main button leads; the buttons stay above it. */}
+              <Link href={next.href} className={s.cardCover} aria-hidden="true" tabIndex={-1} />
               {p.cafePhoto ? <Picture image={p.cafePhoto} sizes="(max-width: 64rem) 0px, 11rem" alt="" className={s.cafeCardImage} /> : null}
               <div className={s.cafeCardBody}>
               <p className={s.cafeOverline}>
@@ -104,6 +106,7 @@ export function Hero(p: HeroProps) {
             </article>
           ) : (
             <article className={`${s.cafeCard} ${s.callCard}`}>
+              <Link href={p.callbackHref} className={s.cardCover} aria-hidden="true" tabIndex={-1} scroll={false} />
               <Icon name="phone" size={32} className={s.callIcon} />
               <h2 className={s.callTitle}>{p.fallbackCard.title}</h2>
               <p className={s.callText}>{p.fallbackCard.text}</p>

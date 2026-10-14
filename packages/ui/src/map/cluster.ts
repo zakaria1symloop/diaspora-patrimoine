@@ -49,6 +49,16 @@ export function clusterPoints(points: ScreenPoint[], radius: number): ScreenClus
 }
 
 /** FIC-060 — a circle of `radiusM` metres around a point, as a closed GeoJSON ring (64 segments). */
+/**
+ * The compact credits of the map open by themselves when the map is created and cover a third of a phone-wide map:
+ * fold them behind their « i » button (they stay one tap away, as the licence asks).
+ */
+export function foldAttribution(container: HTMLElement | null): void {
+  const el = container?.querySelector('.maplibregl-ctrl-attrib');
+  el?.classList.remove('maplibregl-compact-show');
+  el?.removeAttribute('open');
+}
+
 export function circleRing(lng: number, lat: number, radiusM: number, steps = 64): [number, number][] {
   const ring: [number, number][] = [];
   const dLat = radiusM / 111_320;

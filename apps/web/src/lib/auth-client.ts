@@ -74,8 +74,24 @@ export interface CallOptions {
   extraHeaders?: Record<string, string>;
 }
 
-/** One call to the API. Never throws: network cuts come back as `offline`. */
-export async function apiCall<T>(path: string, opts: CallOptions = {}): Promise<CallResult<T>> {
+const inFlight = new Map<string, Promise<CallResult<unknown>>>();
+
+/**
+ * One call to the API. Never throws: network cuts come back as `offline`. A write identical to one still on its way (a
+ * double click, Enter pressed twice) is not sent again: it gets the answer of the first (D-107).
+ */
+export function apiCall<T>(path: string, opts: CallOptions = {}): Promise<CallResult<T>> {
+  const method = opts.method ?? (opts.body === undefined ? 'GET' : 'POST');
+  if (method === 'GET') return callOnce<T>(path, opts);
+  const key = `${method} ${opts.audience ?? 'WEB'} ${path} ${JSON.stringify(opts.body ?? null)}`;
+  const pending = inFlight.get(key);
+  if (pending) return pending as Promise<CallResult<T>>;
+  const run = callOnce<T>(path, opts).finally(() => inFlight.delete(key));
+  inFlight.set(key, run);
+  return run;
+}
+
+async function callOnce<T>(path: string, opts: CallOptions): Promise<CallResult<T>> {
   const method = opts.method ?? (opts.body === undefined ? 'GET' : 'POST');
   const audience = opts.audience ?? 'WEB';
   const write = method !== 'GET';

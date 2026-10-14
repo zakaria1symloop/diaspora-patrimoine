@@ -66,13 +66,12 @@ export const AUTH_TEMPLATE_SEEDS: AuthTemplateSeed[] = [
   {
     code: 'C_ACCOUNT_EXISTS',
     name: 'Inscription avec une adresse qui a déjà un compte',
-    description: 'Inscription avec une adresse qui a déjà un compte (AUTH-003)',
+    description: 'Inscription avec une adresse qui a déjà un compte (AUTH-003) ; variante « adresse d’un compte partenaire ou de l’équipe » (D-107)',
     isSystem: true,
     sentBy: ['SYSTEM'],
     subject: 'Vous avez déjà un espace {{company.name}}',
     body: [
-      "Quelqu'un — sans doute vous — vient de demander à utiliser cette adresse pour un espace {{company.name}}. Vous en avez déjà un avec cette adresse : il suffit de vous connecter. Mot de passe oublié ? Vous pouvez en choisir un nouveau depuis la page de connexion. Si vous vouliez réunir deux espaces, contactez-nous : nous regroupons vos informations.",
-      '{{button "Me connecter" /connexion}}',
+      "{{#if action.otherSpace}}Quelqu'un — sans doute vous — vient de demander à utiliser cette adresse pour un espace client {{company.name}}. Cette adresse est déjà celle d'un compte partenaire ou de l'équipe {{company.name}}, et une adresse ne sert qu'à un seul compte : pour créer un espace client, inscrivez-vous avec une autre adresse, ou écrivez-nous.{{else}}Quelqu'un — sans doute vous — vient de demander à utiliser cette adresse pour un espace {{company.name}}. Vous en avez déjà un avec cette adresse : il suffit de vous connecter. Mot de passe oublié ? Vous pouvez en choisir un nouveau depuis la page de connexion. Si vous vouliez réunir deux espaces, contactez-nous : nous regroupons vos informations.\n\n{{button \"Me connecter\" /connexion}}{{/if}}",
       "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : rien n'a changé.",
     ].join('\n\n'),
   },
@@ -310,12 +309,34 @@ function requiredOf(seed: AuthTemplateSeed): string[] {
 
 export async function installAuthEmailTemplates(tx: Tx, now: Date): Promise<string[]> {
   const created: string[] = [];
+  const updated: string[] = [];
   for (const seed of AUTH_TEMPLATE_SEEDS) {
-    const existing = await tx.emailTemplate.findFirst({ where: { code: seed.code, locale: 'fr', deletedAt: null }, select: { id: true } });
-    if (existing) continue;
     const subject = typography(seed.subject);
     const body = typography(seed.body);
     const variables = variablesOf(seed);
+    const existing = await tx.emailTemplate.findFirst({
+      where: { code: seed.code, locale: 'fr', deletedAt: null },
+      select: { id: true, version: true, subject: true, bodyHtml: true, originSubject: true, originBodyHtml: true },
+    });
+    if (existing) {
+      // PAR-081 (as for the other templates) — a newer original replaces the stored one only while the template still
+      // equals its previous original; an administrator's wording stays, only its original moves (D-107: the variant of
+      // C_ACCOUNT_EXISTS reaches the installations already made).
+      const untouched = existing.subject === existing.originSubject && existing.bodyHtml === existing.originBodyHtml;
+      const changed = existing.originSubject !== subject || existing.originBodyHtml !== body;
+      if (untouched && changed) {
+        const version = existing.version + 1;
+        await tx.emailTemplate.update({
+          where: { id: existing.id },
+          data: { subject, bodyHtml: body, originSubject: subject, originBodyHtml: body, variables, requiredVariables: requiredOf(seed), secretVariables: variables.filter((v) => SECRET_FIELDS.includes(v)), description: seed.description.slice(0, 300), version, updatedAt: now },
+        });
+        await tx.emailTemplateVersion.create({ data: { id: newId(), templateId: existing.id, version, subject, preheader: null, bodyHtml: body, createdAt: now } });
+        updated.push(seed.code);
+      } else if (changed) {
+        await tx.emailTemplate.update({ where: { id: existing.id }, data: { originSubject: subject, originBodyHtml: body, updatedAt: now } });
+      }
+      continue;
+    }
     const id = newId();
     await tx.emailTemplate.create({
       data: {
@@ -348,5 +369,8 @@ export async function installAuthEmailTemplates(tx: Tx, now: Date): Promise<stri
     await tx.emailTemplateVersion.create({ data: { id: newId(), templateId: id, version: 1, subject, preheader: null, bodyHtml: body, createdAt: now } });
     created.push(seed.code);
   }
-  return created.length ? [`Modèles d’e-mail du compte créés : ${created.join(', ')}.`] : [];
+  return [
+    ...(created.length ? [`Modèles d’e-mail du compte créés : ${created.join(', ')}.`] : []),
+    ...(updated.length ? [`Modèles d’e-mail du compte mis à jour : ${updated.join(', ')}.`] : []),
+  ];
 }

@@ -3,7 +3,7 @@
 // outbox (AUT-003). Protection before the transaction (DEM-030…DEM-032): form token, rate limits, spam score.
 import { randomBytes } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
-import { ErrorCode, FORM_TOKEN_HEADER, LEAD_COMPLETION_MINUTES, LEAD_HONEYPOT_FIELD, type LeadKind, type LeadSubmitRequest, type LeadSubmitResponse } from '@dp/contracts';
+import { ErrorCode, FORM_TOKEN_HEADER, LEAD_COMPLETION_MINUTES, LEAD_HONEYPOT_FIELD, SIGNED_IN_CONTACT_CONSENT_KEY, type LeadKind, type LeadSubmitRequest, type LeadSubmitResponse } from '@dp/contracts';
 import { firstContactDueAt, localDate, type BusinessCalendar, type DossierStage } from '@dp/domain';
 import type { Request } from 'express';
 import { ENV, type Env } from '../config/env.js';
@@ -82,11 +82,11 @@ export class SubmitLeadService {
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
   ) {}
 
-  async submit(req: Request, body: unknown): Promise<{ status: number; body: LeadSubmitResponse }> {
+  async submit(req: Request, body: unknown, sessionClientId: string | null = null): Promise<{ status: number; body: LeadSubmitResponse }> {
     let emailKey: string | null = null;
     const result = await this.idempotency.run(req, { route: 'public.leads' }, {
       prepare: async () => {
-        const prepared = await this.prepare(req, body);
+        const prepared = await this.prepare(req, body, sessionClientId);
         emailKey = this.ip.keyHash(prepared.fields.email);
         return prepared;
       },
@@ -115,7 +115,7 @@ export class SubmitLeadService {
     if (wait > 0) throw AppError.rateLimited(wait);
   }
 
-  private async prepare(req: Request, body: unknown): Promise<Prepared> {
+  private async prepare(req: Request, body: unknown, sessionClientId: string | null): Promise<Prepared> {
     const now = this.clock.now();
     // DEM-030 point 2 — the form token: missing or forged → 400; expired → 410 (the form renews it and replays once).
     const header = req.headers[FORM_TOKEN_HEADER.toLowerCase()];
@@ -127,6 +127,7 @@ export class SubmitLeadService {
     await this.checkFeatures(input);
     const kind = kindOf(input);
     const fields = { ...input.fields } as Fields;
+    await this.fromAccount(fields, kind, sessionClientId);
     this.checkRate(req, fields.email);
 
     const [cal, threshold, referenceCurrency, monthlyBudgetSearch] = await Promise.all([
@@ -192,6 +193,32 @@ export class SubmitLeadService {
     }
     const userAgent = (req.headers['user-agent'] ?? '').slice(0, 400) || null;
     return { input, kind, fields, ipHash, userAgent, signals, score: spamScore(signals), verdict, needsReview, mx, cal, referenceCurrency, monthlyBudgetSearch, simulation };
+  }
+
+  /**
+   * DEM-022 — a signed-in client sends from his account: the request belongs to his record whatever e-mail the browser
+   * carries; his name, phone and country are those of the record (the form only fills what the record lacks); the
+   * sentence under the button is his consent; « Créer mon espace » has no object. Without a session, that sentence is
+   * not a consent: refused. A partner application is not a client request: never attached to a session.
+   */
+  private async fromAccount(fields: Fields, kind: LeadKind, sessionClientId: string | null): Promise<void> {
+    const client =
+      sessionClientId && kind !== 'PARTNER_REQUEST'
+        ? await this.prisma.client.findFirst({
+            where: { id: sessionClientId, deletedAt: null },
+            select: { email: true, firstName: true, lastName: true, phone: true, countryOfResidence: true },
+          })
+        : null;
+    if (!client?.email) {
+      if (fields.consentKey === SIGNED_IN_CONTACT_CONSENT_KEY) throw AppError.validation([{ field: 'fields.consentKey', code: 'INVALID_CHOICE' }]);
+      return;
+    }
+    fields.email = client.email;
+    for (const key of ['firstName', 'lastName', 'phone', 'countryOfResidence'] as const) {
+      if (client[key] && key in fields) fields[key] = client[key];
+    }
+    if ('consentKey' in fields) fields.consentKey = SIGNED_IN_CONTACT_CONSENT_KEY;
+    if ('createAccount' in fields) fields.createAccount = false;
   }
 
   /** DEM-030 point 4 — challenge only when a service is configured; three failures: accepted, to review. */

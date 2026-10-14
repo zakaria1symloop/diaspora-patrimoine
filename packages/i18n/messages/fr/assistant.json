@@ -15,7 +15,11 @@
     "several": "Plusieurs choix possibles.",
     "loading": "Un instant…",
     "loadError": "L’assistant n’a pas pu se charger. Vérifiez votre connexion et réessayez.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "filter": "Filtrer les choix",
+    "noMatch": "Aucun choix ne correspond. Effacez quelques lettres.",
+    "picked": "{n, plural, =0 {Aucun choix pour l’instant} one {# choix retenu} other {# choix retenus}}",
+    "or": "Ou bien"
   },
   "questions": {
     "region": "Où souhaitez-vous acheter ?",
@@ -40,6 +44,10 @@
     "delivery": {
       "NOW": "Disponible tout de suite",
       "SOON": "D’ici un à deux ans"
+    },
+    "groups": {
+      "home": "Pour habiter",
+      "other": "Autres biens"
     }
   },
   "precision": {

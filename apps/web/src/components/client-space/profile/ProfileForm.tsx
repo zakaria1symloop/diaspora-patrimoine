@@ -18,6 +18,7 @@ import { t } from '@/lib/i18n';
 import { CheckboxField, SelectField, TextField } from '@/components/forms/fields';
 import { Banner, errorMessage, fieldErrors } from '@/components/auth/kit';
 import { signalSpaceChanged } from '../SpaceContext';
+import { UnsavedGuard, useUnsavedGuard } from '../UnsavedGuard';
 import { EmailChange } from './EmailChange';
 import s from './profile.module.css';
 
@@ -239,16 +240,9 @@ export function ProfileForm({ profile: initialProfile, hasPassword, children }: 
     }
   }, []);
 
-  // TRV-093 — leaving the page with unsaved changes asks first.
-  useEffect(() => {
-    if (!anyDirty) return;
-    const warn = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = '';
-    };
-    window.addEventListener('beforeunload', warn);
-    return () => window.removeEventListener('beforeunload', warn);
-  }, [anyDirty]);
+  // TRV-093 — leaving the page with unsaved changes asks first: a reload or a close (the browser), a link of the site
+  // (UnsavedGuard, D-107).
+  useUnsavedGuard(anyDirty);
 
   const common = { profile, version: profile.version, onSaved: setProfile, onDirty };
   const countries = profile.options.countries;
@@ -259,6 +253,7 @@ export function ProfileForm({ profile: initialProfile, hasPassword, children }: 
 
   return (
     <div className={s.split}>
+      <UnsavedGuard />
       <aside className={s.rail} aria-label={t('ui.client.profile.rail')}>
         {missing.length === 0 ? (
           <Encouragement tone="done" icon="status-success" title={t('ui.client.profile.encourage.done.title')} text={t('ui.client.profile.encourage.done.text')} progress={progress} />

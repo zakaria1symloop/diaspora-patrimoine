@@ -8,7 +8,8 @@ import { getBlocks, text } from '@/lib/content';
 import { getSettings } from '@/lib/settings';
 import { callbackHref, description, editorialTitle, fillFields, objBlock, richBlock } from '@/lib/editorial';
 import { t } from '@/lib/i18n';
-import { CallCard, Logo, PageHead, RichText, SectionHeading } from '@/components/editorial/Parts';
+import { CallCard, PageHead, RichText, SectionHeading } from '@/components/editorial/Parts';
+import { BankCard } from '@/components/editorial/Cards';
 import { Drawing } from '@/components/editorial/Drawing';
 import { Disclosure } from '@/components/editorial/Disclosure';
 import { FinancingTabs, type FinancingTab } from '@/components/editorial/FinancingTabs';
@@ -162,11 +163,10 @@ export default async function FinancingPage() {
             <SectionHeading id="banques-titre" title={t('ui.editorial.financing.banksTitle')} icon="partners" />
             {banksIntro ? <p className={s.lead}>{banksIntro}</p> : null}
             {banks.data.length ? (
-              <ul role="list" className={s.logoWall}>
+              <ul role="list" className={s.bankWall}>
                 {banks.data.map((b) => (
-                  <li key={b.slug} className={s.logoTile}>
-                    <Logo image={b.logo} name={b.name} />
-                    {b.name}
+                  <li key={b.slug}>
+                    <BankCard bank={b} />
                   </li>
                 ))}
               </ul>

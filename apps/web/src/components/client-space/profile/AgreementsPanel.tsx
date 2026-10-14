@@ -14,7 +14,7 @@ import { t } from '@/lib/i18n';
 import { Banner, errorMessage } from '@/components/auth/kit';
 import { documentsPath } from '../menu';
 import { writeToAdvisorHref } from '../advisor-link';
-import { longDate } from '../texts';
+import { inSentence, longDate } from '../texts';
 import s from './profile.module.css';
 
 export function AgreementsPanel({ initial, timeZone }: { initial: ClientAgreements; timeZone: string }) {
@@ -40,7 +40,7 @@ export function AgreementsPanel({ initial, timeZone }: { initial: ClientAgreemen
     tr.state === 'NOT_GIVEN'
       ? t('ui.client.privacy.transmission.NOT_GIVEN')
       : tr.state === 'RECORDED' || tr.state === 'WITHDRAWAL_RECORDED'
-        ? t(`ui.client.privacy.transmission.${tr.state}`, { conseiller: tr.recordedBy ?? t('ui.client.nextStep.advisorFallback'), date: date(tr.at) })
+        ? inSentence(t(`ui.client.privacy.transmission.${tr.state}`, { conseiller: tr.recordedBy ?? t('ui.client.nextStep.advisorFallback'), date: date(tr.at) }))
         : t(`ui.client.privacy.transmission.${tr.state}`, { date: date(tr.at) });
   const given = tr.state === 'GIVEN' || tr.state === 'RECORDED';
 

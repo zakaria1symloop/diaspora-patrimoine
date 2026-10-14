@@ -1,6 +1,6 @@
 // EC-13 — Biens proposés (INT-010 … INT-023): the properties the advisor sent, most recent first, grouped by sending
-// (« Proposés par {conseiller} le {date} » and his note). « Nouveau » until opened. The answer buttons come with
-// package 3.7 (ECL-006): each card offers « Voir le bien » and « Écrire à mon conseiller ».
+// (« Proposés par {conseiller} le {date} » and his note). « Nouveau » until opened. Each card answers in place
+// (« Ce bien m'intéresse », « Ce bien ne me convient pas », INT-020 — `CandidateCard`).
 import Link from 'next/link';
 import { Suspense } from 'react';
 import type { ClientProposals, ClientSpaceSummary } from '@dp/contracts';

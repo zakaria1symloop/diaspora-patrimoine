@@ -272,7 +272,7 @@ export const messages = {
     "ui.admin-client-merge.field.preferredContactSlot": "Moment préféré",
     "ui.admin-client-merge.field.residencyStatus": "Situation de résidence",
     "ui.admin-client-merge.field.birthDate": "Date de naissance",
-    "ui.admin-client-merge.field.employmentType": "Type d’emploi",
+    "ui.admin-client-merge.field.employmentType": "Situation professionnelle",
     "ui.admin-client-merge.field.profession": "Profession",
     "ui.admin-client-merge.field.employerName": "Employeur",
     "ui.admin-client-merge.field.employedSince": "En poste depuis",
@@ -506,7 +506,7 @@ export const messages = {
     "ui.admin-clients.field.timezoneHint": "Par exemple Europe/Paris, America/Montreal.",
     "ui.admin-clients.field.whatsapp": "Joignable sur WhatsApp",
     "ui.admin-clients.field.residencyStatus": "Situation de résidence",
-    "ui.admin-clients.field.employmentType": "Type d’emploi",
+    "ui.admin-clients.field.employmentType": "Situation professionnelle",
     "ui.admin-clients.field.profession": "Profession",
     "ui.admin-clients.field.employer": "Employeur",
     "ui.admin-clients.field.employedSince": "En poste depuis",
@@ -1161,6 +1161,31 @@ export const messages = {
     "ui.admin-leads.field.propertyReferences": "Biens cités",
     "ui.admin-leads.field.propertyOutcome": "Suite souhaitée",
     "ui.admin-leads.field.prefilledFrom": "Écrit à partir de",
+    "ui.admin-leads.field.budgetCurrency": "Devise du budget",
+    "ui.admin-leads.field.companyName": "Société",
+    "ui.admin-leads.field.city": "Ville",
+    "ui.admin-leads.field.partnerKind": "Type de partenaire",
+    "ui.admin-leads.field.answerRegion": "Où souhaitez-vous acheter ?",
+    "ui.admin-leads.field.answerType": "Quel type de bien cherchez-vous ?",
+    "ui.admin-leads.field.answerRooms": "Combien de pièces ?",
+    "ui.admin-leads.field.answerBudget": "Quel est votre budget ?",
+    "ui.admin-leads.field.answerBudgetKind": "Votre budget, plutôt",
+    "ui.admin-leads.field.answerBudgetMax": "Budget, jusqu’à",
+    "ui.admin-leads.field.answerDelivery": "Pour quand ?",
+    "ui.admin-leads.field.answerPurpose": "C’est pour quel projet ?",
+    "ui.admin-leads.value.any": "Peu importe",
+    "ui.admin-leads.value.unknown": "Je ne sais pas encore",
+    "ui.admin-leads.value.noAnswer": "Je préfère ne pas répondre",
+    "ui.admin-leads.value.rooms.2": "T2",
+    "ui.admin-leads.value.rooms.3": "T3",
+    "ui.admin-leads.value.rooms.4": "T4",
+    "ui.admin-leads.value.rooms.5plus": "T5 et plus",
+    "ui.admin-leads.value.delivery.NOW": "Disponible tout de suite",
+    "ui.admin-leads.value.delivery.SOON": "D’ici un à deux ans",
+    "ui.admin-leads.value.budgetKind.MONTHLY": "par mois",
+    "ui.admin-leads.value.budgetKind.TOTAL": "au total",
+    "ui.admin-leads.value.partnerKind.PROMOTER": "Promoteur",
+    "ui.admin-leads.value.partnerKind.BANK": "Banque",
     "ui.admin-leads.context.title": "Contexte",
     "ui.admin-leads.context.property": "Bien concerné",
     "ui.admin-leads.context.program": "Programme concerné",
@@ -3402,6 +3427,10 @@ export const messages = {
     "ui.assistant.chat.loading": "Un instant…",
     "ui.assistant.chat.loadError": "L’assistant n’a pas pu se charger. Vérifiez votre connexion et réessayez.",
     "ui.assistant.chat.retry": "Réessayer",
+    "ui.assistant.chat.filter": "Filtrer les choix",
+    "ui.assistant.chat.noMatch": "Aucun choix ne correspond. Effacez quelques lettres.",
+    "ui.assistant.chat.picked": "{n, plural, =0 {Aucun choix pour l’instant} one {# choix retenu} other {# choix retenus}}",
+    "ui.assistant.chat.or": "Ou bien",
     "ui.assistant.questions.region": "Où souhaitez-vous acheter ?",
     "ui.assistant.questions.type": "Quel type de bien cherchez-vous ?",
     "ui.assistant.questions.rooms": "Combien de pièces ?",
@@ -3421,6 +3450,8 @@ export const messages = {
     "ui.assistant.choices.totalStep": "Jusqu’à {montant}",
     "ui.assistant.choices.delivery.NOW": "Disponible tout de suite",
     "ui.assistant.choices.delivery.SOON": "D’ici un à deux ans",
+    "ui.assistant.choices.groups.home": "Pour habiter",
+    "ui.assistant.choices.groups.other": "Autres biens",
     "ui.assistant.precision.label": "Votre précision",
     "ui.assistant.precision.hint": "Facultatif. Votre conseiller la lira telle quelle si vous nous laissez vos coordonnées.",
     "ui.assistant.precision.submit": "Voir les biens",
@@ -3795,6 +3826,16 @@ export const messages = {
     "ui.cafe.list.reminder": "Gratuit, sur inscription. Le lieu exact vous est communiqué à l’inscription.",
     "ui.cafe.list.none": "Les prochaines dates seront bientôt annoncées.",
     "ui.cafe.list.faq": "Questions fréquentes",
+    "ui.cafe.list.filters.title": "Filtrer les dates",
+    "ui.cafe.list.filters.place": "Lieu",
+    "ui.cafe.list.filters.month": "Mois",
+    "ui.cafe.list.filters.seats": "Places",
+    "ui.cafe.list.filters.anyMonth": "Tous les mois",
+    "ui.cafe.list.filters.anySeats": "Toutes les dates",
+    "ui.cafe.list.filters.withSeats": "Avec des places libres",
+    "ui.cafe.list.filters.count": "{n, plural, =0 {Aucune date} one {# date} other {# dates}}",
+    "ui.cafe.list.filters.none": "Aucune date ne correspond à ces critères.",
+    "ui.cafe.list.filters.reset": "Voir toutes les dates",
     "ui.cafe.page.title": "{marque} – {lieu}",
     "ui.cafe.page.hours": "de {debut} à {fin} (heure de {ville})",
     "ui.cafe.page.place": "Lieu",
@@ -3967,6 +4008,8 @@ export const messages = {
     "ui.catalogue.page.filtersCount": "Filtres ({n})",
     "ui.catalogue.page.sort": "Trier : {tri}",
     "ui.catalogue.page.sortLabel": "Trier par",
+    "ui.catalogue.page.sortPrefix": "Trier :",
+    "ui.catalogue.page.loading": "Chargement des biens…",
     "ui.catalogue.page.clearAll": "Tout effacer",
     "ui.catalogue.page.remove": "Retirer le filtre {filtre}",
     "ui.catalogue.page.createAlert": "Créer une alerte",
@@ -4012,6 +4055,10 @@ export const messages = {
     "ui.catalogue.filters.showNone": "Aucun bien ne correspond",
     "ui.catalogue.filters.showUnknown": "Voir les biens",
     "ui.catalogue.filters.countUnavailable": "Nombre indisponible pour l’instant.",
+    "ui.catalogue.filters.pending": "Vos choix ne sont pas encore appliqués.",
+    "ui.catalogue.filters.fixFirst": "Corrigez les valeurs signalées pour voir les biens.",
+    "ui.catalogue.filters.priceOrder": "Le prix minimum dépasse le prix maximum. Corrigez l’un des deux.",
+    "ui.catalogue.filters.surfaceOrder": "La surface minimum dépasse la surface maximum. Corrigez l’une des deux.",
     "ui.catalogue.filters.close": "Fermer les filtres",
     "ui.catalogue.filters.type": "Type de bien",
     "ui.catalogue.filters.rooms": "Pièces",
@@ -4182,7 +4229,7 @@ export const messages = {
     "ui.client.dashboard.property.helpMonthly": "Qu’est-ce que la mensualité indicative ?",
     "ui.client.dashboard.property.open": "Voir la fiche du bien",
     "ui.client.dashboard.cafe.title": "Prochain Café",
-    "ui.client.dashboard.cafe.registered": "Vous êtes inscrit au {titre}.",
+    "ui.client.dashboard.cafe.registered": "Vous êtes inscrit à « {titre} ».",
     "ui.client.dashboard.cafe.register": "Je m’inscris",
     "ui.client.dashboard.cafe.see": "Voir le Café",
     "ui.client.dashboard.cafe.when": "{date} · {lieu}",
@@ -4439,6 +4486,35 @@ export const messages = {
     "ui.client.properties.sort.priceAsc": "Prix croissant",
     "ui.client.properties.sort.priceDesc": "Prix décroissant",
     "ui.client.properties.search": "Chercher un bien, une ville",
+    "ui.client.properties.answer.interested": "Ce bien m’intéresse",
+    "ui.client.properties.answer.interestedAgain": "Finalement, il m’intéresse",
+    "ui.client.properties.answer.decline": "Ce bien ne me convient pas",
+    "ui.client.properties.answer.declineFollowed": "Ce bien ne m’intéresse plus",
+    "ui.client.properties.answer.select": "Je retiens ce bien",
+    "ui.client.properties.answer.cancelSelect": "Annuler mon choix",
+    "ui.client.properties.answer.visit": "Demander une visite",
+    "ui.client.properties.answer.labelled": "{action} : {titre}",
+    "ui.client.properties.answer.comment": "Qu’est-ce qui vous plaît ?",
+    "ui.client.properties.answer.reason": "Pour quelle raison ?",
+    "ui.client.properties.answer.reasonHint": "Votre réponse aide {conseiller} à mieux vous proposer.",
+    "ui.client.properties.answer.reasonRequired": "Choisissez une raison.",
+    "ui.client.properties.answer.note": "Une précision ?",
+    "ui.client.properties.answer.send": "Envoyer ma réponse",
+    "ui.client.properties.answer.visitToCancel": "Votre visite du {date} sera annulée.",
+    "ui.client.properties.answer.visitToCancelSend": "Écarter ce bien et annuler la visite",
+    "ui.client.properties.answer.selectText": "Vous indiquez à {conseiller} que c’est ce bien que vous souhaitez acheter. Il vous recontacte pour confirmer et préparer votre dossier.",
+    "ui.client.properties.answer.selectNoCommit": "Cela ne vous engage pas.",
+    "ui.client.properties.answer.lot": "Un lot vous attire en particulier ?",
+    "ui.client.properties.answer.lotNone": "Pas de préférence",
+    "ui.client.properties.answer.lotLine": "Lot {reference}",
+    "ui.client.properties.answer.lotFloor": "{n, selectordinal, one {#er} other {#e}} étage",
+    "ui.client.properties.answer.lotGround": "rez-de-chaussée",
+    "ui.client.properties.answer.selectComment": "Un commentaire ?",
+    "ui.client.properties.answer.selectSend": "Envoyer mon choix",
+    "ui.client.properties.answer.replace": "Vous aviez indiqué {bien}. Le remplacer ?",
+    "ui.client.properties.answer.replaceSend": "Oui, le remplacer",
+    "ui.client.properties.answer.thanks": "Merci, {conseiller} est prévenu.",
+    "ui.client.properties.answer.selectCancelled": "Votre choix est annulé.",
     "ui.client.interests.title": "Mes intérêts",
     "ui.client.interests.intro": "Les biens qui vous intéressent et les demandes que vous nous avez envoyées.",
     "ui.client.interests.propertiesTitle": "Les biens qui m’intéressent",
@@ -5090,6 +5166,10 @@ export const messages = {
     "ui.common.map.searchArea": "Rechercher dans cette zone",
     "ui.common.shareTo.whatsapp": "WhatsApp",
     "ui.common.shareTo.email": "E-mail",
+    "ui.common.shareTo.mailApp": "Mon application de messagerie",
+    "ui.common.shareTo.gmail": "Gmail",
+    "ui.common.shareTo.outlook": "Outlook",
+    "ui.common.shareTo.yahoo": "Yahoo Mail",
     "ui.common.shareTo.facebook": "Facebook",
     "ui.common.placeholder.email": "prenom.nom@exemple.fr",
     "ui.common.placeholder.phone": "6 12 34 56 78",
@@ -5395,6 +5475,17 @@ export const messages = {
     "ui.editorial.promoters.state.ALL_RESERVED": "Tout est réservé",
     "ui.editorial.promoters.state.UPCOMING": "À venir",
     "ui.editorial.promoters.state.SOLD": "Vendu",
+    "ui.editorial.promoters.onSale": "{n, plural, one {# programme en vente} other {# programmes en vente}}",
+    "ui.editorial.promoters.loadMore": "Voir les promoteurs suivants",
+    "ui.editorial.promoters.filters.title": "Trouver un promoteur",
+    "ui.editorial.promoters.filters.search": "Nom du promoteur",
+    "ui.editorial.promoters.filters.region": "Région",
+    "ui.editorial.promoters.filters.regionAll": "Toutes les régions",
+    "ui.editorial.promoters.filters.onSale": "Avec des biens en vente",
+    "ui.editorial.promoters.filters.apply": "Afficher",
+    "ui.editorial.promoters.filters.reset": "Effacer les filtres",
+    "ui.editorial.promoters.filters.count": "{n, plural, =0 {Aucun promoteur} one {# promoteur} other {# promoteurs}}",
+    "ui.editorial.promoters.filters.none": "Aucun promoteur ne correspond à ces critères.",
     "ui.editorial.partners.title": "Nos partenaires",
     "ui.editorial.partners.promoters": "Promoteurs",
     "ui.editorial.partners.banks": "Banques",
@@ -5411,6 +5502,9 @@ export const messages = {
     "ui.editorial.partners.category.INSTITUTION": "Institutions",
     "ui.editorial.partners.category.MEDIA": "Médias",
     "ui.editorial.partners.category.OTHER": "Autres",
+    "ui.editorial.partners.show": "Afficher",
+    "ui.editorial.partners.all": "Tous nos partenaires",
+    "ui.editorial.partners.bank": "Banque partenaire",
     "ui.editorial.faq.title": "Questions fréquentes",
     "ui.editorial.faq.searchLabel": "Rechercher une question",
     "ui.editorial.faq.clear": "Effacer la recherche",
@@ -6235,6 +6329,11 @@ export const messages = {
     "ui.favorites.nudge.text": "Créez votre espace pour retrouver vos favoris sur tous vos appareils",
     "ui.favorites.nudge.cta": "Créer mon espace",
     "ui.favorites.nudge.close": "Fermer",
+    "ui.favorites.signIn.title": "Gardez ce bien dans vos favoris",
+    "ui.favorites.signIn.text": "Vos favoris se retrouvent dans votre espace, sur tous vos appareils. Connectez-vous ou créez votre espace : ce bien y sera ajouté aussitôt.",
+    "ui.favorites.signIn.login": "Se connecter",
+    "ui.favorites.signIn.signup": "Créer mon espace",
+    "ui.favorites.signIn.later": "Plus tard",
     "ui.favorites.link": "Mes favoris ({n})",
     "ui.favorites.page.seoTitle": "Mes favoris",
     "ui.favorites.page.breadcrumb": "Mes favoris",
@@ -6248,7 +6347,7 @@ export const messages = {
     "ui.favorites.page.goneHint": "Il restera dans vos favoris quelques jours, puis disparaîtra de lui-même.",
     "ui.favorites.page.remove": "Retirer",
     "ui.favorites.page.emptyTitle": "Touchez le cœur d’un bien pour le retrouver ici.",
-    "ui.favorites.page.emptyText": "Vos favoris restent sur cet appareil, sans compte, et vous attendent à votre prochaine visite.",
+    "ui.favorites.page.emptyText": "Connectez-vous pour mettre des biens de côté et les retrouver sur tous vos appareils.",
     "ui.favorites.page.discover": "Découvrir les biens",
     "ui.favorites.page.loading": "Chargement de vos favoris…",
     "ui.favorites.page.error": "Vos favoris n’ont pas pu être chargés.",
@@ -6346,6 +6445,8 @@ export const messages = {
     "ui.lead.fields.createAccount": "Créer mon espace client en même temps",
     "ui.lead.fields.createAccountHint": "Pour suivre votre demande, retrouver vos simulations et, plus tard, déposer vos pièces.",
     "ui.lead.fields.euHosting": "Vos données sont hébergées dans l’Union européenne.",
+    "ui.lead.fields.signedInAs": "Vos coordonnées",
+    "ui.lead.fields.editDetails": "Modifier mes coordonnées",
     "ui.lead.when.day": "Quel jour ?",
     "ui.lead.when.dayAsap": "Dès que possible",
     "ui.lead.when.slot": "À quel moment ?",
@@ -6456,6 +6557,7 @@ export const messages = {
     "ui.nav.header.faq": "Questions fréquentes",
     "ui.nav.header.contact": "Contact",
     "ui.nav.header.unread": "{n, plural, one {# notification non lue} other {# notifications non lues}}",
+    "ui.nav.header.spaceMenu.open": "Ouvrir le menu de mon espace",
     "ui.nav.header.spaceMenu.dashboard": "Tableau de bord",
     "ui.nav.header.spaceMenu.messages": "Messages",
     "ui.nav.header.spaceMenu.dossier": "Mon dossier",
@@ -7049,6 +7151,7 @@ export const messages = {
     "ui.validation.INVALID_DATE": "Cette date n’est pas valide.",
     "ui.validation.DATE_NOT_FUTURE": "Choisissez une date à venir.",
     "ui.validation.DATE_IN_FUTURE": "Cette date ne peut pas être dans le futur.",
+    "ui.validation.UNDER_AGE": "Diaspora Patrimoine s’adresse aux personnes majeures : la date de naissance doit donner 18 ans ou plus.",
     "ui.validation.MUST_ACCEPT": "Vous devez accepter pour continuer.",
     "ui.validation.ALREADY_USED": "Cette valeur est déjà utilisée.",
     "ui.validation.INVALID_CHOICE": "Choisissez une valeur dans la liste.",
@@ -8312,10 +8415,21 @@ export type MessageKey =
   | 'ui.admin-leads.dialog.spam.title'
   | 'ui.admin-leads.empty.text'
   | 'ui.admin-leads.empty.title'
+  | 'ui.admin-leads.field.answerBudget'
+  | 'ui.admin-leads.field.answerBudgetKind'
+  | 'ui.admin-leads.field.answerBudgetMax'
+  | 'ui.admin-leads.field.answerDelivery'
+  | 'ui.admin-leads.field.answerPurpose'
+  | 'ui.admin-leads.field.answerRegion'
+  | 'ui.admin-leads.field.answerRooms'
+  | 'ui.admin-leads.field.answerType'
   | 'ui.admin-leads.field.answers'
   | 'ui.admin-leads.field.budget'
+  | 'ui.admin-leads.field.budgetCurrency'
   | 'ui.admin-leads.field.budgetKind'
+  | 'ui.admin-leads.field.city'
   | 'ui.admin-leads.field.company'
+  | 'ui.admin-leads.field.companyName'
   | 'ui.admin-leads.field.country'
   | 'ui.admin-leads.field.countryOfResidence'
   | 'ui.admin-leads.field.criteria'
@@ -8326,6 +8440,7 @@ export type MessageKey =
   | 'ui.admin-leads.field.monthlyBudget'
   | 'ui.admin-leads.field.monthlyDebts'
   | 'ui.admin-leads.field.monthlyIncome'
+  | 'ui.admin-leads.field.partnerKind'
   | 'ui.admin-leads.field.preferredCallbackDate'
   | 'ui.admin-leads.field.preferredChannel'
   | 'ui.admin-leads.field.preferredSlot'
@@ -8421,6 +8536,19 @@ export type MessageKey =
   | 'ui.admin-leads.toast.taken'
   | 'ui.admin-leads.toast.takenRef'
   | 'ui.admin-leads.unassigned'
+  | 'ui.admin-leads.value.any'
+  | 'ui.admin-leads.value.budgetKind.MONTHLY'
+  | 'ui.admin-leads.value.budgetKind.TOTAL'
+  | 'ui.admin-leads.value.delivery.NOW'
+  | 'ui.admin-leads.value.delivery.SOON'
+  | 'ui.admin-leads.value.noAnswer'
+  | 'ui.admin-leads.value.partnerKind.BANK'
+  | 'ui.admin-leads.value.partnerKind.PROMOTER'
+  | 'ui.admin-leads.value.rooms.2'
+  | 'ui.admin-leads.value.rooms.3'
+  | 'ui.admin-leads.value.rooms.4'
+  | 'ui.admin-leads.value.rooms.5plus'
+  | 'ui.admin-leads.value.unknown'
   | 'ui.admin-leads.view.all'
   | 'ui.admin-leads.view.late'
   | 'ui.admin-leads.view.mine'
@@ -10498,10 +10626,14 @@ export type MessageKey =
   | 'ui.assistant.chat.assistant'
   | 'ui.assistant.chat.back'
   | 'ui.assistant.chat.continue'
+  | 'ui.assistant.chat.filter'
   | 'ui.assistant.chat.greeting'
   | 'ui.assistant.chat.loadError'
   | 'ui.assistant.chat.loading'
+  | 'ui.assistant.chat.noMatch'
+  | 'ui.assistant.chat.or'
   | 'ui.assistant.chat.pickOne'
+  | 'ui.assistant.chat.picked'
   | 'ui.assistant.chat.progress'
   | 'ui.assistant.chat.restart'
   | 'ui.assistant.chat.retry'
@@ -10511,6 +10643,8 @@ export type MessageKey =
   | 'ui.assistant.choices.budgetKind'
   | 'ui.assistant.choices.delivery.NOW'
   | 'ui.assistant.choices.delivery.SOON'
+  | 'ui.assistant.choices.groups.home'
+  | 'ui.assistant.choices.groups.other'
   | 'ui.assistant.choices.monthly'
   | 'ui.assistant.choices.monthlyStep'
   | 'ui.assistant.choices.noAnswer'
@@ -10892,6 +11026,16 @@ export type MessageKey =
   | 'ui.cafe.list.all'
   | 'ui.cafe.list.dates'
   | 'ui.cafe.list.faq'
+  | 'ui.cafe.list.filters.anyMonth'
+  | 'ui.cafe.list.filters.anySeats'
+  | 'ui.cafe.list.filters.count'
+  | 'ui.cafe.list.filters.month'
+  | 'ui.cafe.list.filters.none'
+  | 'ui.cafe.list.filters.place'
+  | 'ui.cafe.list.filters.reset'
+  | 'ui.cafe.list.filters.seats'
+  | 'ui.cafe.list.filters.title'
+  | 'ui.cafe.list.filters.withSeats'
   | 'ui.cafe.list.how'
   | 'ui.cafe.list.none'
   | 'ui.cafe.list.reminder'
@@ -11015,6 +11159,7 @@ export type MessageKey =
   | 'ui.catalogue.filters.estimate'
   | 'ui.catalogue.filters.estimated'
   | 'ui.catalogue.filters.estimatedApply'
+  | 'ui.catalogue.filters.fixFirst'
   | 'ui.catalogue.filters.location'
   | 'ui.catalogue.filters.max'
   | 'ui.catalogue.filters.min'
@@ -11028,6 +11173,8 @@ export type MessageKey =
   | 'ui.catalogue.filters.optTour360'
   | 'ui.catalogue.filters.optTour360Help'
   | 'ui.catalogue.filters.options'
+  | 'ui.catalogue.filters.pending'
+  | 'ui.catalogue.filters.priceOrder'
   | 'ui.catalogue.filters.priceRange'
   | 'ui.catalogue.filters.promoter'
   | 'ui.catalogue.filters.promoterSearch'
@@ -11043,6 +11190,7 @@ export type MessageKey =
   | 'ui.catalogue.filters.standing'
   | 'ui.catalogue.filters.status'
   | 'ui.catalogue.filters.surface'
+  | 'ui.catalogue.filters.surfaceOrder'
   | 'ui.catalogue.filters.surfaceRange'
   | 'ui.catalogue.filters.title'
   | 'ui.catalogue.filters.type'
@@ -11095,6 +11243,7 @@ export type MessageKey =
   | 'ui.catalogue.page.keyword'
   | 'ui.catalogue.page.keywordPlaceholder'
   | 'ui.catalogue.page.loadMore'
+  | 'ui.catalogue.page.loading'
   | 'ui.catalogue.page.next'
   | 'ui.catalogue.page.page'
   | 'ui.catalogue.page.pagination'
@@ -11106,6 +11255,7 @@ export type MessageKey =
   | 'ui.catalogue.page.saveSearch'
   | 'ui.catalogue.page.sort'
   | 'ui.catalogue.page.sortLabel'
+  | 'ui.catalogue.page.sortPrefix'
   | 'ui.catalogue.page.suggestions'
   | 'ui.catalogue.page.summaryNone'
   | 'ui.catalogue.page.titleAll'
@@ -11613,6 +11763,35 @@ export type MessageKey =
   | 'ui.client.promise.breachedWritePhone'
   | 'ui.client.promise.breachedWritePhoneWhatsapp'
   | 'ui.client.promise.breachedWriteWhatsapp'
+  | 'ui.client.properties.answer.cancelSelect'
+  | 'ui.client.properties.answer.comment'
+  | 'ui.client.properties.answer.decline'
+  | 'ui.client.properties.answer.declineFollowed'
+  | 'ui.client.properties.answer.interested'
+  | 'ui.client.properties.answer.interestedAgain'
+  | 'ui.client.properties.answer.labelled'
+  | 'ui.client.properties.answer.lot'
+  | 'ui.client.properties.answer.lotFloor'
+  | 'ui.client.properties.answer.lotGround'
+  | 'ui.client.properties.answer.lotLine'
+  | 'ui.client.properties.answer.lotNone'
+  | 'ui.client.properties.answer.note'
+  | 'ui.client.properties.answer.reason'
+  | 'ui.client.properties.answer.reasonHint'
+  | 'ui.client.properties.answer.reasonRequired'
+  | 'ui.client.properties.answer.replace'
+  | 'ui.client.properties.answer.replaceSend'
+  | 'ui.client.properties.answer.select'
+  | 'ui.client.properties.answer.selectCancelled'
+  | 'ui.client.properties.answer.selectComment'
+  | 'ui.client.properties.answer.selectNoCommit'
+  | 'ui.client.properties.answer.selectSend'
+  | 'ui.client.properties.answer.selectText'
+  | 'ui.client.properties.answer.send'
+  | 'ui.client.properties.answer.thanks'
+  | 'ui.client.properties.answer.visit'
+  | 'ui.client.properties.answer.visitToCancel'
+  | 'ui.client.properties.answer.visitToCancelSend'
   | 'ui.client.properties.detail.VISIT_REQUESTED'
   | 'ui.client.properties.detail.declined'
   | 'ui.client.properties.filter.all'
@@ -12122,7 +12301,11 @@ export type MessageKey =
   | 'ui.common.share'
   | 'ui.common.shareTo.email'
   | 'ui.common.shareTo.facebook'
+  | 'ui.common.shareTo.gmail'
+  | 'ui.common.shareTo.mailApp'
+  | 'ui.common.shareTo.outlook'
   | 'ui.common.shareTo.whatsapp'
+  | 'ui.common.shareTo.yahoo'
   | 'ui.common.simpleMode.help'
   | 'ui.common.simpleMode.label'
   | 'ui.common.simpleMode.more'
@@ -12519,6 +12702,8 @@ export type MessageKey =
   | 'ui.editorial.legal.rightsText'
   | 'ui.editorial.legal.rightsTitle'
   | 'ui.editorial.legal.version'
+  | 'ui.editorial.partners.all'
+  | 'ui.editorial.partners.bank'
   | 'ui.editorial.partners.banks'
   | 'ui.editorial.partners.category.INSTITUTION'
   | 'ui.editorial.partners.category.INSURER'
@@ -12533,12 +12718,24 @@ export type MessageKey =
   | 'ui.editorial.partners.partnerLogin'
   | 'ui.editorial.partners.partnerTitle'
   | 'ui.editorial.partners.promoters'
+  | 'ui.editorial.partners.show'
   | 'ui.editorial.partners.title'
   | 'ui.editorial.partners.website'
   | 'ui.editorial.promoters.currentTitle'
   | 'ui.editorial.promoters.delivered'
   | 'ui.editorial.promoters.empty'
+  | 'ui.editorial.promoters.filters.apply'
+  | 'ui.editorial.promoters.filters.count'
+  | 'ui.editorial.promoters.filters.none'
+  | 'ui.editorial.promoters.filters.onSale'
+  | 'ui.editorial.promoters.filters.region'
+  | 'ui.editorial.promoters.filters.regionAll'
+  | 'ui.editorial.promoters.filters.reset'
+  | 'ui.editorial.promoters.filters.search'
+  | 'ui.editorial.promoters.filters.title'
   | 'ui.editorial.promoters.inCatalogue'
+  | 'ui.editorial.promoters.loadMore'
+  | 'ui.editorial.promoters.onSale'
   | 'ui.editorial.promoters.presentation'
   | 'ui.editorial.promoters.priceFrom'
   | 'ui.editorial.promoters.programs'
@@ -13314,6 +13511,11 @@ export type MessageKey =
   | 'ui.favorites.page.retry'
   | 'ui.favorites.page.seoTitle'
   | 'ui.favorites.page.title'
+  | 'ui.favorites.signIn.later'
+  | 'ui.favorites.signIn.login'
+  | 'ui.favorites.signIn.signup'
+  | 'ui.favorites.signIn.text'
+  | 'ui.favorites.signIn.title'
   | 'ui.favorites.toast.added'
   | 'ui.favorites.toast.full'
   | 'ui.favorites.toast.removed'
@@ -13448,6 +13650,7 @@ export type MessageKey =
   | 'ui.lead.fields.countryPlaceholder'
   | 'ui.lead.fields.createAccount'
   | 'ui.lead.fields.createAccountHint'
+  | 'ui.lead.fields.editDetails'
   | 'ui.lead.fields.email'
   | 'ui.lead.fields.euHosting'
   | 'ui.lead.fields.firstName'
@@ -13458,6 +13661,7 @@ export type MessageKey =
   | 'ui.lead.fields.phone'
   | 'ui.lead.fields.phoneHint'
   | 'ui.lead.fields.privacy'
+  | 'ui.lead.fields.signedInAs'
   | 'ui.lead.fields.whatsapp'
   | 'ui.lead.interest.budget'
   | 'ui.lead.interest.budgetMonthly'
@@ -13547,6 +13751,7 @@ export type MessageKey =
   | 'ui.nav.header.spaceMenu.dossier'
   | 'ui.nav.header.spaceMenu.logout'
   | 'ui.nav.header.spaceMenu.messages'
+  | 'ui.nav.header.spaceMenu.open'
   | 'ui.nav.header.spaceMenu.profile'
   | 'ui.nav.header.unread'
   | 'ui.nav.skipToContent'
@@ -14125,4 +14330,5 @@ export type MessageKey =
   | 'ui.validation.TOO_MANY_ROWS'
   | 'ui.validation.TOO_SHORT'
   | 'ui.validation.UNCHANGED'
+  | 'ui.validation.UNDER_AGE'
   | 'ui.validation.VIDEO_URL';

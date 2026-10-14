@@ -25,7 +25,7 @@ Toutes les règles de ce fichier portent l'étiquette `[P1]`.
 
 **CAF-002** **Cafés listés** : publiés ou aux inscriptions closes, dont le début est à venir, par date croissante. Un Café annulé reste listé 7 jours avec la mention « Annulé ». Chaque carte : le lieu (`locationLabel`), le jour de la semaine, le numéro du jour, le mois, l'horaire, la ligne sur les présents (ACC-061), l'état et le bouton (CYC-181). La carte entière mène à la page du Café.
 
-**CAF-003** S'il existe au moins deux lieux différents parmi les Cafés listés : des pastilles « Tous » · « {lieu} » · « {lieu} » filtrent la liste.
+**CAF-003** **Filtres de « Prochaines dates » (D-105)** : une rangée par critère, chacune seulement si elle sépare quelque chose — **Lieu** (au moins deux lieux : « Tous » · « {lieu} »…), **Mois** (au moins deux mois, à l'heure du lieu : « Tous les mois » · « Octobre 2026 »…), **Places** (des dates avec et sans places : « Toutes les dates » · « Avec des places libres », c'est-à-dire inscriptions ouvertes). Une pastille par rangée, gardée dans l'adresse avec celles des autres rangées (`lieu`, `mois`, `places=1`). Filtrée, la liste dit « {n} dates » ; rien : « Aucune date ne correspond à ces critères. » et « Voir toutes les dates ». La mise en avant de la prochaine date ne vaut que sans filtre.
 
 **CAF-004** **Aucun Café à venir** : la liste est remplacée par « Les prochaines dates seront bientôt annoncées. » et le bloc « Me prévenir », ouvert.
 

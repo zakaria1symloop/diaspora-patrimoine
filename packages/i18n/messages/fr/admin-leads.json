@@ -100,7 +100,28 @@
     "answers": "Réponses",
     "propertyReferences": "Biens cités",
     "propertyOutcome": "Suite souhaitée",
-    "prefilledFrom": "Écrit à partir de"
+    "prefilledFrom": "Écrit à partir de",
+    "budgetCurrency": "Devise du budget",
+    "companyName": "Société",
+    "city": "Ville",
+    "partnerKind": "Type de partenaire",
+    "answerRegion": "Où souhaitez-vous acheter ?",
+    "answerType": "Quel type de bien cherchez-vous ?",
+    "answerRooms": "Combien de pièces ?",
+    "answerBudget": "Quel est votre budget ?",
+    "answerBudgetKind": "Votre budget, plutôt",
+    "answerBudgetMax": "Budget, jusqu’à",
+    "answerDelivery": "Pour quand ?",
+    "answerPurpose": "C’est pour quel projet ?"
+  },
+  "value": {
+    "any": "Peu importe",
+    "unknown": "Je ne sais pas encore",
+    "noAnswer": "Je préfère ne pas répondre",
+    "rooms": { "2": "T2", "3": "T3", "4": "T4", "5plus": "T5 et plus" },
+    "delivery": { "NOW": "Disponible tout de suite", "SOON": "D’ici un à deux ans" },
+    "budgetKind": { "MONTHLY": "par mois", "TOTAL": "au total" },
+    "partnerKind": { "PROMOTER": "Promoteur", "BANK": "Banque" }
   },
   "context": {
     "title": "Contexte",

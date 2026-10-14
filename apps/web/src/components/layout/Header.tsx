@@ -27,6 +27,7 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
   const router = useRouter();
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
+  const hoverOpened = useRef(false);
   const isHome = pathname === '/';
 
   useEffect(() => {
@@ -114,16 +115,22 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
           {session.status === 'authenticated' ? (
             // NAV-013 — « Mon espace », with a badge for unread notifications; its menu lists the delivered pages only:
             // Tableau de bord · Messages · Mon dossier · Mon profil · Se déconnecter (package 2.8).
-            <div className={s.account} ref={accountRef} onMouseEnter={() => setAccountOpen(true)} onMouseLeave={() => setAccountOpen(false)}>
-              <button
-                type="button"
-                className={`${buttonClass('primary', 'M')} ${s.login}`}
-                aria-haspopup="menu"
-                aria-expanded={accountOpen}
-                aria-controls="menu-espace"
-                onClick={() => setAccountOpen((v) => !v)}
-              >
-                <ButtonInner chevron size="M">
+            <div
+              className={s.account}
+              ref={accountRef}
+              onMouseEnter={() => {
+                hoverOpened.current = true;
+                setAccountOpen(true);
+              }}
+              onMouseLeave={() => {
+                hoverOpened.current = false;
+                setAccountOpen(false);
+              }}
+            >
+              {/* D-107 — « Mon espace » leads to the dashboard; its chevron, a button of its own, opens the menu (a single
+                  button opened on hover and closed on click: with a mouse, clicking it led nowhere). */}
+              <Link href={accountHref} className={`${buttonClass('primary', 'M')} ${s.login} ${s.splitMain}`}>
+                <ButtonInner size="M">
                   {accountLabel}
                   {session.unread > 0 ? (
                     <span className={s.badge} aria-label={t('ui.nav.header.unread', { n: session.unread })}>
@@ -131,6 +138,24 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
                     </span>
                   ) : null}
                 </ButtonInner>
+              </Link>
+              <button
+                type="button"
+                className={`${buttonClass('primary', 'M')} ${s.login} ${s.splitToggle}`}
+                aria-haspopup="menu"
+                aria-expanded={accountOpen}
+                aria-controls="menu-espace"
+                aria-label={t('ui.nav.header.spaceMenu.open')}
+                onClick={() => {
+                  // D-107 — the mouse that hovers has already opened it: its click keeps it open (a toggle closed it)
+                  if (hoverOpened.current) {
+                    hoverOpened.current = false;
+                    setAccountOpen(true);
+                  } else setAccountOpen((v) => !v);
+                }}
+              >
+                {/* the only header entry with a menu: a chevron that points down, turned when the menu is open */}
+                <Icon name="chevron-down" size={16} className={[s.accountChevron, accountOpen && s.accountChevronOpen].filter(Boolean).join(' ')} />
               </button>
               {accountOpen ? (
                 <ul id="menu-espace" className={s.accountMenu} role="menu">
@@ -172,9 +197,7 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
             </div>
           ) : (
             <Link href={accountHref} className={`${buttonClass('primary', 'M')} ${s.login}`}>
-              <ButtonInner chevron size="M">
-                {accountLabel}
-              </ButtonInner>
+              <ButtonInner size="M">{accountLabel}</ButtonInner>
             </Link>
           )}
           <button
@@ -212,16 +235,13 @@ export function Header({ tagline, cafeEnabled }: HeaderProps) {
                     >
                       <Icon name={e.icon} size={24} className={s.sheetIcon} />
                       <span className={s.sheetLabel}>{t(e.label)}</span>
-                      <Icon name="chevron-right" size={20} />
                     </Link>
                   </li>
                 ))}
             </ul>
             <div className={s.sheetFooter}>
               <Link href={accountHref} className={buttonClass('primary', 'L', true)} onClick={() => setOpen(false)}>
-                <ButtonInner chevron size="L">
-                  {accountLabel}
-                </ButtonInner>
+                <ButtonInner size="L">{accountLabel}</ButtonInner>
               </Link>
               {session.status === 'authenticated' ? (
                 <button type="button" className={buttonClass('secondary', 'L', true)} onClick={() => void logout()}>

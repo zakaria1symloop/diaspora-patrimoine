@@ -7,7 +7,7 @@ import { grantOf, isPermission, leadListQuerySchema, savedViewConfigSchema, staf
 import type { BusinessCalendar } from '@dp/domain';
 import { ACCESS_KEY, PERMISSION_KEY, REAUTH_KEY } from '../src/identity/access.js';
 import { LeadsAdminController, NotesController, StaffShellController, StaffSocleController, TeamController } from '../src/back-office/back-office.controller.js';
-import { firstContactOf, zonedDayStart } from '../src/back-office/leads-admin.service.js';
+import { firstContactOf, leadFields, zonedDayStart } from '../src/back-office/leads-admin.service.js';
 import { staffTargetOf } from '../src/back-office/staff-notifications.service.js';
 import { clientName, leadScope, maskEmail, maskName, maskPhone, staffName, type StaffView } from '../src/back-office/staff-view.js';
 import { teamChangeMailKey, teamChangeTexts } from '../src/back-office/team-events.handler.js';
@@ -173,5 +173,39 @@ describe('NOT-030 `NS_TEAM_CHANGE`, § 6.7 `S_TEAM_CHANGE`', () => {
     expect(staffTargetOf('Lead')).toBe('LEAD');
     expect(staffTargetOf('User')).toBe('RECORD');
     expect(staffTargetOf(null)).toBe('OTHER');
+  });
+});
+
+describe('EA-11, ASS-030, SEC-032, D-108 — the request page shows what the person sent', () => {
+  const reader = { userId: 'u1', role: 'OWNER', has: () => true, scoped: false, masked: false, sensitive: true } as unknown as StaffView;
+  const regions = new Map([
+    ['alger', 'Alger'],
+    ['oran', 'Oran'],
+  ]);
+  const guided = {
+    firstName: 'Lina',
+    email: 'lina@example.test',
+    answers: { region: ['alger', 'oran'], type: ['apartment'], rooms: 'ANY', budget: { kind: 'TOTAL', max: 150000 }, delivery: 'ANY', purpose: 'FAMILY' },
+    criteria: { regionSlug: 'alger', type: 'APARTMENT', budgetMax: 150000 },
+    consent: { contact: true },
+    locale: 'fr',
+    timezone: 'Europe/Paris',
+    budgetCurrency: 'EUR',
+  };
+
+  it('the criteria derived by the server are left out, a region is named, consent and language are not data', () => {
+    const fields = leadFields(guided, reader, new Set(), regions);
+    expect(fields.map((f) => f.key)).toEqual(['answers.region', 'answers.type', 'answers.rooms', 'answers.budget.kind', 'answers.budget.max', 'answers.delivery', 'answers.purpose', 'budgetCurrency']);
+    expect(fields.find((f) => f.key === 'answers.region')?.value).toEqual(['Alger', 'Oran']);
+  });
+
+  it('a SUPPORT reader reads the choices of the answers, not the amount (SEC-032, value by value)', () => {
+    const fields = leadFields(guided, { ...reader, masked: true, sensitive: false } as StaffView, new Set(), regions);
+    const value = (key: string) => fields.find((f) => f.key === key)?.value;
+    expect(value('answers.region')).toEqual(['Alger', 'Oran']);
+    expect(value('answers.purpose')).toBe('FAMILY');
+    expect(value('answers.budget.kind')).toBe('TOTAL');
+    expect(value('answers.budget.max')).toBe('•••');
+    expect(value('budgetCurrency')).toBe('EUR');
   });
 });

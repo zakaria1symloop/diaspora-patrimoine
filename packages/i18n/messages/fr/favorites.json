@@ -15,6 +15,13 @@
     "cta": "Créer mon espace",
     "close": "Fermer"
   },
+  "signIn": {
+    "title": "Gardez ce bien dans vos favoris",
+    "text": "Vos favoris se retrouvent dans votre espace, sur tous vos appareils. Connectez-vous ou créez votre espace : ce bien y sera ajouté aussitôt.",
+    "login": "Se connecter",
+    "signup": "Créer mon espace",
+    "later": "Plus tard"
+  },
   "link": "Mes favoris ({n})",
   "page": {
     "seoTitle": "Mes favoris",
@@ -29,7 +36,7 @@
     "goneHint": "Il restera dans vos favoris quelques jours, puis disparaîtra de lui-même.",
     "remove": "Retirer",
     "emptyTitle": "Touchez le cœur d’un bien pour le retrouver ici.",
-    "emptyText": "Vos favoris restent sur cet appareil, sans compte, et vous attendent à votre prochaine visite.",
+    "emptyText": "Connectez-vous pour mettre des biens de côté et les retrouver sur tous vos appareils.",
     "discover": "Découvrir les biens",
     "loading": "Chargement de vos favoris…",
     "error": "Vos favoris n’ont pas pu être chargés.",
