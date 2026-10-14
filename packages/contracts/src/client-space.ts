@@ -388,6 +388,22 @@ export interface CandidateCard {
   /** INT-002 INTERESTED — the promise of the request behind the interest, while no first contact. */
   promise: CallbackPromise | null;
   advisor: AdvisorCard | null;
+  /** INT-004 — the answers the client may give now, by the server's rule: the card shows these and no other. */
+  actions: CandidateActions;
+}
+
+/** INT-004, INT-020, INT-021, INT-030, INT-031 — what the client may answer on a property envisaged, now. */
+export interface CandidateActions {
+  /** « Ce bien m'intéresse » · « Finalement, il m'intéresse ». */
+  interested: boolean;
+  /** « Ce bien ne me convient pas » · « Ce bien ne m'intéresse plus » (with the reason of INT-021). */
+  decline: boolean;
+  /** « Je retiens ce bien » (INT-030). */
+  selectRequest: boolean;
+  /** « Annuler mon choix » (INT-031). */
+  cancelSelect: boolean;
+  /** « Demander une visite » — INT-040, or its fallback while the request is not delivered (ECL-006). */
+  visit: boolean;
 }
 
 export interface ClientRequestRow {

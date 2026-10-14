@@ -340,3 +340,110 @@ a.photo:hover .img,
   gap: var(--sp-4) var(--sp-8);
   margin-block-start: var(--sp-6);
 }
+
+/* ─── INT-020, INT-021, INT-030 — the windows of the client's answers ── */
+.answerForm {
+  display: grid;
+  gap: var(--sp-16);
+}
+.answerProperty {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  margin: 0;
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.answerProperty svg {
+  flex: none;
+  color: var(--bo-texte-roi);
+}
+.answerText {
+  margin: 0;
+  color: var(--bo-texte-encre);
+}
+.answerText strong {
+  color: var(--bo-texte-nuit);
+}
+.choices {
+  display: grid;
+  gap: var(--sp-8);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.choices legend {
+  padding: 0;
+  margin-block-end: var(--sp-4);
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.choicesHint {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  min-height: var(--target-min);
+  padding: var(--sp-8) var(--sp-12);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+}
+.choice:hover {
+  background: var(--bo-fond-ciel-pale);
+}
+.choice:has(input:checked) {
+  border-color: var(--bo-fond-bleu-roi);
+  background: var(--bo-fond-ciel-pale);
+}
+.choice:has(input:focus-visible) {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.choice input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--bo-fond-bleu-roi);
+}
+.choiceText {
+  display: grid;
+  gap: 2px;
+}
+.choiceSub {
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-doux);
+}
+.choiceError {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  margin: 0;
+  font-size: var(--fs-body-s);
+  color: var(--bo-texte-erreur);
+}
+.optional {
+  font-weight: 500;
+  color: var(--bo-texte-doux);
+}
+.answerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sp-8);
+  padding-block-start: var(--sp-12);
+  border-block-start: 1px solid var(--bo-ligne-bleue);
+}
+@media (prefers-reduced-motion: reduce) {
+  .choice {
+    transition: none;
+  }
+}

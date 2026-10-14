@@ -2,15 +2,15 @@
 // EC-13 — Biens proposés (INT-010 … INT-023): the properties the advisor sent, most recent sending first, each sending
 // with who proposed, when, and his note. A filter by state with counters (`etat=` in the address, TRV-101) and an
 // encouragement that says what is waiting (D-098). The list is bounded (what one advisor proposes to one client):
-// filtered here. The answer buttons come with package 3.7 (ECL-006): each card offers « Voir le bien » and « Écrire
-// à mon conseiller ».
+// filtered here. Each card carries its answers (« Ce bien m'intéresse », « Ce bien ne me convient pas », INT-020),
+// « Voir le bien » and « Écrire à mon conseiller » (`CandidateCard`).
 import Link from 'next/link';
 import type { CandidateCard as Card, ProposalGroup } from '@dp/contracts';
 import { buttonClass, ButtonInner } from '@dp/ui';
 import { t } from '@/lib/i18n';
 import { Avatar } from '../Avatar';
 import { writeToAdvisorHref } from '../advisor-link';
-import { advisorName, longDate } from '../texts';
+import { advisorName, inSentence, longDate } from '../texts';
 import { Encouragement } from '../kit/Encouragement';
 import { FilterChips, NoMatch, ResultLine, Toolbar, useListState } from '../kit/ListControls';
 import k from '../kit/kit.module.css';
@@ -41,7 +41,7 @@ export function ProposalsBoard({ groups, timeZone, footnote }: { groups: Proposa
     <>
       {fresh > 0 ? (
         <div className={s.encourage}>
-          <Encouragement tone="attention" icon="sparkles" title={t('ui.client.proposals.encourage.new.title', { n: fresh })} text={t('ui.client.proposals.encourage.new.text', { n: fresh, conseiller })} />
+          <Encouragement tone="attention" icon="sparkles" title={t('ui.client.proposals.encourage.new.title', { n: fresh })} text={inSentence(t('ui.client.proposals.encourage.new.text', { n: fresh, conseiller }))} />
         </div>
       ) : pending > 0 ? (
         <div className={s.encourage}>
@@ -49,7 +49,7 @@ export function ProposalsBoard({ groups, timeZone, footnote }: { groups: Proposa
             tone="calm"
             icon="chat"
             title={t('ui.client.proposals.encourage.seen.title')}
-            text={t('ui.client.proposals.encourage.seen.text', { conseiller })}
+            text={inSentence(t('ui.client.proposals.encourage.seen.text', { conseiller }))}
             actions={
               <Link href={writeToAdvisorHref({ from: 'ADVISOR' })} className={buttonClass('tool', 'M')}>
                 <ButtonInner size="M" icon="chat">

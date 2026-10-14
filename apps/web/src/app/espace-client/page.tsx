@@ -14,7 +14,7 @@ import { spaceGet } from '@/components/client-space/server';
 import { SpaceReadFailure } from '@/components/client-space/SpaceRead';
 import { writeToAdvisorHref } from '@/components/client-space/advisor-link';
 import { documentsPath, dossierPath } from '@/components/client-space/menu';
-import { advisorName, longDate, nextStepSentence, promiseSentence, quand, type PromiseSettings } from '@/components/client-space/texts';
+import { advisorName, inSentence, longDate, nextStepSentence, promiseSentence, quand, type PromiseSettings } from '@/components/client-space/texts';
 import { AdvisorBlock, CafeBlock, ProjectBlock, PropertyBlock, ShortcutsBlock, TodoBlock } from '@/components/client-space/dashboard/blocks';
 import { NewsBlock } from '@/components/client-space/dashboard/NewsBlock';
 import { SpaceTour } from '@/components/client-space/dashboard/SpaceTour';
@@ -140,7 +140,7 @@ function DashboardEncouragement({ d, ps }: { d: ClientDashboard; ps: PromiseSett
         tone="attention"
         icon="sparkles"
         title={t('ui.client.dashboard.encourage.proposals.title', { n: d.overview.proposalsNew })}
-        text={t('ui.client.dashboard.encourage.proposals.text', { n: d.overview.proposalsNew, conseiller })}
+        text={inSentence(t('ui.client.dashboard.encourage.proposals.text', { n: d.overview.proposalsNew, conseiller }))}
         actions={
           <Link href="/espace-client/biens-proposes" className={buttonClass('tool', 'L')}>
             <ButtonInner size="L" chevron>
@@ -268,7 +268,7 @@ export default async function DashboardPage() {
         {d.lead ? (
           <p className={s.heroText}>
             {d.promise && !d.promise.breached
-              ? t('ui.client.dashboard.closed.messageReceived', { date: longDate(d.lead.createdAt, timeZone), conseiller: name ?? t('ui.client.nextStep.advisorFallback'), quand: quand(d.promise, ps) })
+              ? inSentence(t('ui.client.dashboard.closed.messageReceived', { date: longDate(d.lead.createdAt, timeZone), conseiller: name ?? t('ui.client.nextStep.advisorFallback'), quand: quand(d.promise, ps) }))
               : t('ui.client.dashboard.closed.messageReceivedPlain', { date: longDate(d.lead.createdAt, timeZone) })}
             {d.promise?.breached ? ` ${promiseSentence(d.promise, ps)}` : ''}
           </p>

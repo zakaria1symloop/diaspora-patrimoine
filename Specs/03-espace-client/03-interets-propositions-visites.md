@@ -40,7 +40,7 @@ Les statuts d'un bien envisagé et leurs transitions : CYC-070 à CYC-073.
 | Action | Disponible quand | Effet |
 |---|---|---|
 | Voir le bien | toujours | Ouvre la fiche publique. Si elle n'est plus en ligne (dépubliée, archivée) : la carte se déplie sur place en un **résumé** du bien — photos, titre, ville, surface, prix au moment de l'intérêt — avec « Fiche en cours de mise à jour » ou « Ce bien n'est plus proposé ». Jamais une page d'erreur. |
-| Demander une visite ou une visio `[P1]` | `INTERESTED`, `VISITED` | INT-040. Repli tant que `features.clientAppointments` est faux : « Écrire à mon conseiller », message prérempli « Je souhaite visiter {bien} (réf. {référence}). » (ECL-006). |
+| Demander une visite ou une visio `[P1]` | `INTERESTED`, `VISITED` ; dossier en cours ; bien encore proposé | INT-040. Repli tant que la demande de rendez-vous n'est pas livrée ou que `features.clientAppointments` est faux : « Demander une visite » ouvre « Écrire à mon conseiller », message prérempli « Je souhaite visiter {bien} (réf. {référence}). » (ECL-006, D-108). |
 | Je retiens ce bien | `INTERESTED`, `VISITED` ; dossier à l'étape `MATCHING` ; bien en ligne, avec au moins un lot disponible | INT-030 |
 | Ce bien ne m'intéresse plus | `INTERESTED`, `VISIT_REQUESTED`, `VISIT_PLANNED`, `VISITED` | Raison (INT-021) → `DECLINED`. Un rendez-vous de visite à venir pour ce bien est annulé, après confirmation ; un choix en attente est retiré. |
 | Écrire à mon conseiller | toujours | Ouvre la messagerie (ou son repli, MSG-021) avec « Au sujet de {bien} (réf. {référence}) : ». |

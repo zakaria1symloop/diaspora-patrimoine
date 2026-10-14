@@ -268,5 +268,7 @@ export function clientActions(c: { status: string; origin: string; sentAt: Date 
     selectRequest:
       live && visible && d.status === 'OPEN' && d.stage === 'MATCHING' && c.selectionRequestedAt === null && (CAN_BECOME.SELECTION_REQUEST as readonly string[]).includes(c.status) && retainRefusal(p) === null,
     cancelSelect: live && c.selectionRequestedAt !== null && c.status !== 'SELECTED',
+    /** « Demander une visite » — INT-040, or its fallback (ECL-006): an interest, or a property visited, still offered. */
+    visit: live && visible && !gone && (c.status === 'INTERESTED' || c.status === 'VISITED'),
   };
 }

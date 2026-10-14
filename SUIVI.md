@@ -7,7 +7,7 @@
 >
 > **Comment l'écrire.** Court, daté (AAAA-MM-JJ), au présent. On n'efface pas le journal : on ajoute en haut.
 
-Dernière mise à jour : **2026-10-12** — Amrani-Mahdi01 (session Claude).
+Dernière mise à jour : **2026-10-14** — Amrani-Mahdi01 (session Claude).
 
 ---
 
@@ -89,6 +89,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Amrani-Mahdi01 (Claude) | Retour de recette du 12/10/2026 (`docs/retours-site-2026-10-12.md`, D-105) : promoteurs en cartes à image, filtres et pages ; fiche promoteur ; Nos partenaires par groupe ; banques en cartes ; filtres des dates du Café ; choix de l'assistant structurés | `apps/api/src/editorial/partners.controller.ts`, `packages/contracts/src/editorial.ts`, `apps/web/src/app/(site)/` (`promoteurs`, `nos-partenaires`, `financements`, `le-cafe`), `apps/web/src/components/` (`editorial`, `cafe/CafeFilters`, `assistant/GuidedAssistant`, `catalogue/Pagination`, `vitrine/FormDropdown`), `packages/i18n/messages/fr/` (`editorial`, `cafe`, `assistant`), `e2e/tests/public-review-2.spec.ts`, `Specs/` (D-105) | 2026-10-12 | **terminé** le 2026-10-12 — branche `retours/site-public-2026-10-12` (part de `retours/site-public-2026-10-11`) |
 | Amrani-Mahdi01 (Claude) | DEM-022 : un client connecté envoie ses demandes depuis son compte (coordonnées non redemandées, rattachement par la session, pas par l'e-mail saisi) — formulaires de demande et inscription au Café | `apps/api/src/leads/`, `apps/api/src/events/cafe-registration*`, `apps/api/src/client-space/` (`/client/me`), `packages/contracts/src/auth.ts`, `apps/web/src/components/forms/`, `apps/web/src/components/cafe/CafeRegistration.tsx`, `apps/web/src/components/simulators/ResultActions.tsx`, `apps/web/src/components/assistant/GuidedResults.tsx`, `packages/i18n/messages/fr/lead.json`, `e2e/tests/` | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/demandes-client-connecte` (part de `retours/site-public-recette-octobre-2026`), D-106 |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 13/10/2026 (`docs/retours-site-2026-10-13.md`, D-107) : e-mail « autre espace » à l’inscription, double envoi, liste de choix, messages retrouvés, âge minimum, profil non enregistré, fenêtres, simulateur, « Mon espace », menus du back-office | `apps/api/src/identity/signup.service.ts`, `apps/api/src/install/auth-email-templates.ts`, `apps/api/src/client-space/properties.service.ts`, `packages/contracts` (`client-space`, `errors`), `packages/ui` (`Overlays`), `apps/web/src/lib` (`auth-client`, `public-form`), `apps/web/src/components` (`layout/Header`, `vitrine/Dropdown`, `forms/QueryDialog`, `simulators`, `client-space`), `apps/web/src/app/espace-client/messages`, `apps/admin/src/lib/admin-client.ts`, `e2e/tests/public-review-3.spec.ts`, `Specs/` (D-107) | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/recette-2026-10-13` (part de `retours/demandes-client-connecte`) |
+| Amrani-Mahdi01 (Claude) | Retour de recette du 14/10/2026 (six parcours joués, D-108) : réponses du client sur un bien dans son espace (« Ce bien m’intéresse », « Ce bien ne me convient pas », « Je retiens ce bien », « Annuler mon choix », « Demander une visite », « Ce bien ne m’intéresse plus », « Finalement, il m’intéresse ») ; demande au back-office lisible (recherche guidée) ; « Situation professionnelle » ; « Demande envoyée » par compte ; « votre conseiller » en minuscule | `packages/contracts/src/client-space.ts`, `apps/api/src/client-space/` (`properties.service.ts`, module), `apps/api/src/dossiers-admin/dossier-rules.ts`, `apps/api/src/back-office/` (`leads-admin.service.ts`, `staff-view.ts`), `apps/admin/src/components/leads/lead-parts.tsx`, `apps/web/src/components/client-space/` (`properties/`, `texts.ts`, `dashboard/blocks.tsx`, `profile/AgreementsPanel.tsx`), `apps/web/src/app/espace-client/`, `apps/web/src/components/forms/InterestDialog.tsx`, `packages/i18n/messages/fr/` (`client`, `admin-leads`, `admin-clients`, `admin-client-merge`), `apps/api/test/`, `e2e/tests/client-answers.spec.ts`, `Specs/` (D-108) | 2026-10-14 | **terminé** le 2026-10-14 — branche `retours/recette-2026-10-14` (part de `retours/recette-2026-10-13`) |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -139,6 +140,29 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-14 — Amrani-Mahdi01 (Claude) · retour de recette du 14/10/2026 (D-108)
+
+- Six parcours joués de bout en bout (rappel, simulateur, assistant, message, visite, Café ; guide en captures). Branche
+  `retours/recette-2026-10-14`, partie de `retours/recette-2026-10-13`.
+- **Réponses du client sur un bien** (INT-004, INT-010, INT-020, INT-021, INT-030, INT-031) : les routes existaient
+  (paquet 3.7), pas les boutons. La carte `CandidateCard` (« Mes intérêts » et « Biens proposés ») montre les réponses que
+  le serveur ouvre — `CandidateCard.actions`, calculées par `clientActions` (la règle des routes, complétée de `visit`) —
+  et les ouvre dans `AnswerWindow` (raison d'un refus, lot préféré, commentaire ; visite à annuler `VISIT_TO_CANCEL`,
+  choix à remplacer `SELECTION_PENDING`). « Demander une visite » garde son libellé et ouvre « Écrire à mon conseiller »
+  prérempli tant qu'INT-040 n'est pas livré (ECL-006, spec précisée).
+- **Demande au back-office** (CRM-010) : critères déduits d'une recherche guidée non répétés, réponses sous leur question
+  et dans les mots du client, région nommée, « Devise du budget » ; langue, fuseau et acceptations masqués. `leadFields`
+  sort du service (testable) et masque valeur par valeur pour le Support (SEC-032 précisée).
+- « Situation professionnelle » (fiche et fusion de clients) ; « Vous êtes inscrit à « {titre} ». » (Café) ; « Demande
+  envoyée » retenu par compte (FIC-054) ; « votre conseiller » en minuscule dans une phrase (`inSentence`, `texts.ts`).
+- Conformes à la spec, inchangés : rappel sans bien ajouté (CYC-002), « Être rappelé » du tableau de bord (ECL-013),
+  cinq demandes par heure (DEM-032).
+- Tests : `apps/api` vitest (`dossiers-tasks`, `back-office`) verts ; `e2e/tests/client-answers.spec.ts` vert (deux
+  tests, ordinateur). tsc vert pour l'API, le site et le back-office. Captures regardées à 1 440 et 390 px. Specs :
+  vérificateur vert (97 décisions).
+- À noter : le dossier de démonstration suivi (`demo -- --suivi-pour=`) envoie deux biens, pas trois — le bien
+  d'ouverture reste en préparation (jamais montré au client) ; son mot dit pourtant « trois biens ».
 
 ### 2026-10-13 — Amrani-Mahdi01 (Claude) · retour de recette du 13/10/2026 (D-107)
 

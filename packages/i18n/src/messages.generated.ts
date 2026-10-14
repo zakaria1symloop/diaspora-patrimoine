@@ -272,7 +272,7 @@ export const messages = {
     "ui.admin-client-merge.field.preferredContactSlot": "Moment préféré",
     "ui.admin-client-merge.field.residencyStatus": "Situation de résidence",
     "ui.admin-client-merge.field.birthDate": "Date de naissance",
-    "ui.admin-client-merge.field.employmentType": "Type d’emploi",
+    "ui.admin-client-merge.field.employmentType": "Situation professionnelle",
     "ui.admin-client-merge.field.profession": "Profession",
     "ui.admin-client-merge.field.employerName": "Employeur",
     "ui.admin-client-merge.field.employedSince": "En poste depuis",
@@ -506,7 +506,7 @@ export const messages = {
     "ui.admin-clients.field.timezoneHint": "Par exemple Europe/Paris, America/Montreal.",
     "ui.admin-clients.field.whatsapp": "Joignable sur WhatsApp",
     "ui.admin-clients.field.residencyStatus": "Situation de résidence",
-    "ui.admin-clients.field.employmentType": "Type d’emploi",
+    "ui.admin-clients.field.employmentType": "Situation professionnelle",
     "ui.admin-clients.field.profession": "Profession",
     "ui.admin-clients.field.employer": "Employeur",
     "ui.admin-clients.field.employedSince": "En poste depuis",
@@ -1161,6 +1161,31 @@ export const messages = {
     "ui.admin-leads.field.propertyReferences": "Biens cités",
     "ui.admin-leads.field.propertyOutcome": "Suite souhaitée",
     "ui.admin-leads.field.prefilledFrom": "Écrit à partir de",
+    "ui.admin-leads.field.budgetCurrency": "Devise du budget",
+    "ui.admin-leads.field.companyName": "Société",
+    "ui.admin-leads.field.city": "Ville",
+    "ui.admin-leads.field.partnerKind": "Type de partenaire",
+    "ui.admin-leads.field.answerRegion": "Où souhaitez-vous acheter ?",
+    "ui.admin-leads.field.answerType": "Quel type de bien cherchez-vous ?",
+    "ui.admin-leads.field.answerRooms": "Combien de pièces ?",
+    "ui.admin-leads.field.answerBudget": "Quel est votre budget ?",
+    "ui.admin-leads.field.answerBudgetKind": "Votre budget, plutôt",
+    "ui.admin-leads.field.answerBudgetMax": "Budget, jusqu’à",
+    "ui.admin-leads.field.answerDelivery": "Pour quand ?",
+    "ui.admin-leads.field.answerPurpose": "C’est pour quel projet ?",
+    "ui.admin-leads.value.any": "Peu importe",
+    "ui.admin-leads.value.unknown": "Je ne sais pas encore",
+    "ui.admin-leads.value.noAnswer": "Je préfère ne pas répondre",
+    "ui.admin-leads.value.rooms.2": "T2",
+    "ui.admin-leads.value.rooms.3": "T3",
+    "ui.admin-leads.value.rooms.4": "T4",
+    "ui.admin-leads.value.rooms.5plus": "T5 et plus",
+    "ui.admin-leads.value.delivery.NOW": "Disponible tout de suite",
+    "ui.admin-leads.value.delivery.SOON": "D’ici un à deux ans",
+    "ui.admin-leads.value.budgetKind.MONTHLY": "par mois",
+    "ui.admin-leads.value.budgetKind.TOTAL": "au total",
+    "ui.admin-leads.value.partnerKind.PROMOTER": "Promoteur",
+    "ui.admin-leads.value.partnerKind.BANK": "Banque",
     "ui.admin-leads.context.title": "Contexte",
     "ui.admin-leads.context.property": "Bien concerné",
     "ui.admin-leads.context.program": "Programme concerné",
@@ -4204,7 +4229,7 @@ export const messages = {
     "ui.client.dashboard.property.helpMonthly": "Qu’est-ce que la mensualité indicative ?",
     "ui.client.dashboard.property.open": "Voir la fiche du bien",
     "ui.client.dashboard.cafe.title": "Prochain Café",
-    "ui.client.dashboard.cafe.registered": "Vous êtes inscrit au {titre}.",
+    "ui.client.dashboard.cafe.registered": "Vous êtes inscrit à « {titre} ».",
     "ui.client.dashboard.cafe.register": "Je m’inscris",
     "ui.client.dashboard.cafe.see": "Voir le Café",
     "ui.client.dashboard.cafe.when": "{date} · {lieu}",
@@ -4461,6 +4486,35 @@ export const messages = {
     "ui.client.properties.sort.priceAsc": "Prix croissant",
     "ui.client.properties.sort.priceDesc": "Prix décroissant",
     "ui.client.properties.search": "Chercher un bien, une ville",
+    "ui.client.properties.answer.interested": "Ce bien m’intéresse",
+    "ui.client.properties.answer.interestedAgain": "Finalement, il m’intéresse",
+    "ui.client.properties.answer.decline": "Ce bien ne me convient pas",
+    "ui.client.properties.answer.declineFollowed": "Ce bien ne m’intéresse plus",
+    "ui.client.properties.answer.select": "Je retiens ce bien",
+    "ui.client.properties.answer.cancelSelect": "Annuler mon choix",
+    "ui.client.properties.answer.visit": "Demander une visite",
+    "ui.client.properties.answer.labelled": "{action} : {titre}",
+    "ui.client.properties.answer.comment": "Qu’est-ce qui vous plaît ?",
+    "ui.client.properties.answer.reason": "Pour quelle raison ?",
+    "ui.client.properties.answer.reasonHint": "Votre réponse aide {conseiller} à mieux vous proposer.",
+    "ui.client.properties.answer.reasonRequired": "Choisissez une raison.",
+    "ui.client.properties.answer.note": "Une précision ?",
+    "ui.client.properties.answer.send": "Envoyer ma réponse",
+    "ui.client.properties.answer.visitToCancel": "Votre visite du {date} sera annulée.",
+    "ui.client.properties.answer.visitToCancelSend": "Écarter ce bien et annuler la visite",
+    "ui.client.properties.answer.selectText": "Vous indiquez à {conseiller} que c’est ce bien que vous souhaitez acheter. Il vous recontacte pour confirmer et préparer votre dossier.",
+    "ui.client.properties.answer.selectNoCommit": "Cela ne vous engage pas.",
+    "ui.client.properties.answer.lot": "Un lot vous attire en particulier ?",
+    "ui.client.properties.answer.lotNone": "Pas de préférence",
+    "ui.client.properties.answer.lotLine": "Lot {reference}",
+    "ui.client.properties.answer.lotFloor": "{n, selectordinal, one {#er} other {#e}} étage",
+    "ui.client.properties.answer.lotGround": "rez-de-chaussée",
+    "ui.client.properties.answer.selectComment": "Un commentaire ?",
+    "ui.client.properties.answer.selectSend": "Envoyer mon choix",
+    "ui.client.properties.answer.replace": "Vous aviez indiqué {bien}. Le remplacer ?",
+    "ui.client.properties.answer.replaceSend": "Oui, le remplacer",
+    "ui.client.properties.answer.thanks": "Merci, {conseiller} est prévenu.",
+    "ui.client.properties.answer.selectCancelled": "Votre choix est annulé.",
     "ui.client.interests.title": "Mes intérêts",
     "ui.client.interests.intro": "Les biens qui vous intéressent et les demandes que vous nous avez envoyées.",
     "ui.client.interests.propertiesTitle": "Les biens qui m’intéressent",
@@ -8361,10 +8415,21 @@ export type MessageKey =
   | 'ui.admin-leads.dialog.spam.title'
   | 'ui.admin-leads.empty.text'
   | 'ui.admin-leads.empty.title'
+  | 'ui.admin-leads.field.answerBudget'
+  | 'ui.admin-leads.field.answerBudgetKind'
+  | 'ui.admin-leads.field.answerBudgetMax'
+  | 'ui.admin-leads.field.answerDelivery'
+  | 'ui.admin-leads.field.answerPurpose'
+  | 'ui.admin-leads.field.answerRegion'
+  | 'ui.admin-leads.field.answerRooms'
+  | 'ui.admin-leads.field.answerType'
   | 'ui.admin-leads.field.answers'
   | 'ui.admin-leads.field.budget'
+  | 'ui.admin-leads.field.budgetCurrency'
   | 'ui.admin-leads.field.budgetKind'
+  | 'ui.admin-leads.field.city'
   | 'ui.admin-leads.field.company'
+  | 'ui.admin-leads.field.companyName'
   | 'ui.admin-leads.field.country'
   | 'ui.admin-leads.field.countryOfResidence'
   | 'ui.admin-leads.field.criteria'
@@ -8375,6 +8440,7 @@ export type MessageKey =
   | 'ui.admin-leads.field.monthlyBudget'
   | 'ui.admin-leads.field.monthlyDebts'
   | 'ui.admin-leads.field.monthlyIncome'
+  | 'ui.admin-leads.field.partnerKind'
   | 'ui.admin-leads.field.preferredCallbackDate'
   | 'ui.admin-leads.field.preferredChannel'
   | 'ui.admin-leads.field.preferredSlot'
@@ -8470,6 +8536,19 @@ export type MessageKey =
   | 'ui.admin-leads.toast.taken'
   | 'ui.admin-leads.toast.takenRef'
   | 'ui.admin-leads.unassigned'
+  | 'ui.admin-leads.value.any'
+  | 'ui.admin-leads.value.budgetKind.MONTHLY'
+  | 'ui.admin-leads.value.budgetKind.TOTAL'
+  | 'ui.admin-leads.value.delivery.NOW'
+  | 'ui.admin-leads.value.delivery.SOON'
+  | 'ui.admin-leads.value.noAnswer'
+  | 'ui.admin-leads.value.partnerKind.BANK'
+  | 'ui.admin-leads.value.partnerKind.PROMOTER'
+  | 'ui.admin-leads.value.rooms.2'
+  | 'ui.admin-leads.value.rooms.3'
+  | 'ui.admin-leads.value.rooms.4'
+  | 'ui.admin-leads.value.rooms.5plus'
+  | 'ui.admin-leads.value.unknown'
   | 'ui.admin-leads.view.all'
   | 'ui.admin-leads.view.late'
   | 'ui.admin-leads.view.mine'
@@ -11684,6 +11763,35 @@ export type MessageKey =
   | 'ui.client.promise.breachedWritePhone'
   | 'ui.client.promise.breachedWritePhoneWhatsapp'
   | 'ui.client.promise.breachedWriteWhatsapp'
+  | 'ui.client.properties.answer.cancelSelect'
+  | 'ui.client.properties.answer.comment'
+  | 'ui.client.properties.answer.decline'
+  | 'ui.client.properties.answer.declineFollowed'
+  | 'ui.client.properties.answer.interested'
+  | 'ui.client.properties.answer.interestedAgain'
+  | 'ui.client.properties.answer.labelled'
+  | 'ui.client.properties.answer.lot'
+  | 'ui.client.properties.answer.lotFloor'
+  | 'ui.client.properties.answer.lotGround'
+  | 'ui.client.properties.answer.lotLine'
+  | 'ui.client.properties.answer.lotNone'
+  | 'ui.client.properties.answer.note'
+  | 'ui.client.properties.answer.reason'
+  | 'ui.client.properties.answer.reasonHint'
+  | 'ui.client.properties.answer.reasonRequired'
+  | 'ui.client.properties.answer.replace'
+  | 'ui.client.properties.answer.replaceSend'
+  | 'ui.client.properties.answer.select'
+  | 'ui.client.properties.answer.selectCancelled'
+  | 'ui.client.properties.answer.selectComment'
+  | 'ui.client.properties.answer.selectNoCommit'
+  | 'ui.client.properties.answer.selectSend'
+  | 'ui.client.properties.answer.selectText'
+  | 'ui.client.properties.answer.send'
+  | 'ui.client.properties.answer.thanks'
+  | 'ui.client.properties.answer.visit'
+  | 'ui.client.properties.answer.visitToCancel'
+  | 'ui.client.properties.answer.visitToCancelSend'
   | 'ui.client.properties.detail.VISIT_REQUESTED'
   | 'ui.client.properties.detail.declined'
   | 'ui.client.properties.filter.all'

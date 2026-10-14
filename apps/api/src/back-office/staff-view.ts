@@ -123,8 +123,11 @@ export const LEAD_SENSITIVE_FIELDS = new Set([
 export const LEAD_PERSON_FIELDS = new Set(['firstName', 'lastName', 'email', 'phone']);
 /** Free text of a form (SEC-032 « Texte libre »): `message` has its own place on the screen. */
 export const LEAD_FREE_TEXT_FIELDS = new Set(['message']);
-/** Technical keys never shown as a field: consent proofs (read on the client record), tokens, the trap field. */
-export const LEAD_HIDDEN_FIELDS = new Set(['consentContact', 'consentKey', 'marketingOptIn', 'marketingKey', 'createAccount', 'assistantConversationId', 'completionToken', 'challengeToken', 'simulationId', 'homepageUrl', 'accountHint', 'token']);
+/**
+ * Technical keys never shown as a field: consent proofs (read on the client record), tokens, the trap field, the
+ * language and time zone of a partner sign-up (D-108).
+ */
+export const LEAD_HIDDEN_FIELDS = new Set(['consentContact', 'consentKey', 'marketingOptIn', 'marketingKey', 'createAccount', 'assistantConversationId', 'completionToken', 'challengeToken', 'simulationId', 'homepageUrl', 'accountHint', 'token', 'consent', 'acceptCharter', 'locale', 'timezone']);
 /**
  * SEC-032 — what a SUPPORT account still reads of a form: states, types, dates and choices. Every other value (names,
  * coordinates, city, amounts, company, free text) is replaced by `•••` — an unknown key is masked by default.
@@ -147,4 +150,11 @@ export const LEAD_SUPPORT_READABLE_FIELDS = new Set([
   'kind',
   'type',
   'propertyOutcome',
+  // D-108 — the guided search's choices, the currency of a budget, the kind of a partner
+  'region',
+  'rooms',
+  'delivery',
+  'purpose',
+  'budgetCurrency',
+  'partnerKind',
 ]);

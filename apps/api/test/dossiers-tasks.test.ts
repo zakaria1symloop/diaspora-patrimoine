@@ -178,14 +178,22 @@ describe('INT-004, CYC-070, CYC-071, CYC-121 — the client answers a proposal',
     expect(retainRefusal({ ...p, availability: 'SOLD' })).toBe('PROPERTY_NOT_AVAILABLE');
   });
   it('« Ce bien m’intéresse », « Ne m’intéresse plus », « Je retiens ce bien », « Annuler mon choix »', () => {
-    expect(clientActions(sent, matching, p)).toEqual({ interested: true, decline: true, selectRequest: false, cancelSelect: false });
+    expect(clientActions(sent, matching, p)).toEqual({ interested: true, decline: true, selectRequest: false, cancelSelect: false, visit: false });
     expect(clientActions({ ...sent, status: 'INTERESTED' }, matching, p)).toMatchObject({ interested: false, selectRequest: true });
     expect(clientActions({ ...sent, status: 'INTERESTED', selectionRequestedAt: new Date() }, matching, p)).toMatchObject({ selectRequest: false, cancelSelect: true });
     expect(clientActions({ ...sent, status: 'DECLINED' }, matching, p)).toMatchObject({ interested: true, decline: false });
     // a draft never reaches the client; a dossier on hold accepts no « Je retiens »
-    expect(clientActions({ ...sent, sentAt: null }, matching, p)).toEqual({ interested: false, decline: false, selectRequest: false, cancelSelect: false });
+    expect(clientActions({ ...sent, sentAt: null }, matching, p)).toEqual({ interested: false, decline: false, selectRequest: false, cancelSelect: false, visit: false });
     expect(clientActions({ ...sent, status: 'INTERESTED' }, { stage: 'MATCHING', status: 'ON_HOLD' }, p).selectRequest).toBe(false);
     expect(clientActions({ ...sent, status: 'INTERESTED' }, { stage: 'MATCHING', status: 'LOST' }, p).interested).toBe(false);
+  });
+  it('« Demander une visite » on an interest or a property visited, still offered, on a live dossier', () => {
+    expect(clientActions({ ...sent, status: 'INTERESTED' }, matching, p).visit).toBe(true);
+    expect(clientActions({ ...sent, status: 'VISITED' }, matching, p).visit).toBe(true);
+    // a visit already asked or planned has its own state; a property no longer offered cannot be visited
+    expect(clientActions({ ...sent, status: 'VISIT_PLANNED' }, matching, p).visit).toBe(false);
+    expect(clientActions({ ...sent, status: 'INTERESTED' }, matching, { ...p, availability: 'SOLD' }).visit).toBe(false);
+    expect(clientActions({ ...sent, status: 'INTERESTED' }, { stage: 'MATCHING', status: 'WON' }, p).visit).toBe(false);
   });
 });
 

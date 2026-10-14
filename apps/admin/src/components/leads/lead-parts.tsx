@@ -55,7 +55,22 @@ const FIELD_ENUM: Record<string, string> = {
   preferredChannel: 'Channel',
   propertyType: 'PropertyType',
   type: 'PropertyType',
+  purpose: 'PurchasePurpose',
 };
+
+/** ASS-010, D-108 — a guided search's answers, each under the question the client answered (never under its code). */
+const ANSWER_LABEL: Record<string, string> = {
+  'answers.region': 'answerRegion',
+  'answers.type': 'answerType',
+  'answers.rooms': 'answerRooms',
+  'answers.budget': 'answerBudget',
+  'answers.budget.kind': 'answerBudgetKind',
+  'answers.budget.max': 'answerBudgetMax',
+  'answers.delivery': 'answerDelivery',
+  'answers.purpose': 'answerPurpose',
+};
+/** The key without its list positions (« answers.region.2 » → « answers.region »). */
+const pathOf = (key: string) => key.split('.').filter((p) => !/^\d+$/.test(p)).join('.');
 
 let countries: Intl.DisplayNames | null = null;
 function countryName(code: string): string {
@@ -69,6 +84,8 @@ function countryName(code: string): string {
 
 /** The label of a form key: its own text when there is one, else the last part of the key, spelled out. */
 export function fieldLabel(key: string): string {
+  const answer = ANSWER_LABEL[pathOf(key)];
+  if (answer) return t(`ui.admin-leads.field.${answer}` as MessageKey);
   const leaf = key.split('.').filter((p) => !/^\d+$/.test(p)).pop() ?? key;
   for (const candidate of [`ui.admin-leads.field.${key}`, `ui.admin-leads.field.${leaf}`]) if (hasMessage(candidate)) return t(candidate as MessageKey);
   const words = leaf.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
@@ -77,13 +94,27 @@ export function fieldLabel(key: string): string {
 
 export function fieldValue(field: LeadFieldValue): string {
   const leaf = field.key.split('.').pop() ?? field.key;
+  const path = pathOf(field.key);
+  const own = (key: string) => (hasMessage(key) ? t(key as MessageKey) : null);
   const one = (v: string | number | boolean): string => {
     if (typeof v === 'boolean') return v ? t('ui.common.yes') : t('ui.common.no');
     if (typeof v === 'number') return new Intl.NumberFormat('fr-FR').format(v);
     if (v === '•••') return t('ui.admin-leads.masked');
     if (leaf === 'prefilledFrom' && hasMessage(`ui.admin-leads.origin.${v}`)) return t(`ui.admin-leads.origin.${v}` as MessageKey);
+    // D-108 — a guided search's answers in the client's words, a partner's kind
+    if (path.startsWith('answers.')) {
+      const word = v === 'ANY' ? 'any' : v === 'UNKNOWN' ? 'unknown' : v === 'NO_ANSWER' ? 'noAnswer' : null;
+      if (word) return t(`ui.admin-leads.value.${word}` as MessageKey);
+      const said =
+        (path === 'answers.rooms' && own(`ui.admin-leads.value.rooms.${v}`)) ||
+        (path === 'answers.delivery' && own(`ui.admin-leads.value.delivery.${v}`)) ||
+        (path === 'answers.budget.kind' && own(`ui.admin-leads.value.budgetKind.${v}`));
+      if (said) return said;
+    }
+    if (leaf === 'partnerKind') return own(`ui.admin-leads.value.partnerKind.${v}`) ?? v;
     const enumName = FIELD_ENUM[leaf];
-    if (enumName && hasMessage(`ui.enum.${enumName}.${v}`)) return t(`ui.enum.${enumName}.${v}` as MessageKey);
+    // the assistant sends a type as a slug (« apartment »), the enum is in capitals (« APARTMENT »)
+    for (const value of enumName ? [v, v.toUpperCase()] : []) if (hasMessage(`ui.enum.${enumName}.${value}`)) return t(`ui.enum.${enumName}.${value}` as MessageKey);
     if (/country/i.test(leaf) && /^[A-Z]{2}$/.test(v)) return countryName(v);
     if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return shortDay(v);
     if (/^\d+(\.\d+)?$/.test(v) && /budget|amount|price|payment/i.test(leaf)) return new Intl.NumberFormat('fr-FR').format(Number(v));

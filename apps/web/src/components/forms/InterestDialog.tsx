@@ -32,7 +32,9 @@ import { LeadDone } from './LeadDone';
 import { QueryDialog, useQueryFlag } from './QueryDialog';
 import l from './lead.module.css';
 
-const SENT_KEY = (ref: string) => `dp_sent_${ref}`;
+// FIC-054, D-108 — « Demande envoyée » is remembered for the session of ONE person: a request sent as one account (or
+// anonymously) must not show as sent for another account signed in later in the same tab.
+const SENT_KEY = (ref: string, who: string | null | undefined) => `dp_sent_${who ?? 'anonymous'}_${ref}`;
 
 export interface InterestTarget {
   /** Property: its reference; programme: its slug. */
@@ -52,10 +54,12 @@ export interface InterestTarget {
 
 export function InterestButton({ target, label, href }: { target: InterestTarget; label: string; href: string }) {
   const [sent, setSent] = useState(false);
+  const me = useSignedInClient();
+  const who = me?.clientId ?? null;
   useEffect(() => {
     const read = () => {
       try {
-        setSent(sessionStorage.getItem(SENT_KEY(target.key)) === '1');
+        setSent(sessionStorage.getItem(SENT_KEY(target.key, who)) === '1');
       } catch {
         /* storage unavailable */
       }
@@ -63,7 +67,7 @@ export function InterestButton({ target, label, href }: { target: InterestTarget
     read();
     window.addEventListener('dp:lead-sent', read);
     return () => window.removeEventListener('dp:lead-sent', read);
-  }, [target.key]);
+  }, [target.key, who]);
   if (sent) {
     return (
       <div className={l.consents}>
@@ -195,7 +199,7 @@ function InterestForm({ settings, target, onClose }: { settings: PublicSettings;
     if (res.ok) {
       clear();
       try {
-        sessionStorage.setItem(SENT_KEY(target.key), '1');
+        sessionStorage.setItem(SENT_KEY(target.key, me?.clientId), '1');
       } catch {
         /* storage unavailable */
       }

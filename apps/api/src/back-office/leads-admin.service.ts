@@ -170,6 +170,44 @@ export function leadCan(lead: LeadState, staff: Pick<StaffView, 'userId' | 'role
   return can;
 }
 
+/**
+ * The fields of a form as a flat list, in the order they were sent; what the reader may not read is left out. EA-11
+ * shows what the person SENT: the search criteria the server derives from a guided search's answers (ASS-030) are
+ * not part of it, and a region is shown by its name, not its slug (D-108).
+ */
+export function leadFields(source: Record<string, unknown> | null | undefined, staff: StaffView, withheld: Set<string>, regions: Map<string, string> = new Map()): LeadFieldValue[] {
+  const out: LeadFieldValue[] = [];
+  const regionName = (v: unknown) => (typeof v === 'string' && regions.has(v) ? regions.get(v)! : v);
+  const push = (key: string, leaf: string, value: unknown) => {
+    if (value === undefined || value === null || value === '') return;
+    if (key === 'criteria') return;
+    if (LEAD_PERSON_FIELDS.has(leaf) || LEAD_HIDDEN_FIELDS.has(leaf) || LEAD_FREE_TEXT_FIELDS.has(leaf)) return;
+    if (LEAD_SENSITIVE_FIELDS.has(leaf) && !staff.sensitive) {
+      withheld.add(key);
+      return;
+    }
+    // a group (the answers of a guided search) is opened: SEC-032 masks value by value, not the whole group
+    if (typeof value === 'object' && !Array.isArray(value)) return walk(value, key);
+    if (leaf === 'region' || leaf === 'regionSlug') value = Array.isArray(value) ? value.map(regionName) : regionName(value);
+    if (staff.masked && !LEAD_SUPPORT_READABLE_FIELDS.has(leaf)) {
+      out.push({ key, value: '•••' });
+      return;
+    }
+    if (Array.isArray(value)) {
+      if (value.every((v) => typeof v === 'string' || typeof v === 'number')) out.push({ key, value: value.map(String) });
+      else value.forEach((v, i) => walk(v, `${key}.${i + 1}`));
+      return;
+    }
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') out.push({ key, value });
+  };
+  const walk = (node: unknown, prefix: string) => {
+    if (!node || typeof node !== 'object') return;
+    for (const [k, v] of Object.entries(node as Record<string, unknown>)) push(prefix ? `${prefix}.${k}` : k, k, v);
+  };
+  walk(source ?? {}, '');
+  return out;
+}
+
 @Injectable()
 export class LeadsAdminService {
   constructor(
@@ -358,36 +396,6 @@ export class LeadsAdminService {
 
   // ─── One request (EA-11) ──────────────────────────────────────────────────
 
-  /** The fields of a form as a flat list, in the order they were sent; what the reader may not read is left out. */
-  private fields(source: Record<string, unknown> | null | undefined, staff: StaffView, withheld: Set<string>): LeadFieldValue[] {
-    const out: LeadFieldValue[] = [];
-    const push = (key: string, leaf: string, value: unknown) => {
-      if (value === undefined || value === null || value === '') return;
-      if (LEAD_PERSON_FIELDS.has(leaf) || LEAD_HIDDEN_FIELDS.has(leaf) || LEAD_FREE_TEXT_FIELDS.has(leaf)) return;
-      if (LEAD_SENSITIVE_FIELDS.has(leaf) && !staff.sensitive) {
-        withheld.add(key);
-        return;
-      }
-      if (staff.masked && !LEAD_SUPPORT_READABLE_FIELDS.has(leaf)) {
-        out.push({ key, value: '•••' });
-        return;
-      }
-      if (Array.isArray(value)) {
-        if (value.every((v) => typeof v === 'string' || typeof v === 'number')) out.push({ key, value: value.map(String) });
-        else value.forEach((v, i) => walk(v, `${key}.${i + 1}`));
-        return;
-      }
-      if (typeof value === 'object') return walk(value, key);
-      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') out.push({ key, value });
-    };
-    const walk = (node: unknown, prefix: string) => {
-      if (!node || typeof node !== 'object') return;
-      for (const [k, v] of Object.entries(node as Record<string, unknown>)) push(prefix ? `${prefix}.${k}` : k, k, v);
-    };
-    walk(source ?? {}, '');
-    return out;
-  }
-
   /** `GET /admin/leads/{référence}` (`lead.read`) — outside the reader's perimeter: 404 (BO-015). */
   async detail(auth: AuthContext, reference: string): Promise<LeadDetail> {
     const staff = await this.views.of(auth);
@@ -405,7 +413,12 @@ export class LeadsAdminService {
     });
     if (!lead) throw AppError.notFound();
     const now = this.clock.now();
-    const [cal, slaDays] = await Promise.all([this.calendar.load(), this.settings.get('sla.firstContactBusinessDays')]);
+    const [cal, slaDays, regionRows] = await Promise.all([
+      this.calendar.load(),
+      this.settings.get('sla.firstContactBusinessDays'),
+      this.prisma.region.findMany({ select: { slug: true, nameFr: true } }),
+    ]);
+    const regions = new Map(regionRows.map((r) => [r.slug, r.nameFr]));
 
     const payload = (lead.payload ?? {}) as { form?: string; fields?: Record<string, unknown>; context?: Record<string, string | undefined>; step2?: { receivedAt: string; fields: Record<string, unknown> } | null };
     const withheld = new Set<string>();
@@ -425,10 +438,10 @@ export class LeadsAdminService {
 
     type Supp = { receivedAt: string; fields: Record<string, unknown>; message: string | null; step2?: { receivedAt: string; fields: Record<string, unknown> } | null };
     const supplements: LeadDetail['sent']['supplements'] = [];
-    if (payload.step2) supplements.push({ at: payload.step2.receivedAt, fields: this.fields(payload.step2.fields, staff, withheld), message: null });
+    if (payload.step2) supplements.push({ at: payload.step2.receivedAt, fields: leadFields(payload.step2.fields, staff, withheld, regions), message: null });
     for (const s of (lead.supplements as Supp[] | null) ?? []) {
-      supplements.push({ at: s.receivedAt, fields: this.fields(s.fields, staff, withheld), message: staff.masked ? null : s.message });
-      if (s.step2) supplements.push({ at: s.step2.receivedAt, fields: this.fields(s.step2.fields, staff, withheld), message: null });
+      supplements.push({ at: s.receivedAt, fields: leadFields(s.fields, staff, withheld, regions), message: staff.masked ? null : s.message });
+      if (s.step2) supplements.push({ at: s.step2.receivedAt, fields: leadFields(s.step2.fields, staff, withheld, regions), message: null });
     }
     supplements.sort((a, b) => a.at.localeCompare(b.at));
 
@@ -494,7 +507,7 @@ export class LeadsAdminService {
         person: staff.masked
           ? { firstName: null, lastName: maskName(person.firstName, person.lastName), email: maskEmail(person.email), phone: maskPhone(person.phone) }
           : person,
-        fields: this.fields(payload.fields, staff, withheld),
+        fields: leadFields(payload.fields, staff, withheld, regions),
         withheld: [...withheld],
         message: staff.masked ? null : lead.message,
         subject: lead.subject,

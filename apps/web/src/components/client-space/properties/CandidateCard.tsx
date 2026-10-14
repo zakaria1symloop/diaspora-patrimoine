@@ -3,28 +3,35 @@
 // drawn for this page, not the catalogue's — D-098): its state first, where it stands on the way to « Bien retenu »,
 // the title and the place, the figures that matter (price, indicative monthly payment with its asterisk — TRV-023),
 // what the advisor promised, then ONE main action and visibly secondary ones. The photo and the title lead to the
-// property page like the main button. Actions of livraison 2 (ECL-006): « Voir le bien » and « Écrire à mon
-// conseiller » (prefilled « Au sujet de {bien} (réf. {référence}) : »); the answers (« Je retiens ce bien »…) come
-// with package 3.7. A property no longer online unfolds in place into its summary — never an error page. Opening a
-// proposal marks it viewed (INT-011).
+// property page like the main button. The answers are the ones the server opens now (`card.actions`, INT-004): on
+// « Biens proposés », « Ce bien m'intéresse » (main) and « Ce bien ne me convient pas » while the property waits for
+// an answer (INT-010, INT-020), then « Finalement, il m'intéresse » once declined (INT-021); on « Mes intérêts »,
+// « Je retiens ce bien » (INT-030), « Annuler mon choix » (INT-031), « Demander une visite », « Ce bien ne m'intéresse
+// plus », « Finalement, il m'intéresse ». « Demander une visite » opens « Écrire à mon conseiller » prefilled with
+// « Je souhaite visiter {bien} (réf. {référence}). » while the request of INT-040 is not delivered (ECL-006, D-108);
+// « Écrire à mon conseiller » is always there (« Au sujet de {bien} (réf. {référence}) : »). A property no longer
+// online unfolds in place into its summary — never an error page. Opening a proposal marks it viewed (INT-011).
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { CandidateCard as Card } from '@dp/contracts';
-import { buttonClass, ButtonInner, Icon } from '@dp/ui';
+import { Button, buttonClass, ButtonInner, Icon } from '@dp/ui';
 import { Picture } from '@/components/Picture';
+import { errorMessage } from '@/components/auth/kit';
 import { apiCall } from '@/lib/auth-client';
+import { showToast } from '@/lib/discovery';
 import { money, surfaceText } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { writeToAdvisorHref } from '../advisor-link';
 import { useSpace, signalSpaceChanged } from '../SpaceContext';
 import { dossierPath } from '../menu';
-import { advisorName, dateTime, longDate, promiseSentence } from '../texts';
+import { advisorName, dateTime, inSentence, longDate, promiseSentence } from '../texts';
 import { Figures } from '../kit/Figures';
 import { PhotoNote } from '../kit/PhotoNote';
 import { StepDots } from '../kit/Progress';
 import k from '../kit/kit.module.css';
 import sp from '../space.module.css';
+import { AnswerWindow, type AnswerKind } from './AnswerWindow';
 import s from './properties.module.css';
 
 function statusLabel(c: Card, timeZone: string): { label: string; tone: string } {
@@ -50,7 +57,10 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
   const { summary, settings } = useSpace();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [answer, setAnswer] = useState<AnswerKind | null>(null);
+  const [cancelling, setCancelling] = useState(false);
   const p = card.property;
+  const can = card.actions;
   const tz = summary.timeZone;
   const status = statusLabel(card, tz);
   const conseiller = advisorName(card.advisor) ?? t('ui.client.nextStep.advisorFallback');
@@ -78,16 +88,34 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
     }
   }
 
+  // An answer recorded: INT-020 « Merci, {conseiller} est prévenu. », then the page's data again (the card moves).
+  function answered(message: string) {
+    setAnswer(null);
+    showToast({ message });
+    signalSpaceChanged();
+    router.refresh();
+  }
+  // INT-031 — « Annuler mon choix »: one click, nothing to fill; the choice can be sent again.
+  async function cancelChoice() {
+    if (cancelling) return;
+    setCancelling(true);
+    const res = await apiCall(`/client/candidates/${card.id}/cancel-select`, { method: 'POST', retryOnAuth: true });
+    setCancelling(false);
+    if (!res.ok) return showToast({ message: errorMessage(res.error, { offline: res.offline }), tone: 'error' });
+    answered(t('ui.client.properties.answer.selectCancelled'));
+  }
+  const labelled = (action: string) => t('ui.client.properties.answer.labelled', { action, titre: p.title });
+
   const notes: string[] = [];
   if (card.status === 'INTERESTED' && card.promise && !card.selectionRequestedAt) notes.push(promiseSentence(card.promise, settings));
-  if (card.status === 'INTERESTED' && card.selectionDeclineNote) notes.push(t('ui.client.properties.detail.declined', { conseiller, raison: card.selectionDeclineNote }));
+  if (card.status === 'INTERESTED' && card.selectionDeclineNote) notes.push(inSentence(t('ui.client.properties.detail.declined', { conseiller, raison: card.selectionDeclineNote })));
   if (card.status === 'VISIT_REQUESTED') notes.push(t('ui.client.properties.detail.VISIT_REQUESTED'));
   if (!card.unavailable && card.fullyReserved) {
     notes.push(
       card.status === 'SELECTED'
-        ? t('ui.client.properties.reservedSelected', { conseiller })
+        ? inSentence(t('ui.client.properties.reservedSelected', { conseiller }))
         : card.status === 'INTERESTED'
-          ? t('ui.client.properties.reservedInterested', { conseiller })
+          ? inSentence(t('ui.client.properties.reservedInterested', { conseiller }))
           : t('ui.client.properties.reserved'),
     );
   }
@@ -103,7 +131,11 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
   );
   // SELECTED: the dossier is where things happen now — it becomes the main action.
   const dossierFirst = card.status === 'SELECTED';
+  // INT-010 — a proposal waiting for an answer: answering is the main action, « Voir le bien » stays in text.
+  const answerFirst = context === 'proposals' && (card.status === 'PROPOSED' || card.status === 'VIEWED') && can.interested;
   const writeHref = writeToAdvisorHref({ from: 'PROPERTY_ABOUT', property: { reference: p.reference, title: p.title }, dossier: card.dossierReference });
+  const visitHref = writeToAdvisorHref({ from: 'PROPERTY_VISIT', property: { reference: p.reference, title: p.title }, dossier: card.dossierReference });
+  const followedHere = context === 'interests' && ['INTERESTED', 'VISIT_REQUESTED', 'VISIT_PLANNED', 'VISITED'].includes(card.status);
 
   return (
     <article className={[s.card, k.enter, card.unavailable && s.veiled, isNew && s.cardNew].filter(Boolean).join(' ')} style={{ ['--i' as string]: index }} data-candidate={card.status}>
@@ -168,6 +200,18 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
           </div>
         ) : null}
         <div className={s.actions}>
+          {answerFirst ? (
+            <>
+              <Button variant="tool" size="M" icon="heart" onClick={() => setAnswer('interested')} aria-label={labelled(t('ui.client.properties.answer.interested'))}>
+                {t('ui.client.properties.answer.interested')}
+              </Button>
+              {can.decline ? (
+                <Button variant="secondary" size="M" onClick={() => setAnswer('decline')} aria-label={labelled(t('ui.client.properties.answer.decline'))}>
+                  {t('ui.client.properties.answer.decline')}
+                </Button>
+              ) : null}
+            </>
+          ) : null}
           {dossierFirst ? (
             <Link href={dossierPath(card.dossierReference)} className={buttonClass('tool', 'M')}>
               <ButtonInner size="M" chevron>
@@ -175,17 +219,57 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
               </ButtonInner>
             </Link>
           ) : null}
-          {p.online ? (
+          {p.online && answerFirst ? (
+            <Link href={`/biens/${p.slug}`} className={k.quiet} onClick={(e) => void view(e)} aria-label={t('ui.client.properties.viewTitled', { titre: p.title })}>
+              <Icon name="eye" size={20} />
+              {t('ui.client.properties.view')}
+            </Link>
+          ) : p.online ? (
             <Link href={`/biens/${p.slug}`} className={buttonClass(dossierFirst ? 'secondary' : 'tool', 'M')} onClick={(e) => void view(e)} aria-label={t('ui.client.properties.viewTitled', { titre: p.title })}>
               <ButtonInner size="M" chevron={!dossierFirst}>
                 {t('ui.client.properties.view')}
               </ButtonInner>
             </Link>
+          ) : answerFirst ? (
+            <button type="button" className={k.quiet} aria-expanded={open} onClick={() => void unfold()}>
+              <Icon name="eye" size={20} />
+              {open ? t('ui.client.properties.summaryClose') : t('ui.client.properties.summaryOpen')}
+            </button>
           ) : (
             <button type="button" className={buttonClass('secondary', 'M')} aria-expanded={open} onClick={() => void unfold()}>
               <ButtonInner size="M">{open ? t('ui.client.properties.summaryClose') : t('ui.client.properties.summaryOpen')}</ButtonInner>
             </button>
           )}
+          {context === 'interests' && can.selectRequest ? (
+            <button type="button" className={k.quiet} onClick={() => setAnswer('select')} aria-label={labelled(t('ui.client.properties.answer.select'))}>
+              <Icon name="check" size={20} />
+              {t('ui.client.properties.answer.select')}
+            </button>
+          ) : null}
+          {context === 'interests' && can.cancelSelect ? (
+            <button type="button" className={k.quiet} onClick={() => void cancelChoice()} disabled={cancelling} aria-label={labelled(t('ui.client.properties.answer.cancelSelect'))}>
+              <Icon name="arrow-left" size={20} />
+              {t('ui.client.properties.answer.cancelSelect')}
+            </button>
+          ) : null}
+          {context === 'interests' && can.visit ? (
+            <Link href={visitHref} className={k.quiet} aria-label={labelled(t('ui.client.properties.answer.visit'))}>
+              <Icon name="calendar" size={20} />
+              {t('ui.client.properties.answer.visit')}
+            </Link>
+          ) : null}
+          {card.status === 'DECLINED' && can.interested ? (
+            <button type="button" className={k.quiet} onClick={() => setAnswer('interestedAgain')} aria-label={labelled(t('ui.client.properties.answer.interestedAgain'))}>
+              <Icon name="heart" size={20} />
+              {t('ui.client.properties.answer.interestedAgain')}
+            </button>
+          ) : null}
+          {followedHere && can.decline ? (
+            <button type="button" className={k.quiet} onClick={() => setAnswer('declineFollowed')} aria-label={labelled(t('ui.client.properties.answer.declineFollowed'))}>
+              <Icon name="close" size={20} />
+              {t('ui.client.properties.answer.declineFollowed')}
+            </button>
+          ) : null}
           {card.unavailable && !p.online ? (
             // FIC-090 — the page of a property no longer offered shows three similar ones (CAL-081).
             <Link href={`/biens/${p.slug}`} className={k.quiet}>
@@ -204,6 +288,7 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
           </Link>
         </div>
       </div>
+      <AnswerWindow card={card} kind={answer} conseiller={conseiller} timeZone={tz} onClose={() => setAnswer(null)} onDone={() => answered(inSentence(t('ui.client.properties.answer.thanks', { conseiller })))} />
     </article>
   );
 }

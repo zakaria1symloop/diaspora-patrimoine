@@ -66,7 +66,7 @@ Le filtre est appliqué **dans la requête à la base**, pas après lecture.
 | Texte libre | Notes, messages, comptes rendus, objet et corps des e-mails, titre et description des tâches manuelles, motifs et raisons saisis, questions d'un inscrit, texte d'un avis, précisions d'un rejet | « Contenu masqué » |
 | Fichiers | Nom d'un fichier déposé ; le fichier lui-même, jamais accessible | « Fichier » |
 
-Restent lisibles : identifiants, références, statuts, dates, types, compteurs, journaux techniques. Une recherche ou un tri sur un champ masqué est refusé pour ce rôle.
+Restent lisibles : identifiants, références, statuts, dates, types, compteurs, journaux techniques, et les choix d'une recherche guidée — région, type, pièces, livraison, projet —, lus valeur par valeur (le budget reste masqué, D-108). Une recherche ou un tri sur un champ masqué est refusé pour ce rôle.
 
 **SEC-033** `[P1]` **Champs sensibles** (`client.sensitive.read`, ROL-019). Sans la permission, ils sont omis de la réponse et nommés dans `withheld` (API-002) — **partout** où ils sont enregistrés, et pas seulement sur la fiche du client :
 

@@ -2,6 +2,7 @@
 // proposals (read), « Écrire à mon conseiller », notifications, profile, trusted people, agreements.
 import { Module } from '@nestjs/common';
 import { CatalogueModule } from '../catalogue/catalogue.module.js';
+import { PropertyCards } from '../dossiers-admin/property-cards.js';
 import { AgreementsService } from './agreements.service.js';
 import { ClientContactsController, ClientProfileController, ClientSpaceController } from './client-space.controller.js';
 import { DossierViews } from './dossier-view.js';
@@ -15,7 +16,7 @@ import { SpaceService } from './space.service.js';
 
 @Module({
   imports: [CatalogueModule],
-  providers: [SpaceReader, DossierViews, SpaceService, PropertiesService, RequestsService, NotificationsService, ProfileService, AgreementsService, ClientNotificationHandlers],
+  providers: [SpaceReader, DossierViews, PropertyCards, SpaceService, PropertiesService, RequestsService, NotificationsService, ProfileService, AgreementsService, ClientNotificationHandlers],
   controllers: [ClientSpaceController, ClientProfileController, ClientContactsController],
 })
 export class ClientSpaceModule {}
