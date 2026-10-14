@@ -204,10 +204,67 @@
   outline: 3px solid var(--bo-fond-ciel);
   outline-offset: 2px;
 }
+/* D-105 — the choices sit in columns of equal width: a long list stays a readable grid, not a heap of pills */
 .choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: var(--sp-10);
+}
+.choiceGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+.choiceGroupTitle {
+  margin: 0;
+  font-size: var(--fs-body-s);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--bo-texte-doux);
+}
+.pickedCount {
+  font-weight: 700;
+  color: var(--bo-texte-roi);
+}
+.narrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  max-width: 24rem;
+  min-height: var(--target-min);
+  padding-inline: var(--sp-12);
+  border: 1.5px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-doux);
+}
+.narrow:focus-within {
+  border-color: var(--bo-texte-roi);
+  outline: 3px solid var(--bo-fond-ciel);
+}
+.narrowInput {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.5rem;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--bo-texte-encre);
+  outline: none;
+}
+.neutralRow {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-10);
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+  padding-block-start: var(--sp-12);
+  border-block-start: 1px dashed var(--bo-ligne-bleue);
+}
+.or {
+  font-size: var(--fs-body-s);
+  font-weight: 700;
+  color: var(--bo-texte-doux);
 }
 .chip {
   position: relative;

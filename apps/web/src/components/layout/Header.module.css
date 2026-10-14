@@ -85,6 +85,7 @@
 }
 
 .actions {
+  flex: none;
   display: flex;
   align-items: center;
   gap: var(--sp-12);
@@ -129,6 +130,27 @@
     display: none;
   }
   .menuButton {
+    display: inline-flex;
+  }
+}
+
+/* TRV-123 — « Grande » and « Très grande »: six entries, the brand and the button no longer fit a small computer
+   screen (the line used to push the page sideways). The phone menu takes over earlier. */
+@media (max-width: 1365px) {
+  :global(html[data-text-size='large']) .nav,
+  :global(html[data-text-size='large']) .login {
+    display: none;
+  }
+  :global(html[data-text-size='large']) .menuButton {
+    display: inline-flex;
+  }
+}
+@media (max-width: 1599px) {
+  :global(html[data-text-size='xlarge']) .nav,
+  :global(html[data-text-size='xlarge']) .login {
+    display: none;
+  }
+  :global(html[data-text-size='xlarge']) .menuButton {
     display: inline-flex;
   }
 }
@@ -200,8 +222,29 @@
 }
 
 /* NAV-013 — « Mon espace » menu. */
+.accountChevron {
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+.accountChevronOpen {
+  transform: rotate(180deg);
+}
 .account {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+/* D-107 — « Mon espace » (a link) and its chevron (the menu's button), side by side as one control */
+.splitMain {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  padding-inline-end: var(--sp-12);
+}
+.splitToggle {
+  min-width: var(--target-min);
+  margin-inline-start: 1px;
+  padding-inline: var(--sp-10);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
 }
 .accountMenu {
   position: absolute;

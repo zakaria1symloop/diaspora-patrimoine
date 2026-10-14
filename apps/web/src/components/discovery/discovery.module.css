@@ -337,3 +337,34 @@
     animation: none;
   }
 }
+
+/* ---------- D-103 — « Connectez-vous » window of the hearts ---------- */
+.signIn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-16);
+  text-align: center;
+}
+.signInHeart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-accent-corail);
+}
+.signInText {
+  margin: 0;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--bo-texte-encre);
+}
+.signInButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-10);
+  width: 100%;
+}

@@ -233,7 +233,13 @@ export class SignupService {
     const send = () => this.limits.tryTake(a.req, 'signup', a.email);
 
     if (user) {
-      if (user.kind !== 'CLIENT' || user.status === 'SUSPENDED') return true; // rows 7 and 8: nothing, no e-mail
+      if (user.status === 'SUSPENDED') return true; // row 8: nothing, no e-mail
+      if (user.kind !== 'CLIENT') {
+        // Row 7 (D-107) — the address is a partner's or a team member's: one address, one account (ACP-080). Its owner
+        // is told, by e-mail only (the screen never changes), to use another address for a client space.
+        if (send()) await this.mail.request(tx, { template: 'C_ACCOUNT_EXISTS', userId: user.id, to: a.email, vars: { action: { otherSpace: true } } });
+        return true;
+      }
       if (user.status === 'INVITED') {
         if (send()) await this.requestActivation(tx, user.id, a.email, client?.id ?? null, true, a.next);
         return true;

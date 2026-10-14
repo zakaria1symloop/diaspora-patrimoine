@@ -1,5 +1,6 @@
 // EP-08 — « Promoteurs sélectionnés » (EDI-030): intro, « Comment nous sélectionnons » (hidden when empty), one card
-// per ACTIVE and public promoter by sortOrder then name; none: the sentence of the spec. Tags: catalogue, content.
+// per ACTIVE and public promoter by sortOrder then name; none: the sentence of the spec. Filters (name, region, « Avec
+// des biens en vente ») and pages of nine, all in the address (D-105). Tags: catalogue, content.
 import type { Metadata } from 'next';
 import type { ListResponse, PublicPromoterCard } from '@dp/contracts';
 import { Icon } from '@dp/ui';
@@ -10,6 +11,8 @@ import { callbackHref, description, editorialTitle, richBlock } from '@/lib/edit
 import { t } from '@/lib/i18n';
 import { CallCard, EmptyState, PageHead, RichText, SectionHeading } from '@/components/editorial/Parts';
 import { PromoterCard } from '@/components/editorial/Cards';
+import { PromoterFilters, filterPromoters, promoterHref, readPromoterQuery } from '@/components/editorial/PromoterFilters';
+import { PageNav } from '@/components/catalogue/Pagination';
 import s from '@/components/editorial/editorial.module.css';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -21,12 +24,21 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function PromotersPage() {
-  const [settings, blocks, promoters] = await Promise.all([
+/** Nine cards: three full rows on a computer. */
+const PAGE_SIZE = 9;
+
+export default async function PromotersPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const [settings, blocks, promoters, sp] = await Promise.all([
     getSettings(),
     getBlocks('Promoteurs'),
     apiGet<ListResponse<PublicPromoterCard>>('/public/promoters', { tags: ['catalogue'] }),
+    searchParams,
   ]);
+  const query = readPromoterQuery(sp);
+  const matching = filterPromoters(promoters.data, query);
+  const totalPages = Math.max(1, Math.ceil(matching.length / PAGE_SIZE));
+  const page = Math.min(query.page, totalPages);
+  const shown = matching.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const selection = richBlock(blocks, 'promoters.selection');
   return (
     <>
@@ -54,13 +66,28 @@ export default async function PromotersPage() {
             {t('ui.editorial.promoters.title')}
           </h2>
           {promoters.data.length ? (
-            <ul role="list" className={s.cardGrid}>
-              {promoters.data.map((p) => (
-                <li key={p.slug}>
-                  <PromoterCard promoter={p} />
-                </li>
-              ))}
-            </ul>
+            <>
+              {promoters.data.length >= 2 ? (
+                <PromoterFilters action="/promoteurs" anchor="liste" promoters={promoters.data} query={query} shown={matching.length} />
+              ) : null}
+              {shown.length ? (
+                <ul role="list" className={s.cardGrid}>
+                  {shown.map((p) => (
+                    <li key={p.slug}>
+                      <PromoterCard promoter={p} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className={s.filterNone}>{t('ui.editorial.promoters.filters.none')}</p>
+              )}
+              <PageNav
+                page={page}
+                totalPages={totalPages}
+                href={(n) => `${promoterHref('/promoteurs', { ...query, page: n })}#liste`}
+                loadMore={t('ui.editorial.promoters.loadMore')}
+              />
+            </>
           ) : (
             <EmptyState text={t('ui.editorial.promoters.empty')} drawing="partenaire" />
           )}

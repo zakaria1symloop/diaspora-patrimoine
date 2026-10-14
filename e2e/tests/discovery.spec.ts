@@ -36,17 +36,35 @@ test('comparator: an unknown reference is left out with its line', async ({ page
   await expect(page.getByText('Un bien de cette comparaison n’est plus proposé.')).toBeVisible();
 });
 
-test('favourites: the heart works without an account and /favoris lists the property', async ({ page }) => {
+test('favourites (SFA-020, D-103): without a session the heart asks to sign in and adds nothing', async ({ page }) => {
   await page.goto('/programmes');
   await page.evaluate(() => localStorage.removeItem('dp_favorites'));
   await page.reload();
   const heart = page.getByRole('button', { name: /^Ajouter .* à mes favoris$/ }).first();
+  const reference = (await page.locator('[id^="bien-"]').first().getAttribute('id'))!.replace('bien-', '');
+  await heart.click();
+  const dialog = page.getByRole('dialog', { name: 'Gardez ce bien dans vos favoris' });
+  await expect(dialog).toBeVisible();
+  // The card's link was not followed, nothing was kept without an account.
+  await expect(page).toHaveURL(/\/programmes$/);
+  expect(await page.evaluate(() => localStorage.getItem('dp_favorites'))).toBeNull();
+  // Sign-in and sign-up come back to this page; the property waits for the session (lib/after-sign-in.ts).
+  await expect(dialog.getByRole('link', { name: 'Se connecter' })).toHaveAttribute('href', '/connexion?suite=%2Fprogrammes');
+  await expect(dialog.getByRole('link', { name: 'Créer mon espace' })).toHaveAttribute('href', '/inscription?suite=%2Fprogrammes');
+  expect(await page.evaluate(() => localStorage.getItem('dp_favorite_pending'))).toBe(reference);
+  await dialog.getByRole('button', { name: 'Plus tard' }).click();
+  await expect(dialog).toBeHidden();
+  expect(await page.evaluate(() => localStorage.getItem('dp_favorite_pending'))).toBeNull();
+  await expect(heart).toHaveAttribute('aria-pressed', 'false');
+});
+
+test('favourites (SFA-022, SFA-024): what a browser kept from before still shows on /favoris and can be removed', async ({ page }) => {
+  await page.goto('/programmes');
+  const heart = page.getByRole('button', { name: /^Ajouter .* à mes favoris$/ }).first();
   const label = (await heart.getAttribute('aria-label'))!;
   const title = label.replace(/^Ajouter /, '').replace(/ à mes favoris$/, '');
-  await heart.click();
-  await expect(page.getByText('Ajouté à vos favoris')).toBeVisible();
-  // The card's link was not followed.
-  await expect(page).toHaveURL(/\/programmes/);
+  const reference = (await page.locator('[id^="bien-"]').first().getAttribute('id'))!.replace('bien-', '');
+  await page.evaluate((ref) => localStorage.setItem('dp_favorites', JSON.stringify([{ ref, at: Date.now() }])), reference);
   await page.goto('/favoris');
   await expect(page.getByRole('heading', { level: 2, name: title })).toBeVisible();
   await expect(page.getByText(/^Ajouté le /)).toBeVisible();

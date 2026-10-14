@@ -402,6 +402,8 @@ export interface ClientRequestRow {
   noCandidate: boolean;
   /** MSG-021 — written from the space. */
   fromSpace: boolean;
+  /** D-107 — what the client wrote, as he wrote it (his message, or the one of a form), else null. */
+  message: string | null;
 }
 
 export interface ClientInterests {
@@ -512,11 +514,23 @@ const text = (max: number) => z.string().trim().max(max).nullable();
 const decimal = z.string().regex(/^\d{1,12}(\.\d{1,2})?$/).nullable();
 const isoDate = z.iso.date().nullable();
 
+/** SEC-095 — the platform serves adults only: a birth date that gives less than 18 years is refused (a future one too). */
+export const ADULT_AGE = 18;
+export function isAdultBirthDate(value: string, today: string = new Date().toISOString().slice(0, 10)): boolean {
+  const [y, m, d] = today.split('-');
+  return value <= `${String(Number(y) - ADULT_AGE).padStart(4, '0')}-${m}-${d}`;
+}
+const birthDate = isoDate.superRefine((v, ctx) => {
+  if (!v) return;
+  if (v > new Date().toISOString().slice(0, 10)) ctx.addIssue({ code: 'custom', message: 'DATE_IN_FUTURE' });
+  else if (!isAdultBirthDate(v)) ctx.addIssue({ code: 'custom', message: 'UNDER_AGE' });
+});
+
 export const profileSectionSchemas = {
   identity: z.strictObject({
     firstName: z.string().trim().min(1).max(80),
     lastName: z.string().trim().min(1).max(80),
-    birthDate: isoDate,
+    birthDate,
     nationalities: z.array(z.string().regex(/^[A-Z]{2}$/)).max(3),
   }),
   contact: z.strictObject({

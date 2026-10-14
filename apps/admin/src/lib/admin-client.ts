@@ -144,8 +144,25 @@ async function once<T>(path: string, opts: CallOptions): Promise<CallResult<T>> 
   return { ok: false, status: res.status, error: isApiErrorBody(json) ? json.error : null, retryAfter: Number(res.headers.get('Retry-After') ?? '') || undefined };
 }
 
-/** One call to the API. Never throws: a network cut comes back as `offline`, an aborted call as `aborted`. */
-export async function adminCall<T>(path: string, opts: CallOptions = {}): Promise<CallResult<T>> {
+const inFlight = new Map<string, Promise<CallResult<unknown>>>();
+
+/**
+ * One call to the API. Never throws: a network cut comes back as `offline`, an aborted call as `aborted`. A write
+ * identical to one still on its way (a double click, Enter pressed twice) is not sent again: it gets the first one's
+ * answer (D-107).
+ */
+export function adminCall<T>(path: string, opts: CallOptions = {}): Promise<CallResult<T>> {
+  const method = opts.method ?? (opts.body === undefined ? 'GET' : 'POST');
+  if (method === 'GET') return callWithSession<T>(path, opts);
+  const key = `${method} ${path} ${JSON.stringify(opts.query ?? null)} ${JSON.stringify(opts.body ?? null)}`;
+  const pending = inFlight.get(key);
+  if (pending) return pending as Promise<CallResult<T>>;
+  const run = callWithSession<T>(path, opts).finally(() => inFlight.delete(key));
+  inFlight.set(key, run);
+  return run;
+}
+
+async function callWithSession<T>(path: string, opts: CallOptions): Promise<CallResult<T>> {
   const method = opts.method ?? (opts.body === undefined ? 'GET' : 'POST');
   const session = opts.session ?? true;
   let result = await once<T>(path, opts);

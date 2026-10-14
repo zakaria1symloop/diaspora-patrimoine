@@ -1,8 +1,9 @@
-// CAT-030, CAT-031, D-098 — the filters: a panel docked on the right on a computer (results visible beside it, each
-// choice applied by itself), a full-screen window with a draft on a phone. NAV-010 — the header keeps one height.
+// CAT-030, CAT-031, D-098, D-102 — the filters: a panel docked on the right on a computer (results visible beside it),
+// a full-screen window on a phone; in both the choices are a draft, applied together by « Voir {m} biens ».
+// NAV-010 — the header keeps one height.
 import { expect, test } from '@playwright/test';
 
-test('filters: docked panel applies each choice live (computer) · draft until « Voir » (phone)', async ({ page }, info) => {
+test('filters: a draft until « Voir » — the docked panel stays open beside the results (computer), the window closes (phone)', async ({ page }, info) => {
   await page.goto('/programmes?filtres=1');
   const panel = page.getByRole('dialog');
   await expect(panel.getByRole('heading', { name: 'Filtres' })).toBeVisible();
@@ -15,8 +16,11 @@ test('filters: docked panel applies each choice live (computer) · draft until �
     expect(cardBox!.x + cardBox!.width).toBeLessThanOrEqual(panelBox!.x + 1);
 
     await duplex.check();
-    await expect(page).toHaveURL(/type=duplex/); // applied without « Voir »
-    await expect(page).toHaveURL(/filtres=1/); // and the panel stays open
+    await expect(panel.getByRole('button', { name: /Voir 1 bien/ })).toBeVisible();
+    await expect(page).not.toHaveURL(/type=duplex/); // a draft: nothing is searched while choosing (D-102)
+    await panel.getByRole('button', { name: /Voir 1 bien/ }).click();
+    await expect(page).toHaveURL(/type=duplex/);
+    await expect(page).toHaveURL(/filtres=1/); // the panel stays open beside the results
     await expect(page.getByText(/^1 bien correspond$/)).toBeVisible();
     await expect(duplex).toBeChecked();
 

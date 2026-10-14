@@ -81,28 +81,25 @@
 .toolButton:hover {
   background: var(--bo-fond-ciel);
 }
-.sortLabel {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-.sortSelect {
-  appearance: none;
+/* « Trier : {tri} » — the shared choice list (vitrine/Dropdown), dressed as the pill of the toolbar */
+.sort > button[role='combobox'] {
   min-height: var(--btn-m);
-  padding-inline: var(--sp-16) 2.5rem;
+  padding-inline: var(--sp-16);
   border: var(--stroke-field) solid var(--bo-ligne-or);
   border-radius: var(--radius-pill);
-  background: var(--bo-fond-blanc);
   color: var(--bo-texte-roi);
   font-weight: 600;
   font-size: var(--fs-button-s);
-  cursor: pointer;
 }
-.sortChevron {
-  position: absolute;
-  inset-inline-end: var(--sp-16);
-  pointer-events: none;
-  color: var(--bo-texte-roi);
+.sort > button[role='combobox']:hover,
+.sort > button[role='combobox'][aria-expanded='true'] {
+  border-color: var(--bo-accent-or);
+}
+.sort > button[role='combobox']:focus-visible {
+  border-radius: var(--radius-pill);
+}
+.sortPrefix {
+  font-weight: 500;
 }
 .quick,
 .chips {
@@ -303,12 +300,9 @@
   }
   /* Figma EP-02 390 — « Filtres » and « Trier » side by side under the keyword field */
   .toolButton,
-  .sortLabel {
+  .sort {
     flex: 1 1 0;
     min-width: 0;
-  }
-  .sortSelect {
-    width: 100%;
   }
 }
 @media (max-width: 767px) {

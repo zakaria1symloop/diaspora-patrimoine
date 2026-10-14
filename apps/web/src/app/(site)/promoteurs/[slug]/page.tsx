@@ -45,6 +45,7 @@ export default async function PromoterPage({ params }: { params: Params }) {
   if (p.foundedYear) facts.push({ icon: 'calendar', text: t('ui.editorial.promoters.since', { annee: String(p.foundedYear) }) });
   if (p.deliveredUnits) facts.push({ icon: 'key', text: t('ui.editorial.promoters.delivered', { n: p.deliveredUnits }) });
   if (p.programCount) facts.push({ icon: 'building', text: t('ui.editorial.promoters.inCatalogue', { n: p.programCount }) });
+  if (p.onSaleCount) facts.push({ icon: 'coins', text: t('ui.editorial.promoters.onSale', { n: p.onSaleCount }) });
   const current = p.programs.filter((pr) => pr.state !== 'SOLD');
   const sold = p.programs.filter((pr) => pr.state === 'SOLD');
   const base = env().WEB_URL.replace(/\/$/, '');
@@ -61,7 +62,19 @@ export default async function PromoterPage({ params }: { params: Params }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, '\\u003c') }} />
-      <PageHead title={p.name} crumbs={[{ href: '/promoteurs', label: t('ui.nav.header.promoters') }]} drawing={p.cover ? undefined : 'promoteurs'}>
+      {/* EDI-031, D-105 — the head carries a picture: the promoter's cover, else one of its programmes'; none: the drawing. */}
+      <PageHead
+        title={p.name}
+        crumbs={[{ href: '/promoteurs', label: t('ui.nav.header.promoters') }]}
+        drawing="promoteurs"
+        aside={
+          p.image ? (
+            <div className={s.promoterHero}>
+              <Picture image={p.image} sizes="(max-width: 1023px) 100vw, 32rem" className={s.coverImg} priority alt="" />
+            </div>
+          ) : undefined
+        }
+      >
         <div className={s.identity}>
           <Logo image={p.logo} name={p.name} size="l" />
           <div className={s.headMeta}>
@@ -80,14 +93,6 @@ export default async function PromoterPage({ params }: { params: Params }) {
           </div>
         </div>
       </PageHead>
-
-      {p.cover ? (
-        <div className="container">
-          <div className={s.cover}>
-            <Picture image={p.cover} sizes="(max-width: 1440px) 100vw, 1344px" className={s.coverImg} priority alt="" />
-          </div>
-        </div>
-      ) : null}
 
       {facts.length || p.descriptionPublic || p.referencesPublic ? (
         <section className={s.section} aria-labelledby="presentation">

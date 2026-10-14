@@ -321,6 +321,17 @@ a.photo:hover .img,
   line-height: var(--lh-body-m);
   color: var(--bo-texte-doux);
 }
+/* D-107 — the client's own message, kept as he wrote it (line breaks included) */
+.requestMessage {
+  margin: var(--sp-8) 0 0;
+  padding: var(--sp-10) var(--sp-14, var(--sp-16));
+  border-inline-start: 3px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-s);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-encre);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
 .requestFoot {
   display: flex;
   flex-wrap: wrap;

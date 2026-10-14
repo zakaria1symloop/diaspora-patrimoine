@@ -10,9 +10,11 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { Icon, type IconName } from './Icon';
 import s from './Overlays.module.css';
 
@@ -156,8 +158,8 @@ export function Menu({ label, trigger, triggerClassName, items, align = 'end', h
     setOpen(false);
     if (restore) button.current?.focus();
   }, []);
-  useDismiss(open, close, [wrap]);
-  const flip = usePlacement(open, panel, align);
+  useDismiss(open, close, [wrap, panel]);
+  const pos = useAnchoredPanel(open, button, panel, align);
 
   const focusItem = (index: number) => {
     const nodes = panel.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
@@ -212,10 +214,11 @@ export function Menu({ label, trigger, triggerClassName, items, align = 'end', h
       >
         {trigger ?? <Icon name="more" size={20} />}
       </button>
-      {open ? (
+      {open ? createPortal(
         <div
           ref={panel}
-          className={[s.popover, s.menu, align === 'end' ? s.alignEnd : s.alignStart, flip.x && s.flipX, flip.y && s.flipY].filter(Boolean).join(' ')}
+          className={[s.popover, s.menu, s.anchored].join(' ')}
+          style={pos}
           role="menu"
           aria-label={label}
           onKeyDown={onKey}
@@ -271,10 +274,51 @@ export function Menu({ label, trigger, triggerClassName, items, align = 'end', h
               </button>
             );
           })}
-        </div>
+        </div>,
+        portalHost(wrap.current),
       ) : null}
     </span>
   );
+}
+
+/**
+ * D-107 — where a floating panel lives: the open window it was opened from (a window is drawn above the page), else
+ * the page itself. Out of its row, a card or a list with hidden overflow can no longer cut it.
+ */
+function portalHost(from: HTMLElement | null): HTMLElement {
+  return (from?.closest('dialog[open]') as HTMLElement | null) ?? document.body;
+}
+
+/**
+ * D-107 — the panel's place on the screen, from its trigger: under it (above when the space below is short), aligned
+ * on its start or end, kept 8 px inside the viewport; followed on scroll and resize. Hidden until measured.
+ */
+function useAnchoredPanel(open: boolean, trigger: React.RefObject<HTMLElement | null>, panel: React.RefObject<HTMLElement | null>, align: 'start' | 'end'): CSSProperties {
+  const [pos, setPos] = useState<CSSProperties>({ visibility: 'hidden', top: 0, left: 0 });
+  useLayoutEffect(() => {
+    if (!open) return;
+    const place = () => {
+      const b = trigger.current?.getBoundingClientRect();
+      const p = panel.current;
+      if (!b || !p) return;
+      const gap = 4;
+      const h = p.offsetHeight;
+      const w = p.offsetWidth;
+      const fitsBelow = b.bottom + gap + h <= window.innerHeight - 8;
+      const top = fitsBelow || b.top - gap - h < 8 ? b.bottom + gap : b.top - gap - h;
+      const left = Math.max(8, Math.min(align === 'end' ? b.right - w : b.left, window.innerWidth - w - 8));
+      setPos({ top, left });
+    };
+    place();
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', place, true);
+    return () => {
+      window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', place, true);
+      setPos({ visibility: 'hidden', top: 0, left: 0 });
+    };
+  }, [open, align, trigger, panel]);
+  return pos;
 }
 
 // ─── HelpTip (DSN-055, TRV-126) ─────────────────────────────────────────────

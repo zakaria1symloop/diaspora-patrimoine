@@ -17,7 +17,8 @@
     "contact": "Contact",
     "unread": "{n, plural, one {# notification non lue} other {# notifications non lues}}",
     "spaceMenu": {
-      "dashboard": "Tableau de bord",
+      "open": "Ouvrir le menu de mon espace",
+    "dashboard": "Tableau de bord",
       "messages": "Messages",
       "dossier": "Mon dossier",
       "profile": "Mon profil",

@@ -3,10 +3,12 @@
 // a 600 m circle, without a pin; without coordinates, the town (zoom 12) or the region (zoom 9), without a circle.
 // Loaded only when the section comes near the screen; if the style does not answer, `onUnavailable` lets the page show
 // the place as text (never an empty zone). Scroll does not zoom (the page keeps scrolling); buttons and drag do.
+// The circle always fits whole in the frame, whatever its width (a phone showed it cut on both sides), and the credits
+// start folded behind their « i » so that they do not cover a small map.
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
-import { circleRing } from './cluster';
+import { circleRing, foldAttribution } from './cluster';
 import s from './map.module.css';
 
 export interface AreaMapProps {
@@ -82,10 +84,21 @@ export function AreaMap({ styleUrl, workerUrl, center, zoom, circleRadiusM, labe
         m.on('load', () => {
           if (timer) clearTimeout(timer);
           if (cancelled) return;
+          foldAttribution(container.current);
           if (circleRadiusM) {
+            const ring = circleRing(center.lng, center.lat, circleRadiusM);
+            const lngs = ring.map((c) => c[0]);
+            const lats = ring.map((c) => c[1]);
+            m.fitBounds(
+              [
+                [Math.min(...lngs), Math.min(...lats)],
+                [Math.max(...lngs), Math.max(...lats)],
+              ],
+              { padding: 32, maxZoom: 15, animate: false },
+            );
             m.addSource('secteur', {
               type: 'geojson',
-              data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [circleRing(center.lng, center.lat, circleRadiusM)] } },
+              data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [ring] } },
             });
             m.addLayer({ id: 'secteur-fond', type: 'fill', source: 'secteur', paint: { 'fill-color': token('--bo-accent-or', '#c8a24a'), 'fill-opacity': 0.22 } });
             m.addLayer({ id: 'secteur-trait', type: 'line', source: 'secteur', paint: { 'line-color': token('--bo-texte-roi', '#06177a'), 'line-width': 2, 'line-dasharray': [2, 1.5] } });

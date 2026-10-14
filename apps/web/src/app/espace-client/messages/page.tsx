@@ -107,6 +107,8 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
                           {t(`ui.enum.LeadKind.${q.kind}` as MessageKey)}
                           {q.subject ? ` · ${q.subject}` : ''}
                         </span>
+                        {/* D-107 — what he wrote: the message he sent is found again here, not only its date */}
+                        {q.message ? <span className={s.openExcerpt}>{q.message}</span> : null}
                         <span className={s.openMeta}>{t('ui.client.interests.request.sentOn', { date: longDate(q.createdAt, timeZone) })}</span>
                         <span className={`${sp.tag} ${TONE[q.status]}`}>
                           {q.status === 'IN_PROGRESS'

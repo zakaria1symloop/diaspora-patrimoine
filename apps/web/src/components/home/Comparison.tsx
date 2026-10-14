@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { ComparisonBlock as Block, PublicImage } from '@dp/contracts';
 import { monthlyPayment, roundIndicativeMonthly } from '@dp/domain';
 import { formatMoney } from '@dp/i18n';
-import { Icon } from '@dp/ui';
+import { Flag, Icon } from '@dp/ui';
 import { Picture } from '@/components/Picture';
 import { t } from '@/lib/i18n';
 import s from './home.module.css';
@@ -52,7 +52,7 @@ export function Comparison({
   const column = (c: Column, monthly: number, side: 'left' | 'right') => (
     <div className={`${s.cmpCol} ${side === 'left' ? s.cmpLeft : s.cmpRight}`}>
       <div className={s.cmpBand}>
-        <span className={side === 'left' ? s.flagDz : s.flagFr} aria-hidden="true" />
+        <Flag country={side === 'left' ? 'dz' : 'fr'} />
         {c.label}
       </div>
       <div className={s.cmpPhoto} aria-hidden="true">
@@ -60,7 +60,10 @@ export function Comparison({
       </div>
       <div className={s.cmpPanel}>
         <h3 className={s.cmpTitle}>
-          {side === 'left' && propertySlug ? <Link href={`/biens/${propertySlug}`}>{c.title}</Link> : c.title}
+          {/* The whole column is the link: the property (or the catalogue) on the left, the credit simulator on the right. */}
+          <Link href={side === 'left' ? (propertySlug ? `/biens/${propertySlug}` : '/programmes') : '/financements/simulateur-credit'} className={s.stretch}>
+            {c.title}
+          </Link>
         </h3>
         <dl className={s.cmpValues}>
           <div>

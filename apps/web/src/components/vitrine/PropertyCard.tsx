@@ -3,7 +3,7 @@
 // Without a monthly payment (CAT-042): the price goes in the band, facts take the row. Reserved/sold: veiled (CAT-043).
 import Link from 'next/link';
 import type { PropertyCard as Card } from '@dp/contracts';
-import { Icon } from '@dp/ui';
+import { Flag, Icon } from '@dp/ui';
 import { Picture } from '@/components/Picture';
 import { FavoriteButton } from '@/components/discovery/FavoriteButton';
 import { CompareToggle } from '@/components/discovery/CompareToggle';
@@ -46,7 +46,7 @@ export function PropertyCard({ card, downPaymentPct, variant = 'catalogue', mont
   return (
     <article className={[s.card, veiled && s.veiled].filter(Boolean).join(' ')}>
       <div className={`${s.band} ${BAND[card.standing]}`}>
-        <span className={s.flag} aria-hidden="true" />
+        <Flag country="dz" />
         {t('ui.catalogue.card.region', { region: card.region.name })}
       </div>
       <div className={s.photo}>

@@ -3402,6 +3402,10 @@ export const messages = {
     "ui.assistant.chat.loading": "Un instant…",
     "ui.assistant.chat.loadError": "L’assistant n’a pas pu se charger. Vérifiez votre connexion et réessayez.",
     "ui.assistant.chat.retry": "Réessayer",
+    "ui.assistant.chat.filter": "Filtrer les choix",
+    "ui.assistant.chat.noMatch": "Aucun choix ne correspond. Effacez quelques lettres.",
+    "ui.assistant.chat.picked": "{n, plural, =0 {Aucun choix pour l’instant} one {# choix retenu} other {# choix retenus}}",
+    "ui.assistant.chat.or": "Ou bien",
     "ui.assistant.questions.region": "Où souhaitez-vous acheter ?",
     "ui.assistant.questions.type": "Quel type de bien cherchez-vous ?",
     "ui.assistant.questions.rooms": "Combien de pièces ?",
@@ -3421,6 +3425,8 @@ export const messages = {
     "ui.assistant.choices.totalStep": "Jusqu’à {montant}",
     "ui.assistant.choices.delivery.NOW": "Disponible tout de suite",
     "ui.assistant.choices.delivery.SOON": "D’ici un à deux ans",
+    "ui.assistant.choices.groups.home": "Pour habiter",
+    "ui.assistant.choices.groups.other": "Autres biens",
     "ui.assistant.precision.label": "Votre précision",
     "ui.assistant.precision.hint": "Facultatif. Votre conseiller la lira telle quelle si vous nous laissez vos coordonnées.",
     "ui.assistant.precision.submit": "Voir les biens",
@@ -3795,6 +3801,16 @@ export const messages = {
     "ui.cafe.list.reminder": "Gratuit, sur inscription. Le lieu exact vous est communiqué à l’inscription.",
     "ui.cafe.list.none": "Les prochaines dates seront bientôt annoncées.",
     "ui.cafe.list.faq": "Questions fréquentes",
+    "ui.cafe.list.filters.title": "Filtrer les dates",
+    "ui.cafe.list.filters.place": "Lieu",
+    "ui.cafe.list.filters.month": "Mois",
+    "ui.cafe.list.filters.seats": "Places",
+    "ui.cafe.list.filters.anyMonth": "Tous les mois",
+    "ui.cafe.list.filters.anySeats": "Toutes les dates",
+    "ui.cafe.list.filters.withSeats": "Avec des places libres",
+    "ui.cafe.list.filters.count": "{n, plural, =0 {Aucune date} one {# date} other {# dates}}",
+    "ui.cafe.list.filters.none": "Aucune date ne correspond à ces critères.",
+    "ui.cafe.list.filters.reset": "Voir toutes les dates",
     "ui.cafe.page.title": "{marque} – {lieu}",
     "ui.cafe.page.hours": "de {debut} à {fin} (heure de {ville})",
     "ui.cafe.page.place": "Lieu",
@@ -3967,6 +3983,8 @@ export const messages = {
     "ui.catalogue.page.filtersCount": "Filtres ({n})",
     "ui.catalogue.page.sort": "Trier : {tri}",
     "ui.catalogue.page.sortLabel": "Trier par",
+    "ui.catalogue.page.sortPrefix": "Trier :",
+    "ui.catalogue.page.loading": "Chargement des biens…",
     "ui.catalogue.page.clearAll": "Tout effacer",
     "ui.catalogue.page.remove": "Retirer le filtre {filtre}",
     "ui.catalogue.page.createAlert": "Créer une alerte",
@@ -4012,6 +4030,10 @@ export const messages = {
     "ui.catalogue.filters.showNone": "Aucun bien ne correspond",
     "ui.catalogue.filters.showUnknown": "Voir les biens",
     "ui.catalogue.filters.countUnavailable": "Nombre indisponible pour l’instant.",
+    "ui.catalogue.filters.pending": "Vos choix ne sont pas encore appliqués.",
+    "ui.catalogue.filters.fixFirst": "Corrigez les valeurs signalées pour voir les biens.",
+    "ui.catalogue.filters.priceOrder": "Le prix minimum dépasse le prix maximum. Corrigez l’un des deux.",
+    "ui.catalogue.filters.surfaceOrder": "La surface minimum dépasse la surface maximum. Corrigez l’une des deux.",
     "ui.catalogue.filters.close": "Fermer les filtres",
     "ui.catalogue.filters.type": "Type de bien",
     "ui.catalogue.filters.rooms": "Pièces",
@@ -5090,6 +5112,10 @@ export const messages = {
     "ui.common.map.searchArea": "Rechercher dans cette zone",
     "ui.common.shareTo.whatsapp": "WhatsApp",
     "ui.common.shareTo.email": "E-mail",
+    "ui.common.shareTo.mailApp": "Mon application de messagerie",
+    "ui.common.shareTo.gmail": "Gmail",
+    "ui.common.shareTo.outlook": "Outlook",
+    "ui.common.shareTo.yahoo": "Yahoo Mail",
     "ui.common.shareTo.facebook": "Facebook",
     "ui.common.placeholder.email": "prenom.nom@exemple.fr",
     "ui.common.placeholder.phone": "6 12 34 56 78",
@@ -5395,6 +5421,17 @@ export const messages = {
     "ui.editorial.promoters.state.ALL_RESERVED": "Tout est réservé",
     "ui.editorial.promoters.state.UPCOMING": "À venir",
     "ui.editorial.promoters.state.SOLD": "Vendu",
+    "ui.editorial.promoters.onSale": "{n, plural, one {# programme en vente} other {# programmes en vente}}",
+    "ui.editorial.promoters.loadMore": "Voir les promoteurs suivants",
+    "ui.editorial.promoters.filters.title": "Trouver un promoteur",
+    "ui.editorial.promoters.filters.search": "Nom du promoteur",
+    "ui.editorial.promoters.filters.region": "Région",
+    "ui.editorial.promoters.filters.regionAll": "Toutes les régions",
+    "ui.editorial.promoters.filters.onSale": "Avec des biens en vente",
+    "ui.editorial.promoters.filters.apply": "Afficher",
+    "ui.editorial.promoters.filters.reset": "Effacer les filtres",
+    "ui.editorial.promoters.filters.count": "{n, plural, =0 {Aucun promoteur} one {# promoteur} other {# promoteurs}}",
+    "ui.editorial.promoters.filters.none": "Aucun promoteur ne correspond à ces critères.",
     "ui.editorial.partners.title": "Nos partenaires",
     "ui.editorial.partners.promoters": "Promoteurs",
     "ui.editorial.partners.banks": "Banques",
@@ -5411,6 +5448,9 @@ export const messages = {
     "ui.editorial.partners.category.INSTITUTION": "Institutions",
     "ui.editorial.partners.category.MEDIA": "Médias",
     "ui.editorial.partners.category.OTHER": "Autres",
+    "ui.editorial.partners.show": "Afficher",
+    "ui.editorial.partners.all": "Tous nos partenaires",
+    "ui.editorial.partners.bank": "Banque partenaire",
     "ui.editorial.faq.title": "Questions fréquentes",
     "ui.editorial.faq.searchLabel": "Rechercher une question",
     "ui.editorial.faq.clear": "Effacer la recherche",
@@ -6235,6 +6275,11 @@ export const messages = {
     "ui.favorites.nudge.text": "Créez votre espace pour retrouver vos favoris sur tous vos appareils",
     "ui.favorites.nudge.cta": "Créer mon espace",
     "ui.favorites.nudge.close": "Fermer",
+    "ui.favorites.signIn.title": "Gardez ce bien dans vos favoris",
+    "ui.favorites.signIn.text": "Vos favoris se retrouvent dans votre espace, sur tous vos appareils. Connectez-vous ou créez votre espace : ce bien y sera ajouté aussitôt.",
+    "ui.favorites.signIn.login": "Se connecter",
+    "ui.favorites.signIn.signup": "Créer mon espace",
+    "ui.favorites.signIn.later": "Plus tard",
     "ui.favorites.link": "Mes favoris ({n})",
     "ui.favorites.page.seoTitle": "Mes favoris",
     "ui.favorites.page.breadcrumb": "Mes favoris",
@@ -6248,7 +6293,7 @@ export const messages = {
     "ui.favorites.page.goneHint": "Il restera dans vos favoris quelques jours, puis disparaîtra de lui-même.",
     "ui.favorites.page.remove": "Retirer",
     "ui.favorites.page.emptyTitle": "Touchez le cœur d’un bien pour le retrouver ici.",
-    "ui.favorites.page.emptyText": "Vos favoris restent sur cet appareil, sans compte, et vous attendent à votre prochaine visite.",
+    "ui.favorites.page.emptyText": "Connectez-vous pour mettre des biens de côté et les retrouver sur tous vos appareils.",
     "ui.favorites.page.discover": "Découvrir les biens",
     "ui.favorites.page.loading": "Chargement de vos favoris…",
     "ui.favorites.page.error": "Vos favoris n’ont pas pu être chargés.",
@@ -6346,6 +6391,8 @@ export const messages = {
     "ui.lead.fields.createAccount": "Créer mon espace client en même temps",
     "ui.lead.fields.createAccountHint": "Pour suivre votre demande, retrouver vos simulations et, plus tard, déposer vos pièces.",
     "ui.lead.fields.euHosting": "Vos données sont hébergées dans l’Union européenne.",
+    "ui.lead.fields.signedInAs": "Vos coordonnées",
+    "ui.lead.fields.editDetails": "Modifier mes coordonnées",
     "ui.lead.when.day": "Quel jour ?",
     "ui.lead.when.dayAsap": "Dès que possible",
     "ui.lead.when.slot": "À quel moment ?",
@@ -6456,6 +6503,7 @@ export const messages = {
     "ui.nav.header.faq": "Questions fréquentes",
     "ui.nav.header.contact": "Contact",
     "ui.nav.header.unread": "{n, plural, one {# notification non lue} other {# notifications non lues}}",
+    "ui.nav.header.spaceMenu.open": "Ouvrir le menu de mon espace",
     "ui.nav.header.spaceMenu.dashboard": "Tableau de bord",
     "ui.nav.header.spaceMenu.messages": "Messages",
     "ui.nav.header.spaceMenu.dossier": "Mon dossier",
@@ -7049,6 +7097,7 @@ export const messages = {
     "ui.validation.INVALID_DATE": "Cette date n’est pas valide.",
     "ui.validation.DATE_NOT_FUTURE": "Choisissez une date à venir.",
     "ui.validation.DATE_IN_FUTURE": "Cette date ne peut pas être dans le futur.",
+    "ui.validation.UNDER_AGE": "Diaspora Patrimoine s’adresse aux personnes majeures : la date de naissance doit donner 18 ans ou plus.",
     "ui.validation.MUST_ACCEPT": "Vous devez accepter pour continuer.",
     "ui.validation.ALREADY_USED": "Cette valeur est déjà utilisée.",
     "ui.validation.INVALID_CHOICE": "Choisissez une valeur dans la liste.",
@@ -10498,10 +10547,14 @@ export type MessageKey =
   | 'ui.assistant.chat.assistant'
   | 'ui.assistant.chat.back'
   | 'ui.assistant.chat.continue'
+  | 'ui.assistant.chat.filter'
   | 'ui.assistant.chat.greeting'
   | 'ui.assistant.chat.loadError'
   | 'ui.assistant.chat.loading'
+  | 'ui.assistant.chat.noMatch'
+  | 'ui.assistant.chat.or'
   | 'ui.assistant.chat.pickOne'
+  | 'ui.assistant.chat.picked'
   | 'ui.assistant.chat.progress'
   | 'ui.assistant.chat.restart'
   | 'ui.assistant.chat.retry'
@@ -10511,6 +10564,8 @@ export type MessageKey =
   | 'ui.assistant.choices.budgetKind'
   | 'ui.assistant.choices.delivery.NOW'
   | 'ui.assistant.choices.delivery.SOON'
+  | 'ui.assistant.choices.groups.home'
+  | 'ui.assistant.choices.groups.other'
   | 'ui.assistant.choices.monthly'
   | 'ui.assistant.choices.monthlyStep'
   | 'ui.assistant.choices.noAnswer'
@@ -10892,6 +10947,16 @@ export type MessageKey =
   | 'ui.cafe.list.all'
   | 'ui.cafe.list.dates'
   | 'ui.cafe.list.faq'
+  | 'ui.cafe.list.filters.anyMonth'
+  | 'ui.cafe.list.filters.anySeats'
+  | 'ui.cafe.list.filters.count'
+  | 'ui.cafe.list.filters.month'
+  | 'ui.cafe.list.filters.none'
+  | 'ui.cafe.list.filters.place'
+  | 'ui.cafe.list.filters.reset'
+  | 'ui.cafe.list.filters.seats'
+  | 'ui.cafe.list.filters.title'
+  | 'ui.cafe.list.filters.withSeats'
   | 'ui.cafe.list.how'
   | 'ui.cafe.list.none'
   | 'ui.cafe.list.reminder'
@@ -11015,6 +11080,7 @@ export type MessageKey =
   | 'ui.catalogue.filters.estimate'
   | 'ui.catalogue.filters.estimated'
   | 'ui.catalogue.filters.estimatedApply'
+  | 'ui.catalogue.filters.fixFirst'
   | 'ui.catalogue.filters.location'
   | 'ui.catalogue.filters.max'
   | 'ui.catalogue.filters.min'
@@ -11028,6 +11094,8 @@ export type MessageKey =
   | 'ui.catalogue.filters.optTour360'
   | 'ui.catalogue.filters.optTour360Help'
   | 'ui.catalogue.filters.options'
+  | 'ui.catalogue.filters.pending'
+  | 'ui.catalogue.filters.priceOrder'
   | 'ui.catalogue.filters.priceRange'
   | 'ui.catalogue.filters.promoter'
   | 'ui.catalogue.filters.promoterSearch'
@@ -11043,6 +11111,7 @@ export type MessageKey =
   | 'ui.catalogue.filters.standing'
   | 'ui.catalogue.filters.status'
   | 'ui.catalogue.filters.surface'
+  | 'ui.catalogue.filters.surfaceOrder'
   | 'ui.catalogue.filters.surfaceRange'
   | 'ui.catalogue.filters.title'
   | 'ui.catalogue.filters.type'
@@ -11095,6 +11164,7 @@ export type MessageKey =
   | 'ui.catalogue.page.keyword'
   | 'ui.catalogue.page.keywordPlaceholder'
   | 'ui.catalogue.page.loadMore'
+  | 'ui.catalogue.page.loading'
   | 'ui.catalogue.page.next'
   | 'ui.catalogue.page.page'
   | 'ui.catalogue.page.pagination'
@@ -11106,6 +11176,7 @@ export type MessageKey =
   | 'ui.catalogue.page.saveSearch'
   | 'ui.catalogue.page.sort'
   | 'ui.catalogue.page.sortLabel'
+  | 'ui.catalogue.page.sortPrefix'
   | 'ui.catalogue.page.suggestions'
   | 'ui.catalogue.page.summaryNone'
   | 'ui.catalogue.page.titleAll'
@@ -12122,7 +12193,11 @@ export type MessageKey =
   | 'ui.common.share'
   | 'ui.common.shareTo.email'
   | 'ui.common.shareTo.facebook'
+  | 'ui.common.shareTo.gmail'
+  | 'ui.common.shareTo.mailApp'
+  | 'ui.common.shareTo.outlook'
   | 'ui.common.shareTo.whatsapp'
+  | 'ui.common.shareTo.yahoo'
   | 'ui.common.simpleMode.help'
   | 'ui.common.simpleMode.label'
   | 'ui.common.simpleMode.more'
@@ -12519,6 +12594,8 @@ export type MessageKey =
   | 'ui.editorial.legal.rightsText'
   | 'ui.editorial.legal.rightsTitle'
   | 'ui.editorial.legal.version'
+  | 'ui.editorial.partners.all'
+  | 'ui.editorial.partners.bank'
   | 'ui.editorial.partners.banks'
   | 'ui.editorial.partners.category.INSTITUTION'
   | 'ui.editorial.partners.category.INSURER'
@@ -12533,12 +12610,24 @@ export type MessageKey =
   | 'ui.editorial.partners.partnerLogin'
   | 'ui.editorial.partners.partnerTitle'
   | 'ui.editorial.partners.promoters'
+  | 'ui.editorial.partners.show'
   | 'ui.editorial.partners.title'
   | 'ui.editorial.partners.website'
   | 'ui.editorial.promoters.currentTitle'
   | 'ui.editorial.promoters.delivered'
   | 'ui.editorial.promoters.empty'
+  | 'ui.editorial.promoters.filters.apply'
+  | 'ui.editorial.promoters.filters.count'
+  | 'ui.editorial.promoters.filters.none'
+  | 'ui.editorial.promoters.filters.onSale'
+  | 'ui.editorial.promoters.filters.region'
+  | 'ui.editorial.promoters.filters.regionAll'
+  | 'ui.editorial.promoters.filters.reset'
+  | 'ui.editorial.promoters.filters.search'
+  | 'ui.editorial.promoters.filters.title'
   | 'ui.editorial.promoters.inCatalogue'
+  | 'ui.editorial.promoters.loadMore'
+  | 'ui.editorial.promoters.onSale'
   | 'ui.editorial.promoters.presentation'
   | 'ui.editorial.promoters.priceFrom'
   | 'ui.editorial.promoters.programs'
@@ -13314,6 +13403,11 @@ export type MessageKey =
   | 'ui.favorites.page.retry'
   | 'ui.favorites.page.seoTitle'
   | 'ui.favorites.page.title'
+  | 'ui.favorites.signIn.later'
+  | 'ui.favorites.signIn.login'
+  | 'ui.favorites.signIn.signup'
+  | 'ui.favorites.signIn.text'
+  | 'ui.favorites.signIn.title'
   | 'ui.favorites.toast.added'
   | 'ui.favorites.toast.full'
   | 'ui.favorites.toast.removed'
@@ -13448,6 +13542,7 @@ export type MessageKey =
   | 'ui.lead.fields.countryPlaceholder'
   | 'ui.lead.fields.createAccount'
   | 'ui.lead.fields.createAccountHint'
+  | 'ui.lead.fields.editDetails'
   | 'ui.lead.fields.email'
   | 'ui.lead.fields.euHosting'
   | 'ui.lead.fields.firstName'
@@ -13458,6 +13553,7 @@ export type MessageKey =
   | 'ui.lead.fields.phone'
   | 'ui.lead.fields.phoneHint'
   | 'ui.lead.fields.privacy'
+  | 'ui.lead.fields.signedInAs'
   | 'ui.lead.fields.whatsapp'
   | 'ui.lead.interest.budget'
   | 'ui.lead.interest.budgetMonthly'
@@ -13547,6 +13643,7 @@ export type MessageKey =
   | 'ui.nav.header.spaceMenu.dossier'
   | 'ui.nav.header.spaceMenu.logout'
   | 'ui.nav.header.spaceMenu.messages'
+  | 'ui.nav.header.spaceMenu.open'
   | 'ui.nav.header.spaceMenu.profile'
   | 'ui.nav.header.unread'
   | 'ui.nav.skipToContent'
@@ -14125,4 +14222,5 @@ export type MessageKey =
   | 'ui.validation.TOO_MANY_ROWS'
   | 'ui.validation.TOO_SHORT'
   | 'ui.validation.UNCHANGED'
+  | 'ui.validation.UNDER_AGE'
   | 'ui.validation.VIDEO_URL';

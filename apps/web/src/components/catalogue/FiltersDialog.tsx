@@ -1,8 +1,10 @@
 'use client';
 // EP-03, CAT-030 … CAT-036 — filters. On a computer (1024 px and more): a PANEL docked on the right; the page moves
-// aside, the results stay visible and usable, and every choice applies by itself 300 ms after the last change (D-098).
-// On a phone: full screen, a DRAFT applied only by « Voir {m} biens » and kept in session storage when closed
-// (CAT-031). Live counter and option counters recomputed by the server (CAT-032, CAT-033). Opened by ?filtres=1
+// aside and the results stay visible beside it. On a phone: full screen. In both, the choices are a DRAFT: nothing is
+// searched while the visitor is choosing; « Voir {m} biens » applies them all at once (CAT-031, D-102), and a draft
+// left unapplied is kept in session storage when the window closes. Only the counter of the button and the option
+// counters follow the draft (CAT-032, CAT-033): one light request, 500 ms after the last change, never twice for the
+// same criteria. A minimum above its maximum is refused before anything is asked (CAT-034). Opened by ?filtres=1
 // (NAV-001); « Retour » closes it.
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -18,10 +20,14 @@ import { Button, Icon } from '@dp/ui';
 import { formatMoney, formatNumber } from '@dp/i18n';
 import Link from 'next/link';
 import { t } from '@/lib/i18n';
+import { Dropdown } from '@/components/vitrine/Dropdown';
+import { announceCatalogueSearch } from './ResultsPending';
 import s from './filters.module.css';
 
 const KEY = 'dp_form_filters';
 const DOCKED = '(min-width: 1024px)';
+/** Wait after the last change before the counter is asked (one request for a burst of choices). */
+const COUNT_DELAY = 500;
 
 export interface FiltersDialogProps {
   criteria: CatalogueCriteria;
@@ -56,6 +62,11 @@ function ceilStep(v: number, monthly = false): number {
   return Math.ceil(v / step) * step;
 }
 
+/** A minimum above its maximum: the pair is refused as a whole (CAT-034), it is never sent. */
+function inverted(min: number | undefined, max: number | undefined): boolean {
+  return min !== undefined && max !== undefined && min > max;
+}
+
 export function FiltersDialog(p: FiltersDialogProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -82,29 +93,28 @@ export function FiltersDialog(p: FiltersDialogProps) {
     mq.addEventListener('change', sync);
     return () => mq.removeEventListener('change', sync);
   }, []);
-  /** The criteria this panel last sent to the address: the page answering them is not an outside change. */
-  const pushed = useRef<string | null>(null);
+  /** Counters already asked, by criteria: going back to a choice costs no request. */
+  const counted = useRef(new Map<string, { total: number; facets: CatalogueFacets }>());
   // CAT-035 — the visitor's estimated budget (own eligibility simulation, `dp_anon`): read from the browser, since the
   // catalogue page itself is cached for everyone. x = properties within it, m = the same criteria without a budget.
   const [estimate, setEstimate] = useState<{ amount: string; currency: string; x: number; m: number } | null>(null);
 
-  // Restore a kept draft when opening (CAT-031, phone). Docked: the panel always shows the applied criteria, and
-  // follows a change made outside it (a chip removed, the search bar) without undoing what is being typed.
+  // What the page shows is already counted: opening the panel asks nothing.
+  useEffect(() => {
+    counted.current.set(criteriaToSearch(strip(p.criteria)), { total: p.total, facets: p.facets });
+  }, [p.criteria, p.total, p.facets]);
+
+  // Opening (and every change of the applied criteria: a chip removed, the search bar, the choices just applied):
+  // the draft kept from the last visit, otherwise the applied criteria (CAT-031).
   useEffect(() => {
     if (!open) return;
-    if (docked) {
-      if (pushed.current !== null && criteriaToSearch(strip(p.criteria)) === pushed.current) return;
-      pushed.current = null;
-      setDraft(strip(p.criteria));
-      return;
-    }
     try {
       const saved = sessionStorage.getItem(KEY);
       setDraft(saved ? (JSON.parse(saved) as CatalogueCriteria) : strip(p.criteria));
     } catch {
       setDraft(strip(p.criteria));
     }
-  }, [open, p.criteria, docked]);
+  }, [open, p.criteria]);
 
   useEffect(() => {
     const d = dialog.current;
@@ -125,24 +135,13 @@ export function FiltersDialog(p: FiltersDialogProps) {
     };
   }, [open, docked]);
 
-  // Docked: a choice applies by itself, 300 ms after the last change; the results refresh beside the panel.
-  useEffect(() => {
-    if (!open || !docked || same(draft, p.criteria)) return;
-    const timer = setTimeout(() => {
-      const qs = criteriaToSearch(strip(draft));
-      pushed.current = qs;
-      router.replace(`${pathname}${qs}${qs ? '&' : '?'}filtres=1`, { scroll: false });
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [draft, docked, open, p.criteria, pathname, router]);
+  const priceInvalid = inverted(draft.priceMin, draft.priceMax);
+  const surfaceInvalid = inverted(draft.surfaceMin, draft.surfaceMax);
+  const invalid = priceInvalid || surfaceInvalid;
+  const dirty = !same(draft, p.criteria);
+  const draftQs = criteriaToSearch(draft);
 
   const close = useCallback(() => {
-    if (docked) {
-      // nothing is pending: what is chosen is what the address already says (or says in a moment)
-      const qs = criteriaToSearch(strip(draft));
-      router.replace(`${pathname}${qs}`, { scroll: false });
-      return;
-    }
     try {
       if (same(draft, p.criteria)) sessionStorage.removeItem(KEY);
       else sessionStorage.setItem(KEY, JSON.stringify(draft));
@@ -153,68 +152,87 @@ export function FiltersDialog(p: FiltersDialogProps) {
     qs.delete('filtres');
     const rest = qs.toString();
     router.replace(`${pathname}${rest ? `?${rest}` : ''}`, { scroll: false });
-  }, [docked, draft, p.criteria, params, pathname, router]);
+  }, [draft, p.criteria, params, pathname, router]);
 
+  // CAT-035 — asked for the criteria without their budget: moving the budget does not ask again.
+  const noBudgetQs = useMemo(() => {
+    const c: CatalogueCriteria = { ...draft };
+    delete c.priceMin;
+    delete c.priceMax;
+    delete c.monthlyMax;
+    return criteriaToSearch(c);
+  }, [draft]);
   useEffect(() => {
-    if (!open) return;
+    if (!open || surfaceInvalid) return;
     const controller = new AbortController();
     const timer = setTimeout(async () => {
-      const noBudget: CatalogueCriteria = { ...draft };
-      delete noBudget.priceMin;
-      delete noBudget.priceMax;
-      delete noBudget.monthlyMax;
-      const qs = criteriaToSearch(noBudget);
       try {
-        const res = await fetch(`/api/v1/public/simulations/estimated-budget${qs}`, { signal: controller.signal, credentials: 'same-origin' });
+        const res = await fetch(`/api/v1/public/simulations/estimated-budget${noBudgetQs}`, { signal: controller.signal, credentials: 'same-origin' });
         const budget = res.ok ? ((await res.json()) as { amount: string; currency: string; matchingCount: number } | null) : null;
         if (!budget) return setEstimate(null);
-        const all = await fetch(`/api/v1/public/properties${qs}${qs ? '&' : '?'}perPage=1`, { signal: controller.signal });
-        const total = all.ok ? ((await all.json()) as CatalogueResponse).meta.total : null;
+        let total = counted.current.get(noBudgetQs)?.total ?? null;
+        if (total === null) {
+          const all = await fetch(`/api/v1/public/properties${noBudgetQs}${noBudgetQs ? '&' : '?'}perPage=1`, { signal: controller.signal });
+          total = all.ok ? ((await all.json()) as CatalogueResponse).meta.total : null;
+        }
         setEstimate(total === null ? null : { amount: budget.amount, currency: budget.currency, x: budget.matchingCount, m: total });
       } catch {
         if (!controller.signal.aborted) setEstimate(null);
       }
-    }, 300);
+    }, COUNT_DELAY);
     return () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [draft, open]);
+  }, [noBudgetQs, open, surfaceInvalid]);
 
-  // CAT-032 — live counter, 300 ms after the last change, three tries (TRV-115).
+  // CAT-032 — the counter of the draft: once per criteria, after the visitor has stopped choosing, three tries
+  // (TRV-115). An inverted range asks nothing.
   useEffect(() => {
-    if (!open) return;
+    if (!open || invalid) return;
+    const known = counted.current.get(draftQs);
+    if (known) {
+      setLive({ total: known.total, facets: known.facets, pending: false, failed: false });
+      return;
+    }
     const controller = new AbortController();
+    setLive((l) => ({ ...l, pending: true }));
     const timer = setTimeout(async () => {
-      setLive((l) => ({ ...l, pending: true }));
-      const qs = criteriaToSearch(draft);
       for (let attempt = 0; attempt < 3; attempt++) {
         try {
-          const res = await fetch(`/api/v1/public/properties${qs}${qs ? '&' : '?'}facets=1`, { signal: controller.signal });
+          const res = await fetch(`/api/v1/public/properties${draftQs}${draftQs ? '&' : '?'}facets=1&perPage=1`, { signal: controller.signal });
           if (!res.ok) throw new Error(String(res.status));
           const body = (await res.json()) as CatalogueResponse;
-          setLive({ total: body.meta.total, facets: body.facets ?? p.facets, pending: false, failed: false });
+          const facets = body.facets ?? p.facets;
+          counted.current.set(draftQs, { total: body.meta.total, facets });
+          setLive({ total: body.meta.total, facets, pending: false, failed: false });
           return;
-        } catch (e) {
+        } catch {
           if (controller.signal.aborted) return;
           if (attempt === 2) setLive((l) => ({ ...l, total: null, pending: false, failed: true }));
           await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
         }
       }
-    }, 300);
+    }, COUNT_DELAY);
     return () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [draft, open, p.facets]);
+  }, [draftQs, open, invalid, p.facets]);
 
+  /** The one moment a search starts: every choice of the draft goes to the address together. */
   const apply = () => {
+    if (invalid) return;
     try {
       sessionStorage.removeItem(KEY);
     } catch {
       /* storage unavailable */
     }
-    router.push(`${pathname}${criteriaToSearch(draft)}`);
+    if (!dirty) return close();
+    // Docked: the panel stays open beside the new results; on a phone the window gives way to them.
+    const url = `${pathname}${draftQs}${docked ? `${draftQs ? '&' : '?'}filtres=1` : ''}`;
+    announceCatalogueSearch(url);
+    router.push(url, { scroll: !docked });
   };
 
   const toggle = (key: 'type' | 'rooms' | 'delivery' | 'standing' | 'promoter' | 'city', value: string) => {
@@ -261,7 +279,6 @@ export function FiltersDialog(p: FiltersDialogProps) {
   );
   const years = [p.year, p.year + 1, p.year + 2];
   const optionCount = (v: string) => f.options.find((o) => o.value === v)?.count ?? 0;
-  const dirty = !same(draft, p.criteria);
   const activeDraft = activeFilterCount(draft);
 
   const checkbox = (key: Parameters<typeof toggle>[0], value: string, label: string, n: number) => {
@@ -300,9 +317,11 @@ export function FiltersDialog(p: FiltersDialogProps) {
               {t('ui.catalogue.filters.title')}
             </h2>
             <p className={s.status} aria-live="polite">
-              {live.total === null
-                ? t('ui.catalogue.filters.countUnavailable')
-                : t('ui.catalogue.filters.status', { f: activeDraft, m: live.total })}
+              {invalid
+                ? t('ui.catalogue.filters.fixFirst')
+                : live.total === null
+                  ? t('ui.catalogue.filters.countUnavailable')
+                  : t('ui.catalogue.filters.status', { f: activeDraft, m: live.total })}
             </p>
           </div>
           <button type="button" className={s.close} onClick={close}>
@@ -334,9 +353,11 @@ export function FiltersDialog(p: FiltersDialogProps) {
                       disabled={!on && n === 0}
                       onClick={() => toggle('rooms', r)}
                     >
+                      {on ? <Icon name="check" size={16} /> : null}
                       {r === '5plus'
                         ? t('ui.catalogue.filters.roomsPlus', { prefix: p.roomsPrefix })
                         : t('ui.catalogue.filters.roomsValue', { prefix: p.roomsPrefix, n: r })}
+                      <span className={s.pillCount}>{formatNumber(n)}</span>
                     </button>
                   );
                 })}
@@ -365,21 +386,12 @@ export function FiltersDialog(p: FiltersDialogProps) {
                   min={0}
                   max={monthlyMax}
                   step={10}
-                  value={draft.monthlyMax ?? monthlyMax}
+                  value={Math.min(draft.monthlyMax ?? monthlyMax, monthlyMax)}
                   aria-label={t('ui.catalogue.filters.budgetMonthly')}
                   onChange={(e) => setNum('monthlyMax', Number(e.target.value) >= monthlyMax ? undefined : Number(e.target.value))}
                 />
-                <label className={s.numField}>
-                  <span>{t('ui.catalogue.filters.max')}</span>
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    min={0}
-                    step={10}
-                    value={draft.monthlyMax ?? ''}
-                    onChange={(e) => setNum('monthlyMax', e.target.value === '' ? undefined : Number(e.target.value))}
-                  />
-                </label>
+                {/* At its top the slider means « no limit »: the field keeps showing that top value, never an empty box. */}
+                <NumField label={t('ui.catalogue.filters.max')} step={10} value={draft.monthlyMax} fallback={monthlyMax} onChange={(v) => setNum('monthlyMax', v)} />
               </div>
             ) : (
               <div className={s.range}>
@@ -387,15 +399,15 @@ export function FiltersDialog(p: FiltersDialogProps) {
                   {t('ui.catalogue.filters.priceRange', { min: formatNumber(draft.priceMin ?? 0), max: formatNumber(draft.priceMax ?? priceMax) })}
                 </p>
                 <div className={s.numRow}>
-                  <label className={s.numField}>
-                    <span>{t('ui.catalogue.filters.min')}</span>
-                    <input type="number" inputMode="numeric" min={0} step={1000} value={draft.priceMin ?? ''} onChange={(e) => setNum('priceMin', e.target.value === '' ? undefined : Number(e.target.value))} />
-                  </label>
-                  <label className={s.numField}>
-                    <span>{t('ui.catalogue.filters.max')}</span>
-                    <input type="number" inputMode="numeric" min={0} step={1000} value={draft.priceMax ?? ''} onChange={(e) => setNum('priceMax', e.target.value === '' ? undefined : Number(e.target.value))} />
-                  </label>
+                  <NumField label={t('ui.catalogue.filters.min')} step={1000} value={draft.priceMin} invalid={priceInvalid} describedBy="filtres-prix-erreur" onChange={(v) => setNum('priceMin', v)} />
+                  <NumField label={t('ui.catalogue.filters.max')} step={1000} value={draft.priceMax} invalid={priceInvalid} describedBy="filtres-prix-erreur" onChange={(v) => setNum('priceMax', v)} />
                 </div>
+                {priceInvalid ? (
+                  <p id="filtres-prix-erreur" className={s.rangeError} role="alert">
+                    <Icon name="warning" size={16} />
+                    {t('ui.catalogue.filters.priceOrder')}
+                  </p>
+                ) : null}
               </div>
             )}
             {estimate ? (
@@ -432,41 +444,46 @@ export function FiltersDialog(p: FiltersDialogProps) {
               {t('ui.catalogue.filters.surfaceRange', { min: String(draft.surfaceMin ?? 0), max: String(draft.surfaceMax ?? surfaceMax) })}
             </p>
             <div className={s.numRow}>
-              <label className={s.numField}>
-                <span>{t('ui.catalogue.filters.min')}</span>
-                <input type="number" inputMode="numeric" min={0} step={5} value={draft.surfaceMin ?? ''} onChange={(e) => setNum('surfaceMin', e.target.value === '' ? undefined : Number(e.target.value))} />
-              </label>
-              <label className={s.numField}>
-                <span>{t('ui.catalogue.filters.max')}</span>
-                <input type="number" inputMode="numeric" min={0} step={5} value={draft.surfaceMax ?? ''} onChange={(e) => setNum('surfaceMax', e.target.value === '' ? undefined : Number(e.target.value))} />
-              </label>
+              <NumField label={t('ui.catalogue.filters.min')} step={5} value={draft.surfaceMin} invalid={surfaceInvalid} describedBy="filtres-surface-erreur" onChange={(v) => setNum('surfaceMin', v)} />
+              <NumField label={t('ui.catalogue.filters.max')} step={5} value={draft.surfaceMax} invalid={surfaceInvalid} describedBy="filtres-surface-erreur" onChange={(v) => setNum('surfaceMax', v)} />
             </div>
+            {surfaceInvalid ? (
+              <p id="filtres-surface-erreur" className={s.rangeError} role="alert">
+                <Icon name="warning" size={16} />
+                {t('ui.catalogue.filters.surfaceOrder')}
+              </p>
+            ) : null}
           </fieldset>
 
           <fieldset className={s.group}>
             <legend>{t('ui.catalogue.filters.location')}</legend>
-            <label className={s.selectField}>
-              <span>{t('ui.catalogue.filters.region')}</span>
-              <select
-                value={draft.region?.length === 1 ? draft.region[0] : ''}
-                onChange={(e) =>
+            <div className={s.selectField}>
+              <label id="filtres-ville-label" htmlFor="filtres-ville">
+                {t('ui.catalogue.filters.region')}
+              </label>
+              <Dropdown
+                id="filtres-ville"
+                labelledBy="filtres-ville-label filtres-ville"
+                value={draft.region?.length === 1 ? draft.region[0]! : ''}
+                groups={[
+                  {
+                    options: [
+                      { value: '', label: t('ui.catalogue.filters.regionAll') },
+                      ...f.region.map((o) => ({ value: o.value, label: o.label, note: formatNumber(o.count), disabled: o.count === 0 })),
+                    ],
+                  },
+                ]}
+                onChange={(value) =>
                   setDraft((d) => {
                     const n = { ...d };
                     delete n.city;
-                    if (e.target.value) n.region = [e.target.value];
+                    if (value) n.region = [value];
                     else delete n.region;
                     return n;
                   })
                 }
-              >
-                <option value="">{t('ui.catalogue.filters.regionAll')}</option>
-                {f.region.map((o) => (
-                  <option key={o.value} value={o.value} disabled={o.count === 0}>
-                    {`${o.label} · ${formatNumber(o.count)}`}
-                  </option>
-                ))}
-              </select>
-            </label>
+              />
+            </div>
             {draft.region?.length === 1 && f.city.length > 0 ? (
               <div className={s.checks}>
                 <p className={s.sub}>{t('ui.catalogue.filters.cities')}</p>
@@ -543,18 +560,66 @@ export function FiltersDialog(p: FiltersDialogProps) {
             {t('ui.catalogue.filters.reset')}
           </Button>
           <div className={s.applyBox}>
-            <Button variant="primary" size="L" pending={live.pending} onClick={docked ? close : apply}>
-              {live.total === null
+            <Button variant="primary" size="L" pending={live.pending && !invalid} disabled={invalid} onClick={apply}>
+              {live.total === null || invalid
                 ? t('ui.catalogue.filters.showUnknown')
                 : live.total === 0
                   ? t('ui.catalogue.filters.showNone')
                   : t('ui.catalogue.filters.show', { m: live.total })}
             </Button>
+            {/* Nothing is searched until this button: say so while choices wait. */}
+            {dirty && !invalid ? <span className={s.pendingNote}>{t('ui.catalogue.filters.pending')}</span> : null}
             {live.failed ? <span className={s.unavailable}>{t('ui.catalogue.filters.countUnavailable')}</span> : null}
           </div>
         </footer>
       </div>
     </dialog>
+  );
+}
+
+/**
+ * A number field that keeps what is being typed (an empty box while the visitor retypes) and, when left empty, shows
+ * `fallback` — the value the absence of a limit stands for.
+ */
+function NumField({
+  label,
+  value,
+  fallback,
+  step,
+  invalid,
+  describedBy,
+  onChange,
+}: {
+  label: string;
+  value: number | undefined;
+  fallback?: number;
+  step: number;
+  invalid?: boolean;
+  describedBy?: string;
+  onChange: (v: number | undefined) => void;
+}) {
+  const [text, setText] = useState<string | null>(null); // null: not being typed, the value shows
+  const shown = text ?? (value !== undefined ? String(value) : fallback !== undefined ? String(fallback) : '');
+  return (
+    <label className={s.numField} data-invalid={invalid || undefined}>
+      <span>{label}</span>
+      <input
+        type="number"
+        inputMode="numeric"
+        min={0}
+        step={step}
+        value={shown}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? describedBy : undefined}
+        onFocus={() => setText(value !== undefined ? String(value) : fallback !== undefined ? String(fallback) : '')}
+        onBlur={() => setText(null)}
+        onChange={(e) => {
+          setText(e.target.value);
+          const n = e.target.value === '' ? undefined : Number(e.target.value);
+          onChange(n !== undefined && (Number.isNaN(n) || n < 0) ? undefined : n);
+        }}
+      />
+    </label>
   );
 }
 

@@ -69,6 +69,8 @@ export const FieldErrorCode = {
   INVALID_DATE: 'INVALID_DATE',
   DATE_NOT_FUTURE: 'DATE_NOT_FUTURE',
   DATE_IN_FUTURE: 'DATE_IN_FUTURE',
+  /** SEC-095 — a birth date that gives less than 18 years. */
+  UNDER_AGE: 'UNDER_AGE',
   MUST_ACCEPT: 'MUST_ACCEPT',
   ALREADY_USED: 'ALREADY_USED',
   INVALID_CHOICE: 'INVALID_CHOICE',

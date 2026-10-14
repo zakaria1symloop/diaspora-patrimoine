@@ -11,7 +11,7 @@ import { browserTimeZone } from '@/lib/callback';
 import { useDraft } from '@/lib/public-form';
 import { t } from '@/lib/i18n';
 import { CheckboxField, Honeypot, SelectField, TextField } from './fields';
-import { CallbackWhen, ConsentBlock, CountrySelect, PhoneField, consentWire, useLeadSubmit } from './lead-parts';
+import { CallbackWhen, ConsentBlock, CountrySelect, PhoneField, SignedInConsent, SignedInContact, askedOf, consentWire, signedInConsentWire, useLeadSubmit, useSignedInClient } from './lead-parts';
 import { LeadDone } from './LeadDone';
 import { formatPhone } from '@/lib/contact';
 import s from './projection.module.css';
@@ -41,14 +41,15 @@ export function ProjectionForm({ settings, regions, texts, headingLevel = 'h3', 
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState<LeadSubmitResponse | null>(null);
   const send = useLeadSubmit('PROJECTION_REQUEST', settings);
+  const me = useSignedInClient(); // DEM-022
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     const local: Record<string, string> = {};
     if (!v.downPayment.trim()) local.downPayment = t('ui.validation.REQUIRED');
     if (!v.monthlyBudget.trim()) local.monthlyBudget = t('ui.validation.REQUIRED');
-    if (!v.email.trim()) local.email = t('ui.validation.REQUIRED');
-    if (!v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
+    if (!me && !v.email.trim()) local.email = t('ui.validation.REQUIRED');
+    if (!me && !v.consent) local.consentContact = t('ui.validation.MUST_ACCEPT');
     setErrors(local);
     if (Object.keys(local).length) return;
     setPending(true);
@@ -57,9 +58,9 @@ export function ProjectionForm({ settings, regions, texts, headingLevel = 'h3', 
       regionSlug: v.regionSlug || null,
       downPayment: toAmount(v.downPayment),
       monthlyBudget: toAmount(v.monthlyBudget),
-      email: v.email,
-      ...consentWire(v.consent, v.marketing),
-      createAccount: v.createAccount,
+      email: me ? me.email : v.email,
+      ...(me ? signedInConsentWire() : consentWire(v.consent, v.marketing)),
+      createAccount: me ? false : v.createAccount,
     }, {}, honeypot);
     setPending(false);
     if (res.ok) {
@@ -120,6 +121,7 @@ export function ProjectionForm({ settings, regions, texts, headingLevel = 'h3', 
           error={errors.monthlyBudget}
           icon={<Icon name="coins" size={20} />}
         />
+        {me ? null : (
         <TextField
           id={`${id}-email`}
           type="email"
@@ -132,10 +134,15 @@ export function ProjectionForm({ settings, regions, texts, headingLevel = 'h3', 
           error={errors.email}
           icon={<Icon name="mail" size={20} />}
         />
+        )}
         <Button type="submit" variant="primary" size="L" chevron pending={pending} className={s.submit}>
           {texts.button}
         </Button>
       </div>
+      {me ? <SignedInContact me={me} /> : null}
+      {me ? (
+        <SignedInConsent />
+      ) : (
       <ConsentBlock
         idPrefix={id}
         consent={v.consent}
@@ -144,6 +151,7 @@ export function ProjectionForm({ settings, regions, texts, headingLevel = 'h3', 
         error={errors.consentContact}
         onChange={(p) => set({ ...(p.consent !== undefined ? { consent: p.consent } : {}), ...(p.marketing !== undefined ? { marketing: p.marketing } : {}), ...(p.createAccount !== undefined ? { createAccount: p.createAccount } : {}) })}
       />
+      )}
       <Honeypot name="homepageUrl" value={honeypot} onChange={setHoneypot} />
     </form>
   );
@@ -161,6 +169,8 @@ function ProjectionNext({ result, settings }: { result: LeadSubmitResponse; sett
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState<LeadCompleteResponse | null>(null);
   const [expired, setExpired] = useState(false);
+  const me = useSignedInClient(); // DEM-022 — the e-mail is the account's; only what the record lacks is asked
+  const asked = askedOf(me);
   const quand = callbackLabel({
     preferredCallbackDate: null,
     preferredSlot: null,
@@ -235,7 +245,7 @@ function ProjectionNext({ result, settings }: { result: LeadSubmitResponse; sett
           {banner}
         </p>
       ) : null}
-      {editing ? (
+      {me ? null : editing ? (
         <div className={s.emailEdit}>
           <TextField
             id={`${id}-email`}
@@ -272,13 +282,15 @@ function ProjectionNext({ result, settings }: { result: LeadSubmitResponse; sett
       <p className={s.text}>{t('ui.lead.projection.doneMore')}</p>
       {result.completionToken ? (
         <div className={l.form}>
+          {asked.name ? (
           <div className={l.row}>
             <TextField id={`${id}-fn`} label={t('ui.lead.fields.firstName')} autoComplete="given-name" value={f.firstName} onChange={(e) => setF({ ...f, firstName: e.target.value })} error={errors.firstName} />
             <TextField id={`${id}-ln`} label={t('ui.lead.fields.lastName')} autoComplete="family-name" value={f.lastName} onChange={(e) => setF({ ...f, lastName: e.target.value })} error={errors.lastName} />
           </div>
-          <PhoneField id={`${id}-phone`} value={f.phone} onChange={(phone) => setF((x) => ({ ...x, phone }))} error={errors.phone} onCountryDetected={(c) => setF((x) => (x.country ? x : { ...x, country: c }))} />
-          {f.phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={f.whatsapp} onChange={(w) => setF({ ...f, whatsapp: w })} /> : null}
-          <CountrySelect id={`${id}-country`} value={f.country} onChange={(country) => setF({ ...f, country })} error={errors.countryOfResidence} />
+          ) : null}
+          {asked.phone ? <PhoneField id={`${id}-phone`} value={f.phone} onChange={(phone) => setF((x) => ({ ...x, phone }))} error={errors.phone} onCountryDetected={(c) => setF((x) => (x.country ? x : { ...x, country: c }))} /> : null}
+          {asked.phone && f.phone ? <CheckboxField id={`${id}-wa`} label={t('ui.lead.fields.whatsapp')} checked={f.whatsapp} onChange={(w) => setF({ ...f, whatsapp: w })} /> : null}
+          {asked.country ? <CountrySelect id={`${id}-country`} value={f.country} onChange={(country) => setF({ ...f, country })} error={errors.countryOfResidence} /> : null}
           <CallbackWhen settings={settings} day={f.day} slot={f.slot} idPrefix={id} onChange={(p) => setF((x) => ({ ...x, ...(p.day !== undefined ? { day: p.day } : {}), ...(p.slot !== undefined ? { slot: p.slot } : {}) }))} />
           <div className={l.buttons}>
             <Button

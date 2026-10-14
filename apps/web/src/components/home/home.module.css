@@ -152,6 +152,7 @@
 }
 
 .cafeCard {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--sp-12);
@@ -228,7 +229,22 @@
   font-size: var(--fs-body-s);
   color: var(--bo-texte-doux);
 }
+/* the card is clickable as a whole (its main destination); real links and buttons sit above the cover */
+.cardCover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+.cafeCard picture {
+  pointer-events: none;
+}
+.cafeCard :is(a, button):not(.cardCover) {
+  z-index: 1;
+}
 .cafeButtons {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: var(--sp-10);
@@ -286,6 +302,10 @@
   gap: var(--sp-24);
 }
 .cmpCol {
+  position: relative;
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
   display: flex;
   flex-direction: column;
   border: var(--stroke-card) solid var(--bo-fond-blanc);
@@ -313,25 +333,6 @@
 .cmpRight .cmpBand,
 .cmpRight .cmpMonthly {
   background: var(--bo-fond-bleu-nuit);
-}
-.flagDz,
-.flagFr {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  border: 2px solid var(--bo-fond-blanc);
-  flex: none;
-}
-.flagDz {
-  background: linear-gradient(90deg, var(--bo-drapeau-dz-vert) 0 50%, var(--bo-drapeau-dz-blanc) 50% 100%);
-}
-.flagFr {
-  background: linear-gradient(
-    90deg,
-    var(--bo-drapeau-fr-bleu) 0 33%,
-    var(--bo-drapeau-fr-blanc) 33% 66%,
-    var(--bo-drapeau-fr-rouge) 66% 100%
-  );
 }
 .cmpPhoto {
   height: 4.5rem;
@@ -365,8 +366,18 @@
   color: var(--bo-texte-encre);
   margin-block-end: var(--sp-8);
 }
-.cmpTitle a {
-  color: inherit;
+.cmpCol:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 44px rgb(1 41 91 / 0.18);
+}
+.cmpCol:has(a:focus-visible) {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmpCol:hover {
+    transform: none;
+  }
 }
 .cmpValues {
   display: flex;

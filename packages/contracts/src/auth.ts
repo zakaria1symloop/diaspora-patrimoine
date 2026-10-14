@@ -421,6 +421,8 @@ export interface ClientMe {
   lastName: string | null;
   email: string;
   phone: string | null;
+  /** DEM-022 — the request forms ask only for what the record lacks (the phone, the country of residence). */
+  countryOfResidence: string | null;
   unreadNotifications: number;
   hasDossier: boolean;
   hasPassword: boolean;

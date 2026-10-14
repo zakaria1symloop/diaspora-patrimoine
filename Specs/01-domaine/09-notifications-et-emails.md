@@ -257,7 +257,7 @@ Mécanisme : la clé de la notification (`Notification.dedupeKey`) est faite du 
 | `C_ACCOUNT_ACTIVATION` | Compte créé à l'état `INVITED` **sans** qu'un autre e-mail porte déjà le lien d'activation : invitation par l'équipe (CRM-070), inscription sur une fiche existante (AUTH-003). Quand le lien voyage dans un accusé de réception (DEM-021) ou dans le bouton d'un autre e-mail (NOT-024), celui-ci ne part pas. | Système | — |
 | `C_ACCOUNT_ACTIVATION_REMINDER` | `R_ACTIVATION_REMINDER` | Règle | — |
 | `C_ACTION_CODE` | Code de confirmation d'une action sensible, pour un compte sans mot de passe (AUTH-086) | Système | — |
-| `C_ACCOUNT_EXISTS` | Inscription avec une adresse qui a déjà un compte (AUTH-003) | Système | — |
+| `C_ACCOUNT_EXISTS` | Inscription avec une adresse qui a déjà un compte (AUTH-003) ; version « autre espace » : l'adresse d'un compte partenaire ou de l'équipe (D-107) | Système | — |
 | `C_PASSWORD_RESET` | « Mot de passe oublié » | Système | — |
 | `C_PASSWORD_CHANGED` | Mot de passe modifié | Système | — |
 | `C_MAGIC_LOGIN` | « Recevoir un lien de connexion » | Système | — |
@@ -507,6 +507,7 @@ Votre dossier avance, et votre espace n'est pas encore activé. Il vous permet d
 **`C_ACCOUNT_EXISTS`** — **Objet** : Vous avez déjà un espace {{company.name}}
 Quelqu'un — sans doute vous — vient de demander à utiliser cette adresse pour un espace {{company.name}}. Vous en avez déjà un avec cette adresse : il suffit de vous connecter. Mot de passe oublié ? Vous pouvez en choisir un nouveau depuis la page de connexion. Si vous vouliez réunir deux espaces, contactez-nous : nous regroupons vos informations.
 **Bouton** : « Me connecter » → `/connexion`
+Version « autre espace » (`action.otherSpace`, D-107), sans bouton : « Quelqu'un — sans doute vous — vient de demander à utiliser cette adresse pour un espace client {{company.name}}. Cette adresse est déjà celle d'un compte partenaire ou de l'équipe {{company.name}}, et une adresse ne sert qu'à un seul compte : pour créer un espace client, inscrivez-vous avec une autre adresse, ou écrivez-nous. »
 Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : rien n'a changé.
 
 **`C_PASSWORD_RESET`** — **Objet** : Réinitialisez votre mot de passe

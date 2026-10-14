@@ -94,6 +94,16 @@
   font-size: var(--fs-body-m);
   color: var(--bo-texte-doux);
 }
+/* D-107 — the start of what he wrote, on two lines */
+.openExcerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  color: var(--bo-texte-encre);
+  overflow-wrap: anywhere;
+}
 .form {
   display: grid;
   gap: var(--sp-20);

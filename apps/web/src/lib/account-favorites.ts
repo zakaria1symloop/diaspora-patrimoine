@@ -1,6 +1,8 @@
 'use client';
-// SFA-020, SFA-021, EC-41 — one heart, two homes. Without an account the favourites live in the browser (`dp_favorites`,
-// lib/discovery.ts). With a client session they live on the account (`GET /client/favorites` once, then `PUT` /
+// SFA-020, SFA-021, EC-41, D-103 — the heart belongs to the account: without a session, adding a favourite answers
+// `SIGN_IN` (the caller opens the « Connectez-vous » window, askSignInForFavorite). The favourites a browser kept from
+// before (`dp_favorites`, lib/discovery.ts) still show, can be removed, and join the account at sign-in.
+// With a client session they live on the account (`GET /client/favorites` once, then `PUT` /
 // `DELETE /client/favorites/{référence}`), updated at once on the screen and put back if the API refuses (TRV-081).
 // Every heart of the page reads the same store; « Mes favoris » points to the right page.
 import { useCallback, useEffect, useSyncExternalStore } from 'react';
@@ -48,7 +50,7 @@ export function setAccountFavorites(next: string[]): void {
   emit();
 }
 
-export type HeartResult = FavoriteToggleResult | 'ERROR';
+export type HeartResult = FavoriteToggleResult | 'ERROR' | 'SIGN_IN';
 
 export interface Hearts {
   mode: 'loading' | 'browser' | 'account';
@@ -86,7 +88,7 @@ export function useHearts(): Hearts {
     // A click before the session is known: ask once, then act in the right home.
     const toggle = async (ref: string): Promise<HeartResult> => {
       const me = await apiCall<{ id: string }>('/client/me', { retryOnAuth: true });
-      if (!me.ok) return browser.toggle(ref);
+      if (!me.ok) return browser.has(ref) ? browser.toggle(ref) : 'SIGN_IN';
       await load(me.data.id);
       return toggleAccount(ref);
     };
@@ -95,5 +97,5 @@ export function useHearts(): Hearts {
   if (signedIn) {
     return { mode: 'account', has: (ref) => accountRefs.includes(ref), count: accountRefs.length, max: FAVORITES_MAX_ACCOUNT, href: '/espace-client/favoris', toggle: toggleAccount };
   }
-  return { mode: 'browser', has: browser.has, count: browser.count, max: FAVORITES_MAX_ANONYMOUS, href: '/favoris', toggle: async (ref) => browser.toggle(ref) };
+  return { mode: 'browser', has: browser.has, count: browser.count, max: FAVORITES_MAX_ANONYMOUS, href: '/favoris', toggle: async (ref) => (browser.has(ref) ? browser.toggle(ref) : 'SIGN_IN') };
 }

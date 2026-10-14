@@ -7,7 +7,7 @@
 >
 > **Comment l'écrire.** Court, daté (AAAA-MM-JJ), au présent. On n'efface pas le journal : on ajoute en haut.
 
-Dernière mise à jour : **2026-10-11** — Zakaria (session Claude).
+Dernière mise à jour : **2026-10-12** — Amrani-Mahdi01 (session Claude).
 
 ---
 
@@ -85,6 +85,10 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Zakaria (Claude, agent 6) | 3.4 Promoteurs · 3.5 Programmes, biens, lots · 3.6 Médias et import de lots · étude des candidatures de partenaires (ACP-084) | `apps/api/src/catalogue-admin/` (ajouts), `apps/api/src/files/` (dépôt API-080), `apps/admin/src/app/(shell)/promoteurs`, `/programmes`, `/biens`, `/partenaires`, `apps/admin/src/components/catalogue`, `packages/contracts/src/admin-catalogue*.ts`, `packages/i18n/messages/fr/admin-catalogue*.json`, `e2e/tests/admin-catalogue*` | 2026-10-11 | fait le 2026-10-11 (voir journal) — reste ce qui est listé au § 2, ligne 3.4 · 3.5 · 3.6 |
 | Zakaria (Claude, agent 7) | 3.7 Dossier (création, fiche, rapprochement, réponses du client, pause, clôture, recul…) · 3.8 Tâches et rendez-vous (écrans, règles AUT-043 / AUT-051, résumé du matin, `R_EMAIL_BOUNCED`) | `apps/api/src/dossiers-admin/`, `apps/api/src/tasks-admin/`, `apps/api/src/client-space/` (routes de réponse du client, ajouts), `apps/api/src/automation/rule-seeds.ts` (ajouts), `apps/admin/src/app/(shell)/dossiers`, `/taches`, `/agenda`, `apps/admin/src/components/dossiers`, `tasks`, `agenda`, `packages/contracts/src/admin-dossiers.ts`, `admin-tasks.ts`, `packages/i18n/messages/fr/admin-dossiers.json`, `admin-tasks.json`, `e2e/tests/admin-dossiers*`, `admin-tasks*` | 2026-10-11 | en cours |
 | Zakaria (Claude, agent 8) | Passe de qualité de tout le site public (alignement sur Figma : tête du catalogue, cartes de motivation, carrousels 390, fiches bien et programme ; principes D-098 sur chaque page ; contrôle de chaque bouton) + report dans Figma | `apps/web/src/app/(site)/`, `apps/web/src/components/` (sauf `client-*`), `packages/i18n/messages/fr/` (espaces de noms du site, ajouts), `e2e/tests/public-controls.spec.ts`, `Design/`, fichier Figma (page Site public) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — restent les têtes d'EP-11 / EP-12 dans Figma et l'affichage simplifié des autres pages |
+| Amrani-Mahdi01 (Claude) | Retour de recette du site public du 11/10/2026 (`docs/retours-site-2026-10-11.md`) : menu, cartes cliquables, listes de choix, filtres appliqués au bouton, contrôle minimum / maximum, favori réservé au compte, défilements du téléphone, squelettes, carte de localisation, partage par e-mail, pied de page en grand texte | `apps/web/src/components/` (`vitrine`, `catalogue`, `home`, `layout`, `discovery`, `property`, `forms/QueryDialog.tsx`), `apps/web/src/app/(site)/programmes/page.tsx`, `apps/web/src/lib/` (`discovery`, `account-favorites`, `after-sign-in`), `packages/ui` (`Flag`, `map/`, `TextSizeControl`), `packages/i18n/messages/fr/` (`catalogue`, `favorites`, `common`), `e2e/tests/` (`public-review`, `catalogue-filters`, `discovery`), `Specs/` (D-102 à D-104) | 2026-10-11 | **terminé** le 2026-10-11 (voir journal) — branche `retours/site-public-2026-10-11` |
+| Amrani-Mahdi01 (Claude) | Retour de recette du 12/10/2026 (`docs/retours-site-2026-10-12.md`, D-105) : promoteurs en cartes à image, filtres et pages ; fiche promoteur ; Nos partenaires par groupe ; banques en cartes ; filtres des dates du Café ; choix de l'assistant structurés | `apps/api/src/editorial/partners.controller.ts`, `packages/contracts/src/editorial.ts`, `apps/web/src/app/(site)/` (`promoteurs`, `nos-partenaires`, `financements`, `le-cafe`), `apps/web/src/components/` (`editorial`, `cafe/CafeFilters`, `assistant/GuidedAssistant`, `catalogue/Pagination`, `vitrine/FormDropdown`), `packages/i18n/messages/fr/` (`editorial`, `cafe`, `assistant`), `e2e/tests/public-review-2.spec.ts`, `Specs/` (D-105) | 2026-10-12 | **terminé** le 2026-10-12 — branche `retours/site-public-2026-10-12` (part de `retours/site-public-2026-10-11`) |
+| Amrani-Mahdi01 (Claude) | DEM-022 : un client connecté envoie ses demandes depuis son compte (coordonnées non redemandées, rattachement par la session, pas par l'e-mail saisi) — formulaires de demande et inscription au Café | `apps/api/src/leads/`, `apps/api/src/events/cafe-registration*`, `apps/api/src/client-space/` (`/client/me`), `packages/contracts/src/auth.ts`, `apps/web/src/components/forms/`, `apps/web/src/components/cafe/CafeRegistration.tsx`, `apps/web/src/components/simulators/ResultActions.tsx`, `apps/web/src/components/assistant/GuidedResults.tsx`, `packages/i18n/messages/fr/lead.json`, `e2e/tests/` | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/demandes-client-connecte` (part de `retours/site-public-recette-octobre-2026`), D-106 |
+| Amrani-Mahdi01 (Claude) | Retour de recette du 13/10/2026 (`docs/retours-site-2026-10-13.md`, D-107) : e-mail « autre espace » à l’inscription, double envoi, liste de choix, messages retrouvés, âge minimum, profil non enregistré, fenêtres, simulateur, « Mon espace », menus du back-office | `apps/api/src/identity/signup.service.ts`, `apps/api/src/install/auth-email-templates.ts`, `apps/api/src/client-space/properties.service.ts`, `packages/contracts` (`client-space`, `errors`), `packages/ui` (`Overlays`), `apps/web/src/lib` (`auth-client`, `public-form`), `apps/web/src/components` (`layout/Header`, `vitrine/Dropdown`, `forms/QueryDialog`, `simulators`, `client-space`), `apps/web/src/app/espace-client/messages`, `apps/admin/src/lib/admin-client.ts`, `e2e/tests/public-review-3.spec.ts`, `Specs/` (D-107) | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/recette-2026-10-13` (part de `retours/demandes-client-connecte`) |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -136,6 +140,81 @@ Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de b
 
 ## 7. Journal (le plus récent en haut)
 
+### 2026-10-13 — Amrani-Mahdi01 (Claude) · retour de recette du 13/10/2026 (D-107)
+
+- Liste reçue (PDF) : `docs/retours-site-2026-10-13.md`. Branche `retours/recette-2026-10-13`, partie de
+  `retours/demandes-client-connecte` (le point « Exprimer mon intérêt connecté » y est déjà fait : D-106).
+- **E-mail de vérification « qui ne part pas »** : en local, les e-mails partent bien (`.local/mail`). Le cas réel :
+  une inscription client avec l'adresse d'un compte partenaire ou de l'équipe ne créait rien et n'envoyait rien
+  (AUTH-003, ligne 7). Désormais `C_ACCOUNT_EXISTS` en version « autre espace » ; l'écran ne change pas. Les modèles du
+  compte suivent PAR-081 à la réinstallation (`install:run` a mis à jour `C_ACCOUNT_EXISTS`). Le téléphone reste
+  partageable entre comptes (une famille) : pas de changement.
+- **Double clic** : `apiCall` (site), `usePublicForm` (formulaires publics), `adminCall` (back-office) ne renvoient pas un
+  envoi identique encore en route.
+- **Liste de choix de la barre de recherche** : focus en trait sous la valeur (le cadre recouvrait le libellé).
+- **Messages** : le message envoyé apparaît à côté du formulaire (rafraîchi à l'envoi) et dans « Mes demandes »
+  (`ClientRequestRow.message`).
+- **Âge minimum** (SEC-095) : date de naissance de moins de 18 ans refusée (`UNDER_AGE`), au profil et au back-office.
+- **Profil** : `client-space/UnsavedGuard.tsx` (même garde que le back-office) — un lien du site demande « Rester » /
+  « Quitter ».
+- **Fenêtres de demande** : un toucher hors de la fenêtre la ferme (brouillon gardé).
+- **Simulateur** : sélecteur aux marges égales. **« Mon espace »** : lien vers le tableau de bord + chevron du menu.
+- **Back-office** : `Menu` de `@dp/ui` rendu au niveau de la page (portail, position fixe) — plus coupé par une carte.
+- Tests : `e2e/tests/public-review-3.spec.ts` verts (sur ce poste : `E2E_STAFF_EMAIL` désigne le compte Direction
+  local). Captures regardées : menus du back-office, en-tête connecté. Specs : vérificateur vert (96 décisions).
+
+### 2026-10-13 — Amrani-Mahdi01 (Claude) · demandes d'un client connecté (DEM-022, D-106)
+
+- Constat de recette : connecté, un client voyait les formulaires vides ; le navigateur y mettait l'adresse d'un autre
+  compte, et la demande partait sur la fiche de cet autre client (projet vide au back-office) pendant que la sienne
+  restait complète. DEM-022 (P1) n'était fait ni côté site ni côté API.
+- **API** : `POST /public/leads` lit la session (`OptionalClientSession`, comme l'inscription au Café) ; un client
+  connecté envoie depuis sa fiche — e-mail de la fiche, prénom, nom, téléphone et pays de la fiche prioritaires, la
+  phrase de DEM-022 pour consentement (`lead.contact.signedIn.v1`, refusée sans session), jamais « créer mon espace ».
+  Candidature partenaire hors session. Même règle pour l'inscription au Café. `GET /client/me` rend `countryOfResidence`.
+- **Site** (`forms/lead-parts.tsx` : `useSignedInClient`, `contactOf`, `askedOf`, `SignedInContact`,
+  `SignedInConsent`) : intérêt, rappel, contact, projection (deux écrans ; l'adresse ne s'y modifie plus), suite de
+  simulation, assistant, Café — « Vos coordonnées » + « Modifier mes coordonnées », seuls les champs manquants.
+- Tests : `e2e/tests/signed-in-requests.spec.ts` (formulaire sur ordinateur et téléphone ; rattachement au compte
+  malgré une autre adresse envoyée ; la phrase refusée sans session), `cafe-signed-in.spec.ts` mis à jour : verts.
+  Non-régression : `assistant-projection-partner` 9/10 (le dixième pris par la limite horaire par adresse, en mémoire,
+  après plusieurs séries dans l'heure). `admin-leads` ne tourne plus sur ce poste : il attend le compte Direction
+  `direction.test@example.test`, et un autre compte Direction (`direction@diaspora.local`) y a été créé pour la
+  recette. API vitest : 449/452 — les 3 échecs (`identity.test` sur `CatalogueAdminController.once`,
+  `catalogue-caches.int`) touchent du code que cette branche ne modifie pas.
+
+### 2026-10-13 — Amrani-Mahdi01 (Claude) · le back-office refusait tout en local (API-003)
+
+- Sans `ADMIN_URL` dans `apps/api/.env`, l'API ne reconnaît pas l'origine du back-office et répond 400 à toutes ses
+  requêtes, connexion comprise (`/auth/step`). La ligne était commentée dans `apps/api/.env.example` : elle y est
+  maintenant active (`http://localhost:3001`) ; à ajouter à la main dans un `.env` déjà créé.
+- Ouvrir le site depuis le réseau local, sous Windows : si Node vient de `nvm` (`C:\nvm4w\nodejs`), la règle de
+  pare-feu « Node.js » (créée pour `C:\Program Files\nodejs`) ne s'applique pas ; ouvrir les ports 3000 et 3001 au
+  sous-réseau local par une règle de port (réseau Wi-Fi en profil « Public » compris).
+
+### 2026-10-12 — Amrani-Mahdi01 (Claude) · retour de recette du 12/10/2026 (D-105)
+
+- Liste reçue : `docs/retours-site-2026-10-12.md`. Ses points déjà traités la veille (D-102 à D-104 : partage par
+  e-mail, carte, lecture, pièces, curseur, favori, filtres au bouton, squelettes, points des défilements, pied de page,
+  flèches du menu, cartes de l'accueil, drapeau, listes de choix) ne sont pas refaits. Branche
+  `retours/site-public-2026-10-12`, partie de `retours/site-public-2026-10-11` (pas encore fusionnée).
+- **Promoteurs** (EDI-030) : cartes à image — `GET /public/promoters` donne `image` (couverture, sinon celle du dernier
+  programme publié) et `onSaleCount` ; filtres nom, région, « Avec des biens en vente », appliqués par « Afficher »,
+  dans l'adresse ; pages de neuf (`PageNav`, tirée de la pagination du catalogue). **Fiche** (EDI-031) : image en tête,
+  « {n} programmes en vente ». **Nos partenaires** (EDI-035) : mêmes cartes et filtres, « Afficher » un seul groupe.
+- **Banques** (EDI-020) : cartes `BankCard` sur Financements et Nos partenaires ; sans logo, les initiales (« AS ») —
+  aucun logo inventé : l'équipe les dépose au back-office.
+- **Le Café** (CAF-003) : filtres lieu, mois, places libres (`cafe/CafeFilters`, remplace `PlaceFilter`).
+- **Assistant** (ASS-010) : choix en colonnes, groupes « Pour habiter » / « Autres biens », champ de filtre au-delà de
+  huit choix, nombre de choix retenus, réponse neutre à part.
+- Correction de la veille : sur téléphone, les listes de la barre de recherche de l'accueil faisaient 28 px de haut ;
+  elles font 44 px (TRV-121, relevé par l'audit `public-controls` sur téléphone).
+- Tests : `e2e/tests/public-review-2.spec.ts` (7 tests × ordinateur et téléphone, verts) ; non-régression :
+  `public-controls`, `public-review`, `assistant-ai`, `assistant-projection-partner`, `cafe-signed-in` verts. Specs : vérificateur vert
+  (94 décisions).
+- **Reste** : les formulaires du site gardent la liste du navigateur (`<select>` : Café, contact, rappel,
+  simulateurs, inscription partenaire…) ; les passer au composant `Dropdown` est un chantier à part.
+
 ### 2026-10-12 — Zakaria (Claude, coordination) · comptes du back-office sans double authentification (recette)
 
 - Demande de Zakaria : un compte du back-office sans vérification. Paramètre `security.staff.twoFactorRequired` (D-033)
@@ -148,6 +227,41 @@ Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de b
   `remainingSteps`.
 - Serveurs locaux : lancés hors de Claude Code (`.local/serve/start-all.cmd`, boucle de redémarrage, raccourci dans le
   dossier Démarrage de Windows) après deux arrêts pour mémoire insuffisante.
+
+### 2026-10-11 — Amrani-Mahdi01 (Claude) · retour de recette du site public (D-102 à D-104)
+
+- Liste reçue : `docs/retours-site-2026-10-11.md`. Chaque défaut est corrigé dans le composant qui le porte, donc sur
+  toutes les pages qui l'emploient (D-098). Branche `retours/site-public-2026-10-11`.
+- **Menu** (NAV-010, NAV-014) : plus de flèche sur les entrées sans sous-menu (« Se connecter », entrées du menu du
+  téléphone) ; « Mon espace », seule entrée à menu, porte un chevron vers le bas.
+- **Accueil** : drapeaux dessinés (composant `Flag` de `@dp/ui`, croissant et étoile) sur le comparatif et sur toutes
+  les cartes de bien ; les deux colonnes du comparatif et la carte du Café sont cliquables en entier (« En France » mène
+  au simulateur de crédit) ; « Lecture » relance les motivations aussitôt (le pointeur posé sur le bouton les retenait) ;
+  autant de points que de cartes dans les défilements du téléphone (`Children.count` comptait une place vide).
+- **Carte de bien** (CAT-040) : le lien couvrait le seul panneau blanc (le panneau positionné l'enfermait) ; il couvre
+  maintenant bandeau, photo, panneau et mensualité, partout où la carte sert.
+- **Listes de choix** (CAT-001, CAT-050) : composant `vitrine/Dropdown` à la place de la liste du navigateur — barre de
+  recherche, tri, ville des filtres.
+- **Filtres** (CAT-031, CAT-032, CAT-034, D-102) : brouillon sur ordinateur comme sur téléphone, appliqué par « Voir
+  {m} biens » ; un seul recompte, 500 ms après le dernier choix, jamais deux fois pour les mêmes critères ; minimum
+  au-dessus du maximum refusé (prix, surface) ; le champ de la mensualité ne se vide plus au sommet du curseur ; une
+  pastille « pièces » choisie reste marquée sous le pointeur (elle pâlissait : on la croyait non cliquée).
+- **Favoris** (SFA-020, SFA-021, D-103) : sans session, le cœur ouvre « Gardez ce bien dans vos favoris » ; le bien
+  rejoint le compte à la connexion (`dp_favorite_pending`). **Écart assumé avec D-095** (le cœur sans compte), décidé
+  par le retour de recette : à confirmer par Zakaria.
+- **Chargements** (TRV-080) : squelettes de la forme des cartes pendant une recherche du catalogue
+  (`catalogue/ResultsPending`), et à la place de « Chargement… » sur Mes favoris et le comparateur. Pas de
+  `loading.tsx` sur les pages publiques : il ferait perdre le statut 404 et les redirections de l'adresse (CAT-020).
+- **Fiche bien** : la carte cadre le cercle entier, crédits repliés, cadre plus haut sur téléphone ; `.env.example` du
+  site donne le style OpenFreeMap (sans lui le lieu s'écrit sur une carte sobre, FIC-061) ; « Partager » par e-mail
+  propose l'application de messagerie, Gmail, Outlook et Yahoo Mail (NAV-037).
+- **Grand texte** (TRV-123) : plus aucun débordement en « Grande » et « Très grande » (en-tête à 1 100 px, téléphone) :
+  l'en-tête passe plus tôt au menu du téléphone, le pied de page s'empile, ses séparateurs suivent leur élément.
+- **Pagination du catalogue** (CAT-055) : elle existait déjà ; elle n'apparaît qu'au-delà de 12 biens, et la
+  démonstration n'en a que 6 — non vue à l'écran pendant cette passe.
+- Tests : `e2e/tests/public-review.spec.ts` (nouveau, un test par défaut), `catalogue-filters` et `discovery` mis à
+  jour. Specs : vérificateur vert (93 décisions).
+- Environnement : `pnpm` 10 installé globalement échoue en voulant passer à la 12.4.2 : utiliser `corepack pnpm …`.
 
 ### 2026-10-11 — Zakaria (Claude, coordination) · premier serveur de recette
 

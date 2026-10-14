@@ -74,6 +74,19 @@
       "ALL_RESERVED": "Tout est réservé",
       "UPCOMING": "À venir",
       "SOLD": "Vendu"
+    },
+    "onSale": "{n, plural, one {# programme en vente} other {# programmes en vente}}",
+    "loadMore": "Voir les promoteurs suivants",
+    "filters": {
+      "title": "Trouver un promoteur",
+      "search": "Nom du promoteur",
+      "region": "Région",
+      "regionAll": "Toutes les régions",
+      "onSale": "Avec des biens en vente",
+      "apply": "Afficher",
+      "reset": "Effacer les filtres",
+      "count": "{n, plural, =0 {Aucun promoteur} one {# promoteur} other {# promoteurs}}",
+      "none": "Aucun promoteur ne correspond à ces critères."
     }
   },
   "partners": {
@@ -94,7 +107,10 @@
       "INSTITUTION": "Institutions",
       "MEDIA": "Médias",
       "OTHER": "Autres"
-    }
+    },
+    "show": "Afficher",
+    "all": "Tous nos partenaires",
+    "bank": "Banque partenaire"
   },
   "faq": {
     "title": "Questions fréquentes",

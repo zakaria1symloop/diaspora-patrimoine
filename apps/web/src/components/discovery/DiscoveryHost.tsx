@@ -1,14 +1,15 @@
 'use client';
-// Page-wide pieces of the discovery tools: the short messages (TRV-081: 8 s on the site, paused under the pointer or
+// Page-wide pieces of the discovery tools: the « Connectez-vous » window of the hearts (D-103), the short messages (TRV-081: 8 s on the site, paused under the pointer or
 // the focus, with « Annuler » when reversible) and the comparison tray (CAT-092: sticky at the bottom, thumbnails,
 // « Comparer ({n}) » active from two properties, « Tout retirer »). D-095: one fixed element at the bottom at a time —
 // the cookie banner first; on phones the tray shrinks to a « Comparer ({n}) » pill above the page's action bar.
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { COMPARE_MAX, type FavoritesResponse, type PropertyCard } from '@dp/contracts';
 import { Icon, buttonClass, ButtonInner } from '@dp/ui';
-import { useCompare, type ToastInput } from '@/lib/discovery';
+import { PENDING_FAVORITE_KEY, useCompare, type ToastInput } from '@/lib/discovery';
+import { QueryDialog } from '@/components/forms/QueryDialog';
 import { t } from '@/lib/i18n';
 import s from './discovery.module.css';
 
@@ -72,6 +73,53 @@ function Toasts() {
         </div>
       ) : null}
     </div>
+  );
+}
+
+/**
+ * D-103 — a heart touched without a session: the visitor is asked to sign in (or to create the space), and comes back to
+ * the page he was on; the property joins his favourites right after (lib/after-sign-in.ts). « Plus tard » forgets it.
+ */
+function FavoriteSignIn() {
+  const pathname = usePathname() ?? '/';
+  const params = useSearchParams();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const onAsk = () => setOpen(true);
+    window.addEventListener('dp:favorite-sign-in', onAsk);
+    return () => window.removeEventListener('dp:favorite-sign-in', onAsk);
+  }, []);
+  useEffect(() => setOpen(false), [pathname]);
+  const dismiss = () => {
+    try {
+      localStorage.removeItem(PENDING_FAVORITE_KEY);
+    } catch {
+      /* storage unavailable */
+    }
+    setOpen(false);
+  };
+  const qs = params.toString();
+  const back = encodeURIComponent(`${pathname}${qs ? `?${qs}` : ''}`);
+  return (
+    <QueryDialog open={open} onClose={dismiss} title={t('ui.favorites.signIn.title')} closeLabel={t('ui.common.close')} width={480}>
+      <div className={s.signIn}>
+        <span className={s.signInHeart} aria-hidden="true">
+          <Icon name="heart" size={32} />
+        </span>
+        <p className={s.signInText}>{t('ui.favorites.signIn.text')}</p>
+        <div className={s.signInButtons}>
+          <Link href={`/connexion?suite=${back}`} className={buttonClass('primary', 'L', true)}>
+            <ButtonInner size="L">{t('ui.favorites.signIn.login')}</ButtonInner>
+          </Link>
+          <Link href={`/inscription?suite=${back}`} className={buttonClass('secondary', 'L', true)}>
+            <ButtonInner size="L">{t('ui.favorites.signIn.signup')}</ButtonInner>
+          </Link>
+          <button type="button" className={buttonClass('tertiary', 'M', true)} onClick={dismiss}>
+            <ButtonInner size="M">{t('ui.favorites.signIn.later')}</ButtonInner>
+          </button>
+        </div>
+      </div>
+    </QueryDialog>
   );
 }
 
@@ -163,6 +211,9 @@ export function DiscoveryHost() {
     <>
       <CompareTray />
       <Toasts />
+      <Suspense fallback={null}>
+        <FavoriteSignIn />
+      </Suspense>
     </>
   );
 }

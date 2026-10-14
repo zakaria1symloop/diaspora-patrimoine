@@ -1,24 +1,19 @@
 'use client';
-// SFA-020, SFA-021 — the heart, on every property card (top right of the photo, CAT-040 #4) and on the property page.
-// One click adds or removes, without reloading, with « Ajouté à vos favoris » · « Retiré de vos favoris » and
-// « Annuler ». It never follows the card's link. At the third favourite, once per session, a short invitation to create
-// an account (it blocks nothing). Without an account the favourites live in the browser (`dp_favorites`); with a client
-// session, on the account (EC-41, lib/account-favorites.ts) — no invitation then.
-import { usePathname } from 'next/navigation';
+// SFA-020, SFA-021, D-103 — the heart, on every property card (top right of the photo, CAT-040 #4) and on the property
+// page. With a client session one click adds or removes, without reloading, with « Ajouté à vos favoris » · « Retiré de
+// vos favoris » and « Annuler » (EC-41, lib/account-favorites.ts). Without a session, adding opens the « Connectez-vous »
+// window instead: the property joins the account right after sign-in. It never follows the card's link.
 import { Icon } from '@dp/ui';
-import { readFavorites, showToast, useFavorites } from '@/lib/discovery';
+import { askSignInForFavorite, readFavorites, showToast, useFavorites } from '@/lib/discovery';
 import { useHearts } from '@/lib/account-favorites';
 import { t } from '@/lib/i18n';
 import { useDiscoveryFlags } from './DiscoveryProvider';
 import s from './discovery.module.css';
 
-const NUDGE_KEY = 'dp_favorites_nudge';
-
 export function FavoriteButton({ reference, title, variant = 'card' }: { reference: string; title: string; variant?: 'card' | 'page' }) {
   const { favorites } = useDiscoveryFlags();
   const { restore } = useFavorites();
   const hearts = useHearts();
-  const pathname = usePathname() ?? '/';
   if (!favorites) return null;
   const on = hearts.has(reference);
 
@@ -28,6 +23,10 @@ export function FavoriteButton({ reference, title, variant = 'card' }: { referen
     const account = hearts.mode === 'account';
     const before = account ? undefined : readFavorites().find((f) => f.ref === reference);
     const result = await hearts.toggle(reference);
+    if (result === 'SIGN_IN') {
+      askSignInForFavorite(reference);
+      return;
+    }
     if (result === 'ERROR') {
       showToast({ message: t('ui.clientTools.favorites.error'), tone: 'error' });
       return;
@@ -41,21 +40,7 @@ export function FavoriteButton({ reference, title, variant = 'card' }: { referen
       showToast({ message: t('ui.favorites.toast.removed'), action: undo ? { label: t('ui.favorites.toast.undo'), onClick: undo } : undefined });
       return;
     }
-    // SFA-021 — at the third favourite, once per session.
-    let nudge = false;
-    if (!account && readFavorites().length === 3) {
-      try {
-        nudge = !sessionStorage.getItem(NUDGE_KEY);
-        sessionStorage.setItem(NUDGE_KEY, '1');
-      } catch {
-        nudge = false;
-      }
-    }
-    showToast(
-      nudge
-        ? { message: t('ui.favorites.nudge.text'), link: { label: t('ui.favorites.nudge.cta'), href: `/inscription?suite=${encodeURIComponent(pathname)}` }, tone: 'info' }
-        : { message: t('ui.favorites.toast.added'), action: { label: t('ui.favorites.toast.undo'), onClick: () => void hearts.toggle(reference) }, link: { label: t('ui.favorites.toast.see'), href: hearts.href } },
-    );
+    showToast({ message: t('ui.favorites.toast.added'), action: { label: t('ui.favorites.toast.undo'), onClick: () => void hearts.toggle(reference) }, link: { label: t('ui.favorites.toast.see'), href: hearts.href } });
   };
 
   const label = on ? t('ui.favorites.heart.remove', { titre: title }) : t('ui.favorites.heart.add', { titre: title });

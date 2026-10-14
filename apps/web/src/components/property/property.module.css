@@ -128,6 +128,25 @@
 .shareMenu a:hover {
   background: var(--bo-fond-ciel-pale);
 }
+.shareMenu button {
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.shareGrow {
+  flex: 1;
+}
+/* « E-mail » unfolded: the ways to write it */
+.shareSub {
+  list-style: none;
+  margin: 0 0 var(--sp-4) var(--sp-16);
+  padding: 0 0 0 var(--sp-12);
+  border-inline-start: 2px solid var(--bo-ligne-bleue);
+}
+.shareSub a {
+  justify-content: space-between;
+  font-size: var(--fs-body-s);
+}
 .toast:not(:empty) {
   position: fixed;
   inset-inline: 0;
@@ -601,17 +620,17 @@ li[data-state='current'] .dot {
   padding-block-start: var(--sp-8);
   border-block-start: 1px solid var(--bo-ligne-douce);
 }
+/* FIC-061 — no map: the place, written, on a calm card (it used to look like a map that had failed to draw) */
 .mapFallback {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--sp-6);
-  min-height: 12rem;
-  border-radius: var(--radius-m);
-  background:
-    radial-gradient(circle at 50% 45%, rgb(201 160 106 / 0.18) 0 4.5rem, transparent 4.6rem),
-    var(--bo-fond-ciel-pale);
+  padding: var(--sp-24) var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
   text-align: center;
 }
 .mapPlace {
@@ -1128,5 +1147,24 @@ a.planCard:active {
   .breadcrumb a {
     min-width: var(--target-min);
     justify-content: center;
+  }
+}
+
+/* TRV-123 — « Très grande » on a tablet: the five columns of the lots no longer fit; the rows stack as on a phone */
+@media (max-width: 1023px) {
+  :global(html[data-text-size='xlarge']) .lots thead {
+    display: none;
+  }
+  :global(html[data-text-size='xlarge']) .lots tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+    padding-block: var(--sp-12);
+    border-block-end: 1px solid var(--bo-ligne-bleue);
+  }
+  :global(html[data-text-size='xlarge']) .lots th,
+  :global(html[data-text-size='xlarge']) .lots td {
+    border: 0;
+    padding: 0;
   }
 }
