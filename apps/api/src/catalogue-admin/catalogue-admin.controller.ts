@@ -1,9 +1,12 @@
 // API-100 `/admin` catalogue routes (programs, properties, lots, promoters, banks). API-051: one action route per
 // transition, the response is the object up to date. Every route requires a staff session holding the
 // permission it declares (SEC-030, ROL-020); the actor of each action is the staff member of the session (SEC-080).
-import { Body, Controller, HttpCode, Param, ParseUUIDPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Inject, Param, ParseUUIDPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import type { Request } from 'express';
 import { IdempotencyService } from '../platform/idempotency.js';
+import { Clock } from '../platform/clock.js';
+import { ENV, type Env } from '../config/env.js';
+import { signPreview } from '../catalogue/preview-token.js';
 import { PrismaService } from '../platform/prisma.service.js';
 import { idempotentCreate } from './admin-idempotency.js';
 import type { Actor } from '../admin/actor.js';
@@ -30,6 +33,8 @@ export class CatalogueAdminController {
     private readonly idempotency: IdempotencyService,
     private readonly prisma: PrismaService,
     private readonly views: StaffViews,
+    private readonly clock: Clock,
+    @Inject(ENV) private readonly env: Env,
   ) {}
 
   /** TRV-091 — a creating form sends its `Idempotency-Key`: the same key replays the first answer. */
@@ -69,6 +74,25 @@ export class CatalogueAdminController {
   publishProgram(@CurrentActor() actor: Actor, @Param('id', uuid) id: string, @Body() body: { republishProperties?: boolean } = {}) { return this.programs.publish(id, actor, { republishProperties: body?.republishProperties === true }); }
   @Post('programs/:id/unpublish') @HttpCode(200) @RequirePermission('catalogue.publish')
   unpublishProgram(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.programs.unpublish(id, actor); }
+  /** FIC-120 — « Aperçu »: the public page of a programme that is not online, by a link signed for one hour. */
+  @Post('programs/:id/preview-link') @HttpCode(200) @RequirePermission('catalogue.read')
+  async programPreview(@Param('id', uuid) id: string) {
+    const p = await this.prisma.program.findFirst({ where: { id, deletedAt: null }, select: { id: true, slug: true } });
+    if (!p) throw AppError.notFound();
+    const { token, expiresAt } = signPreview(this.env.LINK_SIGNING_KEY, 'PROGRAM', p.id, this.clock.now());
+    return { url: `${this.env.WEB_URL}/programmes/${p.slug}?apercu=${token}`, expiresAt: expiresAt.toISOString() };
+  }
+  /** FIC-120 — « Aperçu » of a property. */
+  @Post('properties/:id/preview-link') @HttpCode(200) @RequirePermission('catalogue.read')
+  async propertyPreview(@Param('id', uuid) id: string) {
+    const p = await this.prisma.property.findFirst({ where: { id, deletedAt: null }, select: { id: true, slug: true } });
+    if (!p) throw AppError.notFound();
+    const { token, expiresAt } = signPreview(this.env.LINK_SIGNING_KEY, 'PROPERTY', p.id, this.clock.now());
+    return { url: `${this.env.WEB_URL}/biens/${p.slug}?apercu=${token}`, expiresAt: expiresAt.toISOString() };
+  }
+  /** TRV-052 — « Régénérer l'adresse »: the old one answers 301 (NAV-040). */
+  @Post('programs/:id/regenerate-slug') @HttpCode(200) @RequirePermission('catalogue.write')
+  regenerateProgramSlug(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.programs.regenerateSlug(id, actor); }
   @Post('programs/:id/archive') @HttpCode(200) @RequirePermission('catalogue.publish')
   archiveProgram(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.programs.archive(id, actor); }
   @Post('programs/:id/unarchive') @HttpCode(200) @RequirePermission('catalogue.publish')
@@ -83,6 +107,9 @@ export class CatalogueAdminController {
   publishProperty(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.properties.publish(id, actor); }
   @Post('properties/:id/unpublish') @HttpCode(200) @RequirePermission('catalogue.publish')
   unpublishProperty(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.properties.unpublish(id, actor); }
+  /** TRV-052 — « Régénérer l'adresse » of a property. */
+  @Post('properties/:id/regenerate-slug') @HttpCode(200) @RequirePermission('catalogue.write')
+  regeneratePropertySlug(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.properties.regenerateSlug(id, actor); }
   @Post('properties/:id/archive') @HttpCode(200) @RequirePermission('catalogue.publish')
   archiveProperty(@CurrentActor() actor: Actor, @Param('id', uuid) id: string) { return this.properties.archive(id, actor); }
   @Post('properties/:id/unarchive') @HttpCode(200) @RequirePermission('catalogue.publish')

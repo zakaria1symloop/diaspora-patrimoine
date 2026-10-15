@@ -1,5 +1,6 @@
 // EP-05 — property page. Server-rendered, tags property:{id} and catalogue (ARC-040). Every section has its
 // behaviour when its data is missing (FIC-001): never an empty zone.
+import { PreviewFrame } from '@/components/property/PreviewFrame';
 import { ReportListing } from '@/components/property/ReportListing';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -31,10 +32,13 @@ import { ItemList, KeyFacts, LocationSection, Mosaic, Progress, PromoterCard, he
 import s from '@/components/property/property.module.css';
 
 type Params = Promise<{ slug: string }>;
+/** FIC-120 — `?apercu=` the back office's signed link (« Aperçu »). */
+type Search = Promise<{ apercu?: string }>;
 
-async function load(slug: string): Promise<PropertyDetail | 'gone'> {
+async function load(slug: string, apercu?: string): Promise<PropertyDetail | 'gone'> {
   try {
-    const res = await apiGet<PropertyDetail | DetailRedirect>(`/public/properties/${encodeURIComponent(slug)}`, { tags: ['catalogue'] });
+    // a preview is never cached: the page is not online (FIC-120)
+    const res = await apiGet<PropertyDetail | DetailRedirect>(`/public/properties/${encodeURIComponent(slug)}${apercu ? `?apercu=${encodeURIComponent(apercu)}` : ''}`, apercu ? { revalidate: 0 } : { tags: ['catalogue'] });
     if ('redirect' in res) permanentRedirect(res.redirect); // NAV-040: one redirect
     return res;
   } catch (e) {
@@ -48,10 +52,11 @@ function amount(m: { amount: string; currency: string } | null, digits = 0): str
   return m ? formatMoney(Number(m.amount), m.currency, 'fr-FR', digits) : null;
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { slug } = await params;
-  const p = await load(slug);
+export async function generateMetadata({ params, searchParams }: { params: Params; searchParams: Search }): Promise<Metadata> {
+  const [{ slug }, { apercu }] = await Promise.all([params, searchParams]);
+  const p = await load(slug, apercu);
   if (p === 'gone') return { robots: { index: false } };
+  if (p.isPreview) return { title: { absolute: t('ui.property.preview.band') }, robots: { index: false, follow: false } };
   const settings = await getSettings();
   const place = p.location.city ? p.location.city.name : p.location.region.name;
   const price = money(p.priceFromRef) ?? '';
@@ -69,9 +74,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-export default async function PropertyPage({ params }: { params: Params }) {
-  const { slug } = await params;
-  const p = await load(slug);
+export default async function PropertyPage({ params, searchParams }: { params: Params; searchParams: Search }) {
+  const [{ slug }, { apercu }] = await Promise.all([params, searchParams]);
+  const p = await load(slug, apercu);
   if (p === 'gone') return <GoneProperty slug={slug} />;
   const [settings, blocks, similar] = await Promise.all([
     getSettings(),
@@ -267,6 +272,7 @@ export default async function PropertyPage({ params }: { params: Params }) {
 
   return (
     <article className={s.page}>
+      <PreviewFrame preview={p.isPreview}>
       {p.isPreview ? null : (
         <JsonLd
           data={[
@@ -280,7 +286,7 @@ export default async function PropertyPage({ params }: { params: Params }) {
           ]}
         />
       )}
-      <ViewSignal reference={p.reference} />
+      {p.isPreview ? null : <ViewSignal reference={p.reference} />}
       <div hidden data-lead-context={JSON.stringify({ propertyReference: p.reference, propertyTitle: p.title })} />
       <Suspense fallback={null}>
         <InterestDialog settings={settings} target={target} available={available} />
@@ -480,10 +486,10 @@ export default async function PropertyPage({ params }: { params: Params }) {
           })}
         </p>
         {/* FIC-055, DEM-018 — not on a page that is gone, nor in a preview (FIC-120) */}
-        {!gone ? <ReportListing propertyId={p.id} /> : null}
+        {!gone && !p.isPreview ? <ReportListing propertyId={p.id} /> : null}
       </footer>
 
-      {!gone ? (
+      {!gone && !p.isPreview ? (
         <div className={s.stickyBar} data-action-bar>
           <span className={s.stickyPrice}>
             {monthlyOn && p.monthlyFromRef && available ? t('ui.property.financing.perMonth', { montant: money(p.monthlyFromRef)! }) : priceRef}
@@ -503,6 +509,7 @@ export default async function PropertyPage({ params }: { params: Params }) {
         render3dNote={settings['legal.render3dNote']}
         illustrationNote={settings['legal.illustrationNote']}
       />
+      </PreviewFrame>
     </article>
   );
 }

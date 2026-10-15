@@ -104,6 +104,8 @@
     }
   },
   "action": {
+    "regenerate": "Régénérer l’adresse",
+    "preview": "Aperçu sur le site",
     "publish": "Publier",
     "republish": "Republier",
     "unpublish": "Dépublier",
@@ -116,6 +118,11 @@
     "importLots": "Importer une grille"
   },
   "dialog": {
+    "regenerate": {
+      "title": "Régénérer l’adresse de {nom} ?",
+      "text": "Une nouvelle adresse est fabriquée à partir du nom actuel. L’adresse actuelle ({adresse}) redirigera vers elle : les liens déjà partagés restent bons.",
+      "submit": "Régénérer l’adresse"
+    },
     "publish": {
       "title": "Publier {nom}",
       "text": "Le programme paraîtra sur le site, avec ceux de ses biens qui sont publiés.",
@@ -155,6 +162,8 @@
     }
   },
   "toast": {
+    "slugRegenerated": "Nouvelle adresse : {adresse}. L’ancienne y redirige.",
+    "slugSame": "L’adresse correspond déjà au nom : rien n’a changé.",
     "created": "Programme créé.",
     "published": "Programme publié.",
     "unpublished": "Programme dépublié.",

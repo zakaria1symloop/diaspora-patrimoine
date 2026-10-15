@@ -13,7 +13,7 @@ import { t } from '@/lib/i18n';
 import { Checkbox, SelectInput, TextArea, TextInput, formStyles as f } from '../shell/forms';
 import { useCatalogueReference } from '../catalogue/reference';
 import { catalogueStyles as s, deliveryLabel, EditableSection, ReadGrid } from '../catalogue/parts';
-import { LOT_STATUS_TONE, LotStatusDialog } from '../lots/LotsTable';
+import { LOT_STATUS_TONE, LotStatusDialog, PropagateDeliveryDialog } from '../lots/LotsTable';
 import { SerpPreview } from '../programs/ProgramInfo';
 import { PinDialog } from './PinDialog';
 
@@ -26,6 +26,8 @@ export function PropertyInfo({ property, webUrl, onChanged }: { property: AdminP
   const p = property;
   const canEdit = p.can.write;
   const [lotStatus, setLotStatus] = useState(false);
+  // CTL-060 — saved as « Livré »: propose to carry the date over to its lots
+  const [propagate, setPropagate] = useState(false);
   const [pin, setPin] = useState(false);
   const patch = (body: Record<string, unknown>) => adminCall(`/admin/properties/${p.id}`, { method: 'PATCH', body: { ...body, version: p.version } });
   const featureLabel = (code: string) => ref?.features.find((x) => x.code === code)?.label ?? code;
@@ -156,13 +158,12 @@ export function PropertyInfo({ property, webUrl, onChanged }: { property: AdminP
           title={t('ui.admin-properties.section.delivery')}
           canEdit={canEdit}
           initial={{ follow: Boolean(p.program) && !p.deliveryOverridden, deliveryStatus: p.deliveryStatus as string, deliveryDate: p.deliveryDate ?? '', deliveryDatePrecision: p.deliveryDatePrecision as string }}
-          save={(v) =>
-            patch(
-              p.program && v.follow
-                ? { deliveryOverridden: false }
-                : { deliveryStatus: v.deliveryStatus, deliveryDate: v.deliveryDate || null, deliveryDatePrecision: v.deliveryDatePrecision },
-            )
-          }
+          save={async (v) => {
+            const own = !(p.program && v.follow);
+            const r = await patch(own ? { deliveryStatus: v.deliveryStatus, deliveryDate: v.deliveryDate || null, deliveryDatePrecision: v.deliveryDatePrecision } : { deliveryOverridden: false });
+            if (r.ok && own && v.deliveryStatus === 'DELIVERED' && p.deliveryStatus !== 'DELIVERED') setPropagate(true);
+            return r;
+          }}
           view={
             <ReadGrid
               items={[
@@ -442,6 +443,7 @@ export function PropertyInfo({ property, webUrl, onChanged }: { property: AdminP
         />
       ) : null}
       {pin ? <PinDialog property={p} onClose={() => setPin(false)} onDone={() => (setPin(false), onChanged())} /> : null}
+      {propagate ? <PropagateDeliveryDialog scope={{ propertyId: p.id }} name={p.title} onClose={() => (setPropagate(false), onChanged())} /> : null}
     </div>
   );
 }

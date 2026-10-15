@@ -1,6 +1,6 @@
 // EP-04, EP-05 read side: property page (FIC-001 … FIC-090), programme page (FIC-110 … FIC-112), similar (CAL-081),
 // slug history (NAV-040), unpublished objects (NAV-041). Exact coordinates never leave the API (FIC-060, TRV-045).
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type {
   CommercialState,
   ConstructionProgress,
@@ -27,7 +27,9 @@ import { Clock } from '../platform/clock.js';
 import { AppError } from '../platform/errors.js';
 import { PrismaService } from '../platform/prisma.service.js';
 import { SettingsService } from '../platform/settings.service.js';
+import { ENV, type Env } from '../config/env.js';
 import { CatalogueIndex } from './catalogue-index.js';
+import { verifyPreview } from './preview-token.js';
 import { CatalogueService } from './catalogue.service.js';
 import { pickCover, toPublicImage, mediaBase, type MediaRow } from './media.js';
 
@@ -45,6 +47,7 @@ export class CatalogueDetailService {
     private readonly catalogue: CatalogueService,
     private readonly settings: SettingsService,
     private readonly clock: Clock,
+    @Inject(ENV) private readonly env: Env,
   ) {}
 
   private async conversion(): Promise<ConversionContext> {
@@ -214,7 +217,7 @@ export class CatalogueDetailService {
 
   // ---------- property ----------
 
-  async property(slugOrReference: string): Promise<PropertyDetail | DetailRedirect> {
+  async property(slugOrReference: string, previewToken?: string): Promise<PropertyDetail | DetailRedirect> {
     const p = await this.prisma.property.findFirst({
       where: { deletedAt: null, OR: [{ slug: slugOrReference }, { reference: slugOrReference.toUpperCase() }] },
       include: {
@@ -231,10 +234,12 @@ export class CatalogueDetailService {
     }
     // A reference in the address answers with the canonical slug (SIM-030 accepts references).
     if (p.slug !== slugOrReference) return { redirect: `/biens/${p.slug}` };
-    if (p.publication === 'ARCHIVED') {
+    // FIC-120 — a signed link of the back office opens a property that is not online, as it would be published
+    const preview = Boolean(previewToken) && verifyPreview(this.env.LINK_SIGNING_KEY, 'PROPERTY', p.id, previewToken, this.clock.now());
+    if (!preview && p.publication === 'ARCHIVED') {
       throw new AppError(ErrorCode.GONE, { params: { programSlug: p.program?.publication === 'PUBLISHED' ? p.program.slug : null, regionSlug: p.region.slug } });
     }
-    if (p.publication !== 'PUBLISHED' || (p.program && p.program.publication !== 'PUBLISHED')) throw AppError.notFound();
+    if (!preview && (p.publication !== 'PUBLISHED' || (p.program && p.program.publication !== 'PUBLISHED'))) throw AppError.notFound();
 
     const [ctx, currency, reference, rows] = await Promise.all([
       this.conversion(),
@@ -362,7 +367,7 @@ export class CatalogueDetailService {
       updatedAt: p.updatedAt.toISOString(),
       seoTitle: p.seoTitle,
       seoDescription: p.seoDescription,
-      isPreview: false,
+      isPreview: preview, // FIC-120
     };
   }
 
@@ -388,7 +393,7 @@ export class CatalogueDetailService {
 
   // ---------- programme ----------
 
-  async program(slug: string): Promise<ProgramDetail | DetailRedirect> {
+  async program(slug: string, previewToken?: string): Promise<ProgramDetail | DetailRedirect> {
     const p = await this.prisma.program.findFirst({
       where: { slug, deletedAt: null },
       include: { region: { select: { id: true, nameFr: true, slug: true, latitude: true, longitude: true } }, city: { select: { nameFr: true, slug: true, latitude: true, longitude: true } } },
@@ -398,8 +403,10 @@ export class CatalogueDetailService {
       if (redirect) return redirect;
       throw AppError.notFound();
     }
-    if (p.publication === 'ARCHIVED') throw new AppError(ErrorCode.GONE, { params: { regionSlug: p.region.slug } });
-    if (p.publication !== 'PUBLISHED') throw AppError.notFound();
+    // FIC-120 — the back office's signed link
+    const preview = Boolean(previewToken) && verifyPreview(this.env.LINK_SIGNING_KEY, 'PROGRAM', p.id, previewToken, this.clock.now());
+    if (!preview && p.publication === 'ARCHIVED') throw new AppError(ErrorCode.GONE, { params: { regionSlug: p.region.slug } });
+    if (!preview && p.publication !== 'PUBLISHED') throw AppError.notFound();
     const [rows, currency, amenities, media, promoter, location, progress] = await Promise.all([
       this.index.rows(),
       this.settings.get('display.referenceCurrency'),
@@ -462,7 +469,7 @@ export class CatalogueDetailService {
       })),
       seoTitle: p.seoTitle,
       seoDescription: p.seoDescription,
-      isPreview: false,
+      isPreview: preview, // FIC-120
     };
   }
 }

@@ -1768,6 +1768,8 @@ export const messages = {
     "ui.admin-programs.detail.publishCard.published": "En ligne depuis le {date}",
     "ui.admin-programs.detail.publishCard.draft": "Brouillon : invisible sur le site",
     "ui.admin-programs.detail.publishCard.archived": "Archivé : invisible sur le site",
+    "ui.admin-programs.action.regenerate": "Régénérer l’adresse",
+    "ui.admin-programs.action.preview": "Aperçu sur le site",
     "ui.admin-programs.action.publish": "Publier",
     "ui.admin-programs.action.republish": "Republier",
     "ui.admin-programs.action.unpublish": "Dépublier",
@@ -1778,6 +1780,9 @@ export const messages = {
     "ui.admin-programs.action.deleteBlocked": "Supprimez ou archivez d’abord ses {n} biens.",
     "ui.admin-programs.action.addProperty": "Ajouter une typologie",
     "ui.admin-programs.action.importLots": "Importer une grille",
+    "ui.admin-programs.dialog.regenerate.title": "Régénérer l’adresse de {nom} ?",
+    "ui.admin-programs.dialog.regenerate.text": "Une nouvelle adresse est fabriquée à partir du nom actuel. L’adresse actuelle ({adresse}) redirigera vers elle : les liens déjà partagés restent bons.",
+    "ui.admin-programs.dialog.regenerate.submit": "Régénérer l’adresse",
     "ui.admin-programs.dialog.publish.title": "Publier {nom}",
     "ui.admin-programs.dialog.publish.text": "Le programme paraîtra sur le site, avec ceux de ses biens qui sont publiés.",
     "ui.admin-programs.dialog.publish.withProperties": "Republier aussi {n, plural, one {le bien parti} other {les # biens partis}} avec lui (chacun s’il remplit toujours les conditions)",
@@ -1801,6 +1806,8 @@ export const messages = {
     "ui.admin-programs.dialog.delete.title": "Supprimer {nom} ?",
     "ui.admin-programs.dialog.delete.text": "Le programme quitte le catalogue et sa fiche est supprimée. Son historique reste dans le journal.",
     "ui.admin-programs.dialog.delete.submit": "Supprimer",
+    "ui.admin-programs.toast.slugRegenerated": "Nouvelle adresse : {adresse}. L’ancienne y redirige.",
+    "ui.admin-programs.toast.slugSame": "L’adresse correspond déjà au nom : rien n’a changé.",
     "ui.admin-programs.toast.created": "Programme créé.",
     "ui.admin-programs.toast.published": "Programme publié.",
     "ui.admin-programs.toast.unpublished": "Programme dépublié.",
@@ -6910,6 +6917,7 @@ export const messages = {
     "ui.property.similar.seeRegion": "Voir les {n, plural, one {# bien} other {# biens}} à {region}",
     "ui.property.footer.line": "Réf. {reference} · Publié le {publie} · Mis à jour le {maj}",
     "ui.property.footer.report": "Signaler une erreur sur cette fiche",
+    "ui.property.preview.band": "Aperçu : cette fiche n’est pas en ligne.",
     "ui.property.report.title": "Signaler une erreur sur cette fiche",
     "ui.property.report.kind": "Qu’est-ce qui est inexact ?",
     "ui.property.report.choose": "Choisir",
@@ -8909,7 +8917,9 @@ export type MessageKey =
   | 'ui.admin-programs.action.deleteBlocked'
   | 'ui.admin-programs.action.duplicate'
   | 'ui.admin-programs.action.importLots'
+  | 'ui.admin-programs.action.preview'
   | 'ui.admin-programs.action.publish'
+  | 'ui.admin-programs.action.regenerate'
   | 'ui.admin-programs.action.republish'
   | 'ui.admin-programs.action.unarchive'
   | 'ui.admin-programs.action.unpublish'
@@ -8997,6 +9007,9 @@ export type MessageKey =
   | 'ui.admin-programs.dialog.publish.text'
   | 'ui.admin-programs.dialog.publish.title'
   | 'ui.admin-programs.dialog.publish.withProperties'
+  | 'ui.admin-programs.dialog.regenerate.submit'
+  | 'ui.admin-programs.dialog.regenerate.text'
+  | 'ui.admin-programs.dialog.regenerate.title'
   | 'ui.admin-programs.dialog.unarchive.submit'
   | 'ui.admin-programs.dialog.unarchive.text'
   | 'ui.admin-programs.dialog.unarchive.title'
@@ -9237,6 +9250,8 @@ export type MessageKey =
   | 'ui.admin-programs.toast.deleted'
   | 'ui.admin-programs.toast.duplicated'
   | 'ui.admin-programs.toast.published'
+  | 'ui.admin-programs.toast.slugRegenerated'
+  | 'ui.admin-programs.toast.slugSame'
   | 'ui.admin-programs.toast.unarchived'
   | 'ui.admin-programs.toast.unpublished'
   | 'ui.admin-programs.view.all'
@@ -14129,6 +14144,7 @@ export type MessageKey =
   | 'ui.property.plans.tourTitle'
   | 'ui.property.plans.visioText'
   | 'ui.property.plans.visioTitle'
+  | 'ui.property.preview.band'
   | 'ui.property.price.approx'
   | 'ui.property.price.from'
   | 'ui.property.price.native'

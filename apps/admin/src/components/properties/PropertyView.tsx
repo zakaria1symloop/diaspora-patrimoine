@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { AdminPropertyDetail } from '@dp/contracts';
-import { Banner, Button, Icon, Menu, StatusTag, type MenuItem } from '@dp/ui';
+import { Banner, Button, Icon, Menu, StatusTag, useToast, type MenuItem } from '@dp/ui';
 import { adminCall } from '@/lib/admin-client';
+import { errorText } from '@/lib/errors';
 import { shortDate } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { AVAILABILITY_TONE, PUBLICATION_TONE } from '@/lib/tones';
@@ -30,7 +31,7 @@ import { CompletenessCard } from './CompletenessCard';
 import { propertyPath } from './PropertiesList';
 import { PropertyInfo } from './PropertyInfo';
 
-type Dialog = 'publish' | 'missing' | 'unpublish' | 'archive' | 'unarchive' | 'duplicate' | 'delete' | null;
+type Dialog = 'publish' | 'missing' | 'unpublish' | 'archive' | 'unarchive' | 'duplicate' | 'delete' | 'regenerate' | null;
 
 export function PropertyView({ property, tab, webUrl }: { property: AdminPropertyDetail; tab?: string; webUrl: string }) {
   const p = property;
@@ -41,6 +42,7 @@ export function PropertyView({ property, tab, webUrl }: { property: AdminPropert
   const [withLots, setWithLots] = useState(false);
   const refresh = () => router.refresh();
   const close = () => setDialog(null);
+  const toast = useToast();
 
   useEffect(() => {
     void adminCall('/admin/notifications/read', { body: { entityType: 'Property', entityId: p.id } }).then((r) => {
@@ -74,10 +76,19 @@ export function PropertyView({ property, tab, webUrl }: { property: AdminPropert
         {t('ui.admin-programs.common.openPublic')}
       </Button>
     ) : null;
+  // FIC-120 — « Aperçu » of a property that is not online: its public page by a link signed for one hour
+  const openPreview = async () => {
+    const r = await adminCall<{ url: string }>(`/admin/properties/${p.id}/preview-link`, { method: 'POST' });
+    if (r.ok) window.open(r.data.url, '_blank', 'noopener');
+    else toast({ tone: 'error', text: errorText(r) });
+  };
   const items: MenuItem[] = [
+    ...(p.publication !== 'PUBLISHED' ? [{ key: 'preview', label: t('ui.admin-programs.action.preview'), icon: 'eye' as const, onSelect: () => void openPreview() }] : []),
     ...(p.program ? [{ key: 'program', label: t('ui.admin-properties.action.openProgram'), icon: 'building' as const, href: `/catalogue/programmes/${p.program.id}` }] : []),
     ...(p.publication === 'PUBLISHED' && p.can.publish ? [{ key: 'unpublish', label: t('ui.admin-properties.action.unpublish'), onSelect: () => setDialog('unpublish') }] : []),
     ...(p.publication !== 'ARCHIVED' && p.can.publish ? [{ key: 'archive', label: t('ui.admin-properties.action.archive'), icon: 'folder' as const, onSelect: () => setDialog('archive') }] : []),
+    // TRV-052 — « Régénérer l'adresse » after a change of title: the old address redirects (301)
+    ...(p.can.write ? [{ key: 'regenerate', label: t('ui.admin-programs.action.regenerate'), icon: 'globe' as const, onSelect: () => setDialog('regenerate') }] : []),
     ...(p.can.write && p.program?.publication !== 'ARCHIVED' ? [{ key: 'duplicate', label: t('ui.admin-properties.action.duplicate'), icon: 'copy' as const, onSelect: () => setDialog('duplicate'), separated: true }] : []),
     ...(p.can.delete ? [{ key: 'delete', label: t('ui.admin-properties.action.delete'), icon: 'trash' as const, danger: true, onSelect: () => setDialog('delete'), disabledReason: p.deleteBlocked ? t('ui.admin-properties.action.deleteBlocked') : null }] : []),
   ];
@@ -187,6 +198,19 @@ export function PropertyView({ property, tab, webUrl }: { property: AdminPropert
         {active === 'historique' ? <Timeline endpoint={`/admin/properties/${p.id}/timeline`} entity={{ type: 'PROPERTY', id: p.id }} types={['RECORD', 'NOTE']} /> : null}
       </DetailPage>
 
+      <ConfirmDialog
+        open={dialog === 'regenerate'}
+        title={t('ui.admin-programs.dialog.regenerate.title', { nom: p.title })}
+        text={t('ui.admin-programs.dialog.regenerate.text', { adresse: `${webUrl}/biens/${p.slug}` })}
+        submit={t('ui.admin-programs.dialog.regenerate.submit')}
+        call={() => adminCall<{ slug: string }>(`/admin/properties/${p.id}/regenerate-slug`, { method: 'POST' })}
+        onClose={close}
+        onDone={(r) => {
+          close();
+          toast({ text: r.slug === p.slug ? t('ui.admin-programs.toast.slugSame') : t('ui.admin-programs.toast.slugRegenerated', { adresse: `/biens/${r.slug}` }) });
+          refresh();
+        }}
+      />
       <ConfirmDialog
         open={dialog === 'publish'}
         title={t('ui.admin-properties.dialog.publish.title', { nom: p.title })}

@@ -98,6 +98,9 @@
 | ☐ | EA-40 Fiche promoteur, en-tête | Bouton secondaire « Écrire au promoteur » (enveloppe) avant l’action principale. | CTL-006 | 15/10/2026 |
 | ☐ | EA-22 Dossier, onglet Échanges | Bouton « Écrire au promoteur » dans la barre d’ajout rapide quand le bien retenu a un promoteur. | CTL-006 | 15/10/2026 |
 | ☐ | Fenêtre « Écrire un e-mail », vers un promoteur | À la place de « À : » : deux listes côte à côte « Contact » (nom · adresse) et « En copie » (« Personne » par défaut) ; modèles « Demande d’option », « Demande de visite », « Vérification des disponibilités », « Message libre ». | CTL-006, COM-020 | 15/10/2026 |
+| ☐ | EP-05 / EP-04 en aperçu | Bandeau collant bleu nuit « Aperçu : cette fiche n’est pas en ligne. » (œil) ; boutons et champs grisés ; ni barre d’action collante ni lien « Signaler une erreur ». | FIC-120 | 15/10/2026 |
+| ☐ | EA-41 / EA-43 Fiche programme et bien, « ⋯ » | « Aperçu sur le site » (œil, fiche non publiée) ; « Régénérer l’adresse » (globe) et sa fenêtre de confirmation (l’ancienne adresse redirige). | FIC-120, TRV-052 | 15/10/2026 |
+| ☐ | EA-41 / EA-43 section Livraison | Après « Livré » enregistré : fenêtre « Reporter la date de livraison sur les lots ? » (date réelle, « Reporter sur les lots » / « Plus tard ») quand des lots ne sont pas encore livrés. | CTL-060 | 15/10/2026 |
 
 ## Back-office
 

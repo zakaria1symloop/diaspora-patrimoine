@@ -346,6 +346,31 @@ export class PropertiesAdminService {
     });
   }
 
+  /**
+   * TRV-052 — « Régénérer l'adresse »: a new slug from the title of now (region and reference kept in it); the old one
+   * joins the history, so its address answers 301 to the new one (NAV-040). Nothing changes when the slug is the same.
+   */
+  async regenerateSlug(id: string, actor: Actor): Promise<Property> {
+    const result = await this.prisma.$transaction(async (tx) => {
+      const now = this.clock.now();
+      await tx.$queryRaw`SELECT id FROM properties WHERE id = ${id}::uuid FOR UPDATE`;
+      const p = await tx.property.findFirst({ where: { id, deletedAt: null } });
+      if (!p) throw AppError.notFound();
+      const region = p.regionId ? await tx.region.findUnique({ where: { id: p.regionId }, select: { nameFr: true } }) : null;
+      const slug = await uniqueSlug(propertySlug(p.title, region?.nameFr ?? '', p.reference), 120, async (s) =>
+        s !== p.slug && Boolean((await tx.property.findFirst({ where: { slug: s, deletedAt: null, id: { not: id } } })) ?? (await tx.slugHistory.findFirst({ where: { entityType: 'PROPERTY', slug: s, entityId: { not: id } } }))),
+      );
+      if (slug === p.slug) return p;
+      await tx.slugHistory.deleteMany({ where: { entityType: 'PROPERTY', entityId: id, slug } }); // back to one of its own old addresses
+      await tx.slugHistory.createMany({ data: [{ id: newId(), entityType: 'PROPERTY', entityId: id, slug: p.slug, createdAt: now, updatedAt: now }], skipDuplicates: true });
+      const updated = await tx.property.update({ where: { id }, data: { slug, version: { increment: 1 }, updatedById: stampBy(actor), updatedAt: now } });
+      await writeAudit(tx, actor, now, { action: 'property.updated', entityType: 'property', entityId: id, entityLabel: p.reference, before: { slug: p.slug }, after: { slug } });
+      return updated;
+    });
+    await this.notifier.committed(propertyTags(result));
+    return result;
+  }
+
   /** CYC-121 — → ARCHIVED (the page answers 410); archiving removes the home pin (CTL-150). */
   async archive(id: string, actor: Actor): Promise<Property> {
     return this.transition(id, actor, ['DRAFT', 'PUBLISHED'], async (tx, p, now) => {

@@ -142,6 +142,9 @@
     "line": "Réf. {reference} · Publié le {publie} · Mis à jour le {maj}",
     "report": "Signaler une erreur sur cette fiche"
   },
+  "preview": {
+    "band": "Aperçu : cette fiche n’est pas en ligne."
+  },
   "report": {
     "title": "Signaler une erreur sur cette fiche",
     "kind": "Qu’est-ce qui est inexact ?",

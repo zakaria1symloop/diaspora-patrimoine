@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { AdminProgramDetail } from '@dp/contracts';
-import { Banner, Button, Icon, Menu, StatusTag, type MenuItem } from '@dp/ui';
+import { Banner, Button, Icon, Menu, StatusTag, useToast, type MenuItem } from '@dp/ui';
 import { adminCall } from '@/lib/admin-client';
+import { errorText } from '@/lib/errors';
 import { shortDate } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { PUBLICATION_TONE } from '@/lib/tones';
@@ -32,7 +33,7 @@ import { ProgramInfo } from './ProgramInfo';
 import { ProgramProperties } from './ProgramProperties';
 import { programPath } from './ProgramsList';
 
-type Dialog = 'publish' | 'unpublish' | 'archive' | 'unarchive' | 'duplicate' | 'delete' | 'missing' | null;
+type Dialog = 'publish' | 'unpublish' | 'archive' | 'unarchive' | 'duplicate' | 'delete' | 'missing' | 'regenerate' | null;
 
 export function ProgramView({ program, tab, webUrl }: { program: AdminProgramDetail; tab?: string; webUrl: string }) {
   const p = program;
@@ -43,6 +44,7 @@ export function ProgramView({ program, tab, webUrl }: { program: AdminProgramDet
   const [withProperties, setWithProperties] = useState(true);
   const refresh = () => router.refresh();
   const close = () => setDialog(null);
+  const toast = useToast();
 
   // NOT-032 — opening the record marks its notifications read.
   useEffect(() => {
@@ -84,12 +86,21 @@ export function ProgramView({ program, tab, webUrl }: { program: AdminProgramDet
         {t('ui.admin-programs.action.addProperty')}
       </LinkButton>
     ) : null;
+  // FIC-120 — « Aperçu » of a programme that is not online: its public page by a link signed for one hour
+  const openPreview = async () => {
+    const r = await adminCall<{ url: string }>(`/admin/programs/${p.id}/preview-link`, { method: 'POST' });
+    if (r.ok) window.open(r.data.url, '_blank', 'noopener');
+    else toast({ tone: 'error', text: errorText(r) });
+  };
   const items: MenuItem[] = [
+    ...(p.publication !== 'PUBLISHED' ? [{ key: 'preview', label: t('ui.admin-programs.action.preview'), icon: 'eye' as const, onSelect: () => void openPreview() }] : []),
     ...(p.publicPath ? [{ key: 'open', label: t('ui.admin-programs.common.openPublic'), icon: 'external-link' as const, onSelect: () => window.open(`${webUrl}${p.publicPath}`, '_blank', 'noopener') }] : []),
     ...(p.publication === 'DRAFT' && p.can.write && p.can.publish ? [{ key: 'add', label: t('ui.admin-programs.action.addProperty'), icon: 'plus' as const, href: addProperty }] : []),
     ...(p.publication === 'PUBLISHED' && p.can.publish ? [{ key: 'unpublish', label: t('ui.admin-programs.action.unpublish'), onSelect: () => setDialog('unpublish') }] : []),
     ...(p.publication !== 'ARCHIVED' && p.can.publish ? [{ key: 'archive', label: t('ui.admin-programs.action.archive'), icon: 'folder' as const, onSelect: () => setDialog('archive') }] : []),
     ...(p.publication === 'ARCHIVED' && p.can.publish ? [{ key: 'republish', label: t('ui.admin-programs.action.republish'), onSelect: () => setDialog(publishable ? 'publish' : 'missing') }] : []),
+    // TRV-052 — « Régénérer l'adresse » after a change of name: the old address redirects (301)
+    ...(p.can.write ? [{ key: 'regenerate', label: t('ui.admin-programs.action.regenerate'), icon: 'globe' as const, onSelect: () => setDialog('regenerate') }] : []),
     ...(p.can.write ? [{ key: 'duplicate', label: t('ui.admin-programs.action.duplicate'), icon: 'copy' as const, onSelect: () => setDialog('duplicate'), separated: true }] : []),
     ...(p.can.delete
       ? [{ key: 'delete', label: t('ui.admin-programs.action.delete'), icon: 'trash' as const, danger: true, onSelect: () => setDialog('delete'), disabledReason: p.counts.properties > 0 ? t('ui.admin-programs.action.deleteBlocked', { n: p.counts.properties }) : null }]
@@ -258,6 +269,19 @@ export function ProgramView({ program, tab, webUrl }: { program: AdminProgramDet
         <MissingList codes={p.publicationMissing} />
         <p className={s.muted}>{t('ui.admin-programs.common.missingHint')}</p>
       </ConfirmDialog>
+      <ConfirmDialog
+        open={dialog === 'regenerate'}
+        title={t('ui.admin-programs.dialog.regenerate.title', { nom: p.name })}
+        text={t('ui.admin-programs.dialog.regenerate.text', { adresse: `${webUrl}/programmes/${p.slug}` })}
+        submit={t('ui.admin-programs.dialog.regenerate.submit')}
+        call={() => adminCall<{ slug: string }>(`/admin/programs/${p.id}/regenerate-slug`, { method: 'POST' })}
+        onClose={close}
+        onDone={(r) => {
+          close();
+          toast({ text: r.slug === p.slug ? t('ui.admin-programs.toast.slugSame') : t('ui.admin-programs.toast.slugRegenerated', { adresse: `/programmes/${r.slug}` }) });
+          refresh();
+        }}
+      />
       <ConfirmDialog
         open={dialog === 'unpublish'}
         title={t('ui.admin-programs.dialog.unpublish.title', { nom: p.name })}

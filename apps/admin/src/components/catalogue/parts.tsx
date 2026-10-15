@@ -128,11 +128,11 @@ export function useCall() {
   return { pending, failure, errors, setErrors, run, reset, notify };
 }
 
-export function DialogButtons({ close, pending, label, danger, disabled }: { close: () => void; pending: boolean; label: string; danger?: boolean; disabled?: boolean }) {
+export function DialogButtons({ close, closeLabel, pending, label, danger, disabled }: { close: () => void; closeLabel?: string; pending: boolean; label: string; danger?: boolean; disabled?: boolean }) {
   return (
     <div className={`${f.actions} ${f.actionsEnd}`}>
       <Button variant="secondary" size="M" onClick={close} type="button">
-        {t('ui.common.cancel')}
+        {closeLabel ?? t('ui.common.cancel')}
       </Button>
       <Button type="submit" variant={danger ? 'danger' : 'tool'} size="M" pending={pending} disabled={disabled}>
         {label}

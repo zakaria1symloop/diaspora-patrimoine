@@ -1,5 +1,6 @@
 // API-100 — public catalogue routes. Unknown or malformed criteria are ignored (CAT-020, API-011).
-import { Controller, Get, Header, Param, Query } from '@nestjs/common';
+import { Controller, Get, Header, Param, Query, Res } from '@nestjs/common';
+import type { Response } from 'express';
 import {
   COMPARE_MAX,
   FAVORITES_MAX_ANONYMOUS,
@@ -89,15 +90,16 @@ export class PublicCatalogueController {
     return this.detail.similar(slug);
   }
 
+  /** FIC-120 — `?apercu=` the back office's signed link: never cached (the page is not online). */
   @Get('properties/:slug')
-  @Header('Cache-Control', 'public, max-age=60')
-  async property(@Param('slug') slug: string): Promise<PropertyDetail | DetailRedirect> {
-    return this.detail.property(slug);
+  async property(@Param('slug') slug: string, @Query('apercu') apercu: string | undefined, @Res({ passthrough: true }) res: Response): Promise<PropertyDetail | DetailRedirect> {
+    res.setHeader('Cache-Control', apercu ? 'private, no-store' : 'public, max-age=60');
+    return this.detail.property(slug, apercu);
   }
 
   @Get('programs/:slug')
-  @Header('Cache-Control', 'public, max-age=60')
-  async program(@Param('slug') slug: string): Promise<ProgramDetail | DetailRedirect> {
-    return this.detail.program(slug);
+  async program(@Param('slug') slug: string, @Query('apercu') apercu: string | undefined, @Res({ passthrough: true }) res: Response): Promise<ProgramDetail | DetailRedirect> {
+    res.setHeader('Cache-Control', apercu ? 'private, no-store' : 'public, max-age=60');
+    return this.detail.program(slug, apercu);
   }
 }

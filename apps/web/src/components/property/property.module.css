@@ -1198,3 +1198,25 @@ a.planCard:active {
   gap: var(--sp-16);
   justify-items: start;
 }
+
+/* FIC-120 — « Aperçu »: the fixed band and the disabled frame of a page that is not online */
+.previewBand {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: var(--sp-10) var(--sp-16);
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+  font-weight: 600;
+}
+.previewFrame {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

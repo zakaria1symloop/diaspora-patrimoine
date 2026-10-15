@@ -3,6 +3,7 @@
 // Localisation · Livraison · Description · Équipements · Garanties · Mise en avant · Référencement. Changing the place,
 // the standing or the delivery of a programme that has properties announces « Ce changement s'applique aux {n} biens du
 // programme. » (MOD-201). The exact address and position are never published (FIC-060).
+import { useState } from 'react';
 import { DATE_PRECISIONS, DELIVERY_STATUSES, STANDINGS, type AdminProgramDetail } from '@dp/contracts';
 import { Icon } from '@dp/ui';
 import { adminCall } from '@/lib/admin-client';
@@ -10,6 +11,7 @@ import { shortDay } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { useCatalogueReference } from '../catalogue/reference';
 import { catalogueStyles as s, deliveryLabel, EditableSection, ReadGrid } from '../catalogue/parts';
+import { PropagateDeliveryDialog } from '../lots/LotsTable';
 import { Checkbox, SelectInput, TextArea, TextInput, formStyles as f } from '../shell/forms';
 
 const nullable = (v: string) => (v.trim() === '' ? null : v.trim());
@@ -19,6 +21,8 @@ export function ProgramInfo({ program, webUrl }: { program: AdminProgramDetail; 
   const p = program;
   const canEdit = p.can.write;
   const patch = (body: Record<string, unknown>) => adminCall(`/admin/programs/${p.id}`, { method: 'PATCH', body: { ...body, version: p.version } });
+  // CTL-060 — saved as « Livré »: propose to carry the date over to its lots
+  const [propagate, setPropagate] = useState(false);
   const inheritNotice = (changed: boolean) =>
     changed && p.counts.properties > 0 ? (
       <p className={`${s.notice} ${s.noticeWarn}`}>
@@ -174,7 +178,11 @@ export function ProgramInfo({ program, webUrl }: { program: AdminProgramDetail; 
         title={t('ui.admin-programs.section.delivery')}
         canEdit={canEdit}
         initial={{ deliveryStatus: p.deliveryStatus as string, deliveryDate: p.deliveryDate ?? '', deliveryDatePrecision: p.deliveryDatePrecision as string }}
-        save={(v) => patch({ deliveryStatus: v.deliveryStatus, deliveryDate: v.deliveryDate || null, deliveryDatePrecision: v.deliveryDatePrecision })}
+        save={async (v) => {
+          const r = await patch({ deliveryStatus: v.deliveryStatus, deliveryDate: v.deliveryDate || null, deliveryDatePrecision: v.deliveryDatePrecision });
+          if (r.ok && v.deliveryStatus === 'DELIVERED' && p.deliveryStatus !== 'DELIVERED') setPropagate(true);
+          return r;
+        }}
         aside={(v) => inheritNotice(v.deliveryStatus !== p.deliveryStatus || v.deliveryDate !== (p.deliveryDate ?? '') || v.deliveryDatePrecision !== p.deliveryDatePrecision)}
         view={
           <ReadGrid
@@ -302,6 +310,7 @@ export function ProgramInfo({ program, webUrl }: { program: AdminProgramDetail; 
           </>
         )}
       />
+      {propagate ? <PropagateDeliveryDialog scope={{ programId: p.id }} name={p.name} onClose={() => setPropagate(false)} /> : null}
     </div>
   );
 }

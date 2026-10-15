@@ -1,5 +1,6 @@
 // EP-04 — programme page (FIC-110 … FIC-112). The section « Les biens du programme » follows the commercial state
 // of the programme (CYC-127); its action bar too (FIC-112).
+import { PreviewFrame } from '@/components/property/PreviewFrame';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -24,10 +25,13 @@ import { ItemList, KeyFacts, LocationSection, Mosaic, Progress, PromoterCard, ty
 import s from '@/components/property/property.module.css';
 
 type Params = Promise<{ slug: string }>;
+/** FIC-120 — `?apercu=` the back office's signed link (« Aperçu »). */
+type Search = Promise<{ apercu?: string }>;
 
-async function load(slug: string): Promise<ProgramDetail | 'gone'> {
+async function load(slug: string, apercu?: string): Promise<ProgramDetail | 'gone'> {
   try {
-    const res = await apiGet<ProgramDetail | DetailRedirect>(`/public/programs/${encodeURIComponent(slug)}`, { tags: ['catalogue'] });
+    // a preview is never cached: the page is not online (FIC-120)
+    const res = await apiGet<ProgramDetail | DetailRedirect>(`/public/programs/${encodeURIComponent(slug)}${apercu ? `?apercu=${encodeURIComponent(apercu)}` : ''}`, apercu ? { revalidate: 0 } : { tags: ['catalogue'] });
     if ('redirect' in res) permanentRedirect(res.redirect);
     return res;
   } catch (e) {
@@ -37,10 +41,11 @@ async function load(slug: string): Promise<ProgramDetail | 'gone'> {
   }
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { slug } = await params;
-  const p = await load(slug);
+export async function generateMetadata({ params, searchParams }: { params: Params; searchParams: Search }): Promise<Metadata> {
+  const [{ slug }, { apercu }] = await Promise.all([params, searchParams]);
+  const p = await load(slug, apercu);
   if (p === 'gone') return { robots: { index: false } };
+  if (p.isPreview) return { title: { absolute: t('ui.property.preview.band') }, robots: { index: false, follow: false } };
   return {
     title: { absolute: (p.seoTitle ?? t('ui.property.programPage.seoTitle', { nom: p.name, region: p.location.region.name })).slice(0, 70) },
     description: p.seoDescription ?? (p.description ?? '').slice(0, 155),
@@ -48,9 +53,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-export default async function ProgramPage({ params }: { params: Params }) {
-  const { slug } = await params;
-  const p = await load(slug);
+export default async function ProgramPage({ params, searchParams }: { params: Params; searchParams: Search }) {
+  const [{ slug }, { apercu }] = await Promise.all([params, searchParams]);
+  const p = await load(slug, apercu);
   if (p === 'gone') {
     return (
       <ErrorPage title={t('ui.pages.error.programGone.title')}>
@@ -149,6 +154,7 @@ export default async function ProgramPage({ params }: { params: Params }) {
 
   return (
     <article className={s.page}>
+      <PreviewFrame preview={p.isPreview}>
       <JsonLd
         data={breadcrumbLd([
           { name: t('ui.property.breadcrumb.programs'), path: '/programmes' },
@@ -262,7 +268,7 @@ export default async function ProgramPage({ params }: { params: Params }) {
         <aside className={s.aside}>{panel}</aside>
       </div>
 
-      {canInterest || p.state === 'ALL_RESERVED' ? (
+      {(canInterest || p.state === 'ALL_RESERVED') && !p.isPreview ? (
         <div className={s.stickyBar} data-action-bar>
           <span className={s.stickyPrice}>{p.priceFromRef ? money(p.priceFromRef) : null}</span>
           <Link href={canInterest ? interestHref : callbackHref} scroll={false} className={buttonClass('primary', 'M')}>
@@ -280,6 +286,7 @@ export default async function ProgramPage({ params }: { params: Params }) {
         render3dNote={settings['legal.render3dNote']}
         illustrationNote={settings['legal.illustrationNote']}
       />
+      </PreviewFrame>
     </article>
   );
 }

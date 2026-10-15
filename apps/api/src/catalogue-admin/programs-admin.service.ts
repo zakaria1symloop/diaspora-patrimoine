@@ -256,6 +256,27 @@ export class ProgramsAdminService {
   }
 
   /** CYC-126 — → ARCHIVED, with its properties not yet archived (marked `programCascadeAt`; pins removed, CTL-150). */
+  /** TRV-052 — « Régénérer l'adresse » of a programme: a new slug from its name; the old one answers 301 (NAV-040). */
+  async regenerateSlug(id: string, actor: Actor): Promise<Program> {
+    const result = await this.prisma.$transaction(async (tx) => {
+      const now = this.clock.now();
+      await tx.$queryRaw`SELECT id FROM programs WHERE id = ${id}::uuid FOR UPDATE`;
+      const p = await tx.program.findFirst({ where: { id, deletedAt: null } });
+      if (!p) throw AppError.notFound();
+      const slug = await uniqueSlug(slugify(p.name), 80, async (s) =>
+        s !== p.slug && Boolean((await tx.program.findFirst({ where: { slug: s, deletedAt: null, id: { not: id } } })) ?? (await tx.slugHistory.findFirst({ where: { entityType: 'PROGRAM', slug: s, entityId: { not: id } } }))),
+      );
+      if (slug === p.slug) return p;
+      await tx.slugHistory.deleteMany({ where: { entityType: 'PROGRAM', entityId: id, slug } });
+      await tx.slugHistory.createMany({ data: [{ id: newId(), entityType: 'PROGRAM', entityId: id, slug: p.slug, createdAt: now, updatedAt: now }], skipDuplicates: true });
+      const updated = await tx.program.update({ where: { id }, data: { slug, version: { increment: 1 }, updatedById: stampBy(actor), updatedAt: now } });
+      await writeAudit(tx, actor, now, { action: 'program.updated', entityType: 'program', entityId: id, entityLabel: p.name, before: { slug: p.slug }, after: { slug } });
+      return updated;
+    });
+    await this.notifier.committed(programTags(id));
+    return result;
+  }
+
   async archive(id: string, actor: Actor): Promise<Program> {
     return this.transition(id, actor, ['DRAFT', 'PUBLISHED'], async (tx, _p, now) => {
       await tx.program.update({ where: { id }, data: { publication: 'ARCHIVED', version: { increment: 1 }, updatedById: stampBy(actor), updatedAt: now } });

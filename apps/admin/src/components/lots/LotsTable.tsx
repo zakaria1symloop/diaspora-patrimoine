@@ -700,3 +700,37 @@ function DeliveredDialog({ lotIds, onClose, onDone }: { lotIds: string[]; onClos
   );
 }
 
+/**
+ * CTL-060 — « Quand un bien ou un programme passe au statut « Livré », l'écran propose de reporter la date sur tous ses
+ * lots »: its lots not yet delivered (none: nothing is proposed), one real date (never future, Q-014), or « Plus tard ».
+ */
+export function PropagateDeliveryDialog({ scope, name, onClose }: { scope: { programId: string } | { propertyId: string }; name: string; onClose: () => void }) {
+  const endpoint = 'programId' in scope ? `/admin/programs/${scope.programId}/lots` : `/admin/properties/${scope.propertyId}/lots`;
+  const [lotIds, setLotIds] = useState<string[] | null>(null);
+  useEffect(() => {
+    void adminCall<LotsResponse>(endpoint).then((r) => {
+      const ids = r.ok ? r.data.data.filter((l) => !l.deliveredAt).map((l) => l.id) : [];
+      if (ids.length === 0) onClose();
+      else setLotIds(ids);
+    });
+  }, [endpoint]); // eslint-disable-line react-hooks/exhaustive-deps
+  const today = new Date().toISOString().slice(0, 10);
+  const [date, setDate] = useState(today);
+  const { pending, failure, errors, run } = useCall();
+  if (!lotIds) return null;
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    const ok = await run(() => adminCall('/admin/lots/mark-delivered', { body: { lotIds, date } }), t('ui.admin-programs.lots.toast.delivered', { n: lotIds!.length }));
+    if (ok !== null) onClose();
+  }
+  return (
+    <Modal open onClose={onClose} title={t('ui.admin-programs.lots.dialog.propagate.title')} closeLabel={t('ui.common.close')}>
+      <form className={f.form} onSubmit={submit} noValidate>
+        <p>{t('ui.admin-programs.lots.dialog.propagate.text', { nom: name, n: lotIds.length })}</p>
+        <FailureBanner failure={failure} />
+        <TextInput label={t('ui.admin-programs.lots.dialog.delivered.date')} type="date" max={today} value={date} onChange={(e) => setDate(e.target.value)} error={errors.date} hint={t('ui.admin-programs.lots.dialog.delivered.hint')} />
+        <DialogButtons close={onClose} closeLabel={t('ui.admin-programs.lots.dialog.propagate.skip')} pending={pending} label={t('ui.admin-programs.lots.dialog.propagate.submit')} disabled={!date} />
+      </form>
+    </Modal>
+  );
+}
