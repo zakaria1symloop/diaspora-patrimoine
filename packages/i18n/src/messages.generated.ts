@@ -4159,6 +4159,7 @@ export const messages = {
     "ui.client.menu.favorites": "Favoris",
     "ui.client.menu.alerts": "Alertes",
     "ui.client.menu.profile": "Profil",
+    "ui.client.menu.appointments": "Rendez-vous",
     "ui.client.tabs.home": "Accueil",
     "ui.client.tabs.dossier": "Dossier",
     "ui.client.tabs.properties": "Biens",
@@ -4515,6 +4516,7 @@ export const messages = {
     "ui.client.properties.answer.replaceSend": "Oui, le remplacer",
     "ui.client.properties.answer.thanks": "Merci, {conseiller} est prévenu.",
     "ui.client.properties.answer.selectCancelled": "Votre choix est annulé.",
+    "ui.client.properties.answer.changed": "Ce bien a changé entre-temps : la page est à jour.",
     "ui.client.interests.title": "Mes intérêts",
     "ui.client.interests.intro": "Les biens qui vous intéressent et les demandes que vous nous avez envoyées.",
     "ui.client.interests.propertiesTitle": "Les biens qui m’intéressent",
@@ -4803,6 +4805,79 @@ export const messages = {
     "ui.client.list.clearSearch": "Effacer la recherche",
     "ui.client.list.shown": "{n} sur {total}",
     "ui.client.list.filter": "Filtrer",
+    "ui.client.appointments.seoTitle": "Rendez-vous",
+    "ui.client.appointments.title": "Rendez-vous",
+    "ui.client.appointments.intro": "Vos visites, visios et appels avec votre conseiller.",
+    "ui.client.appointments.request": "Demander un rendez-vous",
+    "ui.client.appointments.upcoming": "À venir",
+    "ui.client.appointments.past": "Passés",
+    "ui.client.appointments.status.REQUESTED": "Demandé",
+    "ui.client.appointments.status.CONFIRMED": "Confirmé",
+    "ui.client.appointments.status.DONE": "Tenu",
+    "ui.client.appointments.status.NO_SHOW": "Manqué",
+    "ui.client.appointments.status.CANCELLED": "Annulé",
+    "ui.client.appointments.type.PROPERTY_VISIT": "Visite du bien sur place",
+    "ui.client.appointments.type.VISIO": "Visite en visio",
+    "ui.client.appointments.type.CALL": "Appel avec mon conseiller",
+    "ui.client.appointments.type.OFFICE_MEETING": "Rendez-vous à l’agence",
+    "ui.client.appointments.with": "Avec {conseiller}",
+    "ui.client.appointments.about": "Bien : {bien}",
+    "ui.client.appointments.visitor": "Visite faite par {nom}",
+    "ui.client.appointments.place": "Lieu : {lieu}",
+    "ui.client.appointments.host": "Sur place : {nom}",
+    "ui.client.appointments.wishes": "Vos souhaits",
+    "ui.client.appointments.wishLine": "{jour} · {moment}",
+    "ui.client.appointments.pendingConfirm": "{conseiller} vous confirme le créneau.",
+    "ui.client.appointments.time": "{heure} ({zone})",
+    "ui.client.appointments.timeElsewhere": "soit {heure} pour vous",
+    "ui.client.appointments.timeAdvisor": "soit {heure} pour {conseiller}",
+    "ui.client.appointments.cancelledByClient": "Annulé par vous",
+    "ui.client.appointments.cancelledByStaff": "Annulé par {conseiller}",
+    "ui.client.appointments.cancelledBySystem": "Annulé à la clôture de votre dossier",
+    "ui.client.appointments.reason": "Raison : {raison}",
+    "ui.client.appointments.editWishes": "Modifier mes souhaits",
+    "ui.client.appointments.addCalendar": "Ajouter à mon agenda",
+    "ui.client.appointments.join": "Rejoindre la visio",
+    "ui.client.appointments.cancel": "Annuler",
+    "ui.client.appointments.resume": "Reprendre rendez-vous",
+    "ui.client.appointments.cancelTitle": "Annuler votre rendez-vous du {date} ?",
+    "ui.client.appointments.cancelReason": "Une raison ?",
+    "ui.client.appointments.cancelConfirm": "Annuler le rendez-vous",
+    "ui.client.appointments.cancelKeep": "Garder le rendez-vous",
+    "ui.client.appointments.cancelled": "Votre rendez-vous est annulé. {conseiller} est prévenu.",
+    "ui.client.appointments.emptyTitle": "Aucun rendez-vous pour le moment.",
+    "ui.client.appointments.emptyText": "Demandez une visite, une visio ou un appel : votre conseiller vous confirme le créneau.",
+    "ui.client.appointments.emptyOff": "Votre conseiller vous propose un créneau quand c’est utile.",
+    "ui.client.appointments.pastEmpty": "Aucun rendez-vous passé.",
+    "ui.client.appointments.form.title": "Demander un rendez-vous",
+    "ui.client.appointments.form.editTitle": "Modifier mes souhaits",
+    "ui.client.appointments.form.type": "Type de rendez-vous",
+    "ui.client.appointments.form.property": "Le bien",
+    "ui.client.appointments.form.propertyChoose": "Choisissez un bien",
+    "ui.client.appointments.form.noProperty": "Pour une visite, dites d’abord qu’un bien vous intéresse : il apparaîtra ici.",
+    "ui.client.appointments.form.visitor": "Qui fera la visite ?",
+    "ui.client.appointments.form.me": "Moi",
+    "ui.client.appointments.form.other": "Une autre personne",
+    "ui.client.appointments.form.otherHint": "Elle sera ajoutée à vos personnes de confiance.",
+    "ui.client.appointments.form.wishes": "Vos disponibilités",
+    "ui.client.appointments.form.wishesHint": "Un à trois souhaits.",
+    "ui.client.appointments.form.wish": "Souhait {n}",
+    "ui.client.appointments.form.day": "Jour",
+    "ui.client.appointments.form.moment": "Moment",
+    "ui.client.appointments.form.addWish": "Ajouter un autre souhait",
+    "ui.client.appointments.form.removeWish": "Retirer ce souhait",
+    "ui.client.appointments.form.zone": "Créneaux dans votre heure locale ({fuseau}).",
+    "ui.client.appointments.form.note": "Précisions",
+    "ui.client.appointments.form.send": "Envoyer ma demande",
+    "ui.client.appointments.form.save": "Enregistrer mes souhaits",
+    "ui.client.appointments.form.cancel": "Annuler",
+    "ui.client.appointments.form.close": "Fermer",
+    "ui.client.appointments.form.sent": "Votre demande est envoyée. {conseiller} vous confirme le créneau.",
+    "ui.client.appointments.form.saved": "Vos souhaits sont enregistrés.",
+    "ui.client.appointments.form.errors.REQUIRED": "Ce champ est à remplir.",
+    "ui.client.appointments.form.errors.OUT_OF_RANGE": "Choisissez un jour entre demain et dans 60 jours.",
+    "ui.client.appointments.form.errors.APPOINTMENT_PENDING": "Un rendez-vous est déjà demandé ou prévu pour ce bien.",
+    "ui.client.appointments.form.errors.failed": "Votre demande n’a pas pu être envoyée. Réessayez dans un instant.",
     "ui.clientTools.simulations.seoTitle": "Mes simulations",
     "ui.clientTools.simulations.title": "Mes simulations",
     "ui.clientTools.simulations.intro": "Vos simulations enregistrées et les projections que votre conseiller vous a envoyées.",
@@ -11304,6 +11379,79 @@ export type MessageKey =
   | 'ui.client.agreements.marketing.wording'
   | 'ui.client.agreements.transmission.task'
   | 'ui.client.agreements.transmission.withdrawWording'
+  | 'ui.client.appointments.about'
+  | 'ui.client.appointments.addCalendar'
+  | 'ui.client.appointments.cancel'
+  | 'ui.client.appointments.cancelConfirm'
+  | 'ui.client.appointments.cancelKeep'
+  | 'ui.client.appointments.cancelReason'
+  | 'ui.client.appointments.cancelTitle'
+  | 'ui.client.appointments.cancelled'
+  | 'ui.client.appointments.cancelledByClient'
+  | 'ui.client.appointments.cancelledByStaff'
+  | 'ui.client.appointments.cancelledBySystem'
+  | 'ui.client.appointments.editWishes'
+  | 'ui.client.appointments.emptyOff'
+  | 'ui.client.appointments.emptyText'
+  | 'ui.client.appointments.emptyTitle'
+  | 'ui.client.appointments.form.addWish'
+  | 'ui.client.appointments.form.cancel'
+  | 'ui.client.appointments.form.close'
+  | 'ui.client.appointments.form.day'
+  | 'ui.client.appointments.form.editTitle'
+  | 'ui.client.appointments.form.errors.APPOINTMENT_PENDING'
+  | 'ui.client.appointments.form.errors.OUT_OF_RANGE'
+  | 'ui.client.appointments.form.errors.REQUIRED'
+  | 'ui.client.appointments.form.errors.failed'
+  | 'ui.client.appointments.form.me'
+  | 'ui.client.appointments.form.moment'
+  | 'ui.client.appointments.form.noProperty'
+  | 'ui.client.appointments.form.note'
+  | 'ui.client.appointments.form.other'
+  | 'ui.client.appointments.form.otherHint'
+  | 'ui.client.appointments.form.property'
+  | 'ui.client.appointments.form.propertyChoose'
+  | 'ui.client.appointments.form.removeWish'
+  | 'ui.client.appointments.form.save'
+  | 'ui.client.appointments.form.saved'
+  | 'ui.client.appointments.form.send'
+  | 'ui.client.appointments.form.sent'
+  | 'ui.client.appointments.form.title'
+  | 'ui.client.appointments.form.type'
+  | 'ui.client.appointments.form.visitor'
+  | 'ui.client.appointments.form.wish'
+  | 'ui.client.appointments.form.wishes'
+  | 'ui.client.appointments.form.wishesHint'
+  | 'ui.client.appointments.form.zone'
+  | 'ui.client.appointments.host'
+  | 'ui.client.appointments.intro'
+  | 'ui.client.appointments.join'
+  | 'ui.client.appointments.past'
+  | 'ui.client.appointments.pastEmpty'
+  | 'ui.client.appointments.pendingConfirm'
+  | 'ui.client.appointments.place'
+  | 'ui.client.appointments.reason'
+  | 'ui.client.appointments.request'
+  | 'ui.client.appointments.resume'
+  | 'ui.client.appointments.seoTitle'
+  | 'ui.client.appointments.status.CANCELLED'
+  | 'ui.client.appointments.status.CONFIRMED'
+  | 'ui.client.appointments.status.DONE'
+  | 'ui.client.appointments.status.NO_SHOW'
+  | 'ui.client.appointments.status.REQUESTED'
+  | 'ui.client.appointments.time'
+  | 'ui.client.appointments.timeAdvisor'
+  | 'ui.client.appointments.timeElsewhere'
+  | 'ui.client.appointments.title'
+  | 'ui.client.appointments.type.CALL'
+  | 'ui.client.appointments.type.OFFICE_MEETING'
+  | 'ui.client.appointments.type.PROPERTY_VISIT'
+  | 'ui.client.appointments.type.VISIO'
+  | 'ui.client.appointments.upcoming'
+  | 'ui.client.appointments.visitor'
+  | 'ui.client.appointments.wishLine'
+  | 'ui.client.appointments.wishes'
+  | 'ui.client.appointments.with'
   | 'ui.client.banner.LOST'
   | 'ui.client.banner.LOST_team'
   | 'ui.client.banner.ON_HOLD'
@@ -11546,6 +11694,7 @@ export type MessageKey =
   | 'ui.client.list.shown'
   | 'ui.client.list.sort'
   | 'ui.client.menu.alerts'
+  | 'ui.client.menu.appointments'
   | 'ui.client.menu.dashboard'
   | 'ui.client.menu.documents'
   | 'ui.client.menu.dossier'
@@ -11764,6 +11913,7 @@ export type MessageKey =
   | 'ui.client.promise.breachedWritePhoneWhatsapp'
   | 'ui.client.promise.breachedWriteWhatsapp'
   | 'ui.client.properties.answer.cancelSelect'
+  | 'ui.client.properties.answer.changed'
   | 'ui.client.properties.answer.comment'
   | 'ui.client.properties.answer.decline'
   | 'ui.client.properties.answer.declineFollowed'

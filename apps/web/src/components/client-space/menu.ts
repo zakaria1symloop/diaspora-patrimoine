@@ -1,6 +1,7 @@
 // ECL-001, ECL-006, NAV-013 — the menu of the client space: one definition for the side menu (computer), the five tabs
 // and the « Plus » sheet (phone). An entry appears only if what it opens is delivered AND active (ECL-006): entries of
-// screens delivered later (Rendez-vous EC-14: package 3.8; Mes Cafés EC-43, Mon avis EC-54: livraison 5) are absent.
+// screens delivered later (Mes Cafés EC-43, Mon avis EC-54: livraison 5) are absent. « Rendez-vous » (EC-14, packages
+// 3.8 and A.8) shows when the client has an appointment or may ask for one (INT-044).
 // To plug a page: add (or un-hide) its entry here, with the spec's address — nothing else in the shell changes.
 import type { IconName } from '@dp/ui';
 import type { MessageKey } from '@dp/i18n';
@@ -8,7 +9,7 @@ import type { ClientSpaceSummary } from '@dp/contracts';
 
 export interface MenuContext {
   summary: ClientSpaceSummary;
-  features: { favorites: boolean; searchAlerts: boolean; cafe: boolean; callback: boolean };
+  features: { favorites: boolean; searchAlerts: boolean; cafe: boolean; callback: boolean; clientAppointments: boolean };
 }
 
 export interface MenuEntry {
@@ -77,6 +78,14 @@ export const SPACE_MENU: MenuEntry[] = [
     visible: always,
     badge: (c) => c.summary.badges.proposals,
   },
+  {
+    key: 'appointments',
+    label: 'ui.client.menu.appointments',
+    icon: 'calendar',
+    href: () => `${SPACE_ROOT}/rendez-vous`,
+    match: /^\/espace-client\/rendez-vous(\/|$)/,
+    visible: (c) => c.features.clientAppointments || c.summary.hasAppointments,
+  },
   // D-096 — « Messages » from the first delivery of the space: before the messaging, its page is the form of MSG-021.
   { key: 'messages', label: 'ui.client.menu.messages', icon: 'chat', href: () => `${SPACE_ROOT}/messages`, match: /^\/espace-client\/messages(\/|$)/, visible: always },
   // Package 2.9 (EC-40), built in parallel.
@@ -124,11 +133,11 @@ export const PHONE_TABS: PhoneTab[] = [
     badge: (c) => c.summary.badges.proposals,
   },
   { key: 'messages', label: 'ui.client.tabs.messages', icon: 'chat', href: () => `${SPACE_ROOT}/messages`, match: /^\/espace-client\/messages(\/|$)/ },
-  { key: 'more', label: 'ui.client.tabs.more', icon: 'menu', href: null, match: /^\/espace-client\/(simulations|favoris|alertes|profil)(\/|$)/ },
+  { key: 'more', label: 'ui.client.tabs.more', icon: 'menu', href: null, match: /^\/espace-client\/(rendez-vous|simulations|favoris|alertes|profil)(\/|$)/ },
 ];
 
 /** Entries listed in « Plus »: the side menu's others, in their order, with their badges (profile comes last). */
-export const MORE_KEYS = ['simulations', 'favorites', 'alerts'];
+export const MORE_KEYS = ['appointments', 'simulations', 'favorites', 'alerts'];
 
 export function visibleMenu(ctx: MenuContext): MenuEntry[] {
   return SPACE_MENU.filter((e) => e.visible(ctx)).map((e) => ({ ...e, children: e.children?.filter((c) => c.visible(ctx)) }));

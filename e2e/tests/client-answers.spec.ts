@@ -1,5 +1,5 @@
 // Review of 14/10/2026 (D-108). EC-12, EC-13 — the client answers the properties of his dossier from his space
-// (INT-004, INT-010, INT-020, INT-021, INT-030, INT-031; « Demander une visite » through its fallback, ECL-006). The
+// (INT-004, INT-010, INT-020, INT-021, INT-030, INT-031; « Demander une visite » opens the request, INT-040). The
 // dossier is the demonstration's followed dossier (`demo -- --suivi-pour=`, PAR-082): qualified, properties proposed
 // and sent, all written by the use cases of the back office — never by the test. And FIC-054: « Demande
 // envoyée » on a property page belongs to the account that sent it.
@@ -94,10 +94,11 @@ test('INT-010, INT-020, INT-021, INT-030, INT-031, INT-004, ECL-006 — the clie
   await drop.getByRole('button', { name: 'Envoyer ma réponse' }).click();
   await expect(mine).toHaveCount(0, { timeout: 15_000 });
 
-  // ECL-006 — « Demander une visite »: until the visit request is delivered, the message to the advisor, prefilled
+  // INT-004, INT-040 — « Demander une visite » opens the request on that property (package A.8; its own journey:
+  // client-appointments.spec.ts).
   await other.getByRole('link', { name: /^Demander une visite/ }).click();
-  await expect(page).toHaveURL(/\/espace-client\/messages\?.*depuis=PROPERTY_VISIT/);
-  await expect(page.getByRole('textbox', { name: /Votre message/ })).toHaveValue(new RegExp(`^Je souhaite visiter ${second!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\(réf\\. `));
+  await expect(page).toHaveURL(/\/espace-client\/rendez-vous\?demande=/);
+  await expect(page.getByRole('button', { name: 'Envoyer ma demande' })).toBeVisible();
 
   await page.goto('/espace-client/biens-proposes');
   await expect(card(page, first!)).toHaveAttribute('data-candidate', 'DECLINED', { timeout: 30_000 });

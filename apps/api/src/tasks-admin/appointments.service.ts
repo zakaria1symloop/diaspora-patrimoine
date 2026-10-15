@@ -20,6 +20,8 @@ import {
   appointmentRescheduleSchema,
   appointmentUpdateSchema,
   clientAppointmentCancelSchema,
+  clientAppointmentRequestSchema,
+  clientAppointmentWishesSchema,
   grantOf,
   type Agenda,
   type AppointmentClientPick,
@@ -442,7 +444,9 @@ export class AppointmentsService {
       if (a.status !== 'REQUESTED') throw AppError.conflictState('TRANSITION_NOT_ALLOWED');
       const startsAt = zonedInstant(input.date, input.time, input.zone);
       const endsAt = new Date(startsAt.getTime() + input.durationMinutes * 60_000);
-      await tx.appointment.update({ where: { id }, data: { status: 'CONFIRMED', startsAt, endsAt, staffUserId: a.staffUserId ?? auth.userId, locationText: input.location ?? a.locationText, meetingUrl: input.meetingUrl ?? a.meetingUrl, clientNotifiedAt: a.clientNotifiedAt ?? now, version: { increment: 1 }, updatedById: stampBy(auth.actor), updatedAt: now } });
+      // TRV-031 — a visit or a meeting on site is held in the place's time: the zone chosen for it is the place's.
+      const onSite = a.type === 'PROPERTY_VISIT' || a.type === 'OFFICE_MEETING';
+      await tx.appointment.update({ where: { id }, data: { status: 'CONFIRMED', startsAt, endsAt, placeTimezone: onSite ? input.zone : a.placeTimezone, staffUserId: a.staffUserId ?? auth.userId, locationText: input.location ?? a.locationText, meetingUrl: input.meetingUrl ?? a.meetingUrl, clientNotifiedAt: a.clientNotifiedAt ?? now, version: { increment: 1 }, updatedById: stampBy(auth.actor), updatedAt: now } });
       await writeAudit(tx, auth.actor, now, { action: 'appointment.updated', entityType: 'appointment', entityId: id, before: { status: a.status }, after: { status: 'CONFIRMED', startsAt }, clientId: a.clientId, dossierId: a.dossierId });
       if (a.candidateId) await applyVisitEffect(tx, { candidateId: a.candidateId, effect: 'PLANNED', actor: auth.actor, now });
       await this.emit(tx, a, 'appointment.confirmed', auth.actor, now, { notifyClient: true });
@@ -456,7 +460,7 @@ export class AppointmentsService {
       if (a.status !== 'CONFIRMED') throw AppError.conflictState('TRANSITION_NOT_ALLOWED');
       const startsAt = zonedInstant(input.date, input.time, input.zone);
       const duration = input.durationMinutes ?? (a.startsAt && a.endsAt ? Math.round((a.endsAt.getTime() - a.startsAt.getTime()) / 60_000) : 30);
-      await tx.appointment.update({ where: { id }, data: { startsAt, endsAt: new Date(startsAt.getTime() + duration * 60_000), reminderSentAt: null, version: { increment: 1 }, updatedById: stampBy(auth.actor), updatedAt: now } });
+      await tx.appointment.update({ where: { id }, data: { startsAt, endsAt: new Date(startsAt.getTime() + duration * 60_000), ...(a.type === 'PROPERTY_VISIT' || a.type === 'OFFICE_MEETING' ? { placeTimezone: input.zone } : {}), reminderSentAt: null, version: { increment: 1 }, updatedById: stampBy(auth.actor), updatedAt: now } });
       await writeAudit(tx, auth.actor, now, { action: 'appointment.updated', entityType: 'appointment', entityId: id, before: { startsAt: a.startsAt }, after: { startsAt }, clientId: a.clientId, dossierId: a.dossierId });
       await this.emit(tx, a, 'appointment.rescheduled', auth.actor, now, { notifyClient: a.clientNotifiedAt !== null });
     });
@@ -541,6 +545,7 @@ export class AppointmentsService {
       host: a.hostName ? { name: a.hostName, phone: a.hostPhone } : null,
       visitor: a.onBehalfContact?.fullName ?? null,
       requestedSlots: Array.isArray(a.requestedSlots) ? (a.requestedSlots as { date: string; slot: string }[]) : [],
+      note: a.clientNote,
       cancelledBy: a.cancelledBy,
       // INT-041 — the reason, when it was given to the client (the word of a refusal, a cancellation by the client).
       cancelReason: a.status === 'CANCELLED' && a.cancelledBy !== 'SYSTEM' ? a.cancelReason : null,
@@ -576,6 +581,106 @@ export class AppointmentsService {
       if (a.dossierId) await signalHoldActivity(tx, this.outbox, { dossierId: a.dossierId, what: 'APPOINTMENT', now });
     });
     this.dispatcher.wake();
+    const row = await this.prisma.appointment.findUniqueOrThrow({ where: { id }, include: INCLUDE });
+    return this.clientItem(row, now);
+  }
+
+  /** INT-040 — the wishes are from tomorrow to 60 days, in the client's own zone. */
+  private checkWishes(slots: { date: string }[], timeZone: string, now: Date): void {
+    const plus = (days: number) => localDay(new Date(now.getTime() + days * DAY), timeZone);
+    const first = plus(1);
+    const last = plus(60);
+    slots.forEach((w, i) => {
+      if (w.date < first || w.date > last) throw AppError.validation([{ field: `slots.${i}.date`, code: 'OUT_OF_RANGE' }]);
+    });
+  }
+
+  /**
+   * `POST /client/appointments` — INT-040, CYC-080 (package A.8): an appointment `REQUESTED` with the client's wishes; the
+   * client follows it by e-mail from now on (`clientNotifiedAt`); a visit moves the property to `VISIT_REQUESTED`; the
+   * event `appointment.requested` gives the adviser the task « Confirmer le rendez-vous demandé » (`R_APPOINTMENT_CONFIRM`).
+   */
+  async clientRequest(auth: AuthContext, body: unknown): Promise<ClientAppointment> {
+    const input = parseOrThrow(clientAppointmentRequestSchema, body);
+    if (!auth.clientId) throw AppError.notFound();
+    const now = this.clock.now();
+    const client = await this.prisma.client.findFirst({ where: { id: auth.clientId, deletedAt: null }, select: { id: true, timezone: true, assignedAgentId: true } });
+    if (!client) throw AppError.notFound();
+    const cal = await this.calendar.load();
+    const timeZone = client.timezone ?? cal.timeZone;
+    this.checkWishes(input.slots, timeZone, now);
+    let dossierId: string | null = null;
+    let propertyId: string | null = null;
+    let staffUserId: string | null = client.assignedAgentId;
+    if (input.candidateId) {
+      // CYC-070 — a visit is asked from « Intérêt envoyé » or « Visité », on a property of an open dossier of his.
+      const c = await this.prisma.dossierCandidate.findFirst({
+        where: { id: input.candidateId, dossier: { clientId: client.id, deletedAt: null, status: { in: ['OPEN', 'ON_HOLD'] } } },
+        select: { status: true, propertyId: true, dossierId: true, dossier: { select: { assignedAgentId: true } } },
+      });
+      if (!c) throw AppError.validation([{ field: 'candidateId', code: 'INVALID_CHOICE' }]);
+      // A request or a visit already on its way for this property: say so before anything else.
+      const pending = await this.prisma.appointment.count({ where: { candidateId: input.candidateId, status: { in: ['REQUESTED', 'CONFIRMED'] }, OR: [{ startsAt: null }, { startsAt: { gt: now } }] } });
+      if (pending > 0) throw AppError.conflictState('APPOINTMENT_PENDING');
+      if (c.status !== 'INTERESTED' && c.status !== 'VISITED') throw AppError.conflictState('TRANSITION_NOT_ALLOWED');
+      dossierId = c.dossierId;
+      propertyId = c.propertyId;
+      staffUserId = c.dossier.assignedAgentId ?? staffUserId;
+    } else {
+      const d = await this.prisma.dossier.findFirst({ where: { clientId: client.id, deletedAt: null, status: { in: ['OPEN', 'ON_HOLD'] } }, orderBy: { updatedAt: 'desc' }, select: { id: true, assignedAgentId: true } });
+      dossierId = d?.id ?? null;
+      staffUserId = d?.assignedAgentId ?? staffUserId;
+    }
+    if (input.onBehalfContactId && !(await this.prisma.clientContact.findFirst({ where: { id: input.onBehalfContactId, clientId: client.id }, select: { id: true } }))) {
+      throw AppError.validation([{ field: 'onBehalfContactId', code: 'INVALID_CHOICE' }]);
+    }
+    const id = newId();
+    await this.prisma.$transaction(async (tx) => {
+      const a = await tx.appointment.create({
+        data: {
+          id,
+          type: input.type,
+          status: 'REQUESTED',
+          clientId: client.id,
+          dossierId,
+          candidateId: input.candidateId,
+          propertyId,
+          staffUserId,
+          requestedSlots: input.slots as never,
+          timezone: timeZone,
+          clientNotifiedAt: now,
+          onBehalfContactId: input.onBehalfContactId,
+          clientNote: input.note,
+          createdAt: now,
+          updatedAt: now,
+        },
+      });
+      await writeAudit(tx, auth.actor, now, { action: 'appointment.created', entityType: 'appointment', entityId: id, after: { type: input.type, status: 'REQUESTED', wishes: input.slots.length, by: 'CLIENT' }, clientId: client.id, dossierId });
+      if (input.candidateId) await applyVisitEffect(tx, { candidateId: input.candidateId, effect: 'REQUESTED', actor: auth.actor, now });
+      if (dossierId) {
+        await touchDossier(tx, dossierId, now);
+        await signalHoldActivity(tx, this.outbox, { dossierId, what: 'APPOINTMENT', now });
+      }
+      await this.emit(tx, a, 'appointment.requested', auth.actor, now, { by: 'CLIENT' });
+    }, { timeout: 30_000 });
+    this.dispatcher.wake();
+    const row = await this.prisma.appointment.findUniqueOrThrow({ where: { id }, include: INCLUDE });
+    return this.clientItem(row, now);
+  }
+
+  /** `PATCH /client/appointments/{id}` — INT-041 « Modifier mes souhaits », while the appointment is `REQUESTED`. */
+  async clientUpdateWishes(auth: AuthContext, id: string, body: unknown): Promise<ClientAppointment> {
+    const input = parseOrThrow(clientAppointmentWishesSchema, body);
+    if (!auth.clientId || !UUID.test(id)) throw AppError.notFound();
+    const now = this.clock.now();
+    await this.prisma.$transaction(async (tx) => {
+      const a = await tx.appointment.findFirst({ where: { id, clientId: auth.clientId! }, select: { id: true, status: true, timezone: true, clientId: true, dossierId: true } });
+      if (!a) throw AppError.notFound();
+      if (a.status !== 'REQUESTED') throw AppError.conflictState('TRANSITION_NOT_ALLOWED');
+      this.checkWishes(input.slots, a.timezone, now);
+      await tx.appointment.update({ where: { id }, data: { requestedSlots: input.slots as never, clientNote: input.note, version: { increment: 1 }, updatedAt: now } });
+      await writeAudit(tx, auth.actor, now, { action: 'appointment.updated', entityType: 'appointment', entityId: id, after: { wishes: input.slots.length, by: 'CLIENT' }, clientId: a.clientId, dossierId: a.dossierId });
+    });
     const row = await this.prisma.appointment.findUniqueOrThrow({ where: { id }, include: INCLUDE });
     return this.clientItem(row, now);
   }

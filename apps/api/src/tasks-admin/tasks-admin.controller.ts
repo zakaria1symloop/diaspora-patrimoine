@@ -4,6 +4,8 @@ import { Body, Controller, Get, HttpCode, Inject, Param, ParseUUIDPipe, Patch, P
 import type { Response } from 'express';
 import { ClientAccess, CurrentAuth, RequirePermission } from '../identity/access.js';
 import type { AuthContext } from '../identity/sessions.service.js';
+import { ErrorCode } from '@dp/contracts';
+import { AppError } from '../platform/errors.js';
 import { SettingsService } from '../platform/settings.service.js';
 import { AppointmentsService } from './appointments.service.js';
 import { TasksAdminService } from './tasks-admin.service.js';
@@ -70,7 +72,7 @@ export class AppointmentsAdminController {
   correct(@CurrentAuth() auth: AuthContext, @Param('id', uuid) id: string, @Body() body: unknown) { return this.appointments.correct(auth, id, body); }
 }
 
-/** EC-14 — the client's appointments (INT-041 … INT-044); the request by the client (INT-040) is package A.8. */
+/** EC-14 — the client's appointments (INT-040 … INT-044); the request by the client (INT-040) is package A.8. */
 @Controller('client/appointments')
 @ClientAccess()
 export class ClientAppointmentsController {
@@ -81,6 +83,14 @@ export class ClientAppointmentsController {
 
   @Get()
   list(@CurrentAuth() auth: AuthContext) { return this.appointments.clientList(auth); }
+  /** A.8 — INT-040 « Demander un rendez-vous », only while `features.clientAppointments` is on. */
+  @Post()
+  async request(@CurrentAuth() auth: AuthContext, @Body() body: unknown) {
+    if (!(await this.settings.get('features.clientAppointments'))) throw new AppError(ErrorCode.FORBIDDEN);
+    return this.appointments.clientRequest(auth, body);
+  }
+  @Patch(':id')
+  wishes(@CurrentAuth() auth: AuthContext, @Param('id', uuid) id: string, @Body() body: unknown) { return this.appointments.clientUpdateWishes(auth, id, body); }
   @Post(':id/cancel') @HttpCode(200)
   cancel(@CurrentAuth() auth: AuthContext, @Param('id', uuid) id: string, @Body() body: unknown) { return this.appointments.clientCancel(auth, id, body); }
   @Get(':id/calendar')

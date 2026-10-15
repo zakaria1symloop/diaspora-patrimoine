@@ -69,6 +69,13 @@
 | ☐ | EC-51 Sécurité · EC-53 Mes accords | Sections côte à côte ; « Lire le texte » en action secondaire avec icône ; « Donner mon accord » en bouton ; « Mes données » devient une section avec « Écrire à mon conseiller ». | PRO-051, D-099 | 11/10/2026 |
 | ☐ | Composants de l'espace (nouveaux) | `Encouragement` (4 tons : en route, réussi, calme, à vous), `StatTile`, `Figures`, `FilterChips` (pastille avec compteur), `SearchBox`, `SortSelect`, `SidePanel`, `PageSkeleton` (5 formes), `StepDots`, `Progress`, action secondaire « quiet ». | DSN-050, D-099 | 11/10/2026 |
 
+### Espace client — rendez-vous demandés par le client (A.8, 15/10/2026)
+
+| État | Écran | Changement | Règle | Depuis |
+|---|---|---|---|---|
+| ☐ | EC-14 Rendez-vous (1440 et 390) | Page complète : « À venir » et « Passés » côte à côte ; carte d'un rendez-vous (pastille d'icône, statut, type, date et heure du lieu puis celle du client, conseiller, bien, lieu, visiteur ; souhaits d'une demande ; actions « Modifier mes souhaits », « Ajouter à mon agenda », « Rejoindre la visio », « Annuler »). Panneau à droite « Demander un rendez-vous » : type en pastilles, bien, « Qui fera la visite ? », un à trois souhaits (jour + moment), précisions. État vide. Entrée de menu « Rendez-vous » (calendrier). | INT-040 à INT-044 | 15/10/2026 |
+| ☐ | EC-12 Mes intérêts | « Demander une visite » ouvre ce panneau sur le bien (au lieu d'« Écrire à mon conseiller » prérempli, qui reste le repli quand la fonction est coupée). | INT-004, INT-040 | 15/10/2026 |
+
 ## Back-office
 
 | État | Écran | Changement | Règle | Depuis |

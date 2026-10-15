@@ -55,6 +55,8 @@ export interface ClientSpaceSummary {
     /** ECL-001 — proposals not opened yet (EC-13). */
     proposals: number;
   };
+  /** INT-044 — the « Rendez-vous » entry shows when the client has at least one appointment (or the request is on). */
+  hasAppointments: boolean;
 }
 
 // ─── People ──────────────────────────────────────────────────────────────────

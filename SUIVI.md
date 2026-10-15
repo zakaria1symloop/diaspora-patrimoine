@@ -7,7 +7,7 @@
 >
 > **Comment l'écrire.** Court, daté (AAAA-MM-JJ), au présent. On n'efface pas le journal : on ajoute en haut.
 
-Dernière mise à jour : **2026-10-14** — Amrani-Mahdi01 (session Claude).
+Dernière mise à jour : **2026-10-15** — Zakaria (session Claude, paquets).
 
 ---
 
@@ -68,7 +68,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | 3.2 Demandes · 3.3 Clients | ⬜ | Les **services** d'écriture du catalogue et des Cafés existent déjà côté API (`catalogue-admin/`, `events-admin/`, routes `/admin/…` protégées) : il reste leurs écrans. |
 | 3.4 Promoteurs · 3.5 Programmes, biens, lots · 3.6 Médias, import | 🟡 | Écrans EA-40 à EA-47, EA-50, EA-51 et leurs routes (API-100) : programmes, biens, lots (table modifiable, prix en nombre, doublons, livraison), complétude, publication, mise en avant (CTL-150), éligibilité (CTL-130), à proximité (CTL-140), chantier (CTL-145), médias (CTL-080 à CTL-084, PDF et 360°), import CSV/XLSX avec contrôle à blanc (CTL-100 à CTL-102), promoteurs (CTL-001 à CTL-005, CTL-007 ; suspension annoncée puis « Les republier »), autres partenaires (CTL-170), candidatures (ACP-084), veille `partner.scan` (AUT-073, AUT-079). **Reste** : « Régénérer l'adresse » (TRV-052) et « Aperçu » par lien signé (FIC-120) des programmes et des biens ; placement par clic sur la carte (CTL-021, Q-094 : latitude et longitude en attendant) ; proposition de reporter une nouvelle date de livraison sur les lots (textes prêts, fenêtre non branchée) ; « Signaler une erreur » sur une fiche et sa tâche (DEM-018, `R_LISTING_ERROR`) ; livraison dépassée (AUT-074, `R_DELIVERY_OVERDUE`) et programme entièrement vendu (AUT-078, `R_PROGRAM_SOLD_OUT`) ; archivage automatique des biens vendus (CYC-123) ; « Écrire au promoteur » (CTL-006, à brancher sur la fenêtre d'e-mail manuel du paquet 3.2) ; plans PDF sur la fiche publique (Q-095) ; entrée de règle `R_LOT_IMPORT_CONFLICT` (la tâche est créée par un gestionnaire système en attendant le paquet 4.4). |
 | 3.7 Dossier | ✅ | Création (PIP-015), liste EA-21, fiche EA-22 (frise, « Ce qu'il manque », aperçu, biens envisagés et panneau « Proposer des biens », échanges, historique), qualification avec complément de la fiche (CYC-021, CRM-050), rapprochement et propositions (PIP-031), réponses du client côté API (EC-12, EC-13 : `/client/candidates/{id}/…`), bien retenu et lot visé (EC-11 `…/property`), pause, reprise, clôture, réouverture, recul, suppression, changement de conseiller ; règles AUT-043 ; e-mails `C_PROPOSAL_*`, `C_ADVISOR_CHANGED`, `C_DOSSIER_*`. **Limite** : avancée jusqu'à « Mise en relation » (Q-078). **Reste** : boutons de réponse dans l'espace client (voir § 3, note de l'agent 7). |
-| 3.8 Tâches et rendez-vous | ✅ | EA-30 Tâches (vues, groupes, terminer/annuler, reporter, réaffecter, actions groupées, détail à droite, compteur du menu), EA-31 Agenda (jour, semaine, mois, liste, superposition, créneau → rendez-vous ou tâche, panneau à droite), fenêtre de rendez-vous (fuseaux, avertissements, accueil sur place TAC-045), onglet Tâches du dossier ; tâches automatiques et fermetures (AUT-032, AUT-035), AUT-051, résumé du matin (AUT-070), `R_EMAIL_BOUNCED` (sans émetteur, Q-082) ; routes client `GET /client/appointments`, `…/cancel`, `…/calendar`. **Reste** : la page « Mes rendez-vous » de l'espace client (EC-14). |
+| 3.8 Tâches et rendez-vous | ✅ | EA-30 Tâches (vues, groupes, terminer/annuler, reporter, réaffecter, actions groupées, détail à droite, compteur du menu), EA-31 Agenda (jour, semaine, mois, liste, superposition, créneau → rendez-vous ou tâche, panneau à droite), fenêtre de rendez-vous (fuseaux, avertissements, accueil sur place TAC-045), onglet Tâches du dossier ; tâches automatiques et fermetures (AUT-032, AUT-035), AUT-051, résumé du matin (AUT-070), `R_EMAIL_BOUNCED` (sans émetteur, Q-082) ; routes client `GET /client/appointments`, `…/cancel`, `…/calendar`. La page « Rendez-vous » de l'espace client (EC-14) et la demande de rendez-vous (A.8) : le 15/10/2026. |
 | Lot 4 (GED, pipeline, banques) · Lot 5 (communication) · Lot 6 (ouverture) | ⬜ | |
 
 ## 3. En cours — qui fait quoi
@@ -90,6 +90,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Amrani-Mahdi01 (Claude) | DEM-022 : un client connecté envoie ses demandes depuis son compte (coordonnées non redemandées, rattachement par la session, pas par l'e-mail saisi) — formulaires de demande et inscription au Café | `apps/api/src/leads/`, `apps/api/src/events/cafe-registration*`, `apps/api/src/client-space/` (`/client/me`), `packages/contracts/src/auth.ts`, `apps/web/src/components/forms/`, `apps/web/src/components/cafe/CafeRegistration.tsx`, `apps/web/src/components/simulators/ResultActions.tsx`, `apps/web/src/components/assistant/GuidedResults.tsx`, `packages/i18n/messages/fr/lead.json`, `e2e/tests/` | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/demandes-client-connecte` (part de `retours/site-public-recette-octobre-2026`), D-106 |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 13/10/2026 (`docs/retours-site-2026-10-13.md`, D-107) : e-mail « autre espace » à l’inscription, double envoi, liste de choix, messages retrouvés, âge minimum, profil non enregistré, fenêtres, simulateur, « Mon espace », menus du back-office | `apps/api/src/identity/signup.service.ts`, `apps/api/src/install/auth-email-templates.ts`, `apps/api/src/client-space/properties.service.ts`, `packages/contracts` (`client-space`, `errors`), `packages/ui` (`Overlays`), `apps/web/src/lib` (`auth-client`, `public-form`), `apps/web/src/components` (`layout/Header`, `vitrine/Dropdown`, `forms/QueryDialog`, `simulators`, `client-space`), `apps/web/src/app/espace-client/messages`, `apps/admin/src/lib/admin-client.ts`, `e2e/tests/public-review-3.spec.ts`, `Specs/` (D-107) | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/recette-2026-10-13` (part de `retours/demandes-client-connecte`) |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 14/10/2026 (six parcours joués, D-108) : réponses du client sur un bien dans son espace (« Ce bien m’intéresse », « Ce bien ne me convient pas », « Je retiens ce bien », « Annuler mon choix », « Demander une visite », « Ce bien ne m’intéresse plus », « Finalement, il m’intéresse ») ; demande au back-office lisible (recherche guidée) ; « Situation professionnelle » ; « Demande envoyée » par compte ; « votre conseiller » en minuscule | `packages/contracts/src/client-space.ts`, `apps/api/src/client-space/` (`properties.service.ts`, module), `apps/api/src/dossiers-admin/dossier-rules.ts`, `apps/api/src/back-office/` (`leads-admin.service.ts`, `staff-view.ts`), `apps/admin/src/components/leads/lead-parts.tsx`, `apps/web/src/components/client-space/` (`properties/`, `texts.ts`, `dashboard/blocks.tsx`, `profile/AgreementsPanel.tsx`), `apps/web/src/app/espace-client/`, `apps/web/src/components/forms/InterestDialog.tsx`, `packages/i18n/messages/fr/` (`client`, `admin-leads`, `admin-clients`, `admin-client-merge`), `apps/api/test/`, `e2e/tests/client-answers.spec.ts`, `Specs/` (D-108) | 2026-10-14 | **terminé** le 2026-10-14 — branche `retours/recette-2026-10-14` (part de `retours/recette-2026-10-13`) |
+| Zakaria (Claude, paquets) | A.8 Rendez-vous demandés par le client ; puis 3.2 · 3.3 et la fin du Lot 3, dans l'ordre du plan | `apps/api/src/tasks-admin/` (routes client des rendez-vous), `apps/web/src/app/espace-client/rendez-vous/`, `apps/web/src/components/client-space/appointments/`, `menu.ts`, `layout.tsx` de l'espace client, `packages/contracts` (`admin-tasks`, `client-space` : `hasAppointments`), `packages/i18n/messages/fr/client.json` (`appointments.*`), `e2e/tests/client-appointments.spec.ts` | 2026-10-15 | A.8 fait (branche `paquet/A.8-rendez-vous-client`) ; 3.2 · 3.3 ensuite |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -140,6 +141,27 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-15 — Zakaria (Claude, paquets) · paquet A.8, rendez-vous demandés par le client
+
+- **Répartition décidée par Zakaria le 15/10/2026** : Amrani-Mahdi01 traite les retours de recette (branches
+  `retours/*`) ; la session « paquets » de Zakaria construit les paquets du plan dans l'ordre (fin du Lot 3 : 3.2, 3.3,
+  restes de 3.4 à 3.6 ; puis Lot 4, 4.1 à 4.7 ; puis Lot 5). Une branche par paquet, partie de la branche à jour, ses
+  dossiers inscrits au § 3 avant de commencer. **Rien n'est déployé sur la recette tant que tout n'est pas vérifié en
+  local** (décision de Zakaria).
+- **Paquet A.8** (EC-14 complet, INT-040 à INT-044, CYC-080) — branche `paquet/A.8-rendez-vous-client`, partie de
+  `retours/recette-2026-10-14` (D-108) : `POST` et `PATCH /client/appointments` (`tasks-admin`, si
+  `features.clientAppointments`), page `/espace-client/rendez-vous` (liste, souhaits, confirmation lue dans le fuseau
+  du lieu, `.ics`, annulation, demande dans un panneau à droite), entrée de menu (INT-044). La règle
+  `R_APPOINTMENT_CONFIRM` donne la tâche au conseiller (vérifié). Les boutons de réponse sont ceux de D-108 ; seul
+  « Demander une visite » change de destination : la demande de rendez-vous sur ce bien (le repli d'ECL-006 reste quand
+  la fonction est coupée). Touché chez Amrani, petit : `CandidateCard.tsx` (lien de la visite) et
+  `e2e/tests/client-answers.spec.ts` (la visite mène désormais à la demande).
+- **Défaut corrigé** (TRV-031) : la confirmation ou le report d'une visite ne gardait pas le fuseau du lieu.
+- Tests : `e2e/tests/client-appointments.spec.ts` (vert) ; `client-answers.spec.ts` et `client-space.spec.ts` verts ;
+  API : 454 verts — 1 rouge déjà présent depuis le 11/10 (`identity.test.ts`, SEC-030 : la méthode privée
+  `CatalogueAdminController.once` est prise pour une route ; à corriger dans le paquet 3.5). Specs : API-100, Q-077,
+  plan § 5, journal du README ; vérificateur vert. Figma : deux lignes ☐.
 
 ### 2026-10-14 — Amrani-Mahdi01 (Claude) · retour de recette du 14/10/2026 (D-108)
 
