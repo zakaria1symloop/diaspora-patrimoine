@@ -109,10 +109,11 @@ export class SpaceService {
         })
       : [];
     const ids = dossiers.map((d) => d.id);
-    const [unread, docs, proposals] = await Promise.all([
+    const [unread, docs, proposals, appointments] = await Promise.all([
       this.notifications.unreadCount(auth.userId),
       ids.length ? this.prisma.dossierDocument.groupBy({ by: ['dossierId'], where: { dossierId: { in: ids }, isInternal: false }, _count: { _all: true } }) : Promise.resolve([]),
       ids.length ? this.prisma.dossierCandidate.count({ where: { dossierId: { in: ids }, origin: 'ADVISOR_PROPOSAL', sentAt: { not: null }, viewedAt: null, status: 'PROPOSED' } }) : Promise.resolve(0),
+      auth.clientId ? this.prisma.appointment.count({ where: { clientId: auth.clientId } }) : Promise.resolve(0),
     ]);
     const withDocs = new Set(docs.map((d) => d.dossierId));
     const shown = dossiers.find((d) => LIVE.includes(d.status)) ?? dossiers.find((d) => d.status === 'WON') ?? null;
@@ -133,6 +134,7 @@ export class SpaceService {
       })),
       shownDossierReference: shown?.reference ?? null,
       badges: { proposals },
+      hasAppointments: appointments > 0,
     };
   }
 

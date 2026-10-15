@@ -7,8 +7,9 @@
 // « Biens proposés », « Ce bien m'intéresse » (main) and « Ce bien ne me convient pas » while the property waits for
 // an answer (INT-010, INT-020), then « Finalement, il m'intéresse » once declined (INT-021); on « Mes intérêts »,
 // « Je retiens ce bien » (INT-030), « Annuler mon choix » (INT-031), « Demander une visite », « Ce bien ne m'intéresse
-// plus », « Finalement, il m'intéresse ». « Demander une visite » opens « Écrire à mon conseiller » prefilled with
-// « Je souhaite visiter {bien} (réf. {référence}). » while the request of INT-040 is not delivered (ECL-006, D-108);
+// plus », « Finalement, il m'intéresse ». « Demander une visite » opens the request of INT-040 on that property
+// (« Rendez-vous », package A.8) while `features.clientAppointments` is on; otherwise « Écrire à mon conseiller »
+// prefilled with « Je souhaite visiter {bien} (réf. {référence}). » (ECL-006, D-108);
 // « Écrire à mon conseiller » is always there (« Au sujet de {bien} (réf. {référence}) : »). A property no longer
 // online unfolds in place into its summary — never an error page. Opening a proposal marks it viewed (INT-011).
 import Link from 'next/link';
@@ -134,7 +135,9 @@ export function CandidateCard({ card, context, index = 0 }: { card: Card; contex
   // INT-010 — a proposal waiting for an answer: answering is the main action, « Voir le bien » stays in text.
   const answerFirst = context === 'proposals' && (card.status === 'PROPOSED' || card.status === 'VIEWED') && can.interested;
   const writeHref = writeToAdvisorHref({ from: 'PROPERTY_ABOUT', property: { reference: p.reference, title: p.title }, dossier: card.dossierReference });
-  const visitHref = writeToAdvisorHref({ from: 'PROPERTY_VISIT', property: { reference: p.reference, title: p.title }, dossier: card.dossierReference });
+  const visitHref = settings.features.clientAppointments
+    ? `/espace-client/rendez-vous?demande=${card.id}`
+    : writeToAdvisorHref({ from: 'PROPERTY_VISIT', property: { reference: p.reference, title: p.title }, dossier: card.dossierReference });
   const followedHere = context === 'interests' && ['INTERESTED', 'VISIT_REQUESTED', 'VISIT_PLANNED', 'VISITED'].includes(card.status);
 
   return (

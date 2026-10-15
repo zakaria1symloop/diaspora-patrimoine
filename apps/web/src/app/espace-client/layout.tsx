@@ -54,7 +54,7 @@ export default async function ClientSpaceLayout({ children }: { children: ReactN
     workdays: settings['business.calendar.workdays'],
     illustrationNote: settings['legal.illustrationNote'],
     render3dNote: settings['legal.render3dNote'],
-    features: { favorites: settings['features.favorites'], searchAlerts: settings['features.searchAlerts'], cafe: settings['features.cafe'], callback: settings['features.callbackRequest'] },
+    features: { favorites: settings['features.favorites'], searchAlerts: settings['features.searchAlerts'], cafe: settings['features.cafe'], callback: settings['features.callbackRequest'], clientAppointments: settings['features.clientAppointments'] },
   };
   return (
     <DiscoveryProvider flags={{ favorites: settings['features.favorites'], alerts: settings['features.searchAlerts'] }}>

@@ -29,7 +29,8 @@
     "simulations": "Simulations",
     "favorites": "Favoris",
     "alerts": "Alertes",
-    "profile": "Profil"
+    "profile": "Profil",
+    "appointments": "Rendez-vous"
   },
   "tabs": {
     "home": "Accueil",
@@ -502,7 +503,8 @@
       "replace": "Vous aviez indiqué {bien}. Le remplacer ?",
       "replaceSend": "Oui, le remplacer",
       "thanks": "Merci, {conseiller} est prévenu.",
-      "selectCancelled": "Votre choix est annulé."
+      "selectCancelled": "Votre choix est annulé.",
+      "changed": "Ce bien a changé entre-temps : la page est à jour."
     }
   },
   "interests": {
@@ -864,5 +866,88 @@
     "clearSearch": "Effacer la recherche",
     "shown": "{n} sur {total}",
     "filter": "Filtrer"
+  },
+  "appointments": {
+    "seoTitle": "Rendez-vous",
+    "title": "Rendez-vous",
+    "intro": "Vos visites, visios et appels avec votre conseiller.",
+    "request": "Demander un rendez-vous",
+    "upcoming": "À venir",
+    "past": "Passés",
+    "status": {
+      "REQUESTED": "Demandé",
+      "CONFIRMED": "Confirmé",
+      "DONE": "Tenu",
+      "NO_SHOW": "Manqué",
+      "CANCELLED": "Annulé"
+    },
+    "type": {
+      "PROPERTY_VISIT": "Visite du bien sur place",
+      "VISIO": "Visite en visio",
+      "CALL": "Appel avec mon conseiller",
+      "OFFICE_MEETING": "Rendez-vous à l’agence"
+    },
+    "with": "Avec {conseiller}",
+    "about": "Bien : {bien}",
+    "visitor": "Visite faite par {nom}",
+    "place": "Lieu : {lieu}",
+    "host": "Sur place : {nom}",
+    "wishes": "Vos souhaits",
+    "wishLine": "{jour} · {moment}",
+    "pendingConfirm": "{conseiller} vous confirme le créneau.",
+    "time": "{heure} ({zone})",
+    "timeElsewhere": "soit {heure} pour vous",
+    "timeAdvisor": "soit {heure} pour {conseiller}",
+    "cancelledByClient": "Annulé par vous",
+    "cancelledByStaff": "Annulé par {conseiller}",
+    "cancelledBySystem": "Annulé à la clôture de votre dossier",
+    "reason": "Raison : {raison}",
+    "editWishes": "Modifier mes souhaits",
+    "addCalendar": "Ajouter à mon agenda",
+    "join": "Rejoindre la visio",
+    "cancel": "Annuler",
+    "resume": "Reprendre rendez-vous",
+    "cancelTitle": "Annuler votre rendez-vous du {date} ?",
+    "cancelReason": "Une raison ?",
+    "cancelConfirm": "Annuler le rendez-vous",
+    "cancelKeep": "Garder le rendez-vous",
+    "cancelled": "Votre rendez-vous est annulé. {conseiller} est prévenu.",
+    "emptyTitle": "Aucun rendez-vous pour le moment.",
+    "emptyText": "Demandez une visite, une visio ou un appel : votre conseiller vous confirme le créneau.",
+    "emptyOff": "Votre conseiller vous propose un créneau quand c’est utile.",
+    "pastEmpty": "Aucun rendez-vous passé.",
+    "form": {
+      "title": "Demander un rendez-vous",
+      "editTitle": "Modifier mes souhaits",
+      "type": "Type de rendez-vous",
+      "property": "Le bien",
+      "propertyChoose": "Choisissez un bien",
+      "noProperty": "Pour une visite, dites d’abord qu’un bien vous intéresse : il apparaîtra ici.",
+      "visitor": "Qui fera la visite ?",
+      "me": "Moi",
+      "other": "Une autre personne",
+      "otherHint": "Elle sera ajoutée à vos personnes de confiance.",
+      "wishes": "Vos disponibilités",
+      "wishesHint": "Un à trois souhaits.",
+      "wish": "Souhait {n}",
+      "day": "Jour",
+      "moment": "Moment",
+      "addWish": "Ajouter un autre souhait",
+      "removeWish": "Retirer ce souhait",
+      "zone": "Créneaux dans votre heure locale ({fuseau}).",
+      "note": "Précisions",
+      "send": "Envoyer ma demande",
+      "save": "Enregistrer mes souhaits",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "sent": "Votre demande est envoyée. {conseiller} vous confirme le créneau.",
+      "saved": "Vos souhaits sont enregistrés.",
+      "errors": {
+        "REQUIRED": "Ce champ est à remplir.",
+        "OUT_OF_RANGE": "Choisissez un jour entre demain et dans 60 jours.",
+        "APPOINTMENT_PENDING": "Un rendez-vous est déjà demandé ou prévu pour ce bien.",
+        "failed": "Votre demande n’a pas pu être envoyée. Réessayez dans un instant."
+      }
+    }
   }
 }

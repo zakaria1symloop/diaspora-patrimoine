@@ -356,6 +356,8 @@ export interface ClientAppointment {
   host: { name: string; phone: string | null } | null;
   visitor: string | null;
   requestedSlots: { date: string; slot: string }[];
+  /** INT-040 « Précisions » — the client's own words. */
+  note: string | null;
   cancelledBy: 'CLIENT' | 'STAFF' | 'SYSTEM' | null;
   cancelReason: string | null;
   /** INT-042 — until the start time. */
@@ -368,3 +370,34 @@ export interface ClientAppointments {
   past: ClientAppointment[];
 }
 export const clientAppointmentCancelSchema = z.strictObject({ reason: z.preprocess(blankNull, z.string().trim().max(300).nullable()).default(null) });
+
+// ─── A.8 — the client asks for an appointment (INT-040, CYC-080) ──────────
+
+/** INT-040 — « Vos disponibilités »: one to three wishes, each a day (tomorrow to 60 days, checked by the API in the client's zone) and a moment. */
+export const appointmentWishesSchema = z
+  .array(z.strictObject({ date: z.iso.date({ error: 'INVALID_DATE' }), slot: z.enum(['MORNING', 'NOON', 'AFTERNOON', 'EVENING', 'ANYTIME'], { error: 'REQUIRED' }) }))
+  .min(1, { error: 'REQUIRED' })
+  .max(3, { error: 'TOO_MANY' });
+const clientNoteSchema = z.preprocess(blankNull, z.string().trim().max(1000, { error: 'TOO_LONG' }).nullable()).default(null);
+
+/**
+ * `POST /client/appointments` — « Demander un rendez-vous » (`features.clientAppointments`). A visit on site or by video
+ * is about a property of one of the client's dossiers (`candidateId`); « Qui fera la visite ? » is the client himself
+ * (`onBehalfContactId` null) or one of his trusted people (PRO-040 — « Une autre personne » is added to the profile first).
+ */
+export const clientAppointmentRequestSchema = z
+  .strictObject({
+    type: z.enum(['PROPERTY_VISIT', 'VISIO', 'CALL'], { error: 'REQUIRED' }),
+    candidateId: z.uuid().nullable().default(null),
+    onBehalfContactId: z.uuid().nullable().default(null),
+    slots: appointmentWishesSchema,
+    note: clientNoteSchema,
+  })
+  .superRefine((v, ctx) => {
+    if (v.type !== 'CALL' && !v.candidateId) ctx.addIssue({ code: 'custom', path: ['candidateId'], message: 'REQUIRED' });
+    if (v.type !== 'PROPERTY_VISIT' && v.onBehalfContactId) ctx.addIssue({ code: 'custom', path: ['onBehalfContactId'], message: 'INVALID_CHOICE' });
+  });
+export type ClientAppointmentRequest = z.input<typeof clientAppointmentRequestSchema>;
+/** `PATCH /client/appointments/{id}` — INT-041 « Modifier mes souhaits » while the appointment is still `REQUESTED`. */
+export const clientAppointmentWishesSchema = z.strictObject({ slots: appointmentWishesSchema, note: clientNoteSchema });
+export type ClientAppointmentWishes = z.input<typeof clientAppointmentWishesSchema>;

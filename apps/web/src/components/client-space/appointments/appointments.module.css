@@ -1,0 +1,270 @@
+/* EC-14 — « Rendez-vous » (INT-040 … INT-044). D-099: the whole width, two columns on a large screen. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--sp-32);
+  align-items: start;
+}
+@media (max-width: 75rem) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+:global([data-simple]) .columns {
+  grid-template-columns: minmax(0, 1fr);
+}
+.group {
+  min-width: 0;
+}
+.none {
+  margin: var(--sp-8) 0 0;
+  color: var(--bo-texte-doux);
+}
+.list {
+  display: grid;
+  gap: var(--sp-16);
+  margin: var(--sp-12) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ─── One appointment ──────────────────────────────────────────────────── */
+.card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-16);
+  padding: var(--sp-20);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--radius-l);
+  background: var(--bo-fond-blanc);
+  box-shadow: var(--shadow-s);
+}
+.cardConfirmed {
+  border-color: var(--bo-ligne-bleue);
+  box-shadow: var(--shadow-m);
+}
+.date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+}
+.cardConfirmed .date {
+  background: var(--bo-fond-bleu-nuit);
+  color: var(--bo-texte-blanc);
+}
+.body {
+  display: grid;
+  gap: var(--sp-10);
+  min-width: 0;
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8) var(--sp-12);
+}
+.type {
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.when {
+  margin: 0;
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body-l);
+  color: var(--bo-texte-encre);
+}
+.when strong {
+  font-weight: 700;
+}
+.other {
+  color: var(--bo-texte-doux);
+}
+.wishes {
+  padding: var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ciel-pale);
+}
+.wishes ul {
+  margin: var(--sp-4) 0 0;
+  padding-inline-start: var(--sp-20);
+}
+.wishes li::first-letter {
+  text-transform: uppercase;
+}
+.wishesTitle {
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.pending {
+  margin: var(--sp-8) 0 0;
+  color: var(--bo-texte-roi);
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6) var(--sp-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--bo-texte-encre);
+}
+.facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+}
+.facts svg {
+  color: var(--bo-texte-or);
+}
+.cancelled {
+  margin: 0;
+  color: var(--bo-texte-doux);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-8);
+  padding-block-start: var(--sp-12);
+  border-block-start: 1px solid var(--bo-ligne-douce);
+}
+.actions:empty {
+  display: none;
+}
+
+/* ─── The request panel (INT-040) ──────────────────────────────────────── */
+.form {
+  display: grid;
+  gap: var(--sp-20);
+}
+.formLead {
+  margin: 0;
+  font-weight: 700;
+  color: var(--bo-texte-nuit);
+}
+.legend {
+  margin-block-end: var(--sp-8);
+  padding: 0;
+  font-weight: 600;
+  color: var(--bo-texte-nuit);
+}
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.choices .legend {
+  width: 100%;
+}
+.choice {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-height: 2.75rem;
+  padding: var(--sp-8) var(--sp-16);
+  border: 1px solid var(--bo-ligne-bleue);
+  border-radius: var(--radius-pill);
+  background: var(--bo-fond-blanc);
+  color: var(--bo-texte-encre);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out);
+}
+.choice input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.choice:has(input:focus-visible) {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.choice:hover {
+  border-color: var(--bo-texte-roi);
+}
+.choiceOn {
+  border-color: var(--bo-texte-roi);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+}
+.other {
+  display: grid;
+  gap: var(--sp-12);
+  padding: var(--sp-16);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-gris);
+}
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-8);
+  margin: 0;
+  padding: var(--sp-10) var(--sp-12);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-ciel-pale);
+  color: var(--bo-texte-encre);
+}
+.hint svg {
+  flex: none;
+  color: var(--bo-texte-roi);
+}
+.hintText {
+  margin: 0;
+  color: var(--bo-texte-doux);
+  font-size: var(--fs-body-s);
+}
+.wishesForm {
+  display: grid;
+  gap: var(--sp-12);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.wishRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-8) var(--sp-12);
+  align-items: end;
+  padding: var(--sp-12);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--radius-m);
+}
+.wishLabel {
+  grid-column: 1 / -1;
+  font-weight: 600;
+  color: var(--bo-texte-roi);
+}
+.wishRow > button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+@media (max-width: 30rem) {
+  .wishRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.formError {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin: 0;
+  color: var(--bo-texte-erreur);
+}
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+}

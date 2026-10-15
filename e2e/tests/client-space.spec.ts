@@ -30,7 +30,8 @@ test.describe('client space', () => {
       const menu = page.getByRole('navigation', { name: 'Menu de mon espace' });
       for (const name of ['Tableau de bord', 'Mes intérêts', 'Biens proposés', 'Messages', 'Simulations', 'Profil']) await expect(menu.getByRole('link', { name })).toBeVisible();
       await expect(menu.getByRole('link', { name: 'Mon dossier' })).toHaveCount(0); // no dossier yet
-      await expect(menu.getByRole('link', { name: 'Rendez-vous' })).toHaveCount(0);
+      // INT-044 — « Rendez-vous » shows while the client may ask for one (`features.clientAppointments`, A.8), even before a first appointment.
+      await expect(menu.getByRole('link', { name: 'Rendez-vous' })).toBeVisible();
     }
 
     // MSG-021, MSG-017 — opened from a property button: the start of the message is prefilled, nothing leaves alone.

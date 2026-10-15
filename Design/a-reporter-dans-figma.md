@@ -101,6 +101,10 @@
 | ☐ | EP-05 / EP-04 en aperçu | Bandeau collant bleu nuit « Aperçu : cette fiche n’est pas en ligne. » (œil) ; boutons et champs grisés ; ni barre d’action collante ni lien « Signaler une erreur ». | FIC-120 | 15/10/2026 |
 | ☐ | EA-41 / EA-43 Fiche programme et bien, « ⋯ » | « Aperçu sur le site » (œil, fiche non publiée) ; « Régénérer l’adresse » (globe) et sa fenêtre de confirmation (l’ancienne adresse redirige). | FIC-120, TRV-052 | 15/10/2026 |
 | ☐ | EA-41 / EA-43 section Livraison | Après « Livré » enregistré : fenêtre « Reporter la date de livraison sur les lots ? » (date réelle, « Reporter sur les lots » / « Plus tard ») quand des lots ne sont pas encore livrés. | CTL-060 | 15/10/2026 |
+### Espace client — rendez-vous demandés par le client (A.8, 15/10/2026)
+
+| ☐ | EC-14 Rendez-vous (1440 et 390) | Page complète : « À venir » et « Passés » côte à côte ; carte d'un rendez-vous (pastille d'icône, statut, type, date et heure du lieu puis celle du client, conseiller, bien, lieu, visiteur ; souhaits d'une demande ; actions « Modifier mes souhaits », « Ajouter à mon agenda », « Rejoindre la visio », « Annuler »). Panneau à droite « Demander un rendez-vous » : type en pastilles, bien, « Qui fera la visite ? », un à trois souhaits (jour + moment), précisions. État vide. Entrée de menu « Rendez-vous » (calendrier). | INT-040 à INT-044 | 15/10/2026 |
+| ☐ | EC-12 Mes intérêts | « Demander une visite » ouvre ce panneau sur le bien (au lieu d'« Écrire à mon conseiller » prérempli, qui reste le repli quand la fonction est coupée). | INT-004, INT-040 | 15/10/2026 |
 
 ## Back-office
 
