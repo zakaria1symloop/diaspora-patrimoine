@@ -143,6 +143,20 @@ Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de b
 
 ## 7. Journal (le plus récent en haut)
 
+### 2026-10-15 — Zakaria (Claude, paquets) · version de recette sur Vercel
+
+- Demande de Zakaria : « upload to Vercel in completely new branch ». Branche `recette/vercel-2026-10-15` (A.8, 3.2, 3.3,
+  restes de 3.4 à 3.6, sur les retours D-108 d'Amrani-Mahdi01) ; `main` n'est pas touchée.
+- Site et back-office sur Vercel : https://dp-patrimoine-site.vercel.app (porte d'attente : mot de passe chez Zakaria) et
+  https://dp-patrimoine-admin.vercel.app — projets `dp-patrimoine-site`, `dp-patrimoine-admin` (racine `apps/web`,
+  `apps/admin` ; paquets partagés construits avant l'application).
+- L'API ne tourne pas sur Vercel (NestJS, PostgreSQL, tâches planifiées) : instance À PART sur le VPS,
+  `/opt/diaspora-patrimoine-vercel` (processus `dp-vercel-api`, base `diaspora_vercel`, secrets neufs),
+  https://api.vercel.patrimoine.72-60-190-211.sslip.io. La recette existante (`/opt/diaspora-patrimoine`, branche `main`)
+  ne change pas. Comptes et commandes de mise à jour : `.local/vercel-accounts.json` (hors dépôt).
+- `pnpm-workspace.yaml` : `'@embedded-postgres/linux-x64': false` (serveurs Linux). Vérifié de bout en bout : première
+  connexion du back-office, inscription, vérification, espace client, page « Rendez-vous ».
+
 ### 2026-10-15 — Zakaria (Claude, paquets) · restes des paquets 3.4 à 3.6 (catalogue)
 
 - Branche `paquet/3.4-3.6-restes`, partie de `paquet/3.3-clients` (fusion dans l'ordre : 3.2, 3.3, puis celle-ci).
