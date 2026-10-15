@@ -1010,6 +1010,14 @@ export const messages = {
     "ui.admin-dossiers.toast.proposed": "{n, plural, one {# bien envoyé au client.} other {# biens envoyés au client.}}",
     "ui.admin-dossiers.toast.proposedNoEmail": "{n, plural, one {# bien proposé. Sans e-mail : une tâche vous rappelle de le présenter.} other {# biens proposés. Sans e-mail : une tâche vous rappelle de les présenter.}}",
     "ui.admin-dossiers.toast.drafted": "{n, plural, =0 {Rien d’ajouté : ces biens sont déjà au dossier.} one {# bien en préparation.} other {# biens en préparation.}}",
+    "ui.admin-exchanges.partner.slotsToAgree": "à convenir",
+    "ui.admin-exchanges.partner.programLots": "{programme} : {n} lots disponibles sur {total}",
+    "ui.admin-exchanges.partner.noProgram": "aucun programme en ligne pour l’instant",
+    "ui.admin-exchanges.partner.to": "Contact",
+    "ui.admin-exchanges.partner.cc": "En copie",
+    "ui.admin-exchanges.partner.noCc": "Personne",
+    "ui.admin-exchanges.partner.noContact": "Ce promoteur n’a aucun contact avec une adresse e-mail : ajoutez-en un dans l’onglet Contacts.",
+    "ui.admin-exchanges.partner.button": "Écrire au promoteur",
     "ui.admin-exchanges.files.label": "Pièces jointes",
     "ui.admin-exchanges.files.hint": "PDF, JPG, PNG, Word ou Excel — {n} fichiers et {mb} Mo au total. Une pièce du dossier ne se joint pas.",
     "ui.admin-exchanges.files.add": "Joindre un fichier",
@@ -6902,6 +6910,13 @@ export const messages = {
     "ui.property.similar.seeRegion": "Voir les {n, plural, one {# bien} other {# biens}} à {region}",
     "ui.property.footer.line": "Réf. {reference} · Publié le {publie} · Mis à jour le {maj}",
     "ui.property.footer.report": "Signaler une erreur sur cette fiche",
+    "ui.property.report.title": "Signaler une erreur sur cette fiche",
+    "ui.property.report.kind": "Qu’est-ce qui est inexact ?",
+    "ui.property.report.choose": "Choisir",
+    "ui.property.report.comment": "Précisez",
+    "ui.property.report.email": "Votre e-mail, si vous souhaitez une réponse",
+    "ui.property.report.submit": "Envoyer",
+    "ui.property.report.thanks": "Merci. Nous vérifions cette fiche.",
     "ui.property.price.from": "À partir de",
     "ui.property.price.approx": "≈ {prix}",
     "ui.property.price.native": "{prix}",
@@ -8278,6 +8293,14 @@ export type MessageKey =
   | 'ui.admin-exchanges.files.tooMany'
   | 'ui.admin-exchanges.notification.suppressed'
   | 'ui.admin-exchanges.openWhatsapp'
+  | 'ui.admin-exchanges.partner.button'
+  | 'ui.admin-exchanges.partner.cc'
+  | 'ui.admin-exchanges.partner.noCc'
+  | 'ui.admin-exchanges.partner.noContact'
+  | 'ui.admin-exchanges.partner.noProgram'
+  | 'ui.admin-exchanges.partner.programLots'
+  | 'ui.admin-exchanges.partner.slotsToAgree'
+  | 'ui.admin-exchanges.partner.to'
   | 'ui.admin-exchanges.received.body'
   | 'ui.admin-exchanges.received.intro'
   | 'ui.admin-exchanges.received.subject'
@@ -14142,6 +14165,13 @@ export type MessageKey =
   | 'ui.property.promoter.see'
   | 'ui.property.promoter.selected'
   | 'ui.property.promoter.title'
+  | 'ui.property.report.choose'
+  | 'ui.property.report.comment'
+  | 'ui.property.report.email'
+  | 'ui.property.report.kind'
+  | 'ui.property.report.submit'
+  | 'ui.property.report.thanks'
+  | 'ui.property.report.title'
   | 'ui.property.seo.share'
   | 'ui.property.seo.title'
   | 'ui.property.seo.titleFrom'

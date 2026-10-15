@@ -1168,3 +1168,33 @@ a.planCard:active {
     padding: 0;
   }
 }
+
+/* FIC-055, DEM-018 — « Signaler une erreur sur cette fiche »: a quiet text link in the footer, and its window */
+.reportLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bo-texte-doux);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.reportLink:hover {
+  color: var(--bo-texte-roi);
+}
+.reportForm {
+  display: grid;
+  gap: var(--sp-16);
+}
+.reportActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sp-8);
+}
+.reportDone {
+  display: grid;
+  gap: var(--sp-16);
+  justify-items: start;
+}

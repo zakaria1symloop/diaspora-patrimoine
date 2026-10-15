@@ -435,3 +435,16 @@ export const preferredChannelToContactChannel = {
   WHATSAPP: ContactChannel.WHATSAPP,
   EMAIL: ContactChannel.EMAIL,
 } as const;
+
+/** DEM-018 — « Signaler une erreur sur une fiche » (`POST /public/listing-reports`): no client record is created. */
+export const LISTING_ERROR_KINDS = ['PRICE', 'SURFACE', 'PHOTOS', 'LOCATION', 'AVAILABILITY', 'OTHER'] as const;
+export const listingReportSchema = z.strictObject({
+  propertyId: z.uuid({ error: 'REQUIRED' }),
+  kind: z.enum(LISTING_ERROR_KINDS, { error: 'REQUIRED' }),
+  comment: z
+    .string({ error: 'REQUIRED' })
+    .transform((s) => s.trim())
+    .pipe(z.string().min(10, { error: 'TOO_SHORT' }).max(1000, { error: 'TOO_LONG' })),
+  email: z.preprocess((v) => (typeof v === 'string' && v.trim() === '' ? null : v), z.email({ error: 'INVALID_EMAIL' }).nullable()).default(null),
+});
+export type ListingReport = z.input<typeof listingReportSchema>;

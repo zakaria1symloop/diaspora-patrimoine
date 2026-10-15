@@ -5,6 +5,7 @@ import { BackOfficeModule } from '../back-office/back-office.module.js';
 import { FilesModule } from '../files/files.module.js';
 import { CatalogueAdminController } from './catalogue-admin.controller.js';
 import { CatalogueCaches } from './catalogue-caches.js';
+import { CatalogueNightly } from './catalogue-nightly.js';
 import { CatalogueMediaService } from './catalogue-media.service.js';
 import { CatalogueReferenceController, CatalogueReferenceService } from './catalogue-reference.js';
 import { CatalogueTimelineController } from './catalogue-timeline.controller.js';
@@ -29,6 +30,7 @@ import { PropertyPublication } from './property-publication.js';
     CatalogueMediaService,
     CatalogueTimelineService,
     CatalogueReferenceService,
+    CatalogueNightly,
   ],
   controllers: [CatalogueAdminController, CatalogueTimelineController, CatalogueReferenceController],
   exports: [WebRevalidator, ChangeNotifier, CatalogueCaches, PropertyPublication, PartnersAdminService, ProgramsAdminService, PropertiesAdminService, LotsAdminService, CatalogueMediaService, CatalogueReferenceService, CatalogueTimelineService],

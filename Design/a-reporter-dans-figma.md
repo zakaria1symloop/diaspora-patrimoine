@@ -90,6 +90,15 @@
 | ☐ | Avis « Cette fiche a été modifiée… » (fiche client, sections du catalogue, fenêtres du dossier, tâche) | Bandeau d'avertissement commun : prénom et heure de l'auteur, « Recharger », « Copier mes changements » (devient « Changements copiés »). | TRV-094 | 15/10/2026 |
 | ☐ | EC-* en aperçu « Voir comme le client » | Tous les boutons et champs de la page sont inactifs (grisés) ; les liens restent ouverts. | ROL-017, ECL-004 | 15/10/2026 |
 
+## Catalogue — restes des paquets 3.4 à 3.6 (15/10/2026)
+
+| État | Écran | Changement | Règle | Depuis |
+|---|---|---|---|---|
+| ☐ | EP-05 Fiche bien, pied de fiche | Lien texte discret « Signaler une erreur sur cette fiche » après « Réf. … · Publié le … ». Fenêtre : « Qu’est-ce qui est inexact ? » (liste), « Précisez » (compteur 0 / 1000), « Votre e-mail, si vous souhaitez une réponse (facultatif) », « Annuler » / « Envoyer » ; remerciement « Merci. Nous vérifions cette fiche. » et « Fermer ». | FIC-055, DEM-018 | 15/10/2026 |
+| ☐ | EA-40 Fiche promoteur, en-tête | Bouton secondaire « Écrire au promoteur » (enveloppe) avant l’action principale. | CTL-006 | 15/10/2026 |
+| ☐ | EA-22 Dossier, onglet Échanges | Bouton « Écrire au promoteur » dans la barre d’ajout rapide quand le bien retenu a un promoteur. | CTL-006 | 15/10/2026 |
+| ☐ | Fenêtre « Écrire un e-mail », vers un promoteur | À la place de « À : » : deux listes côte à côte « Contact » (nom · adresse) et « En copie » (« Personne » par défaut) ; modèles « Demande d’option », « Demande de visite », « Vérification des disponibilités », « Message libre ». | CTL-006, COM-020 | 15/10/2026 |
+
 ## Back-office
 
 | État | Écran | Changement | Règle | Depuis |

@@ -68,15 +68,16 @@ async function formToken(form: string): Promise<string | null> {
 }
 
 /** One instance per opened form. */
-export function usePublicForm(form: string, options: { headers?: Record<string, string> } = {}) {
+export function usePublicForm(form: string, options: { headers?: Record<string, string>; /** false: a route that checks no form token (DEM-018). */ token?: boolean } = {}) {
   const extraHeaders = useRef(options.headers);
   const key = useRef<string>('');
   const token = useRef<Promise<string | null> | null>(null);
   if (!key.current) key.current = typeof crypto !== 'undefined' ? newKey() : '';
 
+  const withToken = options.token !== false;
   useEffect(() => {
-    token.current = formToken(form);
-  }, [form]);
+    token.current = withToken ? formToken(form) : null;
+  }, [form, withToken]);
 
   // D-107 — a second submission while the first is on its way (double click, Enter twice) is not sent: it gets the
   // first one's answer (the server would replay it anyway under the same Idempotency-Key, or answer 409 meanwhile).
@@ -101,7 +102,7 @@ export function usePublicForm(form: string, options: { headers?: Record<string, 
       try {
         res = await send(await (token.current ?? Promise.resolve(null)));
         // DEM-040 — expired form token (410): ask for a new one silently and replay once.
-        if (res.status === 410 && !url.endsWith('/complete')) {
+        if (res.status === 410 && withToken && !url.endsWith('/complete')) {
           token.current = formToken(form);
           res = await send(await token.current);
         }
@@ -120,7 +121,7 @@ export function usePublicForm(form: string, options: { headers?: Record<string, 
         retryAfter: Number(res.headers.get('Retry-After') ?? '') || undefined,
       };
     },
-    [form],
+    [form, withToken],
   );
 
   const submit = useCallback(

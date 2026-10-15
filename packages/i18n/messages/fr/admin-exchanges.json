@@ -1,4 +1,14 @@
 {
+  "partner": {
+    "slotsToAgree": "à convenir",
+    "programLots": "{programme} : {n} lots disponibles sur {total}",
+    "noProgram": "aucun programme en ligne pour l’instant",
+    "to": "Contact",
+    "cc": "En copie",
+    "noCc": "Personne",
+    "noContact": "Ce promoteur n’a aucun contact avec une adresse e-mail : ajoutez-en un dans l’onglet Contacts.",
+    "button": "Écrire au promoteur"
+  },
   "files": {
     "label": "Pièces jointes",
     "hint": "PDF, JPG, PNG, Word ou Excel — {n} fichiers et {mb} Mo au total. Une pièce du dossier ne se joint pas.",

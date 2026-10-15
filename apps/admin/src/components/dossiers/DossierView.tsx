@@ -17,6 +17,7 @@ import { t } from '@/lib/i18n';
 import { CLIENT_STATUS_TONE, DOSSIER_STATUS_TONE } from '@/lib/tones';
 import { AppointmentDialog } from '../agenda/AppointmentDialog';
 import { ExchangeActions } from '../exchanges/ExchangeActions';
+import { EmailComposer } from '../exchanges/EmailComposer';
 import { DetailPage } from '../shell/detail/DetailPage';
 import { Facts, Surface } from '../shell/Page';
 import { signalShellChanged, useShell } from '../shell/ShellContext';
@@ -40,6 +41,8 @@ export function DossierView({ initial, tab, webUrl }: { initial: DossierDetail; 
   const [dialog, setDialog] = useState<DossierDialog>(null);
   // the timeline reads itself: a new key makes it read again after an exchange noted from here (CRM-030)
   const [timelineKey, setTimelineKey] = useState(0);
+  // CTL-006 — « Écrire au promoteur » of the retained property, from the dossier
+  const [writingPromoter, setWritingPromoter] = useState(false);
   const [taskOpen, setTaskOpen] = useState(false);
   const [appointmentOpen, setAppointmentOpen] = useState(false);
   const [pending, setPending] = useState(false);
@@ -216,6 +219,11 @@ export function DossierView({ initial, tab, webUrl }: { initial: DossierDetail; 
                     void reload();
                   }}
                 />
+                {d.property?.promoterId && can('email.send') ? (
+                  <Button variant="secondary" size="S" icon="mail" onClick={() => setWritingPromoter(true)}>
+                    {t('ui.admin-exchanges.partner.button')}
+                  </Button>
+                ) : null}
                 {d.can.createTask ? (
                   <Button variant="secondary" size="S" onClick={() => setTaskOpen(true)}>
                     <Icon name="check" size={16} />
@@ -235,6 +243,17 @@ export function DossierView({ initial, tab, webUrl }: { initial: DossierDetail; 
         {tab === 'taches' ? <DossierTasks dossierId={d.id} dossierReference={d.reference} clientId={d.client.id} readOnly={finished} onChange={() => void reload()} /> : null}
         {tab === 'historique' ? <HistoryTab dossier={d} /> : null}
       </DetailPage>
+      {d.property?.promoterId ? (
+        <EmailComposer
+          open={writingPromoter}
+          target={{ promoterId: d.property.promoterId, dossierId: d.id, personName: d.property.promoterName }}
+          close={() => setWritingPromoter(false)}
+          done={() => {
+            setWritingPromoter(false);
+            setTimelineKey((k) => k + 1);
+          }}
+        />
+      ) : null}
       <DossierDialogs dialog={dialog} dossier={d} close={() => setDialog(null)} done={done} deleted={() => router.push('/dossiers')} />
       <TaskDialog open={taskOpen} onClose={() => setTaskOpen(false)} onDone={() => (setTaskOpen(false), void reload())} links={{ dossierId: d.id, clientId: d.client.id, label: t('ui.admin-dossiers.linkLabel', { reference: d.reference }) }} />
       <AppointmentDialog open={appointmentOpen} onClose={() => setAppointmentOpen(false)} onDone={() => (setAppointmentOpen(false), void reload())} preset={{ clientId: d.client.id, clientName: d.client.name, dossierId: d.id }} />

@@ -149,8 +149,12 @@ export interface EmailTemplateOption {
 export interface EmailComposeContext {
   /** Why the window cannot open: no address (MOD-302), or a person whose data were erased. Null: it opens. */
   blocked: 'NO_ADDRESS' | 'ERASED' | null;
-  /** The recipient, never editable: the client, or the applicant of a partner request. */
-  recipient: { address: string; name: string | null; firstName: string | null; kind: 'CLIENT' | 'APPLICANT' } | null;
+  /** The recipient, never editable: the client, the applicant of a partner request, or the promoter's contact chosen. */
+  recipient: { address: string; name: string | null; firstName: string | null; kind: 'CLIENT' | 'APPLICANT' | 'PARTNER' } | null;
+  /** CTL-006 — a promoter's contacts that have an address (the recipient is one; another may be put in copy); else null. */
+  contacts: { id: string; name: string; email: string; isPrimary: boolean }[] | null;
+  /** The contact the recipient is (CTL-006). */
+  contactId: string | null;
   warnings: EmailWarning[];
   templates: EmailTemplateOption[];
   /** COM-021 — « {Prénom N.} — {fonction} », then the lines of the adviser's signature (BO-070). */
@@ -171,8 +175,17 @@ const bodySchema = z
   .pipe(z.string().min(1, { error: 'REQUIRED', abort: true }).max(MANUAL_EMAIL_BODY_MAX, { error: 'TOO_LONG' }));
 const templateCodeSchema = z.string({ error: 'REQUIRED' }).regex(/^[A-Z][A-Z0-9_]{2,59}$/, { error: 'INVALID_CHOICE' });
 
+/**
+ * COM-020, CTL-006 — an e-mail may also go to a promoter's contact: `promoterId` (from his record, or from a dossier of
+ * his: `dossierId` too), the contact chosen (`contactId`, else his main contact) and a second contact in copy.
+ */
+const emailTargetShape = { ...targetShape, promoterId: optionalId, contactId: optionalId, ccContactId: optionalId };
+const requireEmailTarget = (v: { leadId: string | null; clientId: string | null; dossierId: string | null; promoterId: string | null }, ctx: z.RefinementCtx) => {
+  if (!v.leadId && !v.clientId && !v.dossierId && !v.promoterId) ctx.addIssue({ code: 'custom', path: ['clientId'], message: 'REQUIRED' });
+};
+
 const emailContent = {
-  ...targetShape,
+  ...emailTargetShape,
   templateCode: templateCodeSchema,
   /** Empty while typing a preview; required to send. */
   subject: z.string().max(400).default(''),
@@ -182,7 +195,7 @@ const emailContent = {
 };
 
 /** `POST /admin/emails/preview` — the e-mail in its real layout (COM-020 « aperçu »). */
-export const emailPreviewSchema = z.strictObject(emailContent).superRefine(requireTarget);
+export const emailPreviewSchema = z.strictObject(emailContent).superRefine(requireEmailTarget);
 export interface EmailPreview {
   subject: string;
   html: string;
@@ -200,7 +213,7 @@ export const emailSendSchema = z
     /** COM-020 « Pièces jointes » — uploads completed by the author (API-080); never a file of a dossier (NOT-008). */
     attachmentIds: attachmentIdsSchema,
   })
-  .superRefine(requireTarget);
+  .superRefine(requireEmailTarget);
 export type EmailSend = z.input<typeof emailSendSchema>;
 
 export interface EmailSendResult {

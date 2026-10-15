@@ -40,7 +40,9 @@ export function checkSchema<S extends z.ZodType>(schema: S, value: unknown): { o
     if (errors[field]) continue;
     const known = hasMessage(`ui.validation.${issue.message}`) || issue.message === 'WEAK_PASSWORD';
     const code = known ? issue.message : issue.code === 'too_big' ? 'TOO_LONG' : 'REQUIRED';
-    errors[field] = fieldMessage({ code, params: issue.code === 'too_big' ? { n: Number(issue.maximum) } : null });
+    // TRV-064 — the limit the sentence names (« {n} caractères au plus / au minimum »)
+    const params = issue.code === 'too_big' ? { n: Number(issue.maximum) } : issue.code === 'too_small' ? { n: Number(issue.minimum) } : null;
+    errors[field] = fieldMessage({ code, params });
   }
   return { ok: false, errors };
 }

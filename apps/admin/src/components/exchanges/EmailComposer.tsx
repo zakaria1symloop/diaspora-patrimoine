@@ -25,7 +25,7 @@ interface Props {
   done: () => void;
 }
 
-const draftKey = (target: ExchangeTarget) => `dp_email_draft_${target.leadId ?? target.clientId ?? target.dossierId ?? 'x'}`;
+const draftKey = (target: ExchangeTarget) => `dp_email_draft_${target.promoterId ? `p_${target.promoterId}_${target.dossierId ?? ''}` : (target.leadId ?? target.clientId ?? target.dossierId ?? 'x')}`;
 
 function laterDefault(): string {
   const d = new Date(Date.now() + 3600_000);
@@ -48,6 +48,9 @@ export function EmailComposer({ open, target, close, done }: Props) {
   const [files, setFiles] = useState<EmailAttachment[]>([]);
   const [uploading, setUploading] = useState(false);
   const [sendKey, setSendKey] = useState('');
+  // CTL-006 — the promoter's contact written to (null: his main one) and the one in copy
+  const [contactId, setContactId] = useState<string | null>(null);
+  const [ccContactId, setCcContactId] = useState<string | null>(null);
   const [scheduledFor, setScheduledFor] = useState(laterDefault);
   const [preview, setPreview] = useState<EmailPreview | null>(null);
   const [tab, setTab] = useState<'write' | 'preview'>('write');
@@ -56,7 +59,16 @@ export function EmailComposer({ open, target, close, done }: Props) {
   const [pending, setPending] = useState(false);
   const loaded = useRef(false);
 
-  const query = useMemo(() => ({ leadId: target.leadId ?? undefined, clientId: target.leadId ? undefined : (target.clientId ?? undefined), dossierId: target.dossierId ?? undefined }), [target.leadId, target.clientId, target.dossierId]);
+  const query = useMemo(
+    () => ({ leadId: target.leadId ?? undefined, clientId: target.leadId ? undefined : (target.clientId ?? undefined), dossierId: target.dossierId ?? undefined, promoterId: target.promoterId ?? undefined, contactId: contactId ?? undefined }),
+    [target.leadId, target.clientId, target.dossierId, target.promoterId, contactId],
+  );
+  const partnerIds = { promoterId: target.promoterId ?? null, contactId: contactId ?? ctx?.contactId ?? null, ccContactId };
+  useEffect(() => {
+    if (!open) return;
+    setContactId(null);
+    setCcContactId(null);
+  }, [open]);
 
   // the window opens: its context, then the draft kept in this tab, else the first template
   useEffect(() => {
@@ -109,7 +121,7 @@ export function EmailComposer({ open, target, close, done }: Props) {
     if (!open || !ctx || ctx.blocked || !templateCode) return;
     const ctrl = new AbortController();
     const id = setTimeout(() => {
-      void adminCall<EmailPreview>('/admin/emails/preview', { body: { ...query, leadId: query.leadId ?? null, clientId: query.clientId ?? null, dossierId: query.dossierId ?? null, templateCode, subject, body, includeButton }, signal: ctrl.signal }).then((r) => {
+      void adminCall<EmailPreview>('/admin/emails/preview', { body: { leadId: query.leadId ?? null, clientId: query.clientId ?? null, dossierId: query.dossierId ?? null, ...partnerIds, templateCode, subject, body, includeButton }, signal: ctrl.signal }).then((r) => {
         if (r.ok) setPreview(r.data);
       });
     }, 400);
@@ -144,7 +156,7 @@ export function EmailComposer({ open, target, close, done }: Props) {
     setErrors({});
     setFailure(null);
     const r = await adminCall<EmailSendResult>('/admin/emails/send', {
-      body: { leadId: query.leadId ?? null, clientId: query.clientId ?? null, dossierId: query.dossierId ?? null, templateCode, subject, body, includeButton, scheduledFor: later ? new Date(scheduledFor).toISOString() : null, confirmed, attachmentIds: files.map((f) => f.uploadId) },
+      body: { leadId: query.leadId ?? null, clientId: query.clientId ?? null, dossierId: query.dossierId ?? null, ...partnerIds, templateCode, subject, body, includeButton, scheduledFor: later ? new Date(scheduledFor).toISOString() : null, confirmed, attachmentIds: files.map((f) => f.uploadId) },
       idempotencyKey: sendKey,
     });
     setPending(false);
@@ -190,7 +202,7 @@ export function EmailComposer({ open, target, close, done }: Props) {
       ) : ctx.blocked ? (
         <div className={s.blocked}>
           <Icon name="mail" size={24} />
-          <p>{ctx.blocked === 'NO_ADDRESS' ? t('ui.admin-exchanges.email.noAddress') : t('ui.admin-exchanges.email.erased')}</p>
+          <p>{ctx.blocked === 'NO_ADDRESS' ? (target.promoterId ? t('ui.admin-exchanges.partner.noContact') : t('ui.admin-exchanges.email.noAddress')) : t('ui.admin-exchanges.email.erased')}</p>
           <Button variant="secondary" size="M" onClick={close}>
             {t('ui.common.close')}
           </Button>
@@ -206,11 +218,34 @@ export function EmailComposer({ open, target, close, done }: Props) {
             </button>
           </div>
           <div className={[s.write, tab === 'preview' && s.hiddenOnPhone].filter(Boolean).join(' ')}>
-            <p className={s.to}>
-              <span className={s.toLabel}>{t('ui.admin-exchanges.email.to')}</span>
-              <strong>{ctx.recipient?.name ?? ctx.recipient?.address}</strong>
-              <span className={s.toAddress}>{ctx.recipient?.address}</span>
-            </p>
+            {ctx.recipient?.kind === 'PARTNER' && ctx.contacts ? (
+              // CTL-006, COM-020 — one of the promoter's contacts; a second one of his may be put in copy
+              <div className={s.row}>
+                <SelectInput label={t('ui.admin-exchanges.partner.to')} value={ctx.contactId ?? ''} onChange={(e) => setContactId(e.target.value)}>
+                  {ctx.contacts.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name} · {c.email}
+                    </option>
+                  ))}
+                </SelectInput>
+                <SelectInput label={t('ui.admin-exchanges.partner.cc')} value={ccContactId ?? ''} onChange={(e) => setCcContactId(e.target.value || null)} optional>
+                  <option value="">{t('ui.admin-exchanges.partner.noCc')}</option>
+                  {ctx.contacts
+                    .filter((c) => c.id !== ctx.contactId)
+                    .map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} · {c.email}
+                      </option>
+                    ))}
+                </SelectInput>
+              </div>
+            ) : (
+              <p className={s.to}>
+                <span className={s.toLabel}>{t('ui.admin-exchanges.email.to')}</span>
+                <strong>{ctx.recipient?.name ?? ctx.recipient?.address}</strong>
+                <span className={s.toAddress}>{ctx.recipient?.address}</span>
+              </p>
+            )}
             {ctx.warnings.map((w) => (
               <Banner key={w.code} tone={w.code === 'EMAIL_DOUBTFUL' ? 'info' : 'warning'}>
                 <p>{warningText(w)}</p>

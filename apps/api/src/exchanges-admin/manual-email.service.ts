@@ -29,7 +29,7 @@ import { domainEvent, toEnvelope } from '../automation/event-catalogue.js';
 import { Scheduler } from '../automation/scheduler.js';
 import { staffLink } from '../automation/staff-links.js';
 import { StaffNotifier } from '../automation/staff-notifications.service.js';
-import { StaffViews, clientName } from '../back-office/staff-view.js';
+import { StaffViews, clientName, type StaffView } from '../back-office/staff-view.js';
 import { emailReason, wrapEmail } from '../communication/email-layout.js';
 import { MailerService } from '../communication/mailer.service.js';
 import { EmailAttachmentsService, type StoredAttachment } from './email-attachments.service.js';
@@ -137,14 +137,33 @@ export class ManualEmailService implements OnModuleInit {
   async compose(auth: AuthContext, query: Record<string, unknown>): Promise<EmailComposeContext> {
     const staff = await this.views.of(auth);
     const id = (v: unknown) => (typeof v === 'string' && /^[0-9a-f-]{36}$/i.test(v) ? v : null);
-    const target = await resolveTarget(this.prisma, staff, { leadId: id(query.leadId), clientId: id(query.clientId), dossierId: id(query.dossierId) });
     const me = await this.prisma.user.findUniqueOrThrow({ where: { id: auth.userId }, select: { firstName: true, lastName: true, jobTitle: true, signature: true, timezone: true } });
     const lines = staffSignatureLines(me);
     const base = {
       signature: { line: lines[0] ?? '', text: me.signature },
       sender: { fromName: await this.settings.get('mail.fromName'), replyTo: (await this.settings.get('mail.replyTo')) || this.env.MAIL_REPLY_TO || null },
       timeZone: me.timezone,
+      contacts: null,
+      contactId: null,
     };
+    // CTL-006 — « Écrire au promoteur »: one of his contacts, his manual templates (P_PROMOTER_*) and « Message libre »
+    if (id(query.promoterId)) {
+      const p = await this.partnerContext(staff, { promoterId: id(query.promoterId)!, dossierId: id(query.dossierId), contactId: id(query.contactId) });
+      if (!p.contact) return { ...base, blocked: 'NO_ADDRESS', recipient: null, warnings: [], templates: [], contacts: p.contacts };
+      const rows = await this.prisma.emailTemplate.findMany({
+        where: { locale: 'fr', deletedAt: null, isActive: true, OR: [{ code: 'C_MANUAL_BLANK' }, { audience: 'PARTNER', sentBy: { has: 'MANUAL' }, code: { startsWith: 'P_PROMOTER_' } }] },
+        select: { code: true, name: true, subject: true, bodyHtml: true },
+        orderBy: { name: 'asc' },
+      });
+      const vars = { ...(await this.partnerVars(p)), advisor: { firstName: me.firstName, displayName: displayName(me.firstName, me.lastName), jobTitle: me.jobTitle }, company: await this.company() };
+      const list = [...rows.filter((r) => r.code === 'C_MANUAL_BLANK'), ...rows.filter((r) => r.code !== 'C_MANUAL_BLANK')];
+      const templates: EmailTemplateOption[] = list.map((r) => {
+        const body = fillTemplate(r.bodyHtml, vars, this.env.WEB_URL);
+        return { code: r.code, name: r.name, subject: fillTemplate(r.subject, vars, this.env.WEB_URL).text, body: body.text, button: body.button };
+      });
+      return { ...base, blocked: null, recipient: { address: p.contact.email, name: p.contact.name, firstName: firstNameOf(p.contact.name), kind: 'PARTNER' }, warnings: [], templates, contacts: p.contacts, contactId: p.contact.id };
+    }
+    const target = await resolveTarget(this.prisma, staff, { leadId: id(query.leadId), clientId: id(query.clientId), dossierId: id(query.dossierId) });
     const { client, lead } = await this.recipientOf(target);
     const applicant = !client && lead?.kind === 'PARTNER_REQUEST';
     if (client?.gdprErasedAt) return { blocked: 'ERASED', recipient: null, warnings: [], templates: [], ...base };
@@ -176,6 +195,43 @@ export class ManualEmailService implements OnModuleInit {
   }
 
   /** Restricted Markdown of the writer (NOT-061) → HTML and text; the template's button kept or not. */
+  /** CTL-006 — the promoter, his contacts with an address, the one written to; the dossier it may start from (his). */
+  private async partnerContext(staff: StaffView, input: { promoterId: string; dossierId: string | null; contactId: string | null }) {
+    const promoter = await this.prisma.promoter.findFirst({ where: { id: input.promoterId, deletedAt: null }, select: { id: true, legalName: true, brandName: true } });
+    if (!promoter) throw AppError.notFound();
+    let dossier: { id: string; property: { reference: string; title: string; program: { name: string } | null } | null; lot: { reference: string } | null } | null = null;
+    if (input.dossierId) {
+      await resolveTarget(this.prisma, staff, { leadId: null, clientId: null, dossierId: input.dossierId }); // in the reader's perimeter
+      const d = await this.prisma.dossier.findUnique({ where: { id: input.dossierId }, select: { id: true, promoterId: true, property: { select: { reference: true, title: true, program: { select: { name: true } } } }, lot: { select: { reference: true } } } });
+      if (!d || d.promoterId !== promoter.id) throw AppError.validation([{ field: 'promoterId', code: 'INVALID_CHOICE' }]);
+      dossier = d;
+    }
+    const contacts = (
+      await this.prisma.promoterContact.findMany({ where: { promoterId: promoter.id, email: { not: null } }, orderBy: [{ isPrimary: 'desc' }, { fullName: 'asc' }], select: { id: true, fullName: true, email: true, isPrimary: true } })
+    ).map((c) => ({ id: c.id, name: c.fullName, email: c.email!, isPrimary: c.isPrimary }));
+    const contact = input.contactId ? contacts.find((c) => c.id === input.contactId) : contacts[0];
+    if (input.contactId && !contact) throw AppError.validation([{ field: 'contactId', code: 'INVALID_CHOICE' }]);
+    return { promoter, dossier, contacts, contact: contact ?? null };
+  }
+
+  /** The dynamic fields of the promoter's templates (01-domaine/09: P_PROMOTER_OPTION_REQUEST, …_VISIT_REQUEST, …_STOCK_CHECK). */
+  private async partnerVars(p: { promoter: { id: string }; dossier: { property: { reference: string; title: string; program: { name: string } | null } | null; lot: { reference: string } | null } | null; contact: { name: string } | null }) {
+    const tz = await this.settings.get('business.calendar.timezone');
+    const optionDays = await this.settings.get('reservation.optionDays');
+    const until = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long', timeZone: tz }).format(new Date(this.clock.now().getTime() + optionDays * 86_400_000));
+    const programs = await this.prisma.program.findMany({ where: { promoterId: p.promoter.id, deletedAt: null, publication: 'PUBLISHED' }, select: { name: true, lotsAvailable: true, lotsTotal: true }, orderBy: { name: 'asc' } });
+    return {
+      property: p.dossier?.property ? { reference: p.dossier.property.reference, title: p.dossier.property.title, programName: p.dossier.property.program?.name ?? null } : null,
+      lot: p.dossier?.lot ? { reference: p.dossier.lot.reference } : null,
+      action: {
+        recipientName: p.contact?.name ?? '',
+        untilLabel: until,
+        slotsLabel: t('ui.admin-exchanges.partner.slotsToAgree'),
+        lotsLabel: programs.length ? programs.map((x) => t('ui.admin-exchanges.partner.programLots', { programme: x.name, n: x.lotsAvailable, total: x.lotsTotal })).join(' ; ') : t('ui.admin-exchanges.partner.noProgram'),
+      },
+    };
+  }
+
   private async content(input: { templateCode: string; body: string; includeButton: boolean }) {
     const template = await this.prisma.emailTemplate.findFirst({ where: { code: input.templateCode, locale: 'fr', deletedAt: null, isActive: true, sentBy: { has: 'MANUAL' } }, select: { code: true, bodyHtml: true, audience: true } });
     if (!template) throw AppError.validation([{ field: 'templateCode', code: 'INVALID_CHOICE' }]);
@@ -196,9 +252,11 @@ export class ManualEmailService implements OnModuleInit {
   async preview(auth: AuthContext, body: unknown): Promise<EmailPreview> {
     const input = parseOrThrow(emailPreviewSchema, body);
     const staff = await this.views.of(auth);
-    const target = await resolveTarget(this.prisma, staff, input);
-    const { client, lead } = await this.recipientOf(target);
+    const partner = input.promoterId ? await this.partnerContext(staff, { promoterId: input.promoterId, dossierId: input.dossierId, contactId: input.contactId }) : null;
+    const target = partner ? null : await resolveTarget(this.prisma, staff, input);
+    const { client, lead } = target ? await this.recipientOf(target) : { client: null, lead: null };
     const content = await this.content(input);
+    if (partner) content.audience = 'PARTNER';
     const companyName = await this.settings.get('contact.companyName');
     const subject = input.subject.trim() || '…';
     const full = wrapEmail({
@@ -206,7 +264,7 @@ export class ManualEmailService implements OnModuleInit {
       preheader: null,
       contentHtml: content.html,
       contentText: content.text,
-      greetingName: client?.firstName ?? lead?.firstName ?? null,
+      greetingName: partner ? firstNameOf(partner.contact?.name ?? null) : (client?.firstName ?? lead?.firstName ?? null),
       signature: await this.signatureOf(auth.userId),
       footer: { companyName, legalName: (await this.settings.get('contact.legalName')) || undefined, address: (await this.settings.get('contact.address')) || undefined, phone: (await this.settings.get('contact.phone')) || undefined, email: (await this.settings.get('contact.email')) || undefined, reason: emailReason(content.audience, 'MANUAL', companyName, input.templateCode), links: [] },
     });
@@ -218,6 +276,7 @@ export class ManualEmailService implements OnModuleInit {
     const input = parseOrThrow(emailSendSchema, body);
     const staff = await this.views.of(auth);
     const now = this.clock.now();
+    if (input.promoterId) return this.sendToPartner(auth, staff, input, now);
     const target = await resolveTarget(this.prisma, staff, input);
     const context = await this.compose(auth, { ...target });
     if (context.blocked || !context.recipient) throw AppError.conflictState(context.blocked === 'ERASED' ? 'CLIENT_ERASED' : 'NO_EMAIL_ADDRESS');
@@ -292,6 +351,60 @@ export class ManualEmailService implements OnModuleInit {
     if (c.restrictedAt && !confirmed.includes('RESTRICTED')) return 'RESTRICTED';
     if (c.archivedAt) return 'CLIENT_ARCHIVED';
     return null;
+  }
+
+  /**
+   * CTL-006 — to a promoter's contact, a second one in copy: the e-mail belongs to the promoter (`promoterId`) and, sent
+   * from a dossier, to the dossier's history — never to the client's (no `clientId`). A rejected address warns the
+   * author and touches no client record (AUT-071).
+   */
+  private async sendToPartner(auth: AuthContext, staff: StaffView, input: ReturnType<typeof emailSendSchema.parse>, now: Date): Promise<EmailSendResult> {
+    const p = await this.partnerContext(staff, { promoterId: input.promoterId!, dossierId: input.dossierId, contactId: input.contactId });
+    if (!p.contact) throw AppError.conflictState('NO_EMAIL_ADDRESS');
+    const cc = input.ccContactId ? p.contacts.find((c) => c.id === input.ccContactId && c.id !== p.contact!.id) : null;
+    if (input.ccContactId && !cc) throw AppError.validation([{ field: 'ccContactId', code: 'INVALID_CHOICE' }]);
+    let scheduledFor: Date | null = null;
+    if (input.scheduledFor) {
+      scheduledFor = new Date(input.scheduledFor);
+      if (Number.isNaN(scheduledFor.getTime()) || scheduledFor.getTime() < now.getTime() + 60_000) throw AppError.validation([{ field: 'scheduledFor', code: 'DATE_NOT_FUTURE' }]);
+    }
+    const content = await this.content(input);
+    const signature = await this.signatureOf(auth.userId);
+    const id = newId();
+    let attachments: StoredAttachment[] | null = null;
+    await this.prisma.$transaction(async (tx) => {
+      attachments = await this.files.claim(tx, auth.userId, input.attachmentIds, id, now);
+      await tx.communication.create({
+        data: {
+          id,
+          channel: 'EMAIL',
+          direction: 'OUTBOUND',
+          attachments: (attachments ?? undefined) as never,
+          promoterId: p.promoter.id,
+          dossierId: p.dossier?.id ?? null,
+          templateCode: input.templateCode,
+          subject: input.subject.slice(0, 200),
+          body: content.text,
+          toAddress: p.contact!.email,
+          ccAddresses: cc ? [cc.email] : [],
+          deliveryState: 'QUEUED',
+          triggeredBy: 'MANUAL',
+          sentById: auth.userId,
+          staffUserId: auth.userId,
+          scheduledFor,
+          occurredAt: scheduledFor ?? now,
+          stateHistory: [{ state: 'QUEUED', at: now.toISOString() }] as never,
+          metadata: { manual: { html: content.html, text: content.text, signature, greetingName: firstNameOf(p.contact!.name), audience: 'PARTNER', confirmed: [] } } as never,
+          createdAt: now,
+          updatedAt: now,
+        },
+      });
+      await writeAudit(tx, auth.actor, now, { action: 'email.sent_manually', entityType: 'Communication', entityId: id, after: { templateCode: input.templateCode, promoterId: p.promoter.id, dossierId: p.dossier?.id ?? null, scheduledFor, cc: cc ? 1 : 0, attachments: attachments?.length ?? 0 } });
+    });
+    await this.files.dropTemporary(attachments);
+    if (scheduledFor) return { id, state: 'QUEUED', scheduledFor: scheduledFor.toISOString() };
+    const state = await this.deliver(id);
+    return { id, state: state === 'SENT' ? 'SENT' : state === 'FAILED' ? 'FAILED' : 'QUEUED', scheduledFor: null };
   }
 
   /** Sends one queued manual e-mail; effects of the outcome (first contact, NS_EMAIL_FAILED). */
@@ -375,4 +488,10 @@ export class ManualEmailService implements OnModuleInit {
       await this.prisma.$transaction((tx) => syncFirstContact(tx, this.outbox, { leadIds: row.leadId ? [row.leadId] : [], clientId: row.clientId, actor: SYSTEM_ACTOR, now: this.clock.now() }));
     }
   }
+}
+
+/** « Bonjour Amel, » — the first word of a contact's full name (the layout writes the greeting). */
+function firstNameOf(fullName: string | null): string | null {
+  const first = fullName?.trim().split(/\s+/)[0];
+  return first || null;
 }

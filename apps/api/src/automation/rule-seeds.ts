@@ -13,6 +13,7 @@ import { LEAD_PROCESSING_RULE_SEEDS } from '../leads-admin/lead-rules.js';
 import { AGENDA_RULE_SEEDS } from './rule-seeds-agenda.js';
 import { DOSSIER_RULE_SEEDS } from './rule-seeds-dossier.js';
 import { PARTNER_RULE_SEEDS } from '../promoters-admin/partner-rules.js';
+import { CATALOGUE_RULE_SEEDS } from '../catalogue-admin/catalogue-rules.seeds.js';
 
 export interface RuleSeed {
   code: string;
@@ -235,6 +236,8 @@ export const RULE_SEEDS: RuleSeed[] = [
   ...LEAD_PROCESSING_RULE_SEEDS,
   // ---------- § 5.9 Partenaires (AUT-073, AUT-079, package 3.4: the facts of `partner.scan`) ----------
   ...PARTNER_RULE_SEEDS,
+  // ---------- § 5.8 Catalogue (AUT-074, AUT-078: the facts of `catalogue.nightly`; DEM-018) ----------
+  ...CATALOGUE_RULE_SEEDS,
 ];
 
 /** The definition part of a seed, as stored in `WorkflowRule.originDefinition` (PAR-081). */

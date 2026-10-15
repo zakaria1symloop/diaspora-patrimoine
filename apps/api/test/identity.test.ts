@@ -206,6 +206,8 @@ describe('ROL-022 permission matrix (SEC-034)', () => {
       for (const name of Object.getOwnPropertyNames(ctrl.prototype)) {
         if (name === 'constructor') continue;
         const handler = (ctrl.prototype as unknown as Record<string, unknown>)[name] as () => void;
+        // a private helper (no route path) is not a route: only the handlers Nest maps are checked
+        if (Reflect.getMetadata('path', handler) === undefined) continue;
         const permission = reflector.get<string>(PERMISSION_KEY, handler);
         expect(permission, `${ctrl.name}.${name}`).toBeTruthy();
         expect(isPermission(permission)).toBe(true);

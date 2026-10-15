@@ -1,5 +1,6 @@
 // EP-05 — property page. Server-rendered, tags property:{id} and catalogue (ARC-040). Every section has its
 // behaviour when its data is missing (FIC-001): never an empty zone.
+import { ReportListing } from '@/components/property/ReportListing';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -478,6 +479,8 @@ export default async function PropertyPage({ params }: { params: Params }) {
             maj: formatDate(p.updatedAt, 'long'),
           })}
         </p>
+        {/* FIC-055, DEM-018 — not on a page that is gone, nor in a preview (FIC-120) */}
+        {!gone ? <ReportListing propertyId={p.id} /> : null}
       </footer>
 
       {!gone ? (

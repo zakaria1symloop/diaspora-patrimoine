@@ -13,6 +13,7 @@ import { Banner, Button, Menu, Modal, StatusTag, useToast, type MenuItem } from 
 import { adminCall } from '@/lib/admin-client';
 import { shortDate, shortDay } from '@/lib/format';
 import { t } from '@/lib/i18n';
+import { EmailComposer } from '../exchanges/EmailComposer';
 import { DetailPage } from '../shell/detail/DetailPage';
 import { Facts, Surface } from '../shell/Page';
 import { signalShellChanged, useShell } from '../shell/ShellContext';
@@ -29,8 +30,10 @@ export function PromoterView({ promoter, tab, webUrl }: { promoter: AdminPromote
   const p = promoter;
   const router = useRouter();
   const toast = useToast();
-  const { timeZone } = useShell();
+  const { timeZone, can } = useShell();
   const [dialog, setDialog] = useState<Dialog>(null);
+  // CTL-006 — « Écrire au promoteur »: the e-mail window, to one of his contacts
+  const [writing, setWriting] = useState(false);
   const refresh = () => router.refresh();
   const close = () => setDialog(null);
 
@@ -152,6 +155,11 @@ export function PromoterView({ promoter, tab, webUrl }: { promoter: AdminPromote
         meta={meta}
         actions={
           <>
+            {can('email.send') ? (
+              <Button variant="secondary" size="M" icon="mail" onClick={() => setWriting(true)}>
+                {t('ui.admin-exchanges.partner.button')}
+              </Button>
+            ) : null}
             {main}
             {items.length ? <Menu label={t('ui.admin-programs.common.moreActions')} items={items} /> : null}
           </>
@@ -172,6 +180,15 @@ export function PromoterView({ promoter, tab, webUrl }: { promoter: AdminPromote
         {active === 'relation' ? <PromoterRelation promoterId={p.id} /> : null}
         {active === 'historique' ? <Timeline endpoint={`/admin/promoters/${p.id}/timeline`} entity={{ type: 'PROMOTER', id: p.id }} types={['RECORD', 'EMAIL', 'NOTE']} /> : null}
       </DetailPage>
+      <EmailComposer
+        open={writing}
+        target={{ promoterId: p.id, personName: p.name }}
+        close={() => setWriting(false)}
+        done={() => {
+          setWriting(false);
+          router.refresh();
+        }}
+      />
 
       {/* CTL-004 « Sélectionner » — needs the selection date and the convention's signature date. */}
       <ConfirmDialog

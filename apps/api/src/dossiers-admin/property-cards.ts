@@ -28,7 +28,7 @@ const PROPERTY_SELECT = {
   promoterId: true,
   region: { select: { nameFr: true } },
   city: { select: { nameFr: true } },
-  promoter: { select: { brandName: true, legalName: true } },
+  promoter: { select: { id: true, brandName: true, legalName: true } },
 } satisfies Prisma.PropertySelect;
 export type PropertyRow = Prisma.PropertyGetPayload<{ select: typeof PROPERTY_SELECT }>;
 
@@ -90,6 +90,7 @@ export class PropertyCards {
         publicPath: isOnline ? `/biens/${p.slug}` : null,
         priceFrom: p.priceFrom === null ? null : { amount: p.priceFrom.toFixed(2), currency: p.priceCurrency },
         lotsAvailable: p.lotsAvailable,
+        promoterId: p.promoter.id,
         promoterName: p.promoter.brandName ?? p.promoter.legalName,
       });
     }

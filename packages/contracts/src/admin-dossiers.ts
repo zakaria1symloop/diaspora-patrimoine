@@ -262,6 +262,8 @@ export interface DossierPropertyCard {
   publicPath: string | null;
   priceFrom: Money | null;
   lotsAvailable: number;
+  /** CTL-006 — « Écrire au promoteur » from the dossier. */
+  promoterId: string | null;
   promoterName: string | null;
 }
 

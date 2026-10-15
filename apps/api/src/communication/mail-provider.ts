@@ -9,6 +9,8 @@ export interface OutgoingMail {
   from: { name: string; address: string };
   replyTo?: string | null;
   to: string;
+  /** COM-020 — a second contact of the same partner, in copy (never for a client). */
+  cc?: string[];
   subject: string;
   html: string;
   text: string;
@@ -51,6 +53,7 @@ export function toEml(mail: OutgoingMail, messageId: string, date: Date): string
   const headers = [
     `From: ${encodeHeader(mail.from.name)} <${mail.from.address}>`,
     `To: <${mail.to}>`,
+    mail.cc?.length ? `Cc: ${mail.cc.map((a) => `<${a}>`).join(', ')}` : null,
     mail.replyTo ? `Reply-To: <${mail.replyTo}>` : null,
     `Subject: ${encodeHeader(mail.subject)}`,
     `Date: ${date.toUTCString()}`,

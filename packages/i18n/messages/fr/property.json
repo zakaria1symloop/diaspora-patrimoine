@@ -142,6 +142,15 @@
     "line": "Réf. {reference} · Publié le {publie} · Mis à jour le {maj}",
     "report": "Signaler une erreur sur cette fiche"
   },
+  "report": {
+    "title": "Signaler une erreur sur cette fiche",
+    "kind": "Qu’est-ce qui est inexact ?",
+    "choose": "Choisir",
+    "comment": "Précisez",
+    "email": "Votre e-mail, si vous souhaitez une réponse",
+    "submit": "Envoyer",
+    "thanks": "Merci. Nous vérifions cette fiche."
+  },
   "price": {
     "from": "À partir de",
     "approx": "≈ {prix}",

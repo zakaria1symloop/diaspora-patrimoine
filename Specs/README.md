@@ -114,7 +114,7 @@ Specs/
     └── verifier_specs.py
 ```
 
-En chiffres, à la version 1.5 : 64 fichiers, 1 534 règles identifiées, 97 décisions, 101 questions ouvertes (chacune avec sa valeur par défaut), 120 modèles d'e-mail, 133 écrans, 45 parcours de recette, 5 livraisons.
+En chiffres, à la version 1.5 : 64 fichiers, 1 534 règles identifiées, 97 décisions, 103 questions ouvertes (chacune avec sa valeur par défaut), 120 modèles d'e-mail, 133 écrans, 45 parcours de recette, 5 livraisons.
 
 `_outils/verifier_specs.py` contrôle la cohérence du dossier, en douze points (QUA-025) : chaque règle, décision, question, modèle d'e-mail, règle d'automatisation, notification, écran, champ, permission, paramètre, événement, bloc de contenu, valeur d'énumération, parcours de recette ou indicateur cité quelque part doit exister ; chaque statut a son ton ; chaque écran a sa page et sa livraison ; et les chiffres ci-dessus sont ceux du dossier. À lancer après toute modification des specs : `python Specs/_outils/verifier_specs.py` — il doit finir par « Tout est cohérent. ».
 

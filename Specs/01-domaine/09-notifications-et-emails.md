@@ -805,14 +805,14 @@ Bonjour {{action.recipientName}}, nous vous avons transmis le dossier {{submissi
 Bonjour {{action.recipientName}}, nous vous informons que la demande de financement {{submission.reference}} est retirée. Merci de ne pas poursuivre son étude et de détruire les pièces reçues. Nous vous remercions du temps consacré à ce dossier.
 
 **`P_PROMOTER_OPTION_REQUEST`** — **Objet** : Demande d'option – {{#if property.programName}}lot {{lot.reference}}, {{property.programName}}{{else}}bien {{property.reference}}{{/if}}
-Bonjour {{action.recipientName}}, nous souhaitons poser une option sur {{#if property.programName}}le lot {{lot.reference}} du programme {{property.programName}}{{else}}le bien {{property.reference}} ({{property.title}}){{/if}} pour l'un de nos clients, jusqu'au {{action.untilLabel}}. Pouvez-vous nous la confirmer ?
-`action.untilLabel` : l'échéance de l'option si elle est déjà posée (`reservation.optionExpiresAt`) ; sinon — cas de la Phase 1, où l'accord du promoteur précède la pose (PIP-050) — la date du jour plus `reservation.optionDays` jours.
+Nous souhaitons poser une option sur {{#if property.programName}}le lot {{lot.reference}} du programme {{property.programName}}{{else}}le bien {{property.reference}} ({{property.title}}){{/if}} pour l'un de nos clients, jusqu'au {{action.untilLabel}}. Pouvez-vous nous la confirmer ?
+La salutation (« Bonjour {prénom du contact}, ») est écrite par la mise en page (NOT-061, Q-103). `action.untilLabel` : l'échéance de l'option si elle est déjà posée (`reservation.optionExpiresAt`) ; sinon — cas de la Phase 1, où l'accord du promoteur précède la pose (PIP-050) — la date du jour plus `reservation.optionDays` jours.
 
 **`P_PROMOTER_VISIT_REQUEST`** — **Objet** : Demande de visite – {{property.title}}
-Bonjour {{action.recipientName}}, l'un de nos clients souhaite visiter {{property.title}}. Créneaux souhaités : {{action.slotsLabel}}. Pouvez-vous nous confirmer une date ?
+L'un de nos clients souhaite visiter {{property.title}}. Créneaux souhaités : {{action.slotsLabel}}. Pouvez-vous nous confirmer une date ?
 
 **`P_PROMOTER_STOCK_CHECK`** — **Objet** : Vos disponibilités sont-elles à jour ?
-Bonjour {{action.recipientName}}, voici ce que nous présentons aujourd'hui pour vos programmes : {{action.lotsLabel}}. Pouvez-vous nous confirmer que ces disponibilités et ces prix sont à jour, ou nous indiquer ce qui a changé ? Merci d'avance.
+Voici ce que nous présentons aujourd'hui pour vos programmes : {{action.lotsLabel}}. Pouvez-vous nous confirmer que ces disponibilités et ces prix sont à jour, ou nous indiquer ce qui a changé ? Merci d'avance.
 
 **`P_PROMOTER_RELEASE`** — **Objet** : {{#if property.programName}}Lot {{lot.reference}}, {{property.programName}} – le lot est libéré{{else}}Bien {{property.reference}} – le bien est libéré{{/if}}
 Bonjour {{action.recipientName}}, {{action.reasonLabel}} : vous pouvez remettre en vente {{#if property.programName}}le lot {{lot.reference}} du programme {{property.programName}}{{else}}le bien {{property.reference}} ({{property.title}}){{/if}}. Merci de l'avoir tenu pour notre client.

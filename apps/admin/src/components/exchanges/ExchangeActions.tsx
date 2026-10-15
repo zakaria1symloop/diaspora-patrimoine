@@ -17,6 +17,8 @@ export interface ExchangeTarget {
   /** The client record, when there is one (a partner application has none). */
   clientId?: string | null;
   dossierId?: string | null;
+  /** CTL-006 — « Écrire au promoteur »: the e-mail goes to one of his contacts (from his record, or a dossier of his). */
+  promoterId?: string | null;
   /** How the person is named in the windows: « NOM Prénom ». */
   personName: string | null;
 }
