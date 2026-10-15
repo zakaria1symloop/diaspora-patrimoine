@@ -62,8 +62,8 @@ export function Modal({ open, onClose, title, closeLabel, children, width = 480,
               {title}
             </h2>
             {locked ? null : (
-              <button type="button" className={s.close} onClick={onClose}>
-                <Icon name="close" size={20} label={closeLabel} />
+              <button type="button" className={s.close} onClick={onClose} aria-label={closeLabel}>
+                <Icon name="close" size={20} />
               </button>
             )}
           </header>
