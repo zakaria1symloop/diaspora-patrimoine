@@ -3,6 +3,8 @@ packages:
   - packages/*
   - e2e
 allowBuilds:
+  # Linux servers (VPS, Vercel) use a real PostgreSQL: the embedded build is not needed there
+  '@embedded-postgres/linux-x64': false
   '@embedded-postgres/windows-x64': true
   '@prisma/engines': true
   prisma: true
