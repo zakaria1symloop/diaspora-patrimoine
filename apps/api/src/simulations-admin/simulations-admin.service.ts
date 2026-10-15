@@ -3,6 +3,8 @@
 // same client, API-100); « Faire une simulation »: EP-11 and EP-12 in the back office, prefilled with the record and
 // computed by the SAME calculations as the public simulators (SIM-001, `simulations/calc.ts`), saved on the record
 // with `clientId` and `createdById`, `isSaved` false — the client does not see them in « Mes simulations » (SFA-010).
+import { refreshClientCaches } from '../leads/lead-records.js';
+import { SettingsService } from '../platform/settings.service.js';
 import { Injectable } from '@nestjs/common';
 import {
   adminSimulationComputeSchemaFor,
@@ -48,6 +50,7 @@ export class SimulationsAdminService {
     private readonly clock: Clock,
     private readonly views: StaffViews,
     private readonly context: SimulationContextService,
+    private readonly settings: SettingsService,
   ) {}
 
   private year() {
@@ -195,6 +198,7 @@ export class SimulationsAdminService {
           },
         });
         await writeAudit(tx, auth.actor, now, { action: 'simulation.created', entityType: 'Simulation', entityId: id, clientId: client.id, after: { type: 'ELIGIBILITY' } });
+        await refreshClientCaches(tx, client.id, now, await this.settings.get('clients.inactiveAfterDays')); // CAL-070
       });
       return { id, type: 'ELIGIBILITY', result: c.result };
     }

@@ -72,7 +72,9 @@
   "conflict": {
     "text": "Cette fiche a été modifiée par {prenom} à {heure}. Rechargez-la pour voir la dernière version ; vos changements ne sont pas enregistrés.",
     "reload": "Recharger",
-    "copy": "Copier mes changements"
+    "copy": "Copier mes changements",
+    "copied": "Changements copiés",
+    "someone": "un collègue"
   },
   "confirm": {
     "typeWord": "Pour confirmer, saisissez {mot}."

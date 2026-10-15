@@ -81,7 +81,8 @@ export function ClientRecord({ client, tab }: { client: ClientDetail; tab: strin
     ...(can('simulation.read') ? [{ key: 'simulations', label: t('ui.admin-clients.tab.simulations') }] : []),
     { key: 'favoris', label: t('ui.admin-clients.tab.favoris'), count: client.counts.favorites },
     { key: 'cafes', label: t('ui.admin-clients.tab.cafes'), count: client.counts.registrations },
-    { key: 'avis', label: t('ui.admin-clients.tab.avis'), count: client.counts.feedback },
+    // D-089 — a section whose data is missing is not shown: « Avis » appears with the first feedback
+    ...(client.counts.feedback > 0 ? [{ key: 'avis', label: t('ui.admin-clients.tab.avis'), count: client.counts.feedback }] : []),
     { key: 'proches', label: t('ui.admin-clients.tab.proches'), count: client.counts.contacts },
     { key: 'accords', label: t('ui.admin-clients.tab.accords') },
     { key: 'compte', label: t('ui.admin-clients.tab.compte') },
@@ -219,7 +220,13 @@ export function ClientRecord({ client, tab }: { client: ClientDetail; tab: strin
               <NextCard icon="calendar" label={t('ui.admin-clients.overview.nextAppointment')} empty={t('ui.admin-clients.overview.noAppointment')}>
                 {client.overview.nextAppointment ? (
                   <>
-                    <strong>{t(`ui.enum.AppointmentType.${client.overview.nextAppointment.type}` as MessageKey)}</strong>
+                    {isDeliveredPath('/agenda') ? (
+                      <Link className={s.nextLink} href={`/agenda?${client.overview.nextAppointment.startsAt ? `date=${new Intl.DateTimeFormat('en-CA', { timeZone }).format(new Date(client.overview.nextAppointment.startsAt))}&` : ''}rdv=${client.overview.nextAppointment.id}`}>
+                        {t(`ui.enum.AppointmentType.${client.overview.nextAppointment.type}` as MessageKey)}
+                      </Link>
+                    ) : (
+                      <strong>{t(`ui.enum.AppointmentType.${client.overview.nextAppointment.type}` as MessageKey)}</strong>
+                    )}
                     <span className={s.muted}>{client.overview.nextAppointment.startsAt ? shortDateTime(client.overview.nextAppointment.startsAt, timeZone) : t('ui.admin-clients.overview.toSchedule')}</span>
                   </>
                 ) : null}

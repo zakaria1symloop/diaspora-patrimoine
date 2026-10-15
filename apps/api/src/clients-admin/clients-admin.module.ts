@@ -6,6 +6,7 @@ import { Body, Controller, Delete, Get, HttpCode, Module, Param, ParseUUIDPipe, 
 import { BackOfficeModule } from '../back-office/back-office.module.js';
 import { CurrentAuth, RequirePermission } from '../identity/access.js';
 import type { AuthContext } from '../identity/sessions.service.js';
+import { ClientCachesJobs } from './client-caches.jobs.js';
 import { ClientsReadService } from './clients-read.service.js';
 import { ClientsWriteService } from './clients-write.service.js';
 
@@ -73,7 +74,7 @@ export class ClientsAdminController {
 @Module({
   imports: [BackOfficeModule],
   controllers: [ClientsAdminController],
-  providers: [ClientsReadService, ClientsWriteService],
+  providers: [ClientsReadService, ClientsWriteService, ClientCachesJobs],
   exports: [ClientsReadService],
 })
 export class ClientsAdminModule {}

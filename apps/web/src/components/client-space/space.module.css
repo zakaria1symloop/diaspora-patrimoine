@@ -374,3 +374,11 @@
   padding: var(--sp-24);
   background: var(--bo-fond-ivoire);
 }
+
+/* ROL-017, ECL-004 — the preview's disabled frame: no box of its own */
+.readOnly {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

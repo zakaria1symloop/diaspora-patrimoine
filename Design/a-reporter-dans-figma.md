@@ -81,6 +81,15 @@
 | ☐ | EA-11 « ⋯ » d'une demande « Devenir partenaire » | Entrée « Créer la fiche partenaire… » ; fenêtre : nom de la société, catégorie, site (préremplis), phrase « La description, le logo et la publication… », bouton « Créer la fiche ». | CRM-011 | 15/10/2026 |
 | ☐ | EA-10 Demandes, filtres | « Plus de filtres » : « Bien » et « Programme » (les plus demandés de la liste, avec leur nombre). | CRM-001 | 15/10/2026 |
 
+## Back-office — clients, paquet 3.3 terminé (15/10/2026)
+
+| État | Écran | Changement | Règle | Depuis |
+|---|---|---|---|---|
+| ☐ | EA-12 Clients | La colonne « Origine » est montrée d'office. | CRM-040 | 15/10/2026 |
+| ☐ | EA-13 Fiche client | L'onglet « Avis » n'apparaît qu'avec un premier avis ; la carte « Prochain rendez-vous » est un lien vers l'agenda (le rendez-vous ouvert). | D-089, CRM-046 | 15/10/2026 |
+| ☐ | Avis « Cette fiche a été modifiée… » (fiche client, sections du catalogue, fenêtres du dossier, tâche) | Bandeau d'avertissement commun : prénom et heure de l'auteur, « Recharger », « Copier mes changements » (devient « Changements copiés »). | TRV-094 | 15/10/2026 |
+| ☐ | EC-* en aperçu « Voir comme le client » | Tous les boutons et champs de la page sont inactifs (grisés) ; les liens restent ouverts. | ROL-017, ECL-004 | 15/10/2026 |
+
 ## Back-office
 
 | État | Écran | Changement | Règle | Depuis |

@@ -3,7 +3,7 @@
 // The proxy already sends a visitor without session cookie to /connexion?suite=… (AUTH-023).
 import type { Metadata } from 'next';
 import { Suspense, type ReactNode } from 'react';
-import type { ClientSpaceSummary } from '@dp/contracts';
+import type { ClientPreviewState, ClientSpaceSummary } from '@dp/contracts';
 import { getSettings } from '@/lib/settings';
 import { getBlocks, text } from '@/lib/content';
 import { t } from '@/lib/i18n';
@@ -24,10 +24,12 @@ export const metadata: Metadata = {
 };
 
 export default async function ClientSpaceLayout({ children }: { children: ReactNode }) {
-  const [summary, settings, blocks] = await Promise.all([
+  const [summary, settings, blocks, preview] = await Promise.all([
     spaceGet<ClientSpaceSummary>('/client/space'),
     getSettings(),
     getBlocks('Marque').catch(() => ({})),
+    // ROL-017, ECL-004 — a preview opened by the team: every action of the space is inactive
+    spaceGet<ClientPreviewState>('/client/preview'),
   ]);
   if (!summary.ok) {
     return (
@@ -57,7 +59,9 @@ export default async function ClientSpaceLayout({ children }: { children: ReactN
   return (
     <DiscoveryProvider flags={{ favorites: settings['features.favorites'], alerts: settings['features.searchAlerts'] }}>
       <SpaceProvider initial={summary.data} settings={spaceSettings}>
-        <SpaceShell tagline={text(blocks, 'brand.tagline')}>{children}</SpaceShell>
+        <SpaceShell tagline={text(blocks, 'brand.tagline')} readOnly={preview.ok && preview.data.active}>
+          {children}
+        </SpaceShell>
         {/* ECL-013 « Être rappelé » — the window of EP-21, opened by ?rappel=1 (fallback ACC-090 when inactive). */}
         <Suspense fallback={null}>
           <CallbackDialog settings={settings} />

@@ -482,6 +482,7 @@ export const messages = {
     "ui.admin-clients.toast.emailConfirmed": "Adresse confirmée.",
     "ui.admin-clients.toast.phoneConfirmed": "Numéro confirmé.",
     "ui.admin-clients.project.identity": "Identité",
+    "ui.admin-clients.project.editSection": "Modifier : {section}",
     "ui.admin-clients.project.contact": "Coordonnées et contact",
     "ui.admin-clients.project.situation": "Situation",
     "ui.admin-clients.project.project": "Mon projet",
@@ -5137,6 +5138,8 @@ export const messages = {
     "ui.common.conflict.text": "Cette fiche a été modifiée par {prenom} à {heure}. Rechargez-la pour voir la dernière version ; vos changements ne sont pas enregistrés.",
     "ui.common.conflict.reload": "Recharger",
     "ui.common.conflict.copy": "Copier mes changements",
+    "ui.common.conflict.copied": "Changements copiés",
+    "ui.common.conflict.someone": "un collègue",
     "ui.common.confirm.typeWord": "Pour confirmer, saisissez {mot}.",
     "ui.common.time.now": "à l’instant",
     "ui.common.time.minutes": "il y a {n} min",
@@ -7683,6 +7686,7 @@ export type MessageKey =
   | 'ui.admin-clients.overview.toSchedule'
   | 'ui.admin-clients.project.changeEmail'
   | 'ui.admin-clients.project.contact'
+  | 'ui.admin-clients.project.editSection'
   | 'ui.admin-clients.project.email'
   | 'ui.admin-clients.project.emailAccount'
   | 'ui.admin-clients.project.emailText'
@@ -12284,8 +12288,10 @@ export type MessageKey =
   | 'ui.common.compare.full'
   | 'ui.common.compare.tray'
   | 'ui.common.confirm.typeWord'
+  | 'ui.common.conflict.copied'
   | 'ui.common.conflict.copy'
   | 'ui.common.conflict.reload'
+  | 'ui.common.conflict.someone'
   | 'ui.common.conflict.text'
   | 'ui.common.continue'
   | 'ui.common.copyLink'

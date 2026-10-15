@@ -445,6 +445,22 @@ export class SessionsService {
     return m.elevatedRole && m.elevatedUntil && m.elevatedUntil.getTime() > this.clock.now().getTime() ? m.elevatedRole : m.role;
   }
 
+  /**
+   * ROL-017, CRM-075 — a preview the team did not leave by « Quitter l'aperçu » ends with its 30 minutes: it is closed and
+   * its end traced the same way (`client.impersonation_ended`, reason `expired`); the client is told nothing.
+   */
+  async endExpiredPreviews(now: Date): Promise<number> {
+    const expired = await this.prisma.session.findMany({ where: { impersonatedById: { not: null }, revokedAt: null, expiresAt: { lte: now } }, select: { id: true, userId: true, impersonatedById: true }, take: 200 });
+    for (const s of expired) {
+      await this.prisma.$transaction(async (tx) => {
+        await this.revoke(s.id, 'PREVIEW_ENDED', tx);
+        const client = await tx.client.findFirst({ where: { userId: s.userId }, select: { id: true } });
+        await writeAudit(tx, { type: 'USER', userId: s.impersonatedById!, role: await this.effectiveRole(s.impersonatedById!, tx), reason: null }, now, { action: 'client.impersonation_ended', entityType: 'Client', entityId: client?.id ?? null, clientId: client?.id ?? null, reason: 'expired' });
+      });
+    }
+    return expired.length;
+  }
+
   async revoke(sessionId: string, reason: SessionRevokedReason, db: Tx | PrismaService = this.prisma): Promise<void> {
     const now = this.clock.now();
     await db.session.updateMany({ where: { id: sessionId, revokedAt: null }, data: { revokedAt: now, revokedReason: reason, updatedAt: now } });

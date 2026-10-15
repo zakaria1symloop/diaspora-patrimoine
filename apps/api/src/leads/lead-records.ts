@@ -1,8 +1,8 @@
 // CYC-001 steps 1, 3 and 4 — the writes a request makes besides itself, inside the creation transaction (FIA-001):
 // client record found or created (MOD-300), consents (DEM-020), dossier opened or joined (CYC-002), score (CAL-070),
 // status (CYC-060). Used by the creation (DEM-002) and by the address correction of a projection (DEM-013).
-import { LeadConsentWording, type LeadConsentKey } from '@dp/contracts';
-import { prequalificationScore, stageDueAt, type BusinessCalendar, type DossierStage } from '@dp/domain';
+import { LeadConsentWording, settingsRegistry, type LeadConsentKey } from '@dp/contracts';
+import { convert, prequalificationScore, stageDueAt, type BusinessCalendar, type ConversionContext, type DossierStage } from '@dp/domain';
 import { nextReference } from '../platform/business-calendar.js';
 import { newId } from '../platform/ids.js';
 import type { OutboxWriter } from '../platform/outbox.js';
@@ -279,8 +279,35 @@ export async function openOrJoinDossier(
   return outcome;
 }
 
+/** CAL-010 — the rates and their settings, read in the transaction (the score is computed inside it). */
+async function scoreConversion(tx: Tx, today: string): Promise<ConversionContext> {
+  const keys = ['finance.exchangeRateKind', 'display.referenceCurrency'] as const;
+  const [rates, stored] = await Promise.all([
+    tx.exchangeRate.findMany({ where: { voidedAt: null }, select: { fromCurrency: true, toCurrency: true, rate: true, kind: true, asOf: true, createdAt: true } }),
+    tx.setting.findMany({ where: { key: { in: [...keys] } }, select: { key: true, value: true } }),
+  ]);
+  const value = <K extends (typeof keys)[number]>(key: K) => {
+    const parsed = settingsRegistry[key].schema.safeParse(stored.find((r) => r.key === key)?.value);
+    return parsed.success ? parsed.data : settingsRegistry[key].default;
+  };
+  return {
+    rates: rates.map((r) => ({ base: r.fromCurrency, quote: r.toCurrency, rate: r.rate.toString(), kind: r.kind, asOf: r.asOf.toISOString().slice(0, 10), createdAt: r.createdAt.toISOString() })),
+    kind: value('finance.exchangeRateKind') as ConversionContext['kind'],
+    referenceCurrency: value('display.referenceCurrency'),
+    today,
+  };
+}
+
+/** CAL-070 — the down payment in the budget's currency (CAL-010); null without budget, currency or rate. */
+async function downPaymentInBudget(tx: Tx, now: Date, c: { downPayment: { toString(): string } | null; downPaymentCurrency: string | null; budgetCurrency: string | null; budgetMax: unknown }): Promise<string | null> {
+  if (c.downPayment === null || !c.downPaymentCurrency || !c.budgetCurrency || c.budgetMax === null) return null;
+  if (c.downPaymentCurrency === c.budgetCurrency) return c.downPayment.toString();
+  const converted = convert(c.downPayment.toString(), c.downPaymentCurrency, c.budgetCurrency, await scoreConversion(tx, now.toISOString().slice(0, 10)));
+  return converted ? converted.amount.toString() : null;
+}
+
 /** CAL-070 — the score of a record and its four blocks (CRM-047), computed from what the record says today. */
-export async function clientScoreDetail(tx: Tx, clientId: string) {
+export async function clientScoreDetail(tx: Tx, clientId: string, now: Date = new Date()) {
   const c = await tx.client.findUniqueOrThrow({ where: { id: clientId }, include: { user: { select: { emailVerifiedAt: true } } } });
   const [simulation, interest, registrations, dossiers] = await Promise.all([
     tx.simulation.findFirst({ where: { clientId, type: 'ELIGIBILITY' }, orderBy: { createdAt: 'desc' }, select: { outputs: true } }),
@@ -297,7 +324,7 @@ export async function clientScoreDetail(tx: Tx, clientId: string) {
     latestEligibilityStatus: simStatus === 'ELIGIBLE' || simStatus === 'CONDITIONAL' || simStatus === 'NOT_ELIGIBLE' ? simStatus : null,
     cashPurchase: c.financingPreference === 'CASH',
     budgetMax: c.budgetMax?.toString() ?? null,
-    downPaymentInBudgetCurrency: c.downPayment !== null && c.downPaymentCurrency === c.budgetCurrency ? c.downPayment.toString() : null,
+    downPaymentInBudgetCurrency: await downPaymentInBudget(tx, now, c),
     incomeKnown: c.monthlyIncome !== null,
     accountCreated: c.userId !== null,
     hasPropertyInterest: interest > 0,
@@ -308,7 +335,7 @@ export async function clientScoreDetail(tx: Tx, clientId: string) {
 
 /** CAL-070 and CYC-060 — score and status of the client, recomputed after the request. */
 export async function refreshClientCaches(tx: Tx, clientId: string, now: Date, inactiveAfterDays: number): Promise<void> {
-  const { client: c, dossiers, score } = await clientScoreDetail(tx, clientId);
+  const { client: c, dossiers, score } = await clientScoreDetail(tx, clientId, now);
   const status = clientStatus({ archivedAt: c.archivedAt, qualifiedAt: c.qualifiedAt, lastActivityAt: c.lastActivityAt, dossiers, inactiveAfterDays, now });
   if (score !== c.score || status !== c.status) {
     await tx.client.update({ where: { id: clientId }, data: { score, status, updatedAt: now } });

@@ -20,6 +20,7 @@ import { shortDateTime, shortDay } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { Checkbox, SelectInput, TextArea, TextInput, formStyles as f } from '../shell/forms';
 import { FailureDetails } from '../shell/ReadFailure';
+import { ConflictNotice } from '../shell/ConflictNotice';
 import { useShell } from '../shell/ShellContext';
 import { enumLabel, RecordLink } from './parts';
 import s from './dossiers.module.css';
@@ -50,11 +51,16 @@ export function useAction<T>(onDone: (data: T) => void, success: string | null) 
     return false;
   };
   const conflict = failure?.error?.code === 'CONFLICT_VERSION';
+  // TRV-094 — who changed the dossier and when, « Recharger »
   const banner = failure ? (
-    <Banner tone="error" action={conflict ? <Button variant="secondary" size="S" onClick={() => window.location.reload()}>{t('ui.common.conflict.reload')}</Button> : undefined}>
-      <p>{conflict ? t('ui.admin-dossiers.conflict') : errorText(failure)}</p>
-      {conflict ? null : <FailureDetails failure={failure} />}
-    </Banner>
+    conflict ? (
+      <ConflictNotice error={failure.error} onReload={() => window.location.reload()} />
+    ) : (
+      <Banner tone="error">
+        <p>{errorText(failure)}</p>
+        <FailureDetails failure={failure} />
+      </Banner>
+    )
   ) : null;
   return { pending, errors, setErrors, run, banner, failure };
 }

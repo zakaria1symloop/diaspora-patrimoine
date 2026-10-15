@@ -54,6 +54,10 @@ test.describe('back office — client account and preview', () => {
     await expect(preview).toHaveURL(/\/espace-client/, { timeout: 60_000 });
     await expect(preview.getByText('Vous consultez l’espace de Karima Testeuse en lecture seule')).toBeVisible({ timeout: 30_000 });
     await expect(preview.getByRole('button', { name: 'Quitter l’aperçu' })).toBeVisible();
+    // ROL-017, ECL-004 — « toutes les actions sont inactives »: the page sits in a disabled frame, its buttons with it
+    await expect(preview.locator('main fieldset[data-preview]')).toHaveAttribute('disabled', '');
+    await preview.goto(new URL('/espace-client/profil', preview.url()).toString()); // the host the preview opened on
+    await expect(preview.locator('main fieldset[data-preview] button').first()).toBeDisabled({ timeout: 30_000 });
 
     // ROL-017 — a write is refused (403 PREVIEW_READ_ONLY), even with the anti-forgery token
     const refused = await preview.evaluate(async () => {

@@ -2,6 +2,7 @@
 // CAL-112, NAV-051), « Enregistrer », « Recevoir par e-mail » (C_SIMULATION_RESULT with the PDF, no record created,
 // SIM-032), « Télécharger (PDF) » (nothing written), the estimated budget of the catalogue (CAT-035) and the SIM-030
 // property reminder. Limits of SEC-070: 60 calculations per IP per minute, 10 PDF per hour, 3 e-mails per address per day.
+import { refreshClientCaches } from '../leads/lead-records.js';
 import { randomBytes } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import {
@@ -260,6 +261,9 @@ export class SimulationsService {
               updatedAt: now,
             },
           });
+          // CAL-070 — a signed-in client's eligibility simulation changes his score (« Financement »)
+          const owner = sessionClientId(req);
+          if (owner) await refreshClientCaches(tx, owner, now, await this.settings.get('clients.inactiveAfterDays'));
           return { id, result: toEligibilityResult(p.outputs, p.inputs) };
         },
       },

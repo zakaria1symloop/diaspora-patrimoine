@@ -86,9 +86,11 @@ export class ClientsWriteService {
     return c;
   }
 
-  private async conflict(tx: Tx, c: { updatedById: string | null; updatedAt: Date }): Promise<never> {
+  /** API-050, TRV-094 — the version of now, who saved it and when (`params` of API-020). */
+  private async conflict(tx: Tx, id: string): Promise<never> {
+    const c = await tx.client.findUniqueOrThrow({ where: { id }, select: { version: true, updatedById: true, updatedAt: true } });
     const who = c.updatedById ? await tx.user.findUnique({ where: { id: c.updatedById }, select: { firstName: true } }) : null;
-    throw new AppError(ErrorCode.CONFLICT_VERSION, { params: { prenom: who?.firstName ?? null, at: c.updatedAt.toISOString() } });
+    throw new AppError(ErrorCode.CONFLICT_VERSION, { params: { currentVersion: c.version, updatedByFirstName: who?.firstName ?? null, updatedAt: c.updatedAt.toISOString() } });
   }
 
   private async done(clientId: string, tx: Tx, now: Date) {
@@ -182,7 +184,7 @@ export class ClientsWriteService {
     const now = this.clock.now();
     const result = await this.prisma.$transaction(async (tx) => {
       const before = await this.lock(tx, staff, id);
-      if (before.version !== input.version) await this.conflict(tx, before);
+      if (before.version !== input.version) await this.conflict(tx, id);
       if (input.section === 'email') {
         // CRM-048 — the address of a client WITH an account is changed by the client (AUTH-080) or by « Changer l'adresse du compte »
         const user = before.userId ? await tx.user.findUnique({ where: { id: before.userId }, select: { status: true } }) : null;
@@ -204,7 +206,7 @@ export class ClientsWriteService {
       const changed = Object.keys(data).filter((k) => !same((before as Record<string, unknown>)[k], data[k]));
       if (!changed.length) return { version: before.version };
       const done = await tx.client.updateMany({ where: { id, version: input.version }, data: { ...data, version: { increment: 1 }, updatedById: auth.userId, updatedAt: now, lastActivityAt: now } });
-      if (done.count === 0) await this.conflict(tx, before);
+      if (done.count === 0) await this.conflict(tx, id);
       if (input.section === 'identity' && before.userId) await tx.user.update({ where: { id: before.userId }, data: { firstName: data.firstName as string, lastName: data.lastName as string, updatedAt: now } });
       await writeAudit(tx, auth.actor, now, { action: 'client.updated', entityType: 'Client', entityId: id, clientId: id, after: { changedFields: changed, by: 'STAFF' } });
       await this.outbox.add(tx, this.event('client.updated', id, auth.actor, { changedFields: changed }), now);

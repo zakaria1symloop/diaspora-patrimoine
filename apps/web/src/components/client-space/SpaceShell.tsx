@@ -99,7 +99,7 @@ function SimpleSwitch({ on, onChange }: { on: boolean; onChange: (on: boolean) =
   );
 }
 
-export function SpaceShell({ children, tagline }: { children: ReactNode; tagline: string | null }) {
+export function SpaceShell({ children, tagline, readOnly = false }: { children: ReactNode; tagline: string | null; readOnly?: boolean }) {
   const pathname = usePathname() ?? SPACE_ROOT;
   const router = useRouter();
   const { summary, settings, menu } = useSpace();
@@ -312,7 +312,14 @@ export function SpaceShell({ children, tagline }: { children: ReactNode; tagline
 
         <main id="contenu" tabIndex={-1} className={s.main}>
           <div key={pathname} className={s.screen}>
-            {children}
+            {/* ROL-017, ECL-004 — in a preview every button and field is disabled; the links still lead (reading only) */}
+            {readOnly ? (
+              <fieldset disabled className={s.readOnly} data-preview="">
+                {children}
+              </fieldset>
+            ) : (
+              children
+            )}
           </div>
         </main>
 

@@ -3,7 +3,7 @@
 // ROL-017 (« Voir comme le client »: a single-use code of one minute, exchanged by the client space for a READ-ONLY
 // session of 30 minutes). The team never sees nor sets a client's password. Each write is ONE transaction with the
 // record locked (FIA-020), the audit row under the code of SEC-080, its events and its e-mails by the outbox (FIA-040).
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import {
   ErrorCode,
@@ -28,6 +28,7 @@ import { AuthMailRequester } from '../identity/auth-mail.js';
 import { LINK_PATHS } from '../identity/auth.service.js';
 import { tokenPageHeaders } from '../identity/http.js';
 import { ensureInvitedAccount } from '../identity/lead-account.js';
+import { Scheduler } from '../automation/scheduler.js';
 import { SessionsService, type AuthContext } from '../identity/sessions.service.js';
 import { TokensService } from '../identity/tokens.service.js';
 import { TwoFactorService } from '../identity/two-factor.service.js';
@@ -87,7 +88,7 @@ export function accountCan(
 }
 
 @Injectable()
-export class ClientAccountService {
+export class ClientAccountService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly clock: Clock,
@@ -97,8 +98,14 @@ export class ClientAccountService {
     private readonly mail: AuthMailRequester,
     private readonly twoFactor: TwoFactorService,
     private readonly outbox: OutboxWriter,
+    private readonly scheduler: Scheduler,
     @Inject(ENV) private readonly env: Env,
   ) {}
+
+  onModuleInit(): void {
+    // ROL-017 — the end of a preview left to expire is traced too (`preview.expiry`, 08-automatisations)
+    this.scheduler.register({ name: 'preview.expiry', schedule: { everyMinutes: 5 }, run: async (ctx) => ({ ended: await this.sessions.endExpiredPreviews(ctx.now) }) });
+  }
 
   private requestId() {
     const id = currentRequestId();

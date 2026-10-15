@@ -192,6 +192,7 @@
   },
   "project": {
     "identity": "Identité",
+    "editSection": "Modifier : {section}",
     "contact": "Coordonnées et contact",
     "situation": "Situation",
     "project": "Mon projet",

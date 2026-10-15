@@ -16,6 +16,7 @@ import { DASH, money } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { useUnsavedGuard, formStyles as f } from '../shell/forms';
 import { Surface } from '../shell/Page';
+import { changesText, ConflictNotice } from '../shell/ConflictNotice';
 import { FailureDetails } from '../shell/ReadFailure';
 import s from './catalogue.module.css';
 
@@ -262,12 +263,7 @@ export function EditableSection<V extends Record<string, unknown>>({
         {editing ? (
           <form className={f.form} onSubmit={submit} noValidate>
             {conflict ? (
-              <Banner tone="warning">
-                <p>{t('ui.common.conflict.text', { prenom: String(failure?.error?.params?.updatedByFirstName ?? '—'), heure: '' })}</p>
-                <Button variant="secondary" size="S" type="button" onClick={() => router.refresh()}>
-                  {t('ui.common.conflict.reload')}
-                </Button>
-              </Banner>
+              <ConflictNotice error={failure?.error} onReload={() => router.refresh()} changes={() => changesText(values as Record<string, unknown>)} />
             ) : (
               <FailureBanner failure={failure} />
             )}

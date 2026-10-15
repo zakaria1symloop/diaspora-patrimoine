@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { SIM_DEBOUNCE_MS, SIM_SCENARIOS_MAX, type AdminSimulationComputed, type AdminSimulationPrefill, type CreditResponse, type CreditResult, type EligibilityResult, type Money, type SimulatorOptions } from '@dp/contracts';
 import { type MessageKey } from '@dp/i18n';
 import { Banner, Button, Icon, useToast } from '@dp/ui';
-import { adminCall } from '@/lib/admin-client';
+import { adminCall, newIdempotencyKey } from '@/lib/admin-client';
 import { errorText, fieldErrors } from '@/lib/errors';
 import { money } from '@/lib/format';
 import { t } from '@/lib/i18n';
@@ -89,13 +89,14 @@ function SaveBox({ clientId, body, disabled }: { clientId: string; body: Record<
   const router = useRouter();
   const toast = useToast();
   const [label, setLabel] = useState('');
+  const [key] = useState(newIdempotencyKey); // TRV-091 — « Enregistrer » clicked twice saves once
   const [pending, setPending] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const save = async () => {
     if (!body) return;
     setPending(true);
     setFailure(null);
-    const r = await adminCall<{ id: string }>('/admin/simulations', { body: { ...body, clientId, label: label.trim() || null } });
+    const r = await adminCall<{ id: string }>('/admin/simulations', { body: { ...body, clientId, label: label.trim() || null }, idempotencyKey: key });
     setPending(false);
     if (!r.ok) return setFailure(errorText(r));
     toast({ text: S('page.saved') });

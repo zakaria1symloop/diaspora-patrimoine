@@ -3,6 +3,8 @@
 // at a glance and edited on its own (BO-046: « Modifier » → « Enregistrer » · « Annuler », the version checked, TRV-094).
 // The sensitive amounts and fields need `client.sensitive.read` (ROL-019): « Réservé » otherwise, and never editable.
 // The e-mail address is edited here only for a client WITHOUT an account (CRM-048).
+import type { ApiErrorBody } from '@dp/contracts';
+import { changesText, ConflictNotice, isConflict } from '../shell/ConflictNotice';
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import type { ClientDetail, ClientProjectTab } from '@dp/contracts';
 import { hasMessage, type MessageKey } from '@dp/i18n';
@@ -71,7 +73,7 @@ export function ProjectTab({ client, onSaved, only, onClose }: { client: ClientD
   const pick = (field: string, v: string | null) => (v ? enumLabel(field, v) : null);
   const regions = data.project.preferredRegionIds.map((id) => data.options.regions.find((r) => r.id === id)?.name ?? id).join(', ');
   const can = client.can.update && !client.masked;
-  const edit = (section: Section) => (can && (section !== 'situation' && section !== 'finances' ? true : client.can.sensitive) ? <Button variant="tertiary" size="S" icon="edit" onClick={() => setEditing(section)}>{t('ui.common.edit')}</Button> : undefined);
+  const edit = (section: Section) => (can && (section !== 'situation' && section !== 'finances' ? true : client.can.sensitive) ? <Button variant="tertiary" size="S" icon="edit" onClick={() => setEditing(section)} aria-label={t('ui.admin-clients.project.editSection', { section: t(`ui.admin-clients.project.${section}` as MessageKey) })}>{t('ui.common.edit')}</Button> : undefined);
 
   return (
     <div className={s.sections}>
@@ -219,6 +221,7 @@ function SectionForm({ section, client, data, close, saved }: { section: Section
   const [v, setV] = useState<Values>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [failure, setFailure] = useState<string | null>(null);
+  const [conflict, setConflict] = useState<ApiErrorBody['error'] | null>(null);
   const [pending, setPending] = useState(false);
   useUnsavedGuard(JSON.stringify(v) !== JSON.stringify(initial));
   const set = (k: string) => (e: { target: { value: string } }) => setV((x) => ({ ...x, [k]: e.target.value }));
@@ -229,12 +232,13 @@ function SectionForm({ section, client, data, close, saved }: { section: Section
     setPending(true);
     setErrors({});
     setFailure(null);
+    setConflict(null);
     const r = await adminCall(`/admin/clients/${client.id}`, { method: 'PATCH', body: { section, version: data.version, values: toPayload(section, v) } });
     setPending(false);
     if (!r.ok) {
       const fields = fieldErrors(r.error);
       if (Object.keys(fields).length) return setErrors(fields);
-      if (r.error?.code === 'CONFLICT_VERSION') return setFailure(t('ui.admin-clients.conflict'));
+      if (isConflict(r.error)) return setConflict(r.error ?? null); // TRV-094
       return setFailure(errorText(r));
     }
     toast({ text: t('ui.common.saved') });
@@ -282,6 +286,7 @@ function SectionForm({ section, client, data, close, saved }: { section: Section
 
   return (
     <form className={f.form} onSubmit={submit} noValidate>
+      {conflict ? <ConflictNotice error={conflict} onReload={saved} changes={() => changesText(v)} /> : null}
       {failure ? <Banner tone="error">{failure}</Banner> : null}
       {section === 'identity' ? (
         <>

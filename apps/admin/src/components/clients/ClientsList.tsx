@@ -72,7 +72,8 @@ export function ClientsList() {
       firstDir: 'desc',
       cell: (c) => <time dateTime={c.lastActivityAt} title={shortDateTime(c.lastActivityAt, timeZone)}>{relativeTime(c.lastActivityAt, now, timeZone)}</time>,
     },
-    { key: 'source', header: t('ui.admin-clients.column.source'), hiddenByDefault: true, cell: (c) => (c.source ? t(`ui.enum.LeadSource.${c.source}` as MessageKey) : DASH) },
+    // CRM-040 — « Origine » is one of the columns of the list
+    { key: 'source', header: t('ui.admin-clients.column.source'), cell: (c) => (c.source ? t(`ui.enum.LeadSource.${c.source}` as MessageKey) : DASH) },
     { key: 'createdAt', header: t('ui.admin-clients.column.createdAt'), sortable: true, firstDir: 'desc', hiddenByDefault: true, cell: (c) => shortDateTime(c.createdAt, timeZone) },
   ];
 

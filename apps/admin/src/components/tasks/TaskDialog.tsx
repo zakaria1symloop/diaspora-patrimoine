@@ -4,13 +4,14 @@
 // Rules shown in the window: a due date without hour is due « in the day » (late only the day after, reminder at 9:00);
 // « 15 minutes » and « 1 heure avant » are offered only with an hour; without due date only « Aucun » or a chosen date.
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { REMINDER_KINDS, TASK_PRIORITIES, TASK_TYPES, type AgentPick, type TaskDetail } from '@dp/contracts';
+import { REMINDER_KINDS, TASK_PRIORITIES, TASK_TYPES, type AgentPick, type ApiErrorBody, type TaskDetail } from '@dp/contracts';
 import { Banner, Button, Icon, Modal, Skeleton } from '@dp/ui';
 import { adminCall, newIdempotencyKey } from '@/lib/admin-client';
 import { errorText, fieldErrors } from '@/lib/errors';
 import { t } from '@/lib/i18n';
 import { SelectInput, TextArea, TextInput, formStyles as f, useUnsavedGuard } from '../shell/forms';
 import { useShell } from '../shell/ShellContext';
+import { changesText, ConflictNotice, isConflict } from '../shell/ConflictNotice';
 import { enumLabel } from './task-parts';
 import s from './tasks.module.css';
 
@@ -65,6 +66,7 @@ function TaskForm({ onClose, onDone, links, taskId, presetDate, presetTime }: Om
   const [agents, setAgents] = useState<AgentPick[]>([]);
   const [pending, setPending] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
+  const [conflict, setConflict] = useState<ApiErrorBody['error'] | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [key] = useState(newIdempotencyKey);
   useUnsavedGuard(initial !== null && JSON.stringify(v) !== JSON.stringify(initial));
@@ -111,7 +113,8 @@ function TaskForm({ onClose, onDone, links, taskId, presetDate, presetTime }: Om
     if (r.aborted) return;
     const fields = fieldErrors(r.error);
     if (Object.keys(fields).length) setErrors(fields);
-    else setFailure(r.error?.code === 'CONFLICT_VERSION' ? t('ui.admin-tasks.conflict') : errorText(r));
+    else if (isConflict(r.error)) setConflict(r.error ?? null); // TRV-094
+    else setFailure(errorText(r));
   }
 
   if (taskId && !task && !failure)
@@ -124,6 +127,7 @@ function TaskForm({ onClose, onDone, links, taskId, presetDate, presetTime }: Om
   const attached = links?.label ?? task?.attachments.map((a) => a.label).join(' · ');
   return (
     <form className={f.form} onSubmit={submit} noValidate>
+      {conflict ? <ConflictNotice error={conflict} onReload={() => window.location.reload()} changes={() => changesText(v as unknown as Record<string, unknown>)} /> : null}
       {failure ? <Banner tone="error">{failure}</Banner> : null}
       {attached ? (
         <p className={s.attached}>

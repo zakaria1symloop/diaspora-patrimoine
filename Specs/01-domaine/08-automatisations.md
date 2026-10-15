@@ -723,8 +723,9 @@ L'e-mail ne part pas s'il n'a rien à dire. Chacun peut le couper dans ses préf
 | `alerts.instant` | Toutes les 15 min | Alertes immédiates. | AUT-060 |
 | `task.scan` | Toutes les 15 min | Rappels de tâches (`task.due`). | TAC-030 |
 | `share.expire` | Chaque heure | Liens de partage expirés. | BNK-110 |
+| `preview.expiry` | toutes les 5 min | Aperçus « Voir comme le client » arrivés à leurs 30 minutes : session close, fin tracée (`client.impersonation_ended`). | ROL-017, CRM-075 |
 | `document.expiry` | 2 h | Pièces expirées ; pièces qui expirent dans 15 jours. | CYC-145 |
-| `client.status` | 3 h | Recalcul du statut des clients ; inactivité. | CYC-060 |
+| `client.status` | 3 h | Recalcul du statut et du score des clients ; inactivité. | CYC-060, CAL-070 |
 | `catalogue.nightly` | 3 h 30 | Archivage des biens vendus ; score de pertinence ; livraisons dépassées ; programmes vendus depuis 180 jours ; revalidation des pages dont un affichage dépend de la date du jour (étiquette « Nouveau », étiquette à durée limitée, livraison dépassée, « Mis à jour le »). | CYC-123, CAL-080, AUT-074, AUT-078, NAV-042 |
 | `stats.flush` | Toutes les 5 min | Report des vues et des intérêts comptés dans `PropertyDailyStat` et dans les totaux des biens. | FIC-100 |
 | `cache.audit` | 4 h | Contrôle des caches ; vérification de cohérence. | AUT-090, FIA-120 |
