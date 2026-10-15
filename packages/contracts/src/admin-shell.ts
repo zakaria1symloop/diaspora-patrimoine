@@ -310,6 +310,8 @@ export interface AdminTimelineEntry {
     /** Stable code of why it did not leave or was not delivered. */
     failureReason: string | null;
     canCancel: boolean;
+    /** COM-020, COM-030 — its files (opened by `GET /admin/communications/{id}/attachments/{uploadId}`, MED-030). */
+    attachments: { uploadId: string; name: string; sizeBytes: number }[];
   };
 }
 

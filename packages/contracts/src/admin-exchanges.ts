@@ -79,6 +79,21 @@ export type ExchangeUpdate = z.input<typeof exchangeUpdateSchema>;
 export const RECEIVED_EMAIL_BODY_MAX = 20_000;
 
 /** COM-030 — `POST /admin/communications/received-email`: date, subject, pasted text. */
+// ─── Files of an e-mail (COM-020 « Pièces jointes », COM-030 « fichiers éventuels »; MED-010) ─────────────────────
+
+/** MED-010 — a hand-written e-mail's attachments: these formats, 10 MB in all, five at most. */
+export const EMAIL_ATTACHMENT_FORMATS = ['pdf', 'jpg', 'png', 'docx', 'xlsx'] as const;
+export const EMAIL_ATTACHMENTS_MAX = 5;
+export const EMAIL_ATTACHMENTS_MAX_BYTES = 10_000_000;
+/** A file sent through API-080 and checked (`POST /admin/emails/uploads/{id}/complete`), or one of an e-mail. */
+export interface EmailAttachment {
+  uploadId: string;
+  name: string;
+  sizeBytes: number;
+  mimeType: string;
+}
+const attachmentIdsSchema = z.array(z.uuid()).max(EMAIL_ATTACHMENTS_MAX, { error: 'TOO_LONG' }).default([]);
+
 export const receivedEmailSchema = z
   .strictObject({
     ...targetShape,
@@ -91,6 +106,8 @@ export const receivedEmailSchema = z
       .string({ error: 'REQUIRED' })
       .transform((s) => s.replace(/\r\n/g, '\n').trim())
       .pipe(z.string().min(1, { error: 'REQUIRED', abort: true }).max(RECEIVED_EMAIL_BODY_MAX, { error: 'TOO_LONG' })),
+    /** COM-030 « fichiers éventuels » — uploads completed by the author (API-080). */
+    attachmentIds: attachmentIdsSchema,
   })
   .superRefine(requireTarget);
 export type ReceivedEmail = z.input<typeof receivedEmailSchema>;
@@ -180,6 +197,8 @@ export const emailSendSchema = z
     scheduledFor: instantSchema,
     /** The warnings the writer confirmed (« Envoyer quand même ? », CRM-060). */
     confirmed: z.array(z.enum(EMAIL_CONFIRMABLE_WARNINGS)).max(2).default([]),
+    /** COM-020 « Pièces jointes » — uploads completed by the author (API-080); never a file of a dossier (NOT-008). */
+    attachmentIds: attachmentIdsSchema,
   })
   .superRefine(requireTarget);
 export type EmailSend = z.input<typeof emailSendSchema>;

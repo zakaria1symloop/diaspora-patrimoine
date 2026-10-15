@@ -162,6 +162,9 @@ export function leadCan(lead: LeadState, staff: Pick<StaffView, 'userId' | 'role
     if (lead.needsReview) can.review = ok;
   }
   if (staff.has('lead.assign') && !application) can.assign = open ? ok : no(`STATUS_${lead.status}`);
+  // CRM-011 « Créer la fiche partenaire » — a « Devenir partenaire » request (EP-23: notary, insurer, institution, media,
+  // other — promoters and banks sign up on EP-32) becomes an other partner (CTL-170, `content.manage`); it then closes.
+  if (staff.has('content.manage') && staff.has('lead.process') && lead.kind === 'PARTNER_REQUEST' && !application) can.createPartner = open ? ok : no(`STATUS_${lead.status}`);
   if (staff.has('dossier.create') && lead.kind !== 'PARTNER_REQUEST') {
     const state = !lead.clientId ? no('NO_CLIENT') : lead.dossierId ? no('HAS_DOSSIER') : lead.status === 'SPAM' ? no('STATUS_SPAM') : null;
     if (lead.kind === 'CONTACT_MESSAGE' || (lead.liveDossiers ?? 0) > 0) can.openDossier = state ?? ok;
@@ -317,7 +320,7 @@ export class LeadsAdminService {
     if (query.createdTo) created.lt = new Date(zonedDayStart(query.createdTo, user.timezone).getTime() + 86_400_000);
 
     /** The criteria of the address, with one filter left out to count its values (TRV-106). */
-    const criteria = (skip?: 'status' | 'kind' | 'source' | 'country'): Prisma.LeadWhereInput => ({
+    const criteria = (skip?: 'status' | 'kind' | 'source' | 'country' | 'property' | 'program'): Prisma.LeadWhereInput => ({
       AND: [
         leadScope(staff),
         query.view ? this.viewWhere(query.view, staff, now) : query.status.length ? {} : { status: { not: 'SPAM' } },
@@ -327,8 +330,8 @@ export class LeadsAdminService {
         skip !== 'source' && query.source.length ? { source: { in: query.source } } : {},
         query.assignedAgentId.length ? { OR: [...(agents.length ? [{ assignedAgentId: { in: agents } }] : []), ...(query.assignedAgentId.includes('none') ? [{ assignedAgentId: null }] : [])] } : {},
         query.createdFrom || query.createdTo ? { createdAt: created } : {},
-        query.propertyId ? { propertyId: query.propertyId } : {},
-        query.programId ? { programId: query.programId } : {},
+        skip !== 'property' && query.propertyId ? { propertyId: query.propertyId } : {},
+        skip !== 'program' && query.programId ? { programId: query.programId } : {},
         skip !== 'country' && query.countryOfResidence.length ? { client: { countryOfResidence: { in: query.countryOfResidence } } } : {},
         query.hasDossier ? { dossierId: query.hasDossier === 'true' ? { not: null } : null } : {},
       ],
@@ -367,6 +370,26 @@ export class LeadsAdminService {
         byCountry[c.countryOfResidence!] = await this.prisma.lead.count({ where: { AND: [countryWhere, { client: { countryOfResidence: c.countryOfResidence } }] } });
       }),
     );
+    // CRM-001 — « Bien » and « Programme » filters: the properties and programmes the requests of the list are about,
+    // without that filter, each with its number of requests (TRV-106); the 30 most asked.
+    const [byProperty, byProgram] = await Promise.all([
+      this.prisma.lead.groupBy({ by: ['propertyId'], where: { AND: [criteria('property'), { propertyId: { not: null } }] }, _count: { _all: true }, orderBy: { _count: { propertyId: 'desc' } }, take: 30 }),
+      this.prisma.lead.groupBy({ by: ['programId'], where: { AND: [criteria('program'), { programId: { not: null } }] }, _count: { _all: true }, orderBy: { _count: { programId: 'desc' } }, take: 30 }),
+    ]);
+    const [facetProps, facetProgs] = await Promise.all([
+      this.prisma.property.findMany({ where: { id: { in: byProperty.map((r) => r.propertyId!) } }, select: { id: true, reference: true, title: true } }),
+      this.prisma.program.findMany({ where: { id: { in: byProgram.map((r) => r.programId!) } }, select: { id: true, name: true } }),
+    ]);
+    const objectFacets: LeadList['objectFacets'] = [
+      ...byProperty.flatMap((r) => {
+        const p = facetProps.find((x) => x.id === r.propertyId);
+        return p ? [{ id: p.id, type: 'PROPERTY' as const, label: `${p.reference} · ${p.title}`, count: r._count._all }] : [];
+      }),
+      ...byProgram.flatMap((r) => {
+        const p = facetProgs.find((x) => x.id === r.programId);
+        return p ? [{ id: p.id, type: 'PROGRAM' as const, label: p.name, count: r._count._all }] : [];
+      }),
+    ];
     const objects: LeadList['objects'] = [];
     if (query.propertyId) {
       const prop = await this.prisma.property.findUnique({ where: { id: query.propertyId }, select: { id: true, reference: true, title: true } });
@@ -389,6 +412,7 @@ export class LeadsAdminService {
         countryOfResidence: byCountry,
       },
       objects,
+      objectFacets,
       bulk: { assign: staff.has('lead.assign'), process: staff.has('lead.process') },
       agents: agentRows.map((m) => ({ id: m.user.id, name: staffName(m.user) ?? '' })).filter((a) => a.name),
     };
@@ -406,7 +430,7 @@ export class LeadsAdminService {
         client: { select: { id: true, email: true, firstName: true, lastName: true, phone: true, countryOfResidence: true, status: true, score: true, doNotContact: true, restrictedAt: true, emailDoubtful: true, emailBouncedAt: true, notDuplicateOfIds: true, mergedIntoId: true } },
         property: { select: { title: true, reference: true, slug: true, publication: true, availability: true, deletedAt: true } },
         program: { select: { name: true, slug: true, publication: true, deletedAt: true } },
-        dossier: { select: { reference: true, stage: true, status: true } },
+        dossier: { select: { id: true, reference: true, stage: true, status: true, originLeadId: true } },
         contextDossier: { select: { reference: true } },
         assignedAgent: { select: { firstName: true, lastName: true, status: true } },
       },
@@ -547,7 +571,15 @@ export class LeadsAdminService {
         duplicates,
         liveDossiers: liveDossiers.map((d) => ({ id: d.id, reference: d.reference, stage: d.stage, status: d.status })),
         pendingDecision: !lead.dossierId && OPENS_DOSSIER.has(lead.kind) && lead.status !== 'SPAM' && liveDossiers.length > 0,
-        dossier: lead.dossier ? { reference: lead.dossier.reference, stage: lead.dossier.stage, status: lead.dossier.status } : null,
+        dossier: lead.dossier
+          ? {
+              id: lead.dossier.id,
+              reference: lead.dossier.reference,
+              stage: lead.dossier.stage,
+              status: lead.dossier.status,
+              closableWithLead: lead.dossier.originLeadId === lead.id && ['OPEN', 'ON_HOLD'].includes(lead.dossier.status) && staff.has('dossier.close'),
+            }
+          : null,
         writtenFromDossier: lead.contextDossier?.reference ?? null,
         otherLeads: others.map((o) => ({ reference: o.reference, kind: o.kind as AdminLeadKind, status: o.status as AdminLeadStatus, createdAt: o.createdAt.toISOString() })),
       },

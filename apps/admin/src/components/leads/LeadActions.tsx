@@ -6,20 +6,20 @@
 // the request and says what will happen (TRV-095). After a gesture the record reads itself again.
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { LEAD_MANUAL_OUTCOMES, type LeadAction, type LeadActionState, type LeadDetail } from '@dp/contracts';
+import { LEAD_MANUAL_OUTCOMES, PARTNER_CATEGORIES, type LeadAction, type LeadActionState, type LeadDetail } from '@dp/contracts';
 import { hasMessage, type MessageKey } from '@dp/i18n';
 import { Banner, Button, Menu, Modal, useToast, type MenuItem } from '@dp/ui';
-import { adminCall, type CallResult } from '@/lib/admin-client';
+import { adminCall, newIdempotencyKey, type CallResult } from '@/lib/admin-client';
 import { errorText, fieldErrors } from '@/lib/errors';
 import { t } from '@/lib/i18n';
 import { AdvisorSelect } from '../crm/AdvisorSelect';
 import { FailureDetails } from '../shell/ReadFailure';
-import { TextArea, formStyles as f } from '../shell/forms';
+import { Checkbox, SelectInput, TextArea, TextInput, formStyles as f } from '../shell/forms';
 import { isDeliveredPath } from '../shell/menu';
 import { signalShellChanged } from '../shell/ShellContext';
 import s from './leads.module.css';
 
-type Dialog = 'assign' | 'close' | 'release' | 'reopen' | 'spam' | 'restore' | 'openDossier' | 'attach' | null;
+type Dialog = 'assign' | 'close' | 'release' | 'reopen' | 'spam' | 'restore' | 'openDossier' | 'attach' | 'createPartner' | null;
 
 export function blockedReason(state: LeadActionState | undefined): string | null {
   if (!state || state.allowed) return null;
@@ -107,16 +107,18 @@ export function LeadActions({ lead }: { lead: LeadDetail }) {
   if (mainKey !== 'restore' && lead.status === 'SPAM') add('restore', t('ui.admin-leads.action.restore'), 'arrow-left', 'restore');
   add('openDossier', lead.followUp.pendingDecision ? t('ui.admin-leads.action.openSecondDossier') : t('ui.admin-leads.action.openDossier'), 'folder', 'openDossier', { separated: true });
   add('attach', t('ui.admin-leads.action.attach'), 'folder', 'attach');
+  add('createPartner', t('ui.admin-leads.action.createPartner'), 'partners', 'createPartner', { separated: true });
   if (!lead.needsReview) add('spam', t('ui.admin-leads.action.spam'), 'trash', 'spam', { danger: true, separated: true });
 
   return (
     <>
       {main}
       {items.length ? <Menu label={t('ui.admin-leads.action.more')} items={items} /> : null}
-      <Modal open={dialog !== null} onClose={() => setDialog(null)} title={dialog ? t(`ui.admin-leads.dialog.${dialog}.title`, { reference: lead.reference }) : ''} closeLabel={t('ui.common.close')} width={dialog === 'close' || dialog === 'attach' ? 560 : 480}>
+      <Modal open={dialog !== null} onClose={() => setDialog(null)} title={dialog ? t(`ui.admin-leads.dialog.${dialog}.title`, { reference: lead.reference }) : ''} closeLabel={t('ui.common.close')} width={dialog === 'close' || dialog === 'attach' || dialog === 'createPartner' ? 560 : 480}>
         {dialog === 'assign' ? <AssignForm lead={lead} close={() => setDialog(null)} done={done} /> : null}
         {dialog === 'close' ? <CloseForm lead={lead} close={() => setDialog(null)} done={done} /> : null}
         {dialog === 'attach' ? <AttachForm lead={lead} close={() => setDialog(null)} done={done} /> : null}
+        {dialog === 'createPartner' ? <CreatePartnerForm lead={lead} close={() => setDialog(null)} done={done} /> : null}
         {dialog === 'release' || dialog === 'reopen' || dialog === 'spam' || dialog === 'restore' || dialog === 'openDossier' ? <ConfirmForm kind={dialog} lead={lead} close={() => setDialog(null)} done={done} /> : null}
       </Modal>
     </>
@@ -186,14 +188,35 @@ function AssignForm({ lead, close, done }: FormProps) {
   );
 }
 
+/** CYC-005 — the reason of the dossier closed with the request (CYC-035). */
+const DOSSIER_LOST_REASON: Partial<Record<string, string>> = { UNREACHABLE: 'UNREACHABLE', NOT_INTERESTED: 'CLIENT_WITHDREW' };
+
 function CloseForm({ lead, close, done }: FormProps) {
   const [outcome, setOutcome] = useState('');
   const [note, setNote] = useState('');
+  const [closeDossier, setCloseDossier] = useState(false);
+  const [notify, setNotify] = useState<boolean | null>(null);
   const { pending, errors, setErrors, run, banner } = useCall(done);
+  const dossier = lead.followUp.dossier;
+  const lostReason = DOSSIER_LOST_REASON[outcome] ?? null;
+  // CYC-005 — a request that opened a dossier, closed as « Injoignable » or « Pas intéressé »: the same window offers to
+  // close the dossier as lost (CYC-035), with the reason that answers the outcome.
+  const offerDossier = Boolean(dossier?.closableWithLead && lostReason);
+  const hasEmail = !lead.followUp.client?.withoutEmail;
+  // CYC-035 — the client is told by default, except when he withdrew himself (he already knows).
+  const notifyClient = hasEmail && (notify ?? lostReason !== 'CLIENT_WITHDREW');
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!outcome) return setErrors({ outcome: t('ui.validation.REQUIRED') });
-    void run(() => adminCall(`/admin/leads/${lead.id}/close`, { body: { outcome, note } }), t('ui.admin-leads.toast.closed'));
+    const withDossier = offerDossier && closeDossier;
+    void run(
+      async () => {
+        const r = await adminCall(`/admin/leads/${lead.id}/close`, { body: { outcome, note } });
+        if (!r.ok || !withDossier) return r;
+        return adminCall(`/admin/dossiers/${dossier!.id}/close`, { body: { reason: lostReason, note: note.trim() || null, notifyClient } });
+      },
+      withDossier ? t('ui.admin-leads.toast.closedWithDossier', { reference: dossier!.reference }) : t('ui.admin-leads.toast.closed'),
+    );
   };
   return (
     <form className={f.form} onSubmit={submit} noValidate>
@@ -217,10 +240,64 @@ function CloseForm({ lead, close, done }: FormProps) {
         ) : null}
       </fieldset>
       <TextArea label={t('ui.admin-leads.dialog.close.note')} optional value={note} onChange={(e) => setNote(e.target.value)} maxLength={500} rows={3} error={errors.note} hint={t('ui.admin-leads.dialog.close.noteHint')} />
-      {lead.followUp.dossier && (outcome === 'UNREACHABLE' || outcome === 'NOT_INTERESTED') ? (
-        <Banner tone="info">{t('ui.admin-leads.dialog.close.dossierStays', { reference: lead.followUp.dossier.reference })}</Banner>
+      {offerDossier ? (
+        <div className={s.closeDossier}>
+          <Checkbox label={t('ui.admin-leads.dialog.close.dossierToo', { reference: dossier!.reference, raison: t(`ui.enum.LostReason.${lostReason}` as MessageKey) })} checked={closeDossier} onChange={setCloseDossier} />
+          {closeDossier && hasEmail ? <Checkbox label={t('ui.admin-leads.dialog.close.dossierNotify')} checked={notifyClient} onChange={setNotify} /> : null}
+          {closeDossier ? <p className={f.muted}>{t('ui.admin-leads.dialog.close.dossierEffects')}</p> : null}
+        </div>
+      ) : dossier && lostReason ? (
+        <Banner tone="info">{t('ui.admin-leads.dialog.close.dossierStays', { reference: dossier.reference })}</Banner>
       ) : null}
       <Buttons close={close} pending={pending} label={t('ui.admin-leads.dialog.close.submit')} />
+    </form>
+  );
+}
+
+/**
+ * CRM-011 « Créer la fiche partenaire » — the other partner (CTL-170), prefilled with what the request sent (company,
+ * « Vous êtes », website); the request is then closed « Réponse apportée ». The record is completed (description, logo,
+ * publication) on « Partenaires ».
+ */
+function CreatePartnerForm({ lead, close, done }: FormProps) {
+  const router = useRouter();
+  const sent = (k: string) => {
+    const v = lead.sent.fields.find((f) => f.key === k)?.value;
+    return typeof v === 'string' ? v : '';
+  };
+  const kind = sent('requesterKind');
+  const [name, setName] = useState(sent('company'));
+  const [category, setCategory] = useState<string>((PARTNER_CATEGORIES as readonly string[]).includes(kind) ? kind : 'OTHER');
+  const [url, setUrl] = useState(sent('websiteUrl'));
+  const [key] = useState(newIdempotencyKey);
+  const { pending, errors, setErrors, run, banner } = useCall((text) => {
+    done(text);
+    router.push('/partenaires');
+  });
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return setErrors({ name: t('ui.validation.REQUIRED') });
+    void run(async () => {
+      const created = await adminCall<{ id: string }>('/admin/partners', { body: { name: name.trim(), category, descriptionPublic: null, url: url.trim() || null, isPublic: false }, idempotencyKey: key });
+      if (!created.ok) return created;
+      return adminCall(`/admin/leads/${lead.id}/close`, { body: { outcome: 'ANSWERED', note: t('ui.admin-leads.dialog.createPartner.closeNote', { nom: name.trim() }) } });
+    }, t('ui.admin-leads.toast.partnerCreated', { nom: name.trim() }));
+  };
+  return (
+    <form className={f.form} onSubmit={submit} noValidate>
+      <p>{t('ui.admin-leads.dialog.createPartner.text')}</p>
+      {banner}
+      <TextInput label={t('ui.admin-leads.dialog.createPartner.name')} value={name} onChange={(e) => setName(e.target.value)} maxLength={160} error={errors.name} autoFocus />
+      <SelectInput label={t('ui.admin-leads.dialog.createPartner.category')} value={category} onChange={(e) => setCategory(e.target.value)} error={errors.category}>
+        {PARTNER_CATEGORIES.map((c) => (
+          <option key={c} value={c}>
+            {t(`ui.enum.PartnerCategory.${c}` as MessageKey)}
+          </option>
+        ))}
+      </SelectInput>
+      <TextInput label={t('ui.admin-leads.dialog.createPartner.url')} optional inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} maxLength={300} error={errors.url} />
+      <p className={f.muted}>{t('ui.admin-leads.dialog.createPartner.after')}</p>
+      <Buttons close={close} pending={pending} label={t('ui.admin-leads.dialog.createPartner.submit')} disabled={!name.trim()} />
     </form>
   );
 }

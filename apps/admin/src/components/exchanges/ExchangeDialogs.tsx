@@ -3,13 +3,14 @@
 // reçu ». The outcome of a call is chosen among large cards; the moment defaults to now and never lies in the future;
 // the report is required when the person was reached; « Me rappeler de… » creates a call task for its author.
 import { useEffect, useState, type FormEvent } from 'react';
-import { CALL_OUTCOMES, type ExchangeResult } from '@dp/contracts';
+import { CALL_OUTCOMES, type EmailAttachment, type ExchangeResult } from '@dp/contracts';
 import type { MessageKey } from '@dp/i18n';
 import { Banner, Button, Icon, Modal, useToast, type IconName } from '@dp/ui';
 import { adminCall, newIdempotencyKey } from '@/lib/admin-client';
 import { errorText, fieldErrors } from '@/lib/errors';
 import { t } from '@/lib/i18n';
 import { Checkbox, TextArea, TextInput, formStyles as f } from '../shell/forms';
+import { AttachmentPicker } from './AttachmentPicker';
 import type { ExchangeTarget } from './ExchangeActions';
 import s from './exchanges.module.css';
 
@@ -184,6 +185,10 @@ export function ReceivedEmailDialog({ open, target, close, done }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [failure, setFailure] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const [files, setFiles] = useState<EmailAttachment[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [round, setRound] = useState(0);
+  const [key, setKey] = useState('');
   useEffect(() => {
     if (!open) return;
     setOccurredAt(nowLocal());
@@ -191,6 +196,10 @@ export function ReceivedEmailDialog({ open, target, close, done }: Props) {
     setBody('');
     setErrors({});
     setFailure(null);
+    setFiles([]);
+    setUploading(false);
+    setRound((n) => n + 1); // a fresh list of files each time the window opens
+    setKey(newIdempotencyKey());
   }, [open]);
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -199,7 +208,10 @@ export function ReceivedEmailDialog({ open, target, close, done }: Props) {
     if (!body.trim()) local.body = t('ui.validation.REQUIRED');
     if (Object.keys(local).length) return setErrors(local);
     setPending(true);
-    const r = await adminCall('/admin/communications/received-email', { body: { leadId: target.leadId ?? null, clientId: target.leadId ? null : (target.clientId ?? null), dossierId: target.dossierId ?? null, occurredAt: new Date(occurredAt).toISOString(), subject, body } });
+    const r = await adminCall('/admin/communications/received-email', {
+      body: { leadId: target.leadId ?? null, clientId: target.leadId ? null : (target.clientId ?? null), dossierId: target.dossierId ?? null, occurredAt: new Date(occurredAt).toISOString(), subject, body, attachmentIds: files.map((x) => x.uploadId) },
+      idempotencyKey: key,
+    });
     setPending(false);
     if (!r.ok) {
       const fields = fieldErrors(r.error);
@@ -219,11 +231,13 @@ export function ReceivedEmailDialog({ open, target, close, done }: Props) {
           <TextInput label={t('ui.admin-exchanges.received.subject')} value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={200} error={errors.subject} />
         </div>
         <TextArea label={t('ui.admin-exchanges.received.body')} value={body} onChange={(e) => setBody(e.target.value)} maxLength={20000} rows={8} error={errors.body} />
+        {/* COM-030 « fichiers éventuels » */}
+        <AttachmentPicker key={round} base="communications" onChange={setFiles} onBusy={setUploading} />
         <div className={`${f.actions} ${f.actionsEnd}`}>
           <Button variant="secondary" size="M" onClick={close}>
             {t('ui.common.cancel')}
           </Button>
-          <Button type="submit" variant="tool" size="M" pending={pending}>
+          <Button type="submit" variant="tool" size="M" pending={pending} disabled={uploading}>
             {t('ui.admin-exchanges.received.submit')}
           </Button>
         </div>

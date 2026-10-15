@@ -32,9 +32,8 @@ test.describe('back office — team', () => {
     await signInDirection(page);
     await page.goto(`${ADMIN}/equipe`);
     await expect(page.getByRole('heading', { name: 'Équipe', level: 1 })).toBeVisible();
-    // ADM-030 columns of this delivery; « Reçoit des demandes », « Absent jusqu'au », « En cours » arrive with package 3.2
-    for (const name of ['Nom', 'E-mail', 'Rôle', 'État', 'Double authentification', 'Dernière connexion']) await expect(page.getByRole('columnheader', { name })).toBeVisible();
-    await expect(page.getByRole('columnheader', { name: 'Reçoit des demandes' })).toHaveCount(0);
+    // ADM-030 columns; « Reçoit des demandes » came with package 3.2
+    for (const name of ['Nom', 'E-mail', 'Rôle', 'État', 'Double authentification', 'Dernière connexion', 'Reçoit des demandes']) await expect(page.getByRole('columnheader', { name })).toBeVisible();
 
     // TRV-114 — a form sent with several errors: the summary and the messages under the fields
     await page.getByRole('button', { name: 'Inviter' }).click();

@@ -179,3 +179,13 @@
   font-size: var(--fs-admin-caption);
   font-variant-numeric: tabular-nums;
 }
+
+/* COM-020, COM-030 — the files of an e-mail (MED-030: opened by a link of 5 minutes) */
+.mailFiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+  margin: var(--sp-6) 0 0;
+  padding: 0;
+  list-style: none;
+}

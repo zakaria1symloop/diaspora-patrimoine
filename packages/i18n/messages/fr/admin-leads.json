@@ -29,6 +29,8 @@
     "spam": "Indésirables"
   },
   "filter": {
+    "property": "Bien",
+    "program": "Programme",
     "created": "Reçue le",
     "hasDossier": "Dossier",
     "withDossier": "Avec dossier",
@@ -254,7 +256,8 @@
     "reviewSpam": "Indésirable",
     "openDossier": "Ouvrir un dossier",
     "openSecondDossier": "Ouvrir un second dossier",
-    "attach": "Rattacher au dossier…"
+    "attach": "Rattacher au dossier…",
+    "createPartner": "Créer la fiche partenaire…"
   },
   "blocked": {
     "default": "Impossible dans l’état actuel de la demande.",
@@ -278,6 +281,8 @@
     "INVALID_CHOICE": "Choix refusé."
   },
   "toast": {
+    "partnerCreated": "Fiche partenaire « {nom} » créée, demande clôturée.",
+    "closedWithDossier": "Demande clôturée, et le dossier {reference} avec elle.",
     "taken": "Demande prise en charge : elle est à vous.",
     "takenRef": "Demande {reference} prise en charge.",
     "assigned": "Demande affectée.",
@@ -308,6 +313,9 @@
       "note": "Note",
       "noteHint": "Visible de l’équipe seulement.",
       "dossierStays": "Le dossier {reference} reste ouvert : clôturez-le depuis sa fiche s’il est perdu.",
+      "dossierToo": "Clôturer aussi le dossier {reference} comme perdu (motif : {raison})",
+      "dossierNotify": "Prévenir le client par e-mail que son dossier est clôturé",
+      "dossierEffects": "Ses tâches ouvertes et ses rendez-vous à venir seront annulés ; il pourra être rouvert depuis sa fiche.",
       "submit": "Clôturer la demande"
     },
     "release": {
@@ -339,6 +347,16 @@
       "title": "Rattacher la demande {reference}",
       "text": "Choisissez le dossier en cours qui la reçoit. Le bien de la demande y devient un bien envisagé.",
       "submit": "Rattacher"
+    },
+    "createPartner": {
+      "title": "Créer la fiche partenaire pour {reference}",
+      "text": "La fiche reprend ce que la personne a envoyé ; vérifiez-la. La demande sera ensuite clôturée « Réponse apportée ».",
+      "name": "Nom de la société",
+      "category": "Catégorie",
+      "url": "Site web",
+      "after": "La description, le logo et la publication sur le site se complètent ensuite dans « Partenaires ».",
+      "submit": "Créer la fiche",
+      "closeNote": "Fiche partenaire créée : {nom}."
     }
   },
   "outcomeHelp": {

@@ -274,6 +274,8 @@ export class MailerService {
     /** « {Prénom N.} — {fonction} », then the lines of the adviser's signature. */
     signature: string;
     audience: 'CLIENT' | 'PARTNER';
+    /** COM-020 — the files from the computer, checked before (MED-021). */
+    attachments?: MailAttachment[];
   }): Promise<SendOutcome> {
     const now = this.clock.now();
     const row = await this.prisma.communication.findUnique({ where: { id: input.communicationId } });
@@ -306,6 +308,7 @@ export class MailerService {
         html: full.html,
         text: full.text,
         templateCode: code,
+        ...(input.attachments?.length ? { attachments: input.attachments } : {}),
       });
       const sentAt = this.clock.now();
       await this.finish(row.id, row.stateHistory, 'SENT', { sentAt, occurredAt: sentAt, providerMessageId, body: input.contentText, fromAddress, replyTo });

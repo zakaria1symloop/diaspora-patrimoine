@@ -1009,6 +1009,19 @@ export const messages = {
     "ui.admin-dossiers.toast.proposed": "{n, plural, one {# bien envoyé au client.} other {# biens envoyés au client.}}",
     "ui.admin-dossiers.toast.proposedNoEmail": "{n, plural, one {# bien proposé. Sans e-mail : une tâche vous rappelle de le présenter.} other {# biens proposés. Sans e-mail : une tâche vous rappelle de les présenter.}}",
     "ui.admin-dossiers.toast.drafted": "{n, plural, =0 {Rien d’ajouté : ces biens sont déjà au dossier.} one {# bien en préparation.} other {# biens en préparation.}}",
+    "ui.admin-exchanges.files.label": "Pièces jointes",
+    "ui.admin-exchanges.files.hint": "PDF, JPG, PNG, Word ou Excel — {n} fichiers et {mb} Mo au total. Une pièce du dossier ne se joint pas.",
+    "ui.admin-exchanges.files.add": "Joindre un fichier",
+    "ui.admin-exchanges.files.progress": "Envoi… {n} %",
+    "ui.admin-exchanges.files.ready": "Prêt · {taille}",
+    "ui.admin-exchanges.files.remove": "Retirer",
+    "ui.admin-exchanges.files.removeNamed": "Retirer {nom}",
+    "ui.admin-exchanges.files.tooMany": "{n} fichiers au plus.",
+    "ui.admin-exchanges.files.tooBig": "{n} Mo au total, au plus.",
+    "ui.admin-exchanges.files.format": "Format non accepté : PDF, JPG, PNG, Word ou Excel.",
+    "ui.admin-exchanges.files.mb": "{n} Mo",
+    "ui.admin-exchanges.files.kb": "{n} Ko",
+    "ui.admin-exchanges.files.open": "Ouvrir {nom}",
     "ui.admin-exchanges.notification.suppressed": "L’e-mail programmé pour {client} n’est pas parti : la situation du client a changé depuis.",
     "ui.admin-exchanges.button.call": "Appel",
     "ui.admin-exchanges.button.exchange": "Échange",
@@ -1099,6 +1112,8 @@ export const messages = {
     "ui.admin-leads.view.partner-applications": "Candidatures partenaires",
     "ui.admin-leads.view.all": "Toutes",
     "ui.admin-leads.view.spam": "Indésirables",
+    "ui.admin-leads.filter.property": "Bien",
+    "ui.admin-leads.filter.program": "Programme",
     "ui.admin-leads.filter.created": "Reçue le",
     "ui.admin-leads.filter.hasDossier": "Dossier",
     "ui.admin-leads.filter.withDossier": "Avec dossier",
@@ -1303,6 +1318,7 @@ export const messages = {
     "ui.admin-leads.action.openDossier": "Ouvrir un dossier",
     "ui.admin-leads.action.openSecondDossier": "Ouvrir un second dossier",
     "ui.admin-leads.action.attach": "Rattacher au dossier…",
+    "ui.admin-leads.action.createPartner": "Créer la fiche partenaire…",
     "ui.admin-leads.blocked.default": "Impossible dans l’état actuel de la demande.",
     "ui.admin-leads.blocked.ALREADY_MINE": "Vous suivez déjà cette demande.",
     "ui.admin-leads.blocked.ALREADY_TAKEN": "Un collègue suit déjà cette demande.",
@@ -1322,6 +1338,8 @@ export const messages = {
     "ui.admin-leads.blocked.FORBIDDEN": "Votre rôle ne le permet pas.",
     "ui.admin-leads.blocked.NOT_FOUND": "Demande introuvable ou hors de votre périmètre.",
     "ui.admin-leads.blocked.INVALID_CHOICE": "Choix refusé.",
+    "ui.admin-leads.toast.partnerCreated": "Fiche partenaire « {nom} » créée, demande clôturée.",
+    "ui.admin-leads.toast.closedWithDossier": "Demande clôturée, et le dossier {reference} avec elle.",
     "ui.admin-leads.toast.taken": "Demande prise en charge : elle est à vous.",
     "ui.admin-leads.toast.takenRef": "Demande {reference} prise en charge.",
     "ui.admin-leads.toast.assigned": "Demande affectée.",
@@ -1347,6 +1365,9 @@ export const messages = {
     "ui.admin-leads.dialog.close.note": "Note",
     "ui.admin-leads.dialog.close.noteHint": "Visible de l’équipe seulement.",
     "ui.admin-leads.dialog.close.dossierStays": "Le dossier {reference} reste ouvert : clôturez-le depuis sa fiche s’il est perdu.",
+    "ui.admin-leads.dialog.close.dossierToo": "Clôturer aussi le dossier {reference} comme perdu (motif : {raison})",
+    "ui.admin-leads.dialog.close.dossierNotify": "Prévenir le client par e-mail que son dossier est clôturé",
+    "ui.admin-leads.dialog.close.dossierEffects": "Ses tâches ouvertes et ses rendez-vous à venir seront annulés ; il pourra être rouvert depuis sa fiche.",
     "ui.admin-leads.dialog.close.submit": "Clôturer la demande",
     "ui.admin-leads.dialog.release.title": "Rendre la demande {reference}",
     "ui.admin-leads.dialog.release.text": "Elle redevient « à prendre en charge » et tous les conseillers sont prévenus. Son échéance de premier contact ne change pas.",
@@ -1366,6 +1387,14 @@ export const messages = {
     "ui.admin-leads.dialog.attach.title": "Rattacher la demande {reference}",
     "ui.admin-leads.dialog.attach.text": "Choisissez le dossier en cours qui la reçoit. Le bien de la demande y devient un bien envisagé.",
     "ui.admin-leads.dialog.attach.submit": "Rattacher",
+    "ui.admin-leads.dialog.createPartner.title": "Créer la fiche partenaire pour {reference}",
+    "ui.admin-leads.dialog.createPartner.text": "La fiche reprend ce que la personne a envoyé ; vérifiez-la. La demande sera ensuite clôturée « Réponse apportée ».",
+    "ui.admin-leads.dialog.createPartner.name": "Nom de la société",
+    "ui.admin-leads.dialog.createPartner.category": "Catégorie",
+    "ui.admin-leads.dialog.createPartner.url": "Site web",
+    "ui.admin-leads.dialog.createPartner.after": "La description, le logo et la publication sur le site se complètent ensuite dans « Partenaires ».",
+    "ui.admin-leads.dialog.createPartner.submit": "Créer la fiche",
+    "ui.admin-leads.dialog.createPartner.closeNote": "Fiche partenaire créée : {nom}.",
     "ui.admin-leads.outcomeHelp.ANSWERED": "La personne a eu sa réponse.",
     "ui.admin-leads.outcomeHelp.UNREACHABLE": "Personne n’a pu être joint malgré les relances.",
     "ui.admin-leads.outcomeHelp.NOT_INTERESTED": "La personne ne donne pas suite.",
@@ -8230,6 +8259,19 @@ export type MessageKey =
   | 'ui.admin-exchanges.email.when'
   | 'ui.admin-exchanges.exchange.channel'
   | 'ui.admin-exchanges.exchange.title'
+  | 'ui.admin-exchanges.files.add'
+  | 'ui.admin-exchanges.files.format'
+  | 'ui.admin-exchanges.files.hint'
+  | 'ui.admin-exchanges.files.kb'
+  | 'ui.admin-exchanges.files.label'
+  | 'ui.admin-exchanges.files.mb'
+  | 'ui.admin-exchanges.files.open'
+  | 'ui.admin-exchanges.files.progress'
+  | 'ui.admin-exchanges.files.ready'
+  | 'ui.admin-exchanges.files.remove'
+  | 'ui.admin-exchanges.files.removeNamed'
+  | 'ui.admin-exchanges.files.tooBig'
+  | 'ui.admin-exchanges.files.tooMany'
   | 'ui.admin-exchanges.notification.suppressed'
   | 'ui.admin-exchanges.openWhatsapp'
   | 'ui.admin-exchanges.received.body'
@@ -8245,6 +8287,7 @@ export type MessageKey =
   | 'ui.admin-leads.action.assign'
   | 'ui.admin-leads.action.attach'
   | 'ui.admin-leads.action.close'
+  | 'ui.admin-leads.action.createPartner'
   | 'ui.admin-leads.action.more'
   | 'ui.admin-leads.action.open'
   | 'ui.admin-leads.action.openDossier'
@@ -8390,7 +8433,10 @@ export type MessageKey =
   | 'ui.admin-leads.dialog.attach.submit'
   | 'ui.admin-leads.dialog.attach.text'
   | 'ui.admin-leads.dialog.attach.title'
+  | 'ui.admin-leads.dialog.close.dossierEffects'
+  | 'ui.admin-leads.dialog.close.dossierNotify'
   | 'ui.admin-leads.dialog.close.dossierStays'
+  | 'ui.admin-leads.dialog.close.dossierToo'
   | 'ui.admin-leads.dialog.close.note'
   | 'ui.admin-leads.dialog.close.noteHint'
   | 'ui.admin-leads.dialog.close.outcome'
@@ -8398,6 +8444,14 @@ export type MessageKey =
   | 'ui.admin-leads.dialog.close.submit'
   | 'ui.admin-leads.dialog.close.text'
   | 'ui.admin-leads.dialog.close.title'
+  | 'ui.admin-leads.dialog.createPartner.after'
+  | 'ui.admin-leads.dialog.createPartner.category'
+  | 'ui.admin-leads.dialog.createPartner.closeNote'
+  | 'ui.admin-leads.dialog.createPartner.name'
+  | 'ui.admin-leads.dialog.createPartner.submit'
+  | 'ui.admin-leads.dialog.createPartner.text'
+  | 'ui.admin-leads.dialog.createPartner.title'
+  | 'ui.admin-leads.dialog.createPartner.url'
   | 'ui.admin-leads.dialog.openDossier.submit'
   | 'ui.admin-leads.dialog.openDossier.text'
   | 'ui.admin-leads.dialog.openDossier.title'
@@ -8459,6 +8513,8 @@ export type MessageKey =
   | 'ui.admin-leads.filter.country'
   | 'ui.admin-leads.filter.created'
   | 'ui.admin-leads.filter.hasDossier'
+  | 'ui.admin-leads.filter.program'
+  | 'ui.admin-leads.filter.property'
   | 'ui.admin-leads.filter.withDossier'
   | 'ui.admin-leads.filter.withoutDossier'
   | 'ui.admin-leads.firstContact.callback'
@@ -8526,8 +8582,10 @@ export type MessageKey =
   | 'ui.admin-leads.toast.assigned'
   | 'ui.admin-leads.toast.attached'
   | 'ui.admin-leads.toast.closed'
+  | 'ui.admin-leads.toast.closedWithDossier'
   | 'ui.admin-leads.toast.dossierOpened'
   | 'ui.admin-leads.toast.markedSpam'
+  | 'ui.admin-leads.toast.partnerCreated'
   | 'ui.admin-leads.toast.release'
   | 'ui.admin-leads.toast.reopen'
   | 'ui.admin-leads.toast.restore'

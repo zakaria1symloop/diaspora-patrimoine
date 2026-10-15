@@ -8,7 +8,8 @@
 //     checks again, at departure, that the client did not object, was not archived nor erased (else SUPPRESSED and its
 //     author notified, COM-020). A manual e-mail really sent to a client is a first contact (COM-022, CYC-004); one
 //     that fails or bounces notifies its author (`NS_EMAIL_FAILED`) and the first contact is recomputed.
-// Attachments (five files, 10 MB) are not offered yet: see the report of package 3.2.
+// Attachments (five files, 10 MB, MED-010) come through API-080 (`email-attachments.service.ts`), checked before they
+// leave (MED-021), and are joined to the e-mail when it leaves — now or at its scheduled time.
 import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
 import {
   ErrorCode,
@@ -31,6 +32,7 @@ import { StaffNotifier } from '../automation/staff-notifications.service.js';
 import { StaffViews, clientName } from '../back-office/staff-view.js';
 import { emailReason, wrapEmail } from '../communication/email-layout.js';
 import { MailerService } from '../communication/mailer.service.js';
+import { EmailAttachmentsService, type StoredAttachment } from './email-attachments.service.js';
 import { renderTemplate } from '../communication/template-renderer.js';
 import { ENV, type Env } from '../config/env.js';
 import { syncFirstContact } from '../crm/first-contact.js';
@@ -99,6 +101,7 @@ export class ManualEmailService implements OnModuleInit {
     private readonly notifier: StaffNotifier,
     private readonly scheduler: Scheduler,
     private readonly handlers: OutboxHandlers,
+    private readonly files: EmailAttachmentsService,
     @Inject(ENV) private readonly env: Env,
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
   ) {}
@@ -229,12 +232,15 @@ export class ManualEmailService implements OnModuleInit {
     const content = await this.content(input);
     const signature = await this.signatureOf(auth.userId);
     const id = newId();
+    let attachments: StoredAttachment[] | null = null;
     await this.prisma.$transaction(async (tx) => {
+      attachments = await this.files.claim(tx, auth.userId, input.attachmentIds, id, now);
       await tx.communication.create({
         data: {
           id,
           channel: 'EMAIL',
           direction: 'OUTBOUND',
+          attachments: (attachments ?? undefined) as never,
           leadId: target.leadId,
           clientId: target.clientId,
           dossierId: target.dossierId,
@@ -256,8 +262,9 @@ export class ManualEmailService implements OnModuleInit {
           updatedAt: now,
         },
       });
-      await writeAudit(tx, auth.actor, now, { action: 'email.sent_manually', entityType: 'Communication', entityId: id, clientId: target.clientId, after: { templateCode: input.templateCode, leadId: target.leadId, dossierId: target.dossierId, scheduledFor } });
+      await writeAudit(tx, auth.actor, now, { action: 'email.sent_manually', entityType: 'Communication', entityId: id, clientId: target.clientId, after: { templateCode: input.templateCode, leadId: target.leadId, dossierId: target.dossierId, scheduledFor, attachments: attachments?.length ?? 0 } });
     });
+    await this.files.dropTemporary(attachments);
     if (scheduledFor) return { id, state: 'QUEUED', scheduledFor: scheduledFor.toISOString() };
     const state = await this.deliver(id);
     return { id, state: state === 'SENT' ? 'SENT' : state === 'FAILED' ? 'FAILED' : 'QUEUED', scheduledFor: null };
@@ -289,7 +296,7 @@ export class ManualEmailService implements OnModuleInit {
 
   /** Sends one queued manual e-mail; effects of the outcome (first contact, NS_EMAIL_FAILED). */
   async deliver(id: string): Promise<'SENT' | 'FAILED' | 'SUPPRESSED' | 'WAITING'> {
-    const row = await this.prisma.communication.findUnique({ where: { id }, select: { id: true, clientId: true, leadId: true, dossierId: true, sentById: true, metadata: true, deliveryState: true, toAddress: true } });
+    const row = await this.prisma.communication.findUnique({ where: { id }, select: { id: true, clientId: true, leadId: true, dossierId: true, sentById: true, metadata: true, deliveryState: true, toAddress: true, attachments: true } });
     if (!row || row.deliveryState !== 'QUEUED') return 'WAITING';
     const stop = await this.stopReason(row);
     if (stop) {
@@ -300,7 +307,8 @@ export class ManualEmailService implements OnModuleInit {
     if (!m) return 'WAITING';
     let outcome;
     try {
-      outcome = await this.mailer.sendManual({ communicationId: id, contentHtml: m.html, contentText: m.text, greetingName: m.greetingName, signature: m.signature, audience: m.audience });
+      const attachments = await this.files.contents(row.attachments);
+      outcome = await this.mailer.sendManual({ communicationId: id, contentHtml: m.html, contentText: m.text, greetingName: m.greetingName, signature: m.signature, audience: m.audience, attachments });
     } catch {
       log('warn', 'mail.manual_retry', { id });
       return 'WAITING'; // transient: the scheduled task tries again (NOT-010)

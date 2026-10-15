@@ -1,10 +1,14 @@
 // Package 3.2 « Demandes : traitement » — API-100 `/admin/leads` (writes) and `/admin/lead-objects`. The reads of the
 // list and of a request stay in `back-office/` (package 2.11); their answers say what each caller may do (`can`).
-import { Body, Controller, Get, HttpCode, Module, Param, ParseUUIDPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Module, Param, ParseUUIDPipe, Post, Query, Req } from '@nestjs/common';
+import type { Request } from 'express';
 import { BackOfficeModule } from '../back-office/back-office.module.js';
+import { idempotentCreate } from '../catalogue-admin/admin-idempotency.js';
 import { CommunicationModule } from '../communication/communication.module.js';
 import { CurrentAuth, RequirePermission } from '../identity/access.js';
 import type { AuthContext } from '../identity/sessions.service.js';
+import { IdempotencyService } from '../platform/idempotency.js';
+import { PrismaService } from '../platform/prisma.service.js';
 import { LeadNotificationsHandler } from './lead-notifications.handler.js';
 import { LeadsProcessingService } from './leads-processing.service.js';
 
@@ -12,10 +16,17 @@ const uuid = new ParseUUIDPipe();
 
 @Controller('admin/leads')
 export class LeadsProcessingController {
-  constructor(private readonly leads: LeadsProcessingService) {}
+  constructor(
+    private readonly leads: LeadsProcessingService,
+    private readonly idempotency: IdempotencyService,
+    private readonly prisma: PrismaService,
+  ) {}
 
+  /** CRM-025, TRV-091 — the form sends its `Idempotency-Key`: a double click replays the first answer. */
   @Post() @RequirePermission('lead.create')
-  create(@CurrentAuth() auth: AuthContext, @Body() body: unknown) { return this.leads.create(auth, body); }
+  create(@Req() req: Request, @CurrentAuth() auth: AuthContext, @Body() body: unknown) {
+    return idempotentCreate(this.idempotency, this.prisma, req, 'admin.leads', auth.userId, () => this.leads.create(auth, body));
+  }
   @Post('bulk') @HttpCode(200) @RequirePermission('lead.process')
   bulk(@CurrentAuth() auth: AuthContext, @Body() body: unknown) { return this.leads.bulk(auth, body); }
   @Post(':id/take') @HttpCode(200) @RequirePermission('lead.process')

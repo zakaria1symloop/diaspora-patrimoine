@@ -250,3 +250,87 @@
     animation: none;
   }
 }
+
+/* COM-020 « Pièces jointes », COM-030 — files from the computer, each on its own line (MED-010). */
+.files {
+  display: grid;
+  gap: var(--sp-8);
+}
+.filesHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-4) var(--sp-12);
+}
+.filesLabel {
+  font-weight: 600;
+  color: var(--bo-texte-nuit);
+}
+.filesHint {
+  font-size: var(--fs-admin-small);
+  color: var(--bo-texte-doux);
+}
+.fileList {
+  display: grid;
+  gap: var(--sp-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.file {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-6) var(--sp-12);
+  border: 1px solid var(--bo-ligne-douce);
+  border-radius: var(--radius-m);
+  background: var(--bo-fond-blanc);
+}
+.file svg {
+  color: var(--bo-texte-roi);
+}
+.fileError {
+  border-color: var(--bo-texte-erreur);
+}
+.fileError svg,
+.fileError .fileMeta {
+  color: var(--bo-texte-erreur);
+}
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--bo-texte-encre);
+}
+.fileMeta {
+  font-size: var(--fs-admin-small);
+  color: var(--bo-texte-doux);
+}
+.fileAdd {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+  justify-self: start;
+  min-height: 2.5rem;
+  padding: var(--sp-6) var(--sp-12);
+  border: 1px dashed var(--bo-ligne-bleue);
+  border-radius: var(--radius-m);
+  color: var(--bo-texte-roi);
+  font-weight: 600;
+  cursor: pointer;
+}
+.fileAdd:hover {
+  background: var(--bo-fond-ciel-pale);
+}
+.fileAdd:has(input:focus-visible) {
+  outline: 3px solid var(--bo-accent-bleu);
+  outline-offset: 2px;
+}
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}

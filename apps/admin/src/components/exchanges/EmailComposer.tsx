@@ -6,14 +6,15 @@
 // (both ask for an explicit « Envoyer quand même »), a doubtful address. « Envoyer » or « Envoyer plus tard ». The text
 // being typed survives a reload (TRV-115).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { EmailComposeContext, EmailPreview, EmailSendResult, EmailWarning } from '@dp/contracts';
+import type { EmailAttachment, EmailComposeContext, EmailPreview, EmailSendResult, EmailWarning } from '@dp/contracts';
 import { Banner, Button, Icon, Modal, Skeleton, useToast } from '@dp/ui';
-import { adminCall } from '@/lib/admin-client';
+import { adminCall, newIdempotencyKey } from '@/lib/admin-client';
 import { errorText, fieldErrors } from '@/lib/errors';
 import { shortDateTime } from '@/lib/format';
 import { t } from '@/lib/i18n';
 import { Checkbox, SelectInput, TextArea, TextInput } from '../shell/forms';
 import { useShell } from '../shell/ShellContext';
+import { AttachmentPicker } from './AttachmentPicker';
 import type { ExchangeTarget } from './ExchangeActions';
 import s from './exchanges.module.css';
 
@@ -44,6 +45,9 @@ export function EmailComposer({ open, target, close, done }: Props) {
   const [includeButton, setIncludeButton] = useState(false);
   const [confirmed, setConfirmed] = useState<string[]>([]);
   const [later, setLater] = useState(false);
+  const [files, setFiles] = useState<EmailAttachment[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [sendKey, setSendKey] = useState('');
   const [scheduledFor, setScheduledFor] = useState(laterDefault);
   const [preview, setPreview] = useState<EmailPreview | null>(null);
   const [tab, setTab] = useState<'write' | 'preview'>('write');
@@ -64,6 +68,9 @@ export function EmailComposer({ open, target, close, done }: Props) {
     setFailure(null);
     setConfirmed([]);
     setLater(false);
+    setFiles([]);
+    setUploading(false);
+    setSendKey(newIdempotencyKey()); // TRV-091 — « Envoyer » clicked twice sends one e-mail
     setTab('write');
     void adminCall<EmailComposeContext>('/admin/emails/compose', { query }).then((r) => {
       if (!r.ok) return setLoadError(errorText(r));
@@ -137,7 +144,8 @@ export function EmailComposer({ open, target, close, done }: Props) {
     setErrors({});
     setFailure(null);
     const r = await adminCall<EmailSendResult>('/admin/emails/send', {
-      body: { leadId: query.leadId ?? null, clientId: query.clientId ?? null, dossierId: query.dossierId ?? null, templateCode, subject, body, includeButton, scheduledFor: later ? new Date(scheduledFor).toISOString() : null, confirmed },
+      body: { leadId: query.leadId ?? null, clientId: query.clientId ?? null, dossierId: query.dossierId ?? null, templateCode, subject, body, includeButton, scheduledFor: later ? new Date(scheduledFor).toISOString() : null, confirmed, attachmentIds: files.map((f) => f.uploadId) },
+      idempotencyKey: sendKey,
     });
     setPending(false);
     if (!r.ok) {
@@ -222,6 +230,7 @@ export function EmailComposer({ open, target, close, done }: Props) {
             <TextInput label={t('ui.admin-exchanges.email.subject')} value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={200} error={errors.subject} />
             <TextArea label={t('ui.admin-exchanges.email.body')} value={body} onChange={(e) => setBody(e.target.value)} maxLength={20000} rows={10} error={errors.body} hint={t('ui.admin-exchanges.email.bodyHint')} />
             {template?.button ? <Checkbox label={t('ui.admin-exchanges.email.keepButton', { label: template.button.label })} checked={includeButton} onChange={setIncludeButton} /> : null}
+            <AttachmentPicker base="emails" onChange={setFiles} onBusy={setUploading} />
             <p className={s.signature}>
               <span className={s.toLabel}>{t('ui.admin-exchanges.email.signedBy')}</span>
               {ctx.signature.line}
@@ -243,7 +252,7 @@ export function EmailComposer({ open, target, close, done }: Props) {
             <Button variant="secondary" size="M" onClick={close}>
               {t('ui.common.cancel')}
             </Button>
-            <Button variant="tool" size="M" icon="send" pending={pending} disabled={blockedByConfirm} onClick={() => void send()}>
+            <Button variant="tool" size="M" icon="send" pending={pending} disabled={blockedByConfirm || uploading} onClick={() => void send()}>
               {later ? t('ui.admin-exchanges.email.submitLater') : t('ui.admin-exchanges.email.submit')}
             </Button>
           </div>

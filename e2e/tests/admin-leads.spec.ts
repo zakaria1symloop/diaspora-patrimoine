@@ -70,8 +70,9 @@ test.describe('back office — requests', () => {
     await expect(page.getByText(email)).toBeVisible();
     await expect(page.getByText('/contact', { exact: true })).toBeVisible();
     await expect(page.getByText('Le financement')).toBeVisible();
-    // delivery 2: read only — none of the actions of CRM-011
-    for (const action of ['Prendre en charge', 'Clôturer', 'Affecter à…', 'Indésirable']) await expect(page.getByRole('button', { name: action })).toHaveCount(0);
+    // CRM-011 (package 3.2, delivery 3): a new request offers its main action — « Prendre en charge », or the two
+    // buttons of the review when it is « À vérifier » (CRM-003, a local submission may score as doubtful)
+    await expect(page.getByRole('button', { name: 'Prendre en charge' }).or(page.getByRole('button', { name: 'Demande légitime' }))).toBeVisible();
     // NOT-032 — opening the object marks its notifications read
     await expect
       .poll(async () => {

@@ -33,8 +33,8 @@ describe('SEC-030, API-100 — every route of packages 3.2 and 3.3 declares its 
   const expected: [Ctor, Record<string, Permission | null>][] = [
     [LeadsProcessingController, { create: 'lead.create', bulk: 'lead.process', take: 'lead.process', assign: 'lead.assign', release: 'lead.process', close: 'lead.process', reopen: 'lead.process', spam: 'lead.process', restore: 'lead.process', review: 'lead.process', openDossier: 'dossier.create', attach: 'dossier.create' }],
     [LeadObjectsController, { list: 'lead.create' }],
-    [ExchangesController, { create: 'communication.log', received: 'communication.log', update: 'communication.log', remove: 'communication.log' }],
-    [ManualEmailController, { compose: 'email.send', preview: 'email.send', send: 'email.send', cancel: 'email.send' }],
+    [ExchangesController, { create: 'communication.log', received: 'communication.log', update: 'communication.log', remove: 'communication.log', announce: 'communication.log', content: 'communication.log', complete: 'communication.log', attachment: 'client.read' }],
+    [ManualEmailController, { compose: 'email.send', preview: 'email.send', send: 'email.send', cancel: 'email.send', announce: 'email.send', content: 'email.send', complete: 'email.send' }],
     [AdvisorsController, { list: 'user.read' }],
     [
       ClientsAdminController,

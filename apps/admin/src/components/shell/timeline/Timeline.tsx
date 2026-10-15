@@ -251,6 +251,7 @@ export function Timeline({ endpoint, entity, types, quickActions }: TimelineProp
                     </time>
                     {entry.note?.editedAt ? ` · ${t('ui.admin-shell.notes.edited')}` : ''}
                   </p>
+                  {entry.email?.attachments.length ? <MailFiles emailId={entry.email.id} files={entry.email.attachments} /> : null}
                   {entry.detail ? (
                     entry.type === 'NOTE' ? (
                       <p className={s.noteBody}>{entry.detail}</p>
@@ -495,5 +496,26 @@ function NoteForm({ entity, note, onClose, onSaved, bare }: { entity: { type: No
         </Button>
       </div>
     </form>
+  );
+}
+
+/** COM-020, COM-030 — the files of an e-mail; each opens by a link of 5 minutes (MED-030), never a lasting address. */
+function MailFiles({ emailId, files }: { emailId: string; files: { uploadId: string; name: string; sizeBytes: number }[] }) {
+  const toast = useToast();
+  async function open(uploadId: string) {
+    const r = await adminCall<{ url: string }>(`/admin/communications/${emailId}/attachments/${uploadId}`);
+    if (!r.ok) return toast({ tone: 'error', text: errorText(r) });
+    window.open(r.data.url, '_blank', 'noopener');
+  }
+  return (
+    <ul className={s.mailFiles}>
+      {files.map((file) => (
+        <li key={file.uploadId}>
+          <Button variant="tertiary" size="S" icon="paperclip" onClick={() => void open(file.uploadId)} aria-label={t('ui.admin-exchanges.files.open', { nom: file.name })}>
+            {file.name}
+          </Button>
+        </li>
+      ))}
+    </ul>
   );
 }

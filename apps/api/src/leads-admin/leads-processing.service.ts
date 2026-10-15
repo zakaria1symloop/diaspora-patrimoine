@@ -26,7 +26,7 @@ import { clientScope, leadScope, staffName, StaffViews, type StaffView } from '.
 import { assertAdvisor, createClientByStaff } from '../crm/client-write.js';
 import { syncFirstContact } from '../crm/first-contact.js';
 import type { AuthContext } from '../identity/sessions.service.js';
-import { canHandleBy, loadAdvisors } from '../leads/assignment.js';
+import { applyAssignment, canHandleBy, lastTakenAt, loadAdvisors, pickAssignee } from '../leads/assignment.js';
 import { resolveObject } from '../leads/lead-objects.js';
 import { OPENS_DOSSIER, openOrJoinDossier, privacyPolicyVersion, refreshClientCaches, upsertClientForLead, writeConsents } from '../leads/lead-records.js';
 import { BusinessCalendarService, nextReference } from '../platform/business-calendar.js';
@@ -417,7 +417,7 @@ export class LeadsProcessingService {
         if (!dossier) throw AppError.validation([{ field: 'dossierId', code: 'INVALID_CHOICE' }]);
         const object = await this.objectOf(tx, lead.propertyId, lead.programId, false);
         await attachLeadToDossier(tx, this.outbox, { lead, dossier, object: { propertyId: object.property?.id ?? null, propertyTitle: object.property?.title ?? null, lotId: object.lotId, candidateStatus: object.candidateStatus }, actorId: c.staff.userId, requestId: c.requestId, now: c.now });
-        await this.audit(tx, c, lead, 'lead.updated', { dossierId: null }, { dossierId });
+        await this.audit(tx, c, lead, 'lead.attached', { dossierId: null }, { dossierId });
         await syncFirstContact(tx, this.outbox, { leadIds: [id], actor: c.actor, now: c.now });
         return { id, dossierReference: dossier.reference };
       }),
@@ -515,6 +515,7 @@ export class LeadsProcessingService {
         const reference = await nextReference(tx, 'LEAD', c.now, cal.timeZone);
         const alreadyContacted = input.alreadyContacted && input.source === 'PHONE';
         const sendAck = input.sendConfirmation && Boolean(client.email);
+        const slaDueAt = firstContactDueAt(c.now, cal, slaDays, null).dueAt;
         await tx.lead.create({
           data: {
             id,
@@ -535,7 +536,7 @@ export class LeadsProcessingService {
             spamScore: 0,
             spamSignals: [] as never,
             status: 'NEW',
-            slaDueAt: firstContactDueAt(c.now, cal, slaDays, null).dueAt,
+            slaDueAt,
             createdById: c.staff.userId,
             updatedById: c.staff.userId,
             createdAt: c.now,
@@ -562,14 +563,37 @@ export class LeadsProcessingService {
         let attachment = 'NONE';
         let ongoingDossierId: string | null = null;
         let dossierId: string | null = null;
+        type DossierRow = { id: string; stage: string; assignedAgentId: string | null; stageEnteredAt: Date; version: number };
+        let joined: DossierRow | null = null;
+        let opened: DossierRow | null = null;
         if (OPENS_DOSSIER.has(input.kind)) {
           const outcome = await openOrJoinDossier(tx, this.outbox, { lead: { id, reference, kind: input.kind }, client: fullClient, object, financingPreference: null, now: c.now, cal, stageSlaDays: sla });
           attachment = outcome.attachment;
           ongoingDossierId = outcome.ongoingDossierId;
           dossierId = outcome.dossier?.id ?? null;
+          opened = outcome.dossier;
+          joined = outcome.attachment === 'JOINED_DOSSIER' ? outcome.dossier : null;
         }
         if (input.assignedAgentId) {
           await assignLeadByHand(tx, this.outbox, { lead: { id, clientId: client.id, dossierId, assignedAgentId: null }, agentId: input.assignedAgentId, actorId: c.staff.userId, requestId: c.requestId, now: c.now, cal, stageSlaDays: sla });
+        } else {
+          // CRM-025 « le même parcours qu'une demande du site »: left « à prendre », it is assigned as one (CRM-020) —
+          // the adviser of the dossier it joins, else the referent, else the only account, else by the mode.
+          const advisors = await loadAdvisors(tx);
+          const mode = await this.settings.get('leads.assignmentMode');
+          const agentId = advisors.length
+            ? pickAssignee({
+                joinedDossierAgentId: joined?.assignedAgentId ?? null,
+                referentId: client.assignedAgentId,
+                advisors,
+                mode,
+                lastTakenAt: mode === 'ROUND_ROBIN' ? await lastTakenAt(tx, advisors.map((x) => x.userId)) : new Map(),
+                deadline: slaDueAt,
+                now: c.now,
+                cal,
+              })
+            : null;
+          if (agentId) await applyAssignment(tx, this.outbox, { leadId: id, agentId, clientId: client.id, dossier: opened, now: c.now, cal, stageSlaDays: sla });
         }
         // CRM-025 « Échange déjà eu avec le client »: the first contact is the creation (CYC-004)
         if (alreadyContacted) await syncFirstContact(tx, this.outbox, { leadIds: [id], actor: c.actor, now: c.now });

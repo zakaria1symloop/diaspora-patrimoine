@@ -22,6 +22,7 @@ import { PrismaService } from '../platform/prisma.service.js';
 import { currentRequestId } from '../platform/request-context.js';
 import type { Tx } from '../platform/tx.js';
 import { parseOrThrow } from '../platform/validation.js';
+import { EmailAttachmentsService, type StoredAttachment } from './email-attachments.service.js';
 
 export interface ExchangeTargetIds {
   leadId: string | null;
@@ -63,6 +64,7 @@ export class ExchangesService {
     private readonly views: StaffViews,
     private readonly outbox: OutboxWriter,
     private readonly tasks: TasksService,
+    private readonly files: EmailAttachmentsService,
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
   ) {}
 
@@ -205,14 +207,30 @@ export class ExchangesService {
     const now = this.clock.now();
     const occurredAt = this.moment(input.occurredAt, now);
     const id = newId();
+    let attachments: StoredAttachment[] | null = null;
     await this.prisma.$transaction(async (tx) => {
       const target = await resolveTarget(tx, staff, input);
+      attachments = await this.files.claim(tx, auth.userId, input.attachmentIds, id, now); // COM-030 « fichiers éventuels »
       await tx.communication.create({
-        data: { id, channel: 'EMAIL', direction: 'INBOUND', leadId: target.leadId, clientId: target.clientId, dossierId: target.dossierId, subject: input.subject, body: input.body, deliveryState: null, triggeredBy: 'MANUAL', sentById: auth.userId, staffUserId: auth.userId, occurredAt, ccAddresses: [], createdAt: now, updatedAt: now },
+        data: { id, channel: 'EMAIL', direction: 'INBOUND', attachments: (attachments ?? undefined) as never, leadId: target.leadId, clientId: target.clientId, dossierId: target.dossierId, subject: input.subject, body: input.body, deliveryState: 'DELIVERED' /* Q-101: an e-mail row always has a state (check constraint); a received one has arrived */, triggeredBy: 'MANUAL', sentById: auth.userId, staffUserId: auth.userId, occurredAt, ccAddresses: [], createdAt: now, updatedAt: now },
       });
       if (target.clientId) await tx.client.update({ where: { id: target.clientId }, data: { lastActivityAt: now } });
-      await writeAudit(tx, auth.actor, now, { action: 'communication.created', entityType: 'Communication', entityId: id, clientId: target.clientId, after: { channel: 'EMAIL', direction: 'INBOUND', leadId: target.leadId } });
+      await writeAudit(tx, auth.actor, now, { action: 'communication.created', entityType: 'Communication', entityId: id, clientId: target.clientId, after: { channel: 'EMAIL', direction: 'INBOUND', leadId: target.leadId, attachments: attachments?.length ?? 0 } });
     });
+    await this.files.dropTemporary(attachments);
     return { id };
+  }
+
+  /**
+   * `GET /admin/communications/{id}/attachments/{uploadId}` — MED-030: a link of 5 minutes to one file of an e-mail the
+   * reader may see (its request, client or dossier in his perimeter). Personal files: never to a masked reader (ROL-015).
+   */
+  async attachmentLink(auth: AuthContext, id: string, uploadId: string): Promise<{ url: string; expiresAt: string }> {
+    const staff = await this.views.of(auth);
+    if (staff.masked) throw new AppError(ErrorCode.FORBIDDEN);
+    const row = await this.prisma.communication.findFirst({ where: { id }, select: { leadId: true, clientId: true, dossierId: true, attachments: true } });
+    if (!row || (!row.leadId && !row.clientId && !row.dossierId)) throw AppError.notFound();
+    await resolveTarget(this.prisma, staff, { leadId: row.leadId, clientId: row.leadId ? null : row.clientId, dossierId: row.leadId ? null : row.dossierId });
+    return this.files.link(row.attachments, uploadId);
   }
 }

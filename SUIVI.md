@@ -7,7 +7,7 @@
 >
 > **Comment l'écrire.** Court, daté (AAAA-MM-JJ), au présent. On n'efface pas le journal : on ajoute en haut.
 
-Dernière mise à jour : **2026-10-14** — Amrani-Mahdi01 (session Claude).
+Dernière mise à jour : **2026-10-15** — Zakaria (session Claude, paquets).
 
 ---
 
@@ -65,7 +65,8 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Paquet | État | Remarques |
 |---|---|---|
 | 3.1 Socle du back-office | ✅ | Recherche globale, « + Créer » (registre prêt, absent tant qu'aucun formulaire n'est livré), listes à vues enregistrées, colonnes, mémoire, chronologie et notes, cloche et page des notifications, aide « ? ». **Reste hors paquet** : flux temps réel (API-070), exports (lot 5), regroupement et préférences des notifications (5.1). |
-| 3.2 Demandes · 3.3 Clients | ⬜ | Les **services** d'écriture du catalogue et des Cafés existent déjà côté API (`catalogue-admin/`, `events-admin/`, routes `/admin/…` protégées) : il reste leurs écrans. |
+| 3.2 Demandes | ✅ | Le 15/10/2026 (branche `paquet/3.2-demandes`) : boîte d'arrivée, saisie (affectée comme une demande du site si laissée « à prendre »), prise en charge, affectation, appels et échanges (aussi depuis un dossier), e-mail écrit à la main avec pièces jointes, e-mail reçu noté avec ses fichiers, clôture (avec le dossier, CYC-005), « Créer la fiche partenaire », filtres « Bien » et « Programme », signature et absence. **Reste**, dans leurs paquets : la fenêtre vers un contact de promoteur ou de banque et les modèles `P_*` (Q-099), l'export (BO-041, Lot 5). |
+| 3.3 Clients | 🟡 | Écrans faits (liste, fiche, modification, doublons, fusion, compte, « Voir comme le client », simulations). **Reste** : score et statut tenus à jour (tâche de nuit, CAL-070, CYC-060), boutons désactivés en aperçu (ROL-017), avis de conflit complet (TRV-094), petits restes d'écran, tests. Paquet suivant. |
 | 3.4 Promoteurs · 3.5 Programmes, biens, lots · 3.6 Médias, import | 🟡 | Écrans EA-40 à EA-47, EA-50, EA-51 et leurs routes (API-100) : programmes, biens, lots (table modifiable, prix en nombre, doublons, livraison), complétude, publication, mise en avant (CTL-150), éligibilité (CTL-130), à proximité (CTL-140), chantier (CTL-145), médias (CTL-080 à CTL-084, PDF et 360°), import CSV/XLSX avec contrôle à blanc (CTL-100 à CTL-102), promoteurs (CTL-001 à CTL-005, CTL-007 ; suspension annoncée puis « Les republier »), autres partenaires (CTL-170), candidatures (ACP-084), veille `partner.scan` (AUT-073, AUT-079). **Reste** : « Régénérer l'adresse » (TRV-052) et « Aperçu » par lien signé (FIC-120) des programmes et des biens ; placement par clic sur la carte (CTL-021, Q-094 : latitude et longitude en attendant) ; proposition de reporter une nouvelle date de livraison sur les lots (textes prêts, fenêtre non branchée) ; « Signaler une erreur » sur une fiche et sa tâche (DEM-018, `R_LISTING_ERROR`) ; livraison dépassée (AUT-074, `R_DELIVERY_OVERDUE`) et programme entièrement vendu (AUT-078, `R_PROGRAM_SOLD_OUT`) ; archivage automatique des biens vendus (CYC-123) ; « Écrire au promoteur » (CTL-006, à brancher sur la fenêtre d'e-mail manuel du paquet 3.2) ; plans PDF sur la fiche publique (Q-095) ; entrée de règle `R_LOT_IMPORT_CONFLICT` (la tâche est créée par un gestionnaire système en attendant le paquet 4.4). |
 | 3.7 Dossier | ✅ | Création (PIP-015), liste EA-21, fiche EA-22 (frise, « Ce qu'il manque », aperçu, biens envisagés et panneau « Proposer des biens », échanges, historique), qualification avec complément de la fiche (CYC-021, CRM-050), rapprochement et propositions (PIP-031), réponses du client côté API (EC-12, EC-13 : `/client/candidates/{id}/…`), bien retenu et lot visé (EC-11 `…/property`), pause, reprise, clôture, réouverture, recul, suppression, changement de conseiller ; règles AUT-043 ; e-mails `C_PROPOSAL_*`, `C_ADVISOR_CHANGED`, `C_DOSSIER_*`. **Limite** : avancée jusqu'à « Mise en relation » (Q-078). **Reste** : boutons de réponse dans l'espace client (voir § 3, note de l'agent 7). |
 | 3.8 Tâches et rendez-vous | ✅ | EA-30 Tâches (vues, groupes, terminer/annuler, reporter, réaffecter, actions groupées, détail à droite, compteur du menu), EA-31 Agenda (jour, semaine, mois, liste, superposition, créneau → rendez-vous ou tâche, panneau à droite), fenêtre de rendez-vous (fuseaux, avertissements, accueil sur place TAC-045), onglet Tâches du dossier ; tâches automatiques et fermetures (AUT-032, AUT-035), AUT-051, résumé du matin (AUT-070), `R_EMAIL_BOUNCED` (sans émetteur, Q-082) ; routes client `GET /client/appointments`, `…/cancel`, `…/calendar`. **Reste** : la page « Mes rendez-vous » de l'espace client (EC-14). |
@@ -90,6 +91,7 @@ Légende : ✅ fait · 🟡 partiel (ce qui manque est dit) · 🔵 en cours · 
 | Amrani-Mahdi01 (Claude) | DEM-022 : un client connecté envoie ses demandes depuis son compte (coordonnées non redemandées, rattachement par la session, pas par l'e-mail saisi) — formulaires de demande et inscription au Café | `apps/api/src/leads/`, `apps/api/src/events/cafe-registration*`, `apps/api/src/client-space/` (`/client/me`), `packages/contracts/src/auth.ts`, `apps/web/src/components/forms/`, `apps/web/src/components/cafe/CafeRegistration.tsx`, `apps/web/src/components/simulators/ResultActions.tsx`, `apps/web/src/components/assistant/GuidedResults.tsx`, `packages/i18n/messages/fr/lead.json`, `e2e/tests/` | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/demandes-client-connecte` (part de `retours/site-public-recette-octobre-2026`), D-106 |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 13/10/2026 (`docs/retours-site-2026-10-13.md`, D-107) : e-mail « autre espace » à l’inscription, double envoi, liste de choix, messages retrouvés, âge minimum, profil non enregistré, fenêtres, simulateur, « Mon espace », menus du back-office | `apps/api/src/identity/signup.service.ts`, `apps/api/src/install/auth-email-templates.ts`, `apps/api/src/client-space/properties.service.ts`, `packages/contracts` (`client-space`, `errors`), `packages/ui` (`Overlays`), `apps/web/src/lib` (`auth-client`, `public-form`), `apps/web/src/components` (`layout/Header`, `vitrine/Dropdown`, `forms/QueryDialog`, `simulators`, `client-space`), `apps/web/src/app/espace-client/messages`, `apps/admin/src/lib/admin-client.ts`, `e2e/tests/public-review-3.spec.ts`, `Specs/` (D-107) | 2026-10-13 | **terminé** le 2026-10-13 — branche `retours/recette-2026-10-13` (part de `retours/demandes-client-connecte`) |
 | Amrani-Mahdi01 (Claude) | Retour de recette du 14/10/2026 (six parcours joués, D-108) : réponses du client sur un bien dans son espace (« Ce bien m’intéresse », « Ce bien ne me convient pas », « Je retiens ce bien », « Annuler mon choix », « Demander une visite », « Ce bien ne m’intéresse plus », « Finalement, il m’intéresse ») ; demande au back-office lisible (recherche guidée) ; « Situation professionnelle » ; « Demande envoyée » par compte ; « votre conseiller » en minuscule | `packages/contracts/src/client-space.ts`, `apps/api/src/client-space/` (`properties.service.ts`, module), `apps/api/src/dossiers-admin/dossier-rules.ts`, `apps/api/src/back-office/` (`leads-admin.service.ts`, `staff-view.ts`), `apps/admin/src/components/leads/lead-parts.tsx`, `apps/web/src/components/client-space/` (`properties/`, `texts.ts`, `dashboard/blocks.tsx`, `profile/AgreementsPanel.tsx`), `apps/web/src/app/espace-client/`, `apps/web/src/components/forms/InterestDialog.tsx`, `packages/i18n/messages/fr/` (`client`, `admin-leads`, `admin-clients`, `admin-client-merge`), `apps/api/test/`, `e2e/tests/client-answers.spec.ts`, `Specs/` (D-108) | 2026-10-14 | **terminé** le 2026-10-14 — branche `retours/recette-2026-10-14` (part de `retours/recette-2026-10-13`) |
+| Zakaria (Claude, paquets) | Paquets du plan dans l'ordre (répartition du 15/10/2026 : Amrani-Mahdi01 traite les retours de recette) — 3.2 Demandes | `apps/api/src/leads-admin/`, `exchanges-admin/` (dont `email-attachments.service.ts`), `back-office/leads-admin.service.ts`, `crm/communication-entries.ts`, `communication/mailer.service.ts` (pièces jointes), `apps/admin/src/components/leads/`, `exchanges/`, `dossiers/DossierView.tsx`, `shell/timeline/`, contrats `admin-leads`, `admin-exchanges`, `admin-shell`, i18n `admin-leads`, `admin-exchanges`, `e2e/tests/admin-leads-complete.spec.ts` | 2026-10-15 | 3.2 fait (branche `paquet/3.2-demandes`) ; 3.3 ensuite. Rien n'est déployé sur la recette avant vérification complète en local (décision de Zakaria). |
 |  |  |  |  |  |
 
 ## 4. À faire ensuite (dans l'ordre conseillé)
@@ -140,6 +142,32 @@ Démarrage : `CLAUDE.md`, « Démarrer en local ». Une fois lancé :
 Tests au dernier passage (2026-10-11) : 371 tests de l'API verts ; parcours de bout en bout ≈ 50 verts (un worker).
 
 ## 7. Journal (le plus récent en haut)
+
+### 2026-10-15 — Zakaria (Claude, paquets) · paquet 3.2 Demandes terminé
+
+- Audit règle par règle (CRM-001 à CRM-031, COM-020 à COM-030, AUT-040, BO-013, BO-070, CRM-021, ADM-030) : l'essentiel
+  existait (agent 5) ; restaient les manques ci-dessous. Branche `paquet/3.2-demandes`, partie de `retours/recette-2026-10-14`.
+- **CRM-020, CRM-025** : une demande saisie et laissée « à prendre » suit l'affectation d'une demande du site (conseiller du
+  dossier rejoint, référent, compte unique, répartition).
+- **TRV-091** : double clic sans double création sur `POST /admin/leads`, `/admin/communications`, `…/received-email`,
+  `/admin/emails/send` (`Idempotency-Key`).
+- **CYC-005** : clôturer « Injoignable » / « Pas intéressé » la demande qui a ouvert un dossier propose de clôturer le dossier
+  perdu dans la même fenêtre (Q-100) ; `followUp.dossier.closableWithLead`.
+- **CRM-030, CRM-031, COM-020, COM-030 depuis un dossier** : les quatre boutons dans l'onglet Échanges (la chronologie se relit).
+- **COM-020, COM-030 pièces jointes** (MED-010, MED-011, MED-021, MED-030) : `exchanges-admin/email-attachments.service.ts`
+  (API-080 en trois temps, type réel, antivirus, clé définitive `emails/{communication}/{dépôt}`), joints au départ (même
+  différé), listés dans la chronologie, ouverts par adresse signée de 5 minutes (Q-097, Q-098).
+- **CRM-011 « Créer la fiche partenaire »** : autre partenaire (CTL-170) prérempli, demande clôturée `ANSWERED` ; permission
+  `content.manage` (spec corrigée : depuis D-091, EP-23 ne concerne plus promoteurs ni banques).
+- **CRM-001** : filtres « Bien » et « Programme » (`objectFacets`).
+- **Défaut corrigé** : « Noter un e-mail reçu » échouait toujours (contrainte `communications_delivery_state_check`) —
+  l'e-mail reçu porte `DELIVERED` (Q-101).
+- Specs : API-100 (routes déjà codées mais absentes, et les nouvelles), CRM-011, SEC-080 (`lead.attached`,
+  `communication.*`, `user.updated`), Q-097 à Q-101 ; vérificateur vert. Figma : sept lignes ☐.
+- Tests : API `leads-emails-complete.test.ts` (+ table des routes de `crm-clients.test.ts`) — 462 verts, 1 rouge déjà
+  présent (`identity.test.ts`, `CatalogueAdminController.once`, à corriger au paquet 3.5) ; e2e
+  `admin-leads-complete.spec.ts` (5 parcours : pièce jointe, dossier et e-mail reçu, clôture avec le dossier, affectation
+  au référent, fiche partenaire, filtre).
 
 ### 2026-10-14 — Amrani-Mahdi01 (Claude) · retour de recette du 14/10/2026 (D-108)
 

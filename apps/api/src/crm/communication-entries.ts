@@ -25,6 +25,7 @@ export const COMMUNICATION_ENTRY_SELECT = {
   createdAt: true,
   scheduledFor: true,
   failureReason: true,
+  attachments: true,
   sentBy: { select: { firstName: true, lastName: true, status: true } },
 } satisfies Prisma.CommunicationSelect;
 export type CommunicationEntryRow = Prisma.CommunicationGetPayload<{ select: typeof COMMUNICATION_ENTRY_SELECT }>;
@@ -32,6 +33,11 @@ export type CommunicationEntryRow = Prisma.CommunicationGetPayload<{ select: typ
 /** The timeline type of a row: an e-mail, or an exchange noted by hand (shown under « Appels et échanges »). */
 export function communicationType(row: Pick<CommunicationEntryRow, 'channel'>): TimelineType {
   return row.channel === 'EMAIL' ? 'EMAIL' : 'CALL';
+}
+
+/** The files of a hand-written or received e-mail (`email-attachments.service.ts`), as the timeline lists them. */
+function manualFiles(value: unknown): { uploadId: string; name: string; sizeBytes: number }[] {
+  return Array.isArray(value) ? (value as { uploadId?: unknown; name?: unknown; sizeBytes?: unknown }[]).flatMap((a) => (typeof a?.uploadId === 'string' && typeof a.name === 'string' ? [{ uploadId: a.uploadId, name: a.name, sizeBytes: Number(a.sizeBytes) || 0 }] : [])) : [];
 }
 
 /** One entry per row; `want` leaves out the types the reader filtered away. */
@@ -54,7 +60,18 @@ export function communicationEntries(rows: readonly CommunicationEntryRow[], sta
       // The stored subject of an e-mail carries no personal link (NOT-002).
       detail: staff.masked ? null : c.channel === 'EMAIL' ? c.subject : c.body,
       ...(c.channel === 'EMAIL'
-        ? { email: { id: c.id, direction: c.direction, manual: c.triggeredBy === 'MANUAL', scheduledFor: c.deliveryState === 'QUEUED' && c.scheduledFor ? c.scheduledFor.toISOString() : null, failureReason: c.failureReason, canCancel: c.triggeredBy === 'MANUAL' && c.deliveryState === 'QUEUED' && c.sentById === staff.userId } }
+        ? {
+            email: {
+              id: c.id,
+              direction: c.direction,
+              manual: c.triggeredBy === 'MANUAL',
+              scheduledFor: c.deliveryState === 'QUEUED' && c.scheduledFor ? c.scheduledFor.toISOString() : null,
+              failureReason: c.failureReason,
+              canCancel: c.triggeredBy === 'MANUAL' && c.deliveryState === 'QUEUED' && c.sentById === staff.userId,
+              // COM-020, COM-030 — its files; personal: never shown to a masked reader (ROL-015)
+              attachments: staff.masked ? [] : manualFiles(c.attachments),
+            },
+          }
         : { exchange: { id: c.id, channel: c.channel as 'CALL', direction: c.direction, outcome: c.callOutcome, durationMinutes: c.durationMinutes, canEdit: recent(c) && staff.has('communication.log'), canDelete: recent(c) && staff.has('communication.log') } }),
     });
   }

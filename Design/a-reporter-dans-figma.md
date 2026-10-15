@@ -69,6 +69,18 @@
 | ☐ | EC-51 Sécurité · EC-53 Mes accords | Sections côte à côte ; « Lire le texte » en action secondaire avec icône ; « Donner mon accord » en bouton ; « Mes données » devient une section avec « Écrire à mon conseiller ». | PRO-051, D-099 | 11/10/2026 |
 | ☐ | Composants de l'espace (nouveaux) | `Encouragement` (4 tons : en route, réussi, calme, à vous), `StatTile`, `Figures`, `FilterChips` (pastille avec compteur), `SearchBox`, `SortSelect`, `SidePanel`, `PageSkeleton` (5 formes), `StepDots`, `Progress`, action secondaire « quiet ». | DSN-050, D-099 | 11/10/2026 |
 
+## Back-office — demandes, paquet 3.2 terminé (15/10/2026)
+
+| État | Écran | Changement | Règle | Depuis |
+|---|---|---|---|---|
+| ☐ | Fenêtre « Écrire un e-mail » | Zone « Pièces jointes » sous le message : bouton pointillé « Joindre un fichier », aide « PDF, JPG, PNG, Word ou Excel — 5 fichiers et 10 Mo au total » ; une ligne par fichier (trombone, nom, « Envoi… 42 % » puis « Prêt · 1,2 Mo », ou la raison du refus en rouge, « Retirer »). « Envoyer » attend la fin des envois. | COM-020, MED-010 | 15/10/2026 |
+| ☐ | Fenêtre « Noter un e-mail reçu » | La même zone de fichiers (« fichiers éventuels »). | COM-030 | 15/10/2026 |
+| ☐ | Chronologie (toutes les fiches) | Sous un e-mail qui en a : ses fichiers en boutons discrets à trombone (« Ouvrir {nom} »). | COM-020, MED-030 | 15/10/2026 |
+| ☐ | EA-22 Dossier, onglet Échanges | La barre d'ajout rapide porte aussi « Appel », « Échange », « E-mail », « E-mail reçu » (avant « Tâche » et « Rendez-vous »). | CRM-030, COM-020 | 15/10/2026 |
+| ☐ | EA-11 Fenêtre « Clôturer la demande » | Issue « Injoignable » ou « Pas intéressé » d'une demande qui a ouvert un dossier : encadré gris avec la case « Clôturer aussi le dossier {réf.} comme perdu (motif : …) », puis « Prévenir le client par e-mail… » et la phrase des effets. | CYC-005 | 15/10/2026 |
+| ☐ | EA-11 « ⋯ » d'une demande « Devenir partenaire » | Entrée « Créer la fiche partenaire… » ; fenêtre : nom de la société, catégorie, site (préremplis), phrase « La description, le logo et la publication… », bouton « Créer la fiche ». | CRM-011 | 15/10/2026 |
+| ☐ | EA-10 Demandes, filtres | « Plus de filtres » : « Bien » et « Programme » (les plus demandés de la liste, avec leur nombre). | CRM-001 | 15/10/2026 |
+
 ## Back-office
 
 | État | Écran | Changement | Règle | Depuis |

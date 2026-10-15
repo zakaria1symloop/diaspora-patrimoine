@@ -136,7 +136,8 @@ Le détail par paquet est dans `SUIVI.md` § 2. En résumé :
 Le 2026-10-11, plusieurs sessions Claude travaillaient en parallèle ; elles ont été **mises en pause** au milieu de leur
 travail (le code compile — voir § 8 — mais ces parties ne sont pas finies) :
 
-1. **3.2 Demandes · 3.3 Clients** (back-office, « agent 5 » dans `SUIVI.md` § 3). Fichiers : `apps/api/src/crm/`,
+1. **3.2 Demandes · 3.3 Clients** (back-office, « agent 5 » dans `SUIVI.md` § 3) — **3.2 terminé le 15/10/2026**
+   (branche `paquet/3.2-demandes`, voir le journal de `SUIVI.md`) ; 3.3 : voir `SUIVI.md` § 2. Fichiers : `apps/api/src/crm/`,
    `leads-admin/`, `exchanges-admin/`, `clients-admin/`, `client-account-admin/`, `simulations-admin/`,
    `clients-merge-admin/`, `apps/admin/src/app/(shell)/demandes`, `/clients`, `apps/admin/src/components/leads`,
    `clients`. Une partie des écrans existe (listes, fiches, fusion, compte du client) ; la saisie, le traitement

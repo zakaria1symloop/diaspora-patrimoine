@@ -16,6 +16,7 @@ import { money, relativeTime, shortDate, shortDateTime, shortDay, staffLabel } f
 import { t } from '@/lib/i18n';
 import { CLIENT_STATUS_TONE, DOSSIER_STATUS_TONE } from '@/lib/tones';
 import { AppointmentDialog } from '../agenda/AppointmentDialog';
+import { ExchangeActions } from '../exchanges/ExchangeActions';
 import { DetailPage } from '../shell/detail/DetailPage';
 import { Facts, Surface } from '../shell/Page';
 import { signalShellChanged, useShell } from '../shell/ShellContext';
@@ -37,6 +38,8 @@ export function DossierView({ initial, tab, webUrl }: { initial: DossierDetail; 
   const { timeZone, can } = useShell();
   const [d, setD] = useState(initial);
   const [dialog, setDialog] = useState<DossierDialog>(null);
+  // the timeline reads itself: a new key makes it read again after an exchange noted from here (CRM-030)
+  const [timelineKey, setTimelineKey] = useState(0);
   const [taskOpen, setTaskOpen] = useState(false);
   const [appointmentOpen, setAppointmentOpen] = useState(false);
   const [pending, setPending] = useState(false);
@@ -199,11 +202,20 @@ export function DossierView({ initial, tab, webUrl }: { initial: DossierDetail; 
         {tab === 'biens' ? <CandidatesTab dossier={d} webUrl={webUrl} onChange={() => void reload()} openVisit={() => setAppointmentOpen(true)} /> : null}
         {tab === 'echanges' ? (
           <Timeline
+            key={timelineKey}
             endpoint={`/admin/dossiers/${d.id}/timeline`}
             entity={{ type: 'DOSSIER', id: d.id }}
             types={['STAGE', 'PROPERTY', 'ACTIVITY', 'LEAD', 'EMAIL', 'CALL', 'NOTE']}
             quickActions={
               <>
+                {/* CRM-030, CRM-031, COM-020, COM-030 — « Noter un appel… (depuis une demande, un client ou un dossier) » */}
+                <ExchangeActions
+                  target={{ dossierId: d.id, clientId: d.client.id, personName: d.client.name }}
+                  onDone={() => {
+                    setTimelineKey((k) => k + 1);
+                    void reload();
+                  }}
+                />
                 {d.can.createTask ? (
                   <Button variant="secondary" size="S" onClick={() => setTaskOpen(true)}>
                     <Icon name="check" size={16} />

@@ -1,4 +1,19 @@
 {
+  "files": {
+    "label": "Pièces jointes",
+    "hint": "PDF, JPG, PNG, Word ou Excel — {n} fichiers et {mb} Mo au total. Une pièce du dossier ne se joint pas.",
+    "add": "Joindre un fichier",
+    "progress": "Envoi… {n} %",
+    "ready": "Prêt · {taille}",
+    "remove": "Retirer",
+    "removeNamed": "Retirer {nom}",
+    "tooMany": "{n} fichiers au plus.",
+    "tooBig": "{n} Mo au total, au plus.",
+    "format": "Format non accepté : PDF, JPG, PNG, Word ou Excel.",
+    "mb": "{n} Mo",
+    "kb": "{n} Ko",
+    "open": "Ouvrir {nom}"
+  },
   "notification": {
     "suppressed": "L’e-mail programmé pour {client} n’est pas parti : la situation du client a changé depuis."
   },

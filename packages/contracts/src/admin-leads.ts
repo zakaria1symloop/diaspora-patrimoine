@@ -64,6 +64,8 @@ export interface LeadList {
   facets: { status: Record<string, number>; kind: Record<string, number>; source: Record<string, number>; countryOfResidence: Record<string, number> };
   /** The property or the programme the list is filtered on (`propertyId`, `programId`): its label, for the chip. */
   objects: { id: string; type: 'PROPERTY' | 'PROGRAM'; label: string }[];
+  /** CRM-001 — the properties and programmes of the list without their filter, with their number of requests (TRV-106). */
+  objectFacets: { id: string; type: 'PROPERTY' | 'PROGRAM'; label: string; count: number }[];
   /** CRM-004 — bulk actions the caller's role holds (BO-047: the others are absent). */
   bulk: { assign: boolean; process: boolean };
   /** The advisers a request may be filtered on (active accounts that hold `lead.process`). */
@@ -200,8 +202,12 @@ export interface LeadDetail {
     alerts: ('DIFFERENT_INFO' | 'POSSIBLE_DUPLICATE' | 'EMAIL_DOUBTFUL' | 'EMAIL_BOUNCED')[];
     /** CRM-081 — the records that look like the client's (`name` null: outside the caller's perimeter). */
     duplicates: { id: string; name: string | null }[];
-    /** The dossier opened or joined by the request. */
-    dossier: { reference: string; stage: string; status: string } | null;
+    /**
+     * The dossier opened or joined by the request. CYC-005 — `closableWithLead`: the request opened it, it is still live
+     * and the reader may close it (`dossier.close`): closing the request as « Injoignable » or « Pas intéressé »
+     * offers to close it as lost in the same window.
+     */
+    dossier: { id: string; reference: string; stage: string; status: string; closableWithLead: boolean } | null;
     /**
      * The client's live dossiers the request is NOT attached to: « Rattacher au dossier » offers them. `pendingDecision`
      * is the last case of CYC-002 — « Nouvelle demande pendant un dossier en cours ».
@@ -217,7 +223,7 @@ export interface LeadDetail {
 
 // ─── Package 3.2 — processing (CRM-004, CRM-011, CRM-025; CYC-003 … CYC-008) ────────────────────────────────────────
 
-export const LEAD_ACTIONS = ['take', 'assign', 'release', 'close', 'reopen', 'spam', 'restore', 'review', 'openDossier', 'attach'] as const;
+export const LEAD_ACTIONS = ['take', 'assign', 'release', 'close', 'reopen', 'spam', 'restore', 'review', 'openDossier', 'attach', 'createPartner'] as const;
 export type LeadAction = (typeof LEAD_ACTIONS)[number];
 /** BO-047 — possible now, or impossible in this state with the code of its reason (`ui.admin-leads.blocked.{reason}`). */
 export type LeadActionState = { allowed: true } | { allowed: false; reason: string };

@@ -164,6 +164,23 @@ export function LeadsList() {
             .sort((a, b) => b[1] - a[1])
             .map(([code, count]) => ({ value: code, label: countryName(code), count })),
         },
+        // CRM-001 — the property or the programme the request is about (the most asked of the list, with their counts)
+        {
+          key: 'propertyId',
+          label: t('ui.admin-leads.filter.property'),
+          kind: 'options',
+          single: true,
+          rare: true,
+          options: (r?.objectFacets ?? []).filter((o) => o.type === 'PROPERTY').map((o) => ({ value: o.id, label: o.label, count: o.count })),
+        },
+        {
+          key: 'programId',
+          label: t('ui.admin-leads.filter.program'),
+          kind: 'options',
+          single: true,
+          rare: true,
+          options: (r?.objectFacets ?? []).filter((o) => o.type === 'PROGRAM').map((o) => ({ value: o.id, label: o.label, count: o.count })),
+        },
         {
           key: 'hasDossier',
           label: t('ui.admin-leads.filter.hasDossier'),
